@@ -1,0 +1,124 @@
+{% load add_class %}
+{% load compare_features %}
+
+<!-- Transcript Expander -->
+<div class="container">
+
+<div id="has_transcript_changed" class="collapse">
+  {% if diff_result.results.has_transcript_changed %}
+  <div class="panel panel-danger">
+  {% else %}
+    <div class="panel panel-success">
+  {% endif %}
+  
+  <div class="panel-heading"><i class="glyphicon glyphicon-collapse-down"></i> <strong>Transcript Compare</strong></div>
+  <div class="panel-body">
+
+  <div class="row">
+  
+  <!--Transcript1 -->
+  <div class="col-md-5 col-sm-5">
+  <ul class="list-group">
+  {% with diff_result.diff_me_transcript.results.0 as diff_me_tr %}
+  <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
+  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ diff_me_tr.stable_id }}</span></li>
+  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ diff_me_tr.stable_id_version }}</span></li> 
+  <li class="list-group-item">Assembly <span class="label label-primary label-diff">{{ diff_result.diff_me_assembly }}</span></li>
+  <li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_result.diff_me_release }}</span></li> 
+  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ diff_me_tr|add_location }}</span></li>
+
+
+  <li class="list-group-item list-group-item-info"><strong>Checksums</strong></li>
+  <li class="list-group-item">Transcript<span class="label label-primary label-diff">{{ diff_me_tr.transcript_checksum }}</span></li>
+  <li class="list-group-item">Location<span class="label label-primary label-diff">{{ diff_me_tr.loc_checksum }}</span></li> 
+  <li class="list-group-item">Exonset<span class="label label-primary label-diff">{{ diff_me_tr.exon_set_checksum }}</span></li>
+  <li class="list-group-item">Sequence<span class="label label-primary label-diff">{{ diff_me_tr.sequence.seq_checksum }}</span></li>
+    {% endwith %}
+  </ul>
+  </div>
+  <!--Transcript1 End-->
+  
+  <!--Match -->
+  <div class="col-md-2 col-sm-2">
+  <ul class="list-group">
+  <li class="list-group-item text-center">Match</li>
+  
+  {% with diff_result|compare_transcript:"stable_id" as has_stable_id_changed %}
+  {% include "checksum_match.html" with has_var_checksum=has_stable_id_changed %}
+  {% endwith %}
+  
+  {% with diff_result|compare_transcript:"stable_id_version" as has_stabld_id_version_changed %}
+  {% include "checksum_match.html" with has_var_checksum=has_stabld_id_version_changed %}
+  {% endwith %}
+  
+  {% if diff_result.diff_me_assembly == diff_result.diff_with_assembly %}
+  {% include "checksum_match.html" with has_var_checksum=True %}
+  {% else %}
+  {% include "checksum_match.html" with has_var_checksum=False %}
+  {% endif %}
+  
+  {% if diff_result.diff_me_release == diff_result.diff_with_release %}
+  {% include "checksum_match.html" with has_var_checksum=True %}
+  {% else %}
+  {% include "checksum_match.html" with has_var_checksum=False %}
+  {% endif %}
+
+  {% with diff_result|compare_location as has_location_changed %}
+    {% include "checksum_match.html" with has_var_checksum=has_location_changed %}
+  {% endwith %}
+
+
+<!--checksums -->
+  <li class="list-group-item text-center">Checksums</li>
+  
+  {% with diff_result|compare_transcript:"transcript_checksum" as has_transcript_checksum %}
+  {% include "checksum_match.html" with has_var_checksum=has_transcript_checksum %}
+  {% endwith %}
+  
+  
+  {% with diff_result|compare_transcript:"loc_checksum" as has_loc_checksum %}
+  {% include "checksum_match.html" with has_var_checksum=has_loc_checksum %}
+  {% endwith %}
+  
+  {% with diff_result|compare_transcript:"exon_set_checksum" as has_exon_set_checksum %}
+  {% include "checksum_match.html" with has_var_checksum=has_exon_set_checksum %}
+  {% endwith %}
+  
+  {% with diff_result|compare_sequence:"seq_checksum" as has_seq_checksum %}
+  {% include "checksum_match.html" with has_var_checksum=has_seq_checksum %}
+  {% endwith %}
+  
+  </ul>
+  </div>
+  <!--Match -->
+  
+  
+<!-- Transcript2 -->
+  <div class="col-md-5 col-sm-5">
+  <ul class="list-group">
+ {% with diff_result.diff_with_transcript.results.0 as diff_with_tr %}
+  <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
+  <li class="list-group-item">StableID 	<span class="label label-warning label-diff">{{ diff_with_tr.stable_id }}</span></li>
+  <li class="list-group-item">StableID Version <span class="label label-warning label-diff">{{ diff_with_tr.stable_id_version }}</span></li> 
+  <li class="list-group-item">Assembly <span class="label label-warning label-diff">{{ diff_result.diff_with_assembly }}</span></li>
+  <li class="list-group-item">Ensembl Release <span class="label label-warning label-diff">{{ diff_result.diff_with_release }}</span></li> 
+  <li class="list-group-item">Location <span class="label label-warning label-diff">{{ diff_with_tr|add_location }}</span></li>
+
+  <li class="list-group-item list-group-item-warning"><strong>Checksums</strong></li>
+  <li class="list-group-item">Transcript<span class="label label-warning label-diff">{{ diff_with_tr.transcript_checksum }}</span></li>
+  <li class="list-group-item">Location<span class="label label-warning label-diff">{{ diff_with_tr.loc_checksum }}</span></li> 
+  <li class="list-group-item">Exonset<span class="label label-warning label-diff">{{ diff_with_tr.exon_set_checksum }}</span></li>
+  <li class="list-group-item">Sequence<span class="label label-warning label-diff">{{ diff_with_tr.sequence.seq_checksum }}</span></li>
+  {% endwith%}
+</ul>
+   </div>
+  <!-- Transcript2 -->  
+ 
+   </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+

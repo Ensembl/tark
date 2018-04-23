@@ -1,0 +1,101 @@
+{% extends "web_home.html" %}
+
+{% load staticfiles %}
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+
+{% block content %}
+
+<div class="container" style="padding-top:20px;">
+
+<!-- Info -->
+<div class="panel panel-info ">
+  <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Input Parameters</strong></div>
+  <div class="panel-body">
+  <dl class="row">
+  <dt class="col-md-1">Stable ID:</dt>
+  <dd class="col-md-2">{{ diff_result.stable_id }}</dd>
+
+  <dt class="col-md-2">Diff Me Assembly&#47;Release:</dt>
+  <dd class="col-md-2">{{ diff_result.diff_me_assembly }}&#47;{{ diff_result.diff_me_release }}</dd>
+
+  <dt class="col-md-2">Diff With Assembly&#47;Release:</dt>
+  <dd class="col-md-2">{{ diff_result.diff_with_assembly }}&#47;{{ diff_result.diff_with_release }}</dd>
+  </dl>
+ </div>
+
+</div>
+
+<!-- Result -->
+
+<div class="panel panel-warning ">
+  <div class="panel-heading">
+  {% if diff_result.results|length_is:"0" %}
+  <i class="glyphicon glyphicon-thumbs-down"></i>
+  {% else %}
+  <i class="glyphicon glyphicon-thumbs-up"></i>
+  {% endif %}
+      
+  <strong>Diff Results: </strong><button type="button" class="btn btn-success btn-xs disabled">Not Changed</button> <button type="button" class="btn btn-danger btn-xs disabled">Changed</button> <button type="button" class="btn btn-default btn-xs disabled">No Result</button>
+  ( Note: Please click on the below buttons for more details)
+  </div>
+  <div class="panel-body">
+
+  <div class="btn-group btn-group-justified">
+  <!-- Handle none -->
+  {% if diff_result.results|length_is:"0" %}
+  <a href="#" class="btn btn-default disabled">Transcript</a>
+  <a href="#" class="btn btn-default disabled" style="width:0.05%;background-color:black;"></a>
+  <a href="#" class="btn btn-default disabled">Location</a>
+  <a href="#" class="btn btn-default disabled">Exon Set</a>
+  <a href="#" class="btn btn-default disabled">Sequence</a>
+  {% else %}
+  
+  {% if diff_result.results.has_transcript_changed %}
+  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Transcript</a>
+  {% else %}
+  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Transcript</a>
+  {% endif %}
+  
+  <a href="#" class="btn btn-default disabled" style="width:0.05%;background-color:black;"></a>
+  
+  {% if diff_result.results.has_location_changed %}
+  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Location</a>
+  {% else %}
+  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Location</a>
+  {% endif %}
+  
+  {% if diff_result.results.has_exon_set_changed %}
+  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Exon Set</a>
+  {% else %}
+  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Exon Set</a>
+  {% endif %}
+  
+    
+  {% if diff_result.results.has_seq_changed %}
+  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Sequence</a>
+  {% else %}
+  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Sequence</a>
+  {% endif %}
+  
+
+  {% endif %}<!--else end -->
+
+ </div>
+ 
+ <p></p>
+ <div>
+ <a href="/web/diff" class="btn btn-primary ">New Diff</a> 
+  </div>
+  
+ </div>
+
+</div>
+
+</div> <!--close container -->
+
+{% include "diff_expanders.html" %}
+
+
+{% endblock %}

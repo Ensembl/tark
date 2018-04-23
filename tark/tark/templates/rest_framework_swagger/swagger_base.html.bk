@@ -1,0 +1,20 @@
+{% extends "rest_framework_swagger/base.html" %}
+{% load staticfiles %}
+{% block swagger_base %}
+
+
+<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+
+<script id="drs-settings" type="application/json">
+{{ drs_settings | safe }}
+</script>
+<script src='{% static "rest_framework_swagger/init.js" %}' type='text/javascript'></script>
+
+
+{% endblock %}
+
+
+
+
+

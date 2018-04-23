@@ -1,0 +1,12 @@
+Django==2.0.2
+djangorestframework==3.7.7
+coreapi==2.3.3
+markdown==2.6.11
+django-filter==2.0.0.dev1
+django-crispy-forms==1.7.0
+django-rest-swagger==2.1.2
+mysqlclient==1.3.12
+django-debug-toolbar==1.9.1
+numpy==1.14.0
+biopython==1.70
+bcbio-gff==0.6.4

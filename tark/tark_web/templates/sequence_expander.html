@@ -1,0 +1,88 @@
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+
+<!-- Sequence Expander -->
+<div class="container">
+<div id="has_seq_changed" class="collapse">
+
+  {% if diff_result.results.has_seq_changed %}
+  <div class="panel panel-danger">
+  {% else %}
+    <div class="panel panel-success">
+  {% endif %}
+    <div class="panel-heading"><i class="glyphicon glyphicon-collapse-down"></i> <strong>Seq Details</strong></div>
+      <div class="panel-body">
+      
+       <div class="row">
+  
+  <div class="col-md-5 col-sm-5">
+  <ul class="list-group">
+  {% with diff_result.diff_me_transcript.results.0 as diff_me_tr %}
+  
+  <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
+  <li class="list-group-item">
+    {% if diff_me_tr %}
+    {% with diff_me_tr.sequence.sequence|format_fasta:diff_me_tr.stable_id as fasta_seq %}
+    <p class="text-justify" style="font-family:monospace;font-size:80%;">
+  	{{ fasta_seq }}
+  	</p>
+    {% endwith %}
+    {% endif %}
+  </li>
+    {% endwith %}
+  </ul>
+  </div>
+  
+  <!--match-->
+  <div class="col-md-2 col-sm-2">
+  <ul class="list-group">
+  <li class="list-group-item text-center">Match</li>
+  {% with diff_result|compare_sequence:"sequence" as has_seq_checksum %}
+    {% include "checksum_match.html" with has_var_checksum=has_seq_checksum %}
+  {% endwith %}
+  </ul>
+  </div>
+   <!--match-->
+  
+  <div class="col-md-5 col-sm-5">
+  <ul class="list-group">
+  {% with diff_result.diff_with_transcript.results.0 as diff_with_tr %}
+  <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
+  <li class="list-group-item">
+    {% if diff_with_tr %}
+    {% with diff_with_tr.sequence.sequence|format_fasta:diff_with_tr.stable_id as fasta_seq %}
+      <p class="text-justify" style="font-family:monospace;font-size:80%;">
+  	{{ fasta_seq }}
+  	</p>
+    {% endwith %}
+    {% endif %}
+  </li>
+    {% endwith %}
+  </ul>
+  </div>
+  
+   </div>
+
+<!--alignment -->
+ <div class="row">
+  
+  <div class="col-md-12 col-sm-12">
+  <ul class="list-group">
+  <li class="list-group-item list-group-item-success"><strong>Alignment</strong></li>
+    <li class="list-group-item">
+    
+    
+    </li>
+  </ul>
+  </div>
+  </div>
+<!--alignment -->
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>

@@ -1,0 +1,14 @@
+{% load add_class %}
+{% load compare_features %} 
+ 
+ 
+  {% if has_var_checksum %}
+    <li class="list-group-item list-group-item-success text-center">
+    <i class="glyphicon glyphicon-ok"></i>
+  {% else %}
+    <li class="list-group-item list-group-item-danger text-center">
+    <i class="glyphicon glyphicon-remove"></i>
+  {% endif %}
+  </li>
+
+  

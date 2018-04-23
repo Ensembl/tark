@@ -1,0 +1,107 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TaRK</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+  
+  
+  <link rel="icon" type="image/png" href="{% static '/images/ebang.png' %}" sizes="16x16" />
+ 
+  <link href='{% static "/css/tark_main.css" %}' rel='stylesheet' type='text/css'/>
+  
+   <!-- Navbar JavaScript -->
+   <script src='{% static "js/navbar.js" %}' type='text/javascript'></script>
+   <link rel="stylesheet" href="{% static "css/navbar.css" %}">
+   
+{% block extra_styles %}
+{% endblock %}
+
+{% block extra_scripts %}
+{% endblock %}
+
+</head>
+
+<body>
+{% block header %}
+
+<nav class="navbar navbar-inverse">
+  <div class="container" id="header">
+      
+    <ul class="nav navbar-nav">
+    
+      <li><a class="navbar-brand" id="logo" href="/"><span class="title"><img alt="ensembl" height="30" width="30" src="{% static '/images/ebang.png' %}" /> Transcript Archive <span class="beta_text"> Beta</span></span></a></li>
+      <li><a href="/web/"> Web-TArK</a></li>
+      <li><a href="/api/"> REST-TArK</a></li>
+      <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+ 
+    </ul>
+  </div>
+</nav>
+
+{% endblock %}
+
+<body>
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron" style="background-color:#fff !important;">
+    <h2 class="text-center">TArK - Transcript Archive</h2> 
+    <p class="text-justify" style="font-size: 1.8rem;">The goal of TArK is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, checksums are included at a fine grained level. </p>
+    
+    <p class="text-justify" style="font-size: 1.8rem;">The data is accessible via an API to explore and determine the exact changes between sequences from one release to the next. In the longterm, TArK will become the primary repository for all sequences in all Ensembl releases.</p>
+    
+    <p class="text-justify" style="font-size: 1.8rem;">This beta is provided to give the community an opportunity to explore TArK's functionality. Please provide feedback on possible improvements to help meet future needs. Note, this is a beta site and should not be counted upon to be stable, the API may change and this server may be unavailable at times..</p> 
+  </div>
+
+ <div class="row">
+   <div class="col-md-4 col-sm-4">
+     <a href="/documentation/"><button type="button" class="btn btn-default btn-circle btn-xl center-block" href="/documentation/"><i class="glyphicon glyphicon-file"></i></button></a>
+     <h3 class="text-center">Documentation</h3>
+
+     <p>About TaRK: core concepts, update frequency and consortium members.</p>
+     <p>FAQs: What do you mean by archive and why are they important, what is checksums?</p>
+  </div>
+
+   <div class="col-md-4 col-sm-4">
+    <a href="/web/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-globe"></i></button></a>
+ <h3 class="text-center">Web TaRK</h3>
+  <p>Web version of TaRK to browse, list, query and filter. Provides list view via datatables</p>
+  </div>
+
+   <div class="col-md-4 col-sm-4"> 
+     <a href="/api/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><span style="font-size:0.7em;">{REST}</span></button></a>
+ <h3 class="text-center">REST TaRK</h3>
+  <p">REST version of TaRK with links to browsable API to work on filters and receive JSON response.</p>
+    </div>
+    
+ </div>
+
+{% endblock %}
+
+{% block footer %}
+<p style="padding-top:80px;"></p>
+<hr/>
+ <div class="row">
+ 	<div class="text-center">
+ 	<h4 class="text-center">Funding</h4>
+    <img class="fundingimg" src="{% static '/images/EMBL.png' %}" style="vertical-align:middle" height="50">
+    <img class="fundingimg" src="{% static '/images/TGMI.png' %}" style="vertical-align:middle" height="50">
+ </div>
+ 
+ {% endblock %}
+ 
+ </div>
+
+</div>
+
+
+</body>
+</html>

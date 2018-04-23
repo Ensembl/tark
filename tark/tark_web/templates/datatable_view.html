@@ -1,0 +1,66 @@
+{% extends "web_home.html" %}
+
+{% block title %}DataTable{% endblock %}
+
+{% load staticfiles %}
+
+{% block extra_styles %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/javascript">
+
+
+    $(document).ready(function() {
+    
+    
+    //datatable
+    var tark_table = $('#tark_datatable').DataTable( {
+    
+        "serverSide": {{server_side_processing}},
+        {% if server_side_processing == 'true' %}
+        "ajax": "/web/datatable_serverside/{{table_name}}/",
+        {% else %}
+         "ajax": "/web/datatable_clientside/{{table_name}}/",
+        {% endif %}
+        
+       "data":{'serverSide':{{ server_side_processing }} },
+        aoColumns: [
+            {% for fields in data_fields %}
+  			{ "mData": "{{ fields }}", sDefaultContent: "" },
+  	        {% endfor %}
+		],
+    } );
+    
+    
+    
+   } );
+    
+
+
+
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+   <div class="container-fluid" style="padding-left:50px;padding-right:50px;">
+   <div class="row">
+    <table id="tark_datatable" class="table table-striped table-bordered" cellspacing="0" width="95%">
+      <thead>
+            <tr>
+             {% for fields in data_fields %}
+                <th>{{ fields }}</th>
+             {% endfor %}
+            </tr>
+      </thead>
+     
+    </table>
+    </div>
+  </div>
+{% endblock %}
+
+
+
+

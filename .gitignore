@@ -1,0 +1,21 @@
+# ignore all project cache and migration files
+__pycache__/
+*.py[cod]
+
+#  
+.project
+.pydevproject
+.settings
+.coverage
+coverage.xml
+*.swp
+.DS_Store
+secrets.py
+*_initial.py
+log
+apache
+tmp
+migrations
+inspectdb
+*.py~
+
