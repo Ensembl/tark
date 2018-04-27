@@ -91,6 +91,51 @@ def compare_exon(diff_result, compare_attrs):
 
 
 @register.filter
+def compare_translation(diff_result, compare_attrs):
+
+    compare_result = []
+
+    if compare_attrs is None:
+        return compare_result
+
+    compare_attr_list = [attr.strip() for attr in compare_attrs.split(',')]
+
+    if len(diff_result['diff_me_transcript']['results']) == 0 or \
+            len(diff_result['diff_with_transcript']['results']) == 0:
+        return compare_result
+
+    diff_me_tr = diff_result['diff_me_transcript']['results'][0]
+    diff_with_tr = diff_result['diff_with_transcript']['results'][0]
+
+    if 'translations' in diff_me_tr:
+        diff_me_tr_translations = diff_me_tr['translations']
+
+    if 'translations' in diff_with_tr:
+        diff_with_tr_translations = diff_with_tr['translations']
+
+    diff_me_translation_attr = False
+    diff_with_translation_attr = False
+
+    for (diff_me_tr_translation, diff_with_tr_translation) in zip(diff_me_tr_translations, diff_with_tr_translations):
+        exon_result = []
+        for compare_attr in compare_attr_list:
+            is_equal = False
+            if compare_attr in diff_me_tr_translation:
+                diff_me_translation_attr = diff_me_tr_translation[compare_attr]
+
+            if compare_attr in diff_with_tr_translation:
+                diff_with_translation_attr = diff_with_tr_translation[compare_attr]
+
+            if diff_me_translation_attr and diff_with_translation_attr:
+                is_equal = str(diff_me_translation_attr) == str(diff_with_translation_attr)
+
+            exon_result.append(is_equal)
+        compare_result.append(exon_result)
+
+    return compare_result
+
+
+@register.filter
 def compare_location(diff_result):
     is_equal = False
 

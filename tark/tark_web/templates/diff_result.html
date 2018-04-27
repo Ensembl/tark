@@ -40,49 +40,114 @@
   <strong>Diff Results: </strong><button type="button" class="btn btn-success btn-xs disabled">Not Changed</button> <button type="button" class="btn btn-danger btn-xs disabled">Changed</button> <button type="button" class="btn btn-default btn-xs disabled">No Result</button>
   ( Note: Please click on the below buttons for more details)
   </div>
+  
+  
+  
+  
   <div class="panel-body">
-
-  <div class="btn-group btn-group-justified">
+  
+  <!--- Diff CDS/CDNA START -->
+   <div class="btn-group btn-group-justified">
   <!-- Handle none -->
   {% if diff_result.results|length_is:"0" %}
-  <a href="#" class="btn btn-default disabled">Transcript</a>
-  <a href="#" class="btn btn-default disabled" style="width:0.05%;background-color:black;"></a>
-  <a href="#" class="btn btn-default disabled">Location</a>
-  <a href="#" class="btn btn-default disabled">Exon Set</a>
-  <a href="#" class="btn btn-default disabled">Sequence</a>
+  <a href="#" class="btn btn-default disabled btn-xs">Transcript</a>
+  <a href="#" class="btn btn-default disabled btn-xs" style="width:0.05%;background-color:black;"></a>
+  <a href="#" class="btn btn-default disabled btn-xs">CDNA</a>
+  <a href="#" class="btn btn-default disabled btn-xs">CDS</a>
   {% else %}
   
   {% if diff_result.results.has_transcript_changed %}
-  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Transcript</a>
+  
+  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Transcript</a>
   {% else %}
-  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Transcript</a>
+  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Transcript</a>
   {% endif %}
   
-  <a href="#" class="btn btn-default disabled" style="width:0.05%;background-color:black;"></a>
+  <a href="#" class="btn btn-default disabled btn-xs" style="width:0.05%;background-color:black;"></a>
   
-  {% if diff_result.results.has_location_changed %}
-  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Location</a>
+  {% if diff_result.results.has_cdna_changed %}
+    <a href="#has_cdna_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">CDNA</a>
   {% else %}
-  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Location</a>
+    <a href="#has_cdna_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">CDNA</a>
   {% endif %}
   
-  {% if diff_result.results.has_exon_set_changed %}
-  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Exon Set</a>
+  {% if diff_result.results.has_cds_changed %}
+  <a href="#has_cds_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">CDS</a>
   {% else %}
-  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Exon Set</a>
+  <a href="#has_cds_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">CDS</a>
   {% endif %}
   
-    
-  {% if diff_result.results.has_seq_changed %}
-  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-danger" data-toggle="collapse">Sequence</a>
-  {% else %}
-  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-success" data-toggle="collapse">Sequence</a>
-  {% endif %}
   
-
   {% endif %}<!--else end -->
 
  </div>
+  <!--- Diff CDS/CDNA END -->
+  
+  <p></p>  <p></p>
+  
+  <!--- Diff  ALL START CDNA-->
+  <div id="has_cdna_changed" class="collapse">
+  <div  class="btn-group btn-group-justified">
+  <!-- Handle none -->
+  {% if diff_result.results|length_is:"0" %}
+  <a href="#" class="btn btn-default disabled btn-xs">Location</a>
+  <a href="#" class="btn btn-default disabled btn-xs">Exon Set</a>
+  <a href="#" class="btn btn-default disabled btn-xs">Sequence</a>
+  {% else %}
+  
+  
+  {% if diff_result.results.has_location_changed %}
+  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Location</a>
+  {% else %}
+  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Location</a>
+  {% endif %}
+  
+  {% if diff_result.results.has_exon_set_changed %}
+  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Exon Set</a>
+  {% else %}
+  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Exon Set</a>
+  {% endif %}
+  
+  
+  {% if diff_result.results.has_seq_changed %}
+  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Sequence</a>
+  {% else %}
+  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Sequence</a>
+  {% endif %}
+  {% endif %}<!--else end -->
+
+ </div>
+ </div>
+  <!--- Diff  ALL END CDNA-->
+  
+    <p></p>  <p></p>
+  
+   <!--- Diff  ALL START CDS-->
+  <div id="has_cds_changed" class="collapse">
+  <div  class="btn-group btn-group-justified">
+  <!-- Handle none -->
+  {% if diff_result.results|length_is:"0" %}
+  <a href="#" class="btn btn-default disabled btn-xs">Translation</a>
+  {% else %}
+  
+ 
+  
+  {% if diff_result.results.has_translation_changed == True %}
+  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Translation</a>
+  {% elif diff_result.results.has_translation_changed == False %}
+  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Translation</a>
+  {% else %}
+  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-default btn-xs disabled" data-toggle="collapse">Translation</a>
+  {% endif %}
+  
+  
+  {% endif %}<!--else end -->
+
+ </div>
+ </div>
+  <!--- Diff  ALL END CDS-->
+ 
+ 
  
  <p></p>
  <div>

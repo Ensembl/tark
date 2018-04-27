@@ -41,7 +41,7 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Translation
-        fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'sequence')
+        fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'seq_checksum')
 
     def __init__(self, *args, **kwargs):
         super(TranslationSerializer, self).__init__(*args, **kwargs)
@@ -58,7 +58,7 @@ class TranslationTranscriptSerializer(serializers.ModelSerializer):
     loc_strand = serializers.ReadOnlyField(source='translation.loc_strand')
     loc_region = serializers.ReadOnlyField(source='translation.loc_region')
     loc_checksum = serializers.ReadOnlyField(source='translation.loc_checksum')
-    translation_checksum = serializers.ReadOnlyField(source='translation.exon_checksum')
+    translation_checksum = serializers.ReadOnlyField(source='translation.translation_checksum')
     seq_checksum = serializers.ReadOnlyField(source='translation.seq_checksum')
 
     class Meta:

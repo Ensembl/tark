@@ -9,9 +9,154 @@
 
 <script type="text/javascript" class="init">
 
+function get_exon_details(stable_id, version){
+
+     var row_details =  '<table cellpadding="5" class="table" cellspacing="0"  style="padding-left:50px;">';
+
+     row_details += "<thead>";
+     row_details += '<tr>';
+     row_details += '<th class="text-center">StableID.Version (Order)</th>';
+     row_details += '<th class="text-center">Region</th>';
+     row_details += '<th class="text-center">Start</th>';
+     row_details += '<th class="text-center"> End </th>';
+     row_details += '<th class="text-center">Strand</th>';
+     row_details += '</tr>';
+     row_details += "</thead>";
+     
+     
+      {% for result in search_result %}
+      console.log("{{result.stable_id}}"  + "  " + stable_id);
+      console.log("{{result.stable_id_version}}"  + "  " + version);
+      if("{{result.stable_id}}" == stable_id && "{{result.stable_id_version}}" == version){
+     
+      {% for exon in result.exons %}
+      row_details += '<tr>';
+      
+      row_details += "<td>";
+      row_details += "{{exon.stable_id}}.{{exon.stable_id_version}} ({{exon.exon_order}})";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{exon.loc_region}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{exon.loc_start}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{exon.loc_end}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{exon.loc_strand}}";
+      row_details += "</td>";
+	  
+	  row_details += '</tr>';
+      {% endfor %}
+      }
+      {% endfor %}
+
+      row_details += '</table>';
+
+      return row_details;
+
+}
+
+function get_translation_details(stable_id, version){
+
+     var row_details =  '<table cellpadding="5" class="table" cellspacing="0"  style="padding-left:50px;">';
+
+     row_details += "<thead>";
+     row_details += '<tr>';
+     row_details += '<th class="text-center">StableID.Version</th>';
+     row_details += '<th class="text-center">Region</th>';
+     row_details += '<th class="text-center">Start</th>';
+     row_details += '<th class="text-center"> End </th>';
+     row_details += '<th class="text-center">Strand</th>';
+     row_details += '</tr>';
+     row_details += "</thead>";
+     
+     
+      {% for result in search_result %}
+      console.log("{{result.stable_id}}"  + "  " + stable_id);
+      console.log("{{result.stable_id_version}}"  + "  " + version);
+      if("{{result.stable_id}}" == stable_id && "{{result.stable_id_version}}" == version){
+     
+      {% for translation in result.translations %}
+      row_details += '<tr>';
+      
+      row_details += "<td>";
+      row_details += "{{translation.stable_id}}.{{translation.stable_id_version}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{translation.loc_region}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{translation.loc_start}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{translation.loc_end}}";
+      row_details += "</td>";
+      
+      row_details += "<td>";
+      row_details += "{{translation.loc_strand}}";
+      row_details += "</td>";
+	  
+	  row_details += '</tr>';
+      {% endfor %}
+      }
+      {% endfor %}
+
+      row_details += '</table>';
+
+      return row_details;
+
+}
+
+/* Formatting function for row details */
+function format ( d ) {
+    // `d` is the original data object for the row
+    var stable_id_version = d[0];
+    var res = stable_id_version.split(".");
+    var stable_id = res[0];
+    var version = res[1];
+    console.log(stable_id);
+	
+	var row_details_exon = "<h4>Exon Details</h4>";
+    row_details_exon += get_exon_details(stable_id, version);
+    
+    var row_details_translation = "<h4>Translation Details</h4>";
+    row_details_translation += get_translation_details(stable_id, version);
+    var row_details = row_details_exon + "<br/>" + row_details_translation;
+    return row_details;
+}
+
+
 $(document).ready(function() {
-    $('#search_result_table').DataTable();
+    var search_table = $('#search_result_table').DataTable();
+    
+    // Add event listener for opening and closing details
+    $('#search_result_table tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = search_table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
 } );
+    
 
 	</script>
 
@@ -35,6 +180,7 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="true">GeneNames</th>
      <th class="text-center" data-sortable="true">GeneStableIDs</th>
      <th class="text-center" data-sortable="true">Exons</th>
+     <th class="text-center" data-sortable="true">Details</th>
   </tr>
  </thead>
     {% for result in search_result %}
@@ -51,6 +197,7 @@ $(document).ready(function() {
       {% with result.exons|get_values_as_list:"stable_id_exon" as exons %}
       <td>{{exons |linebreaks}}</td>
       {% endwith %}
+      <td class="details-control"></td>
       </tr>
     {% endfor %}
 

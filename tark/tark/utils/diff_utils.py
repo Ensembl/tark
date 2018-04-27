@@ -150,13 +150,16 @@ class DiffSet(object):
         diff_dict['has_location_changed'] = self.has_location_changed()
         diff_dict['has_exon_set_changed'] = self.has_exon_set_changed()
         diff_dict['has_transcript_changed'] = self.has_transcript_changed()
+        diff_dict['has_translation_changed'] = self.has_translation_changed()
         diff_dict['has_seq_changed'] = self.has_seq_changed()
 
-#         print("=======FIRST==========")
-#         print(first_object)
-#         print("=======SECOND==========")
-#         print(second_object)
-#         print("=================")
+        diff_dict['has_cds_changed'] = self.has_cds_changed()
+        diff_dict['has_cdna_changed'] = self.has_cdna_changed()
+
+        # has cds_changed
+
+        # has cdna_changed
+
         return diff_dict
 
     def has_location_changed(self):
@@ -168,9 +171,30 @@ class DiffSet(object):
     def has_transcript_changed(self):
         return not (self.first_object['transcript_checksum'] == self.second_object['transcript_checksum'])
 
+    def has_translation_changed(self):
+        if 'translations' in self.first_object and 'translations' in self.second_object:
+            for translation_first, translation_second in zip(self.first_object['translations'], self.second_object['translations']):  # @IgnorePep8
+                if 'translation_checksum' in translation_first and 'translation_checksum' in translation_second:
+                    return not (translation_first['translation_checksum'] == translation_second['translation_checksum'])
+        else:
+            return None
+
     def has_seq_changed(self):
         # when sequence is expanded
         if 'seq_checksum' in self.first_object['sequence'] and 'seq_checksum' in self.second_object['sequence']:
             return not(self.first_object['sequence']['seq_checksum'] == self.second_object['sequence']['seq_checksum'])
 
         return not(self.first_object['sequence'] == self.second_object['sequence'])
+
+    def has_cds_changed(self):
+        # cds is without utr
+        if 'translations' in self.first_object and 'translations' in self.second_object:
+            for translation_first, translation_second in zip(self.first_object['translations'], self.second_object['translations']):  # @IgnorePep8
+                if 'seq_checksum' in translation_first and 'seq_checksum' in translation_second:
+                    return not (translation_first['seq_checksum'] == translation_second['seq_checksum'])
+        else:
+            return None
+
+    def has_cdna_changed(self):
+        # cdna is with utr
+        return self.has_seq_changed()

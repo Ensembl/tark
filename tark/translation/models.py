@@ -39,8 +39,9 @@ class Translation(models.Model):
     loc_region = models.CharField(max_length=42, blank=True, null=True)
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     translation_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True,
-                                 related_name="translation_sequence")
+    seq_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
+#     sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True,
+#                                  related_name="translation_sequence")
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     translation_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranslationReleaseTag',
                                                      related_name='translation_release_set')

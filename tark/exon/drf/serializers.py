@@ -37,7 +37,7 @@ class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Exon
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'sequence',)
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'seq_checksum')
 
     def __init__(self, *args, **kwargs):
         super(ExonSerializer, self).__init__(*args, **kwargs)
