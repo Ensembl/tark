@@ -28,8 +28,11 @@ class Transcript(models.Model):
 
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'transcript_release_set', 'GENE': 'genes',
+                        'TRANSLATION': "translations", "EXONTRANSCRIPT": "exons"
                         }
     #                   'TRANSCRIPT_EXON': 'exons'
+
+    # You'll normally want to ensure that you've set an appropriate related_name argument on the relationship, that you can use as the field name.
 
     transcript_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
@@ -42,15 +45,13 @@ class Transcript(models.Model):
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     exon_set_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     transcript_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True,
-                                 related_name='transcript_sequence')
+    sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
-    genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene',
-                                   related_name='transcript_gene')
-    exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript',
-                                   related_name='transcript_exon')
+    genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
+    exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
+    translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
 
     class Meta:
         managed = False

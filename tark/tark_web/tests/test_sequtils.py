@@ -22,7 +22,7 @@ import os
 
 
 class SeqUtilsTest(TestCase):
-    # fixtures = ['genomeinfo_division', 'genomeinfo_genome', ]
+    fixtures = ['assembly', 'gene_names', 'gene']
     multi_db = True
 
     def test_format_fasta(self):
@@ -40,3 +40,10 @@ class SeqUtilsTest(TestCase):
         target_seq = current_dir + "/data/target.fasta"
         align_result = TarkSeqUtils.align_sequences(query_seq, target_seq)
         print(align_result)
+
+    def test_parse_location_string(self):
+        loc_string = "5: 62797383 - 63627669 "
+        (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(loc_string)
+        print("Loc region " + loc_region)
+        print("Loc start " + loc_start)
+        print("Loc end " + loc_end)

@@ -20,8 +20,8 @@ class TarkRouter(object):
     """
     A router to control all database operations on models in the tark
     """
-    TARK_APPS = ('assembly', 'exon', 'gene', 'genome', 'operon', 'release', 'sequence', 'session',
-                 'tagset', 'tark', 'tark_drf', 'transcript', 'translation')
+    TARK_APPS = ('assembly', 'exon', 'genenames', 'gene', 'genome', 'operon', 'release', 'sequence', 'session',
+                 'tagset', 'tark', 'tark_drf', 'tark_web', 'transcript', 'translation')
 
     def db_for_read(self, model, **hints):
         if model._meta.app_label in TarkRouter.TARK_APPS:

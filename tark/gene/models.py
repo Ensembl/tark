@@ -20,20 +20,8 @@ from django.db import models
 from assembly.models import Assembly
 from session.models import Session
 from tark.fields import ChecksumField, HGNCField
-from django.db.models.fields.related import ManyToManyField
+from genenames.models import GeneNames
 
-
-class GeneNames(models.Model):
-    gene_names_id = models.AutoField(primary_key=True)
-    external_id = models.PositiveIntegerField(blank=True, null=True)
-    name = models.CharField(max_length=32, blank=True, null=True)
-    source = models.CharField(max_length=32, blank=True, null=True)
-    primary_id = models.IntegerField(blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'gene_names'
 
 
 class Gene(models.Model):
@@ -50,8 +38,8 @@ class Gene(models.Model):
     loc_strand = models.IntegerField(blank=True, null=True)
     loc_region = models.CharField(max_length=42, blank=True, null=True)
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    #hgnc = models.ForeignKey(GeneNames, models.DO_NOTHING, db_column='hgnc_id', blank=True, null=True, to_field="external_id")
-    hgnc = HGNCField('Genenames', models.DO_NOTHING, to_field='external_id', blank=True, null=True)
+    # hgnc = models.ForeignKey(GeneNames, models.DO_NOTHING, to_field="external_id", blank=True, null=True)
+    hgnc = HGNCField(GeneNames, models.DO_NOTHING, to_field='external_id', blank=True, null=True)
     gene_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     gene_release_set = models.ManyToManyField('release.ReleaseSet', through='release.GeneReleaseTag',
@@ -60,3 +48,5 @@ class Gene(models.Model):
     class Meta:
         managed = False
         db_table = 'gene'
+
+

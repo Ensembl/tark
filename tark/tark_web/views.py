@@ -69,8 +69,11 @@ def diff_home(request):
                 "&diff_with_assembly=" + diff_with_assembly + "&expand=transcript_release_set"
             response = requests.get(host_url + query_url)
             print(response.status_code)
-            print(response.json())
-            diff_result = response.json()
+            if response.status_code == 200:
+                diff_result = response.json()
+            print("========diff_result========")
+            print(diff_result)
+            print("==================")
             return render(request, 'diff_result.html', context={'form': form,
                                                                 'current_release': current_release,
                                                                 'diff_result': diff_result})

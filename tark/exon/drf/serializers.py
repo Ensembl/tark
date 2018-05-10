@@ -25,25 +25,6 @@ from exon.models import Exon, ExonTranscript
 from tark_drf.utils.drf_mixin import SerializerMixin
 
 
-class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
-
-    MANY2ONE_SERIALIZER = {Exon.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
-                           Exon.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
-    ONE2MANY_SERIALIZER = {Exon.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
-                           Exon.ONE2MANY_RELATED['EXON_TRANSCRIPT']: "transcript.drf.serializers.TranscriptSerializer"
-                           }
-
-    assembly = AssemblyField(read_only=True)
-
-    class Meta:
-        model = Exon
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'seq_checksum')
-
-    def __init__(self, *args, **kwargs):
-        super(ExonSerializer, self).__init__(*args, **kwargs)
-        self.set_related_fields(ExonSerializer, **kwargs)
-
-
 class ExonTranscriptSerializer(serializers.ModelSerializer):
 
     stable_id = serializers.ReadOnlyField(source='exon.stable_id')
@@ -60,4 +41,26 @@ class ExonTranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExonTranscript
         fields = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand', 'loc_region',
-                  'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order', )
+                   'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order', )
+
+
+class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
+
+    MANY2ONE_SERIALIZER = {Exon.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
+                           Exon.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
+    ONE2MANY_SERIALIZER = {Exon.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
+                           Exon.ONE2MANY_RELATED['EXON_TRANSCRIPT']: "transcript.drf.serializers.TranscriptSerializer"
+                           }
+
+    assembly = AssemblyField(read_only=True)
+
+    class Meta:
+        model = Exon
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'seq_checksum')
+        # fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', )
+
+    def __init__(self, *args, **kwargs):
+        super(ExonSerializer, self).__init__(*args, **kwargs)
+        self.set_related_fields(ExonSerializer, **kwargs)
+
+

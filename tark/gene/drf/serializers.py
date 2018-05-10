@@ -17,22 +17,17 @@ limitations under the License.
 
 from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
-from gene.models import Gene, GeneNames
+from gene.models import Gene
 from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
 from tark_drf.utils.drf_fields import AssemblyField, CommonFields
 from release.models import GeneReleaseTag
+from genenames.drf.serializers import GeneNamesSerializer
 
 
 class GeneReleaseTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = GeneReleaseTag
-        fields = '__all__'
-
-
-class GeneNamesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GeneNames
         fields = '__all__'
 
 

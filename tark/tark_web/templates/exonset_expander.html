@@ -2,18 +2,15 @@
 {% load compare_features %}
 
 <!-- Exon set Expander -->
-<div class="container">
-<div id="has_exon_set_changed" class="collapse">
+<div id="has_exon_set_changed" class="tab-pane fade in" style="padding:10px;">
 
   {% if diff_result.results.has_exon_set_changed %}
-  <div class="panel panel-danger">
+  <div class="well well-sm well-diff-red" ><strong>CDNA Exonset Compare</strong></div>
   {% else %}
-    <div class="panel panel-success">
+  <div class="well well-sm well-diff-green"><strong>CDNA Exonset Compare</strong></div>
   {% endif %}
   
-    <div class="panel-heading"><i class="glyphicon glyphicon-collapse-down"></i> <strong>Exon set Details</strong></div>
-      <div class="panel-body">
-
+ 
 <div class="row">
   
   <!--Exon1 -->
@@ -86,8 +83,5 @@
 
    </div>
 
-      </div>
-    </div>
 
-</div>
 </div>

@@ -24,8 +24,9 @@ from release.models import TranscriptReleaseTag
 from transcript.models import Transcript
 from sequence.drf.serializers import SequenceSerializer
 from gene.drf.serializers import GeneSerializer
-from exon.drf.serializers import ExonTranscriptSerializer
-from translation.drf.serializers import TranslationTranscriptSerializer
+from exon.drf.serializers import ExonTranscriptSerializer, ExonSerializer
+from translation.drf.serializers import TranslationTranscriptSerializer,\
+    TranslationSerializer
 
 
 class TranscriptReleaseTagSerializer(serializers.ModelSerializer):
@@ -40,17 +41,18 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                            Transcript.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
     ONE2MANY_SERIALIZER = {Transcript.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
                            Transcript.ONE2MANY_RELATED['GENE']: GeneSerializer,
-                           # Transcript.ONE2MANY_RELATED['TRANSCRIPT_EXON']: ExonSerializer
+                           Transcript.ONE2MANY_RELATED['TRANSLATION']: TranslationSerializer,
+                           Transcript.ONE2MANY_RELATED['EXONTRANSCRIPT']: ExonTranscriptSerializer,
                            }
 
-    assembly = AssemblyField(read_only=True)
-    exons = ExonTranscriptSerializer(source='exontranscript_set', many=True)
-    translations = TranslationTranscriptSerializer(source='translationtranscript_set', many=True)
+    #assembly = AssemblyField(read_only=True)
+    #genes = GeneSerializer(many=True, read_only=True)
+    #exons = ExonTranscriptSerializer(source="exontranscript_set", many=True, read_only=True)
+#     translations = TranslationTranscriptSerializer(source='translationtranscript_set', many=True)
 
     class Meta:
         model = Transcript
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence', 'exons',
-                                                  'translations')
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence', )
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)

@@ -2,18 +2,15 @@
 {% load compare_features %}
 
 <!-- Location Expander -->
-<div class="container">
-<div id="has_location_changed" class="collapse">
+<div id="has_location_changed"  class="tab-pane fade in active" style="padding:10px;">
 
   {% if diff_result.results.has_location_changed %}
-  <div class="panel panel-danger">
+   <div class="well well-sm well-diff-red" ><strong>CDNA Location Compare</strong></div>
   {% else %}
-    <div class="panel panel-success">
+    <div class="well well-sm well-diff-green" ><strong>CDNA Location Compare</strong></div>
   {% endif %}
 
-    <div class="panel-heading"><i class="glyphicon glyphicon-collapse-down"></i> <strong>Location Compare</strong></div>
-      <div class="panel-body">
-      <!--Location start-->
+    <!--Location start-->
       <div class="row">
      <!--Transcript1 -->
    <div class="col-md-5 col-sm-5">
@@ -86,10 +83,6 @@
      
    </div>
       
-      
-      </div>
-    </div>
   </div>
 
-</div>
 

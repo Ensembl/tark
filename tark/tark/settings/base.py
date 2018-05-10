@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'assembly',
     'exon',
+    'genenames',
     'gene',
     'genome',
     'operon',
@@ -52,7 +53,8 @@ INSTALLED_APPS = [
     'tark_drf',
     'transcript',
     'translation',
-    'tark_web'
+    'tark_web',
+    'fixture_magic',
 ]
 
 MIDDLEWARE = [

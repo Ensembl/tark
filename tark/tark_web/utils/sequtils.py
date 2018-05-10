@@ -22,6 +22,7 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 import subprocess
 import os
+import re
 
 
 class TarkSeqUtils(object):
@@ -48,3 +49,16 @@ class TarkSeqUtils(object):
             p = subprocess.Popen(["exonerate", query_fasta, target_fasta], stdout=subprocess.PIPE)
             (output, err) = p.communicate()  # @UnusedVariable
             return output
+
+    @classmethod
+    def parse_location_string(cls, loc_string):
+        loc_string = loc_string.replace(" ", "")
+        print(loc_string)
+        matchloc = re.search(r'(\w+):(\d+)-(\d+)', loc_string)
+        print(matchloc.group(1))
+        print(matchloc.group(2))
+        print(matchloc.group(3))
+        loc_region = matchloc.group(1)
+        loc_start = matchloc.group(2)
+        loc_end = matchloc.group(3)
+        return (loc_region, loc_start, loc_end)

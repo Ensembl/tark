@@ -1,9 +1,55 @@
 {% extends "web_home.html" %}
 
+{% block extra_styles %}
+<style>
+
+.tab-pane {
+
+   // border-left: 1px solid #ddd;
+   // border-right: 1px solid #ddd;
+   // border-bottom: 1px solid #ddd;
+    //border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+}
+
+.nav-tabs{
+  background-color:#C8D3DB;
+  margin-bottom: 0;
+}
+
+
+.nav-diff-li-a {
+    padding: 5px;
+}
+
+.nav-tabs > li > a{
+  border-radius: 5px;
+}
+.nav-tabs > li > a:hover{
+  background-color: #3D515F !important;
+    border-radius: 5px;
+    color:#fff;
+    border:1px solid black;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+    background-color: #227093 !important;
+    color:#fff;
+    border:2px solid #3F515F;
+}
+</style>
+
+
+
+{% endblock %}
+
 {% load staticfiles %}
 {% load add_class %}
 {% load compare_features %}
 {% load sequence_format %}
+
+
 
 {% block content %}
 
@@ -11,7 +57,10 @@
 
 <!-- Info -->
 <div class="panel panel-info ">
-  <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Input Parameters</strong></div>
+  <div class="panel-heading">
+  <i class="glyphicon glyphicon-info-sign"></i> <strong>Input Parameters</strong>
+  <a href="/web/diff" class="btn btn-primary btn-xs pull-right">New Diff</a> 
+  </div>
   <div class="panel-body">
   <dl class="row">
   <dt class="col-md-1">Stable ID:</dt>
@@ -39,128 +88,156 @@
       
   <strong>Diff Results: </strong><button type="button" class="btn btn-success btn-xs disabled">Not Changed</button> <button type="button" class="btn btn-danger btn-xs disabled">Changed</button> <button type="button" class="btn btn-default btn-xs disabled">No Result</button>
   ( Note: Please click on the below buttons for more details)
-  </div>
-  
-  
-  
-  
+   </div>
+   
   <div class="panel-body">
-  
-  <!--- Diff CDS/CDNA START -->
-   <div class="btn-group btn-group-justified">
-  <!-- Handle none -->
-  {% if diff_result.results|length_is:"0" %}
-  <a href="#" class="btn btn-default disabled btn-xs">Transcript</a>
-  <a href="#" class="btn btn-default disabled btn-xs" style="width:0.05%;background-color:black;"></a>
-  <a href="#" class="btn btn-default disabled btn-xs">CDNA</a>
-  <a href="#" class="btn btn-default disabled btn-xs">CDS</a>
-  {% else %}
-  
-  {% if diff_result.results.has_transcript_changed %}
-  
-  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Transcript</a>
-  {% else %}
-  <a href="#has_transcript_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Transcript</a>
-  {% endif %}
-  
-  <a href="#" class="btn btn-default disabled btn-xs" style="width:0.05%;background-color:black;"></a>
-  
-  {% if diff_result.results.has_cdna_changed %}
-    <a href="#has_cdna_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">CDNA</a>
-  {% else %}
-    <a href="#has_cdna_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">CDNA</a>
-  {% endif %}
-  
-  {% if diff_result.results.has_cds_changed %}
-  <a href="#has_cds_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">CDS</a>
-  {% else %}
-  <a href="#has_cds_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">CDS</a>
-  {% endif %}
-  
-  
-  {% endif %}<!--else end -->
 
- </div>
-  <!--- Diff CDS/CDNA END -->
   
-  <p></p>  <p></p>
-  
-  <!--- Diff  ALL START CDNA-->
-  <div id="has_cdna_changed" class="collapse">
-  <div  class="btn-group btn-group-justified">
-  <!-- Handle none -->
-  {% if diff_result.results|length_is:"0" %}
-  <a href="#" class="btn btn-default disabled btn-xs">Location</a>
-  <a href="#" class="btn btn-default disabled btn-xs">Exon Set</a>
-  <a href="#" class="btn btn-default disabled btn-xs">Sequence</a>
-  {% else %}
-  
-  
-  {% if diff_result.results.has_location_changed %}
-  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Location</a>
-  {% else %}
-  <a href="#has_location_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Location</a>
-  {% endif %}
-  
-  {% if diff_result.results.has_exon_set_changed %}
-  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Exon Set</a>
-  {% else %}
-  <a href="#has_exon_set_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Exon Set</a>
-  {% endif %}
-  
-  
-  {% if diff_result.results.has_seq_changed %}
-  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Sequence</a>
-  {% else %}
-  <a href="#has_seq_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Sequence</a>
-  {% endif %}
-  {% endif %}<!--else end -->
-
- </div>
- </div>
-  <!--- Diff  ALL END CDNA-->
-  
-    <p></p>  <p></p>
-  
-   <!--- Diff  ALL START CDS-->
-  <div id="has_cds_changed" class="collapse">
-  <div  class="btn-group btn-group-justified">
-  <!-- Handle none -->
-  {% if diff_result.results|length_is:"0" %}
-  <a href="#" class="btn btn-default disabled btn-xs">Translation</a>
-  {% else %}
-  
- 
-  
-  {% if diff_result.results.has_translation_changed == True %}
-  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-danger btn-xs" data-toggle="collapse">Translation</a>
-  {% elif diff_result.results.has_translation_changed == False %}
-  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-success btn-xs" data-toggle="collapse">Translation</a>
-  {% else %}
-  <a href="#has_translation_changed" data-parent="#accordion" class="btn btn-default btn-xs disabled" data-toggle="collapse">Translation</a>
-  {% endif %}
-  
-  
-  {% endif %}<!--else end -->
-
- </div>
- </div>
-  <!--- Diff  ALL END CDS-->
+      <!-- Handle none in else -->
+  {% if diff_result and diff_result.results %}
+    
+  <ul class="nav nav-tabs nav-justified">
+    
+    <li class="active"><a data-toggle="tab" href="#summary" class="a-diff-neutral">Summary</a></li>
+    {% if diff_result.results.has_transcript_changed %}
+    <li><a data-toggle="tab" href="#has_transcript_changed" class="a-diff-red">Transcript</a></li>
+    {% else %}
+    <li><a data-toggle="tab" href="#has_transcript_changed" class="a-diff-green">Transcript</a></li>
+    {% endif %}
+    
+     {% if diff_result.results.has_cdna_changed %}
+    <li><a data-toggle="tab" href="#has_cdna_changed" class="a-diff-red">CDNA</a></li>
+      {% else %}
+    <li><a data-toggle="tab" href="#has_cdna_changed" class="a-diff-green">CDNA</a></li>
+      {% endif %}
+      
+    {% if diff_result.results.has_cds_changed %}
+    <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-red">CDS</a></li>
+      {% else %}
+        <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-green">CDS</a></li>
+       {% endif %}
+  </ul>
  
  
- 
- <p></p>
- <div>
- <a href="/web/diff" class="btn btn-primary ">New Diff</a> 
+ <div id="tab_content_main" class="tab-content">
+  
+  <div id="summary" class="tab-pane fade in active" style="padding:10px;">
+  {% include "result_summary.html" %}
   </div>
   
- </div>
-
+  <!--Transcipt-->
+  <div id="has_transcript_changed" class="tab-pane fade in" style="padding:10px;">
+   {% include "transcript_expander.html" %}
+  </div>
+  
+  <!--CDNA -->
+  <div id="has_cdna_changed" class="tab-pane fade in">
+  
+  <p></p>
+  
+    <ul class="nav nav-tabs nav-justified"  role="tablist">
+    
+    {% if diff_result.results.has_location_changed %}
+    <li class="active"><a data-toggle="tab" href="#has_location_changed" class="a-diff-red" >CDNA Location</a></li>
+    {% else %}
+     <li class="active"><a data-toggle="tab" href="#has_location_changed" class="a-diff-green" >CDNA Location</a></li>
+    {% endif %}
+    
+      {% if diff_result.results.has_exon_set_changed %}
+    <li><a data-toggle="tab" href="#has_exon_set_changed"  class="a-diff-red">CDNA Exonset</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#has_exon_set_changed"  class="a-diff-green">CDNA Exonset</a></li>
+     {% endif %}
+     
+      {% if diff_result.results.has_seq_changed %}
+    <li><a data-toggle="tab" href="#has_seq_changed"  class="a-diff-red">CDNA Sequence</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#has_seq_changed"  class="a-diff-green">CDNA Sequence</a></li>
+     {% endif %}
+    </ul>    
+      
+       <div id="tab_content_cdna" class="tab-content">
+         {% include "location_expander.html" %}
+       
+        {% include "exonset_expander.html" %}
+        
+        {% include "sequence_expander.html" %}
+        
+       </div>
+      
+      
+      
+  </div>
+  
+  
+  <!--CDS -->
+  <div id="has_cds_changed" class="tab-pane fade in">
+      
+      
+       <p></p>
+  
+    <ul class="nav nav-tabs nav-justified"  role="tablist">
+    
+     {% if diff_result.results.has_cds_location_changed %}
+      <li><a data-toggle="tab" href="#has_cds_location_changed"  class="a-diff-red">CDS Location</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#has_cds_location_changed"  class="a-diff-green">CDS Location</a></li>
+     {% endif %}
+    
+    
+     {% if diff_result.results.has_cds_exon_set_changed %}
+      <li><a data-toggle="tab" href="#has_cds_exon_set_changed"  class="a-diff-red">CDS Exonset</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#has_cds_exon_set_changed"  class="a-diff-green">CDS Exonset</a></li>
+     {% endif %}
+    
+    
+     {% if diff_result.results.has_cds_seq_changed %}
+      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-red">CDS Sequence</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-green">CDS Sequence</a></li>
+     {% endif %}
+ 
+    </ul>    
+      
+       <div id="tab_content_cds" class="tab-content">
+       
+        <div id="has_cds_location_changed" class="tab-pane fade in active" style="padding:10px;">
+        has_cds_location_changed
+        </div> 
+       
+        <div id="has_cds_exon_set_changed" class="tab-pane fade in" style="padding:10px;">
+        has_cds_exonset_changed
+        </div> 
+        
+         <div id="has_cds_seq_changed" class="tab-pane fade in" style="padding:10px;">
+        has_cds_sequence_changed
+        </div> 
+        
+       </div>
+      
+      
+      
+      
+  </div>
+  
+  
+  </div>
+  
+ {% else %}
+  
+   <div class="alert alert-danger">
+   <strong>No results!</strong> Please check your input values.
 </div>
+  
+  {% endif %}
+ 
+ </div><!-- Panel body-->
+
+</div><!--Outermost panel-->
 
 </div> <!--close container -->
-
-{% include "diff_expanders.html" %}
+ 
 
 
 {% endblock %}

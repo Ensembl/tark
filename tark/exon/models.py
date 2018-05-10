@@ -25,14 +25,11 @@ class Exon(models.Model):
     loc_checksum = ChecksumField(max_length=20, blank=True, null=True)
     exon_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     seq_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    # sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True,
-    #                             related_name="exon_sequence")
-    # sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum',  blank=True, null=True)
+    #sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     exon_release_set = models.ManyToManyField('release.ReleaseSet', through='release.ExonReleaseTag',
                                               related_name='exon_release_set')
-    transcript = models.ManyToManyField('transcript.Transcript', through='exon.ExonTranscript',
-                                        related_name='exon_transcript')
+    transcripts = models.ManyToManyField('transcript.Transcript', through='exon.ExonTranscript')
 
     class Meta:
         managed = False

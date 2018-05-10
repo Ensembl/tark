@@ -17,6 +17,8 @@ limitations under the License.
 import collections
 import requests
 from exon.models import ExonTranscript
+import json
+from translation.models import Translation
 
 
 class DiffUtils(object):
@@ -81,6 +83,10 @@ class DiffUtils(object):
 
         if response_diff_with.status_code == 200:
             diff_with_result = response_diff_with.json()
+            print("========diff_with_result=======")
+            print(diff_with_result)
+            # expand with translation
+            cls.get_coding_exons(diff_with_result)
             result_data['diff_with_transcript'] = diff_with_result
 
         result_dict.data = result_data
@@ -131,6 +137,37 @@ class DiffUtils(object):
 
         return (first_object, second_object)
 
+    @classmethod
+    def get_coding_exons(cls, diff_result):
+        if "results" in diff_result:
+            for result in diff_result["results"]:
+                if "translations" in result:
+                    updated_translations = []
+
+                    print("++++++++BEFORE START++++++++++++++")
+                    print(result['translations'])
+                    print("++++++++BEFORE END++++++++++++++")
+                    for translation in result['translations']:
+                        tl_statble_id = translation["stable_id"]
+                        tl_statble_id_version = translation["stable_id_version"]
+                        print("========response_diff_with======="  + str(tl_statble_id)  + "  " + str(tl_statble_id_version) )
+                        tl_query_set = Translation.objects.filter(stable_id=tl_statble_id).filter(stable_id_version=tl_statble_id_version).select_related('sequence')
+                        for tl_obj in tl_query_set:
+                            print(tl_obj.sequence.sequence)
+                            print(tl_obj.sequence.seq_checksum)
+                            translation["sequence"] = {"sequence":tl_obj.sequence.sequence, "seq_checksum":tl_obj.sequence.seq_checksum}
+                            if "exons" in result:
+                                translation["exons"] = result['exons']
+                            updated_translations.append(translation)
+                    result['translations'] = updated_translations
+                else:
+                    result['translations'] = None
+
+            print("++++++++AFTER START++++++++++++++")
+            print(result['translations'])
+            print("++++++++AFTER END++++++++++++++")
+
+
 
 class DiffSet(object):
 
@@ -147,14 +184,21 @@ class DiffSet(object):
         if first_object['stable_id'] == second_object['stable_id']:
             diff_dict['stable_id'] = first_object['stable_id']
 
+        diff_dict['has_transcript_changed'] = self.has_transcript_changed()
         diff_dict['has_location_changed'] = self.has_location_changed()
         diff_dict['has_exon_set_changed'] = self.has_exon_set_changed()
-        diff_dict['has_transcript_changed'] = self.has_transcript_changed()
-        diff_dict['has_translation_changed'] = self.has_translation_changed()
         diff_dict['has_seq_changed'] = self.has_seq_changed()
 
-        diff_dict['has_cds_changed'] = self.has_cds_changed()
         diff_dict['has_cdna_changed'] = self.has_cdna_changed()
+
+
+        diff_dict['has_cds_location_changed'] = True
+        diff_dict['has_cds_exon_set_changed'] = True
+        diff_dict['has_cds_seq_changed'] = True
+
+        diff_dict['has_cds_changed'] = self.has_cds_changed()
+        diff_dict['has_translation_changed'] = self.has_translation_changed()
+
 
         # has cds_changed
 

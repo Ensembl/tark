@@ -59,13 +59,13 @@ class TranscriptDiff(generics.ListAPIView):
     serializer_class = TranscriptDiffSerializer
     filter_backends = (TranscriptDiffFilterBackend, )
 
-    @expand_all_related(TranscriptDiffSerializer)
-    def get_queryset(self):
-        queryset = Transcript.objects.order_by('pk')
-        return queryset
-
+#     @expand_all_related(TranscriptDiffSerializer)
+#     def get_queryset(self):
+#         queryset = Transcript.objects.order_by('pk')
+#         return queryset
+    #@setup_eager_loading(TranscriptDiffSerializer)
     def get(self, request, *args, **kwargs):
-        stable_id = request.query_params.get('stable_id', 'ENST00000171111')
+        stable_id = request.query_params.get('stable_id', None)
         diff_me_release = request.query_params.get('diff_me_release', None)
         diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
 

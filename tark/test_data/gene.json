@@ -1,0 +1,118 @@
+[
+{
+    "model": "session.session",
+    "pk": 5,
+    "fields": {
+        "client_id": "HGNC loader",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "genome.genome",
+    "pk": 1,
+    "fields": {
+        "name": "homo_sapiens",
+        "tax_id": 9606,
+        "session": 1
+    }
+},
+{
+    "model": "session.session",
+    "pk": 6,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 3,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 1,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "gene.genenames",
+    "pk": 35852,
+    "fields": {
+        "external_id": 6872,
+        "name": "MAPK10",
+        "source": "HGNC",
+        "primary_id": 1,
+        "session": 5
+    }
+},
+{
+    "model": "assembly.assembly",
+    "pk": 1,
+    "fields": {
+        "genome": 1,
+        "assembly_name": "GRCh38",
+        "session": 1
+    }
+},
+{
+    "model": "gene.gene",
+    "pk": 304949,
+    "fields": {
+        "stable_id": "ENSG00000109339",
+        "stable_id_version": 21,
+        "assembly": 1,
+        "loc_start": 85990007,
+        "loc_end": 86594625,
+        "loc_strand": -1,
+        "loc_region": "4",
+        "loc_checksum": "CC2859732280039A365477FA29309A1581633252",
+        "hgnc": 6872,
+        "gene_checksum": "E9E58B6371F020A5FABCE9B90F98B47DDCFF2906",
+        "session": 6
+    }
+},
+{
+    "model": "gene.gene",
+    "pk": 180869,
+    "fields": {
+        "stable_id": "ENSG00000109339",
+        "stable_id_version": 20,
+        "assembly": 1,
+        "loc_start": 85990007,
+        "loc_end": 86594625,
+        "loc_strand": -1,
+        "loc_region": "4",
+        "loc_checksum": "CC2859732280039A365477FA29309A1581633252",
+        "hgnc": 6872,
+        "gene_checksum": "68A49B86A6FEAF6E87D4E78C024D9DE4B81677D6",
+        "session": 3
+    }
+},
+{
+    "model": "gene.gene",
+    "pk": 32157,
+    "fields": {
+        "stable_id": "ENSG00000109339",
+        "stable_id_version": 19,
+        "assembly": 1,
+        "loc_start": 86010395,
+        "loc_end": 86594131,
+        "loc_strand": -1,
+        "loc_region": "4",
+        "loc_checksum": "66462F086F991CB1332A2208E64DC1A4F41B331D",
+        "hgnc": 6872,
+        "gene_checksum": "61ED620407622C2240136AA8C9004918CE6BF5C3",
+        "session": 1
+    }
+}
+]

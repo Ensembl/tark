@@ -81,7 +81,56 @@
 
 .label-diff {
 float:right;
-font-size:85%;
+font-size:80%;
+}
+
+
+.well-diff-red{
+ color: #a94442;
+ background-color:#f2dede;
+}
+
+.well-diff-green{
+ color: #a94442;
+ background-color:#dff0d8;
+}
+
+.a-diff-red{
+   padding:5px;
+   background-color:#d9534f;
+   color:#ffffff;
+}
+
+
+.a-diff-green{
+   padding:5px;
+   background-color:#5cb85c;
+   color:#ffffff;
+}
+
+
+.a-diff-neutral{
+   padding:5px;
+   background-color:#A9A9A9;
+   color:#ffffff;
+}
+
+.a-diff-noresult{
+   padding:5px 5px;
+   color: #333;
+   background-color: #fff;
+   border-color: #ccc;
+}
+
+
+.glyp-diff-red{
+   color:#d9534f;
+   font-size:2em;
+}
+
+.glyp-diff-green{
+   color:#5cb85c;
+   font-size:2em;
 }
 
 

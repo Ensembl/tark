@@ -48,11 +48,13 @@ class setup_eager_loading(object):
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
-                    print('many2one entry from eager loading:' + str(entry))
+                    print('many2one entry from eager loading select_related:' + str(entry))
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
-                    print('one2many entry from eager loading: ' + str(entry))
-                    queryset = queryset.prefetch_related(entry)
+                    print('one2many entry from eager loading prefetch_related: ' + str(entry))
+                    if "translations" == entry:
+                        print("From prefetch_related translations====================")
+                        queryset = queryset.prefetch_related(entry)
 
             return queryset
         return wrapped_f
@@ -72,7 +74,7 @@ class expand_all_related(object):
             entries = []
             many2one = getattr(self.serializer, 'MANY2ONE_SERIALIZER', None)
             one2many = getattr(self.serializer, 'ONE2MANY_SERIALIZER', None)
-            print("From wrapped")
+            print("From wrapped expand_all_related")
             if many2one is not None:
                 entries.extend(list(many2one.keys()))
             if one2many is not None:
@@ -81,10 +83,10 @@ class expand_all_related(object):
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
-                    print('many2one entry from eager loading:' + str(entry))
+                    print('many2one entry from expand_all_related:' + str(entry))
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
-                    print('one2many entry from eager loading: ' + str(entry))
+                    print('one2many entry from expand_all_related: ' + str(entry))
                     queryset = queryset.prefetch_related(entry)
 
             return queryset

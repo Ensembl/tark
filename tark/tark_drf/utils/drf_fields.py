@@ -197,7 +197,7 @@ class DrfFields(object):
             location='query',
             required=False,
             type='string',
-            description='release_short_name to diff me(eg: 84)')
+            description='release_short_name to diff me(eg: 88)')
         return diff_me_release_field
 
     @classmethod
@@ -233,7 +233,7 @@ class DrfFields(object):
 
     @classmethod
     def get_stable_id_example(cls, model_name):
-        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000171111', 'Exon': 'ENSE00001184784',
+        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000639989', 'Exon': 'ENSE00001184784',
                         'Translation': 'ENSP00000369497'}
         print ("Model anme  " + str(model_name))
         if model_name in example_dict:
@@ -261,6 +261,7 @@ class ChecksumFieldSerializer(serializers.Field):
 
 
 class AssemblyField(serializers.RelatedField):
+    print("*******AssemblyField***************************")
     def to_representation(self, value):
         if value is not None:
             return value.assembly_name

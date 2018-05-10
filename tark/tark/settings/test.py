@@ -35,6 +35,7 @@ DATABASE_ROUTERS = []
 MIGRATION_MODULES = {
     'assembly': None,
     'exon': None,
+    'genenames': None,
     'gene': None,
     'genome': None,
     'operon': None,

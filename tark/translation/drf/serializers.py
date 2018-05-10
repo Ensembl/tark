@@ -38,17 +38,19 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
     ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
 
     assembly = AssemblyField(read_only=True)
+    #tl_sequence = SequenceSerializer(source="sequence", read_only=True)
 
     class Meta:
         model = Translation
-        fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'seq_checksum')
+        # fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'seq_checksum')
+        fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum',)
 
     def __init__(self, *args, **kwargs):
         super(TranslationSerializer, self).__init__(*args, **kwargs)
         self.set_related_fields(TranslationSerializer, **kwargs)
 
 
-class TranslationTranscriptSerializer(serializers.ModelSerializer):
+class TranslationTranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
     stable_id = serializers.ReadOnlyField(source='translation.stable_id')
     stable_id_version = serializers.ReadOnlyField(source='translation.stable_id_version')
@@ -59,12 +61,15 @@ class TranslationTranscriptSerializer(serializers.ModelSerializer):
     loc_region = serializers.ReadOnlyField(source='translation.loc_region')
     loc_checksum = serializers.ReadOnlyField(source='translation.loc_checksum')
     translation_checksum = serializers.ReadOnlyField(source='translation.translation_checksum')
-    seq_checksum = serializers.ReadOnlyField(source='translation.seq_checksum')
+    translation_sequence =  serializers.ReadOnlyField(source='translation.sequence.seq_checksum')
 
     class Meta:
         model = TranslationTranscript
         fields = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand', 'loc_region',
-                  'loc_checksum', 'translation_checksum', 'seq_checksum')
+                  'loc_checksum', 'translation_checksum', 'translation_sequence')
+
+
+
 
 
 

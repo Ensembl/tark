@@ -2,19 +2,15 @@
 {% load compare_features %}
 
 <!-- Transcript Expander -->
-<div class="container">
 
-<div id="has_transcript_changed" class="collapse">
+
   {% if diff_result.results.has_transcript_changed %}
-  <div class="panel panel-danger">
+  <div class="well well-sm well-diff-red" ><strong>Transcript Compare</strong></div>
   {% else %}
-    <div class="panel panel-success">
+  <div class="well well-sm well-diff-green" ><strong>Transcript Compare</strong></div>
   {% endif %}
   
-  <div class="panel-heading"><i class="glyphicon glyphicon-collapse-down"></i> <strong>Transcript Compare</strong></div>
-  <div class="panel-body">
-
-  <div class="row">
+ <div class="row">
   
   <!--Transcript1 -->
   <div class="col-md-5 col-sm-5">
@@ -116,9 +112,8 @@
  
    </div>
 
-      </div>
-    </div>
-  </div>
 
-</div>
+
+
+
 

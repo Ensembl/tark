@@ -1,0 +1,128 @@
+<table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th class="text-center col-md-4">Transcript</th>
+        <th class="text-center col-md-4">CDNA</th>
+        <th class="text-center col-md-4">CDS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="vertical-align:middle">
+        {% if diff_result.results.has_transcript_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        <td>
+        {% if diff_result.results.has_cdna_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+
+         <td>
+        {% if diff_result.results.has_cds_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+         </td>
+      </tr>
+      <tr>
+        <td>
+    <!--CDNA Summary -->
+   <table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th class="text-center col-md-4">Location</th>
+        <th class="text-center col-md-4">Exonset</th>
+        <th class="text-center col-md-4">Sequence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+        {% if diff_result.results.has_location_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+         </td>
+        
+        <td>
+         {% if diff_result.results.has_exon_set_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        
+        <td>
+         {% if diff_result.results.has_seq_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        
+      </tr>
+    </tbody>
+    </table>
+    <!--CDNA Summary -->
+        </td>
+        
+        <td>
+        
+           <!--CDS Summary -->
+   <table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th class="text-center col-md-4">Location</th>
+        <th class="text-center col-md-4">Exonset</th>
+        <th class="text-center col-md-4">Sequence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+        {% if diff_result.results.has_cds_location_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        
+        <td>
+         {% if diff_result.results.has_cds_exon_set_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        
+        <td>
+         {% if diff_result.results.has_cds_seq_changed %}
+        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+        {% else %}
+         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% endif %}
+        </td>
+        
+      </tr>
+    </tbody>
+    </table>
+    <!--CDS Summary -->
+        
+        
+        
+        
+        
+        
+        </td>
+      </tr>
+    
+    </tbody>
+</table>
