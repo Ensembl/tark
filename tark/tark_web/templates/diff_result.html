@@ -105,6 +105,12 @@
     <li><a data-toggle="tab" href="#has_transcript_changed" class="a-diff-green">Transcript</a></li>
     {% endif %}
     
+     {% if diff_result.results.has_translation_changed %}
+    <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-red">Translation</a></li>
+    {% else %}
+    <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-green">Translation</a></li>
+    {% endif %}
+    
      {% if diff_result.results.has_cdna_changed %}
     <li><a data-toggle="tab" href="#has_cdna_changed" class="a-diff-red">CDNA</a></li>
       {% else %}
@@ -128,6 +134,11 @@
   <!--Transcipt-->
   <div id="has_transcript_changed" class="tab-pane fade in" style="padding:10px;">
    {% include "transcript_expander.html" %}
+  </div>
+  
+  <!--Translation-->
+  <div id="has_translation_changed" class="tab-pane fade in" style="padding:10px;">
+  {% include "translation_expander.html" %}
   </div>
   
   <!--CDNA -->

@@ -21,6 +21,7 @@ import json
 from translation.models import Translation
 
 
+
 class DiffUtils(object):
 
     @classmethod
@@ -71,6 +72,8 @@ class DiffUtils(object):
             print("===diff_me_result===========")
             print(diff_me_result)
             print("=============================")
+            # expand with translation
+            cls.get_coding_exons(diff_me_result)
             result_data['diff_me_transcript'] = diff_me_result
 
         # get diff with
@@ -89,6 +92,11 @@ class DiffUtils(object):
             cls.get_coding_exons(diff_with_result)
             result_data['diff_with_transcript'] = diff_with_result
 
+        # do translations comparison here
+        translation_diff_dict = cls.compare_translations(result_data['diff_with_transcript'], result_data['diff_me_transcript'])
+        print("=======translation_diff_dict=========")
+        print(translation_diff_dict)
+        print("=======translation_diff_dict=========")
         result_dict.data = result_data
         return result_dict
 
@@ -167,6 +175,66 @@ class DiffUtils(object):
             print(result['translations'])
             print("++++++++AFTER END++++++++++++++")
 
+    @classmethod
+    def compare_translations(cls, first_object, second_object):
+        diff_dict = collections.OrderedDict()
+        if "results" in first_object and "results" in second_object:
+            first_tl_object = first_object["results"][0]
+            second_tl_object = second_object["results"][0]
+        else:
+            return diff_dict
+        diff_dict = collections.OrderedDict()
+        diff_dict['has_cds_location_changed'] = cls.has_cds_location_changed(first_tl_object, second_tl_object)
+        diff_dict['has_cds_exon_set_changed'] = cls.has_cds_changed(first_tl_object, second_tl_object)
+        diff_dict['has_cds_seq_changed'] = cls.has_cds_seq_changed(first_tl_object, second_tl_object)
+
+        diff_dict['has_cds_changed'] = cls.has_cds_changed(first_tl_object, second_tl_object)
+        diff_dict['has_translation_changed'] = cls.has_translation_changed(first_tl_object, second_tl_object)
+        print("======diffdict=====")
+        print(diff_dict)
+        print("======diffdict=====")
+        return diff_dict
+
+    @classmethod
+    def has_cds_changed(cls, first_tl_object, second_tl_object):
+        return (cls.has_cds_location_changed(first_tl_object, second_tl_object) and cls.has_cds_exon_set_changed() and cls.has_cds_seq_changed(first_tl_object, second_tl_object))
+
+    @classmethod
+    def has_cds_location_changed(cls, first_tl_object, second_tl_object):
+        return False
+
+    @classmethod
+    def has_cds_exon_set_changed(cls):
+        return False
+
+    @classmethod
+    def has_cds_seq_changed(cls, first_tl_object, second_tl_object):
+        # cds is without utr
+        if 'translations' in first_tl_object and 'translations' in second_tl_object:
+            for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
+                if 'sequence' in translation_first and 'sequence' in translation_second:
+                    return not (translation_first['sequence']['seq_checksum'] == translation_second['sequence']['seq_checksum'])
+        else:
+            return None
+
+    @classmethod
+    def has_translation_changed(cls, first_tl_object, second_tl_object):
+        print("reached has_translation_changed=====")
+        print("========first object translations========")
+        print(first_tl_object)
+        print("=======second object translations========")
+        print(second_tl_object)
+
+        if 'translations' in first_tl_object and 'translations' in second_tl_object:
+            print("reached here1 translation=====")
+            for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
+                print("reached here1 for translation=====")
+                if 'translation_checksum' in translation_first and 'translation_checksum' in translation_second:
+                    print("reached here12 translation=====")
+                    return not (translation_first['translation_checksum'] == translation_second['translation_checksum'])
+        else:
+            print("reached here2 translation=====")
+            return None
 
 
 class DiffSet(object):
@@ -190,20 +258,6 @@ class DiffSet(object):
         diff_dict['has_seq_changed'] = self.has_seq_changed()
 
         diff_dict['has_cdna_changed'] = self.has_cdna_changed()
-
-
-        diff_dict['has_cds_location_changed'] = True
-        diff_dict['has_cds_exon_set_changed'] = True
-        diff_dict['has_cds_seq_changed'] = True
-
-        diff_dict['has_cds_changed'] = self.has_cds_changed()
-        diff_dict['has_translation_changed'] = self.has_translation_changed()
-
-
-        # has cds_changed
-
-        # has cdna_changed
-
         return diff_dict
 
     def has_location_changed(self):
@@ -215,29 +269,12 @@ class DiffSet(object):
     def has_transcript_changed(self):
         return not (self.first_object['transcript_checksum'] == self.second_object['transcript_checksum'])
 
-    def has_translation_changed(self):
-        if 'translations' in self.first_object and 'translations' in self.second_object:
-            for translation_first, translation_second in zip(self.first_object['translations'], self.second_object['translations']):  # @IgnorePep8
-                if 'translation_checksum' in translation_first and 'translation_checksum' in translation_second:
-                    return not (translation_first['translation_checksum'] == translation_second['translation_checksum'])
-        else:
-            return None
-
     def has_seq_changed(self):
         # when sequence is expanded
         if 'seq_checksum' in self.first_object['sequence'] and 'seq_checksum' in self.second_object['sequence']:
             return not(self.first_object['sequence']['seq_checksum'] == self.second_object['sequence']['seq_checksum'])
 
         return not(self.first_object['sequence'] == self.second_object['sequence'])
-
-    def has_cds_changed(self):
-        # cds is without utr
-        if 'translations' in self.first_object and 'translations' in self.second_object:
-            for translation_first, translation_second in zip(self.first_object['translations'], self.second_object['translations']):  # @IgnorePep8
-                if 'seq_checksum' in translation_first and 'seq_checksum' in translation_second:
-                    return not (translation_first['seq_checksum'] == translation_second['seq_checksum'])
-        else:
-            return None
 
     def has_cdna_changed(self):
         # cdna is with utr

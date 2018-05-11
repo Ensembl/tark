@@ -2,21 +2,13 @@
     <thead>
       <tr>
         <th class="text-center col-md-4">Transcript</th>
-        <th class="text-center col-md-4">CDNA</th>
-        <th class="text-center col-md-4">CDS</th>
+        <th class="text-center col-md-4">Translation</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="2" style="vertical-align:middle">
-        {% if diff_result.results.has_transcript_changed %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% endif %}
-        </td>
         <td>
-        {% if diff_result.results.has_cdna_changed %}
+        {% if diff_result.results.has_transcript_changed %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
         {% else %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
@@ -24,7 +16,7 @@
         </td>
 
          <td>
-        {% if diff_result.results.has_cds_changed %}
+        {% if diff_result.results.has_translation_changed %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
         {% else %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
