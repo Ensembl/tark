@@ -27,7 +27,7 @@ from sequence.models import Sequence
 class Translation(models.Model):
 
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
-    ONE2MANY_RELATED = {'RELEASE_SET': 'translation_release_set'}
+    ONE2MANY_RELATED = {'RELEASE_SET': 'translation_release_set', 'TRANSCRIPT': "transcripts"}
 
     translation_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)

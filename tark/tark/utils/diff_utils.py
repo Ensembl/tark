@@ -19,6 +19,7 @@ import requests
 from exon.models import ExonTranscript
 import json
 from translation.models import Translation
+from django.db.models.query_utils import Q
 
 
 
@@ -147,6 +148,7 @@ class DiffUtils(object):
 
     @classmethod
     def get_coding_exons(cls, diff_result):
+        print("====get_coding_exons caled==============")
         if "results" in diff_result:
             for result in diff_result["results"]:
                 if "translations" in result:
@@ -156,17 +158,26 @@ class DiffUtils(object):
                     print(result['translations'])
                     print("++++++++BEFORE END++++++++++++++")
                     for translation in result['translations']:
-                        tl_statble_id = translation["stable_id"]
-                        tl_statble_id_version = translation["stable_id_version"]
-                        print("========response_diff_with======="  + str(tl_statble_id)  + "  " + str(tl_statble_id_version) )
-                        tl_query_set = Translation.objects.filter(stable_id=tl_statble_id).filter(stable_id_version=tl_statble_id_version).select_related('sequence')
+                        print("Entering translation+++++++++++++++++++++")
+                        tl_stable_id = translation["stable_id"]
+                        tl_stable_id_version = translation["stable_id_version"]
+                        tl_translation_id = translation["translation_id"]
+                        print("========response_diff_with======="  + str(tl_stable_id)  + "  " + str(tl_stable_id_version)  + "  " + str(tl_translation_id))
+                        criterion1 = Q(stable_id=tl_stable_id)
+                        criterion2 = Q(stable_id_version=tl_stable_id_version)
+                        criterion3 = Q(translation_id=tl_translation_id)
+                        # tl_query_set = Translation.objects.filter(criterion1 & criterion2).select_related('transcript').select_related('sequence').distinct()
+                        tl_query_set = Translation.objects.filter(criterion1 & criterion2 & criterion3).select_related('sequence').distinct()
+                        # tl_query_set = Translation.objects.filter(stable_id=tl_statble_id).filter(stable_id_version=tl_statble_id_version).select_related('sequence')
                         for tl_obj in tl_query_set:
+                            print("Entering tl_query_set================")
                             print(tl_obj.sequence.sequence)
                             print(tl_obj.sequence.seq_checksum)
                             translation["sequence"] = {"sequence":tl_obj.sequence.sequence, "seq_checksum":tl_obj.sequence.seq_checksum}
                             if "exons" in result:
                                 translation["exons"] = result['exons']
                             updated_translations.append(translation)
+                            #break #This is wrong. You should get only one object back
                     result['translations'] = updated_translations
                 else:
                     result['translations'] = None
@@ -184,6 +195,7 @@ class DiffUtils(object):
         else:
             return diff_dict
         diff_dict = collections.OrderedDict()
+
         diff_dict['has_cds_location_changed'] = cls.has_cds_location_changed(first_tl_object, second_tl_object)
         diff_dict['has_cds_exon_set_changed'] = cls.has_cds_changed(first_tl_object, second_tl_object)
         diff_dict['has_cds_seq_changed'] = cls.has_cds_seq_changed(first_tl_object, second_tl_object)
@@ -197,11 +209,21 @@ class DiffUtils(object):
 
     @classmethod
     def has_cds_changed(cls, first_tl_object, second_tl_object):
-        return (cls.has_cds_location_changed(first_tl_object, second_tl_object) and cls.has_cds_exon_set_changed() and cls.has_cds_seq_changed(first_tl_object, second_tl_object))
+        return (cls.has_cds_location_changed(first_tl_object, second_tl_object) and cls.has_cds_exon_set_changed() and cls.has_cds_seq_changed(first_tl_object, second_tl_object))  # @IgnorePep8
 
     @classmethod
     def has_cds_location_changed(cls, first_tl_object, second_tl_object):
-        return False
+        # for the time being, call has_translation_changed
+        # return cls.has_translation_changed(first_tl_object, second_tl_object)
+        if 'translations' in first_tl_object and 'translations' in second_tl_object:
+            print("reached here1 translation=====")
+            for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
+                print("reached here1 for translation=====")
+                if 'loc_checksum' in translation_first and 'loc_checksum' in translation_second:
+                    print("reached here12 translation=====")
+                    return not (translation_first['loc_checksum'] == translation_second['loc_checksum'])
+        else:
+            return None
 
     @classmethod
     def has_cds_exon_set_changed(cls):
@@ -219,12 +241,6 @@ class DiffUtils(object):
 
     @classmethod
     def has_translation_changed(cls, first_tl_object, second_tl_object):
-        print("reached has_translation_changed=====")
-        print("========first object translations========")
-        print(first_tl_object)
-        print("=======second object translations========")
-        print(second_tl_object)
-
         if 'translations' in first_tl_object and 'translations' in second_tl_object:
             print("reached here1 translation=====")
             for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
@@ -233,7 +249,6 @@ class DiffUtils(object):
                     print("reached here12 translation=====")
                     return not (translation_first['translation_checksum'] == translation_second['translation_checksum'])
         else:
-            print("reached here2 translation=====")
             return None
 
 

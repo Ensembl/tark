@@ -25,6 +25,7 @@ from translation.models import Translation, TranslationTranscript
 from sequence.drf.serializers import SequenceSerializer
 
 
+
 class TranslationReleaseTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = TranslationReleaseTag
@@ -35,7 +36,8 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
 
     MANY2ONE_SERIALIZER = {Translation.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
                            Translation.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
-    ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
+    ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
+                           Translation.ONE2MANY_RELATED['TRANSCRIPT']: "transcript.drf.serializers.TranscriptSerializer"}
 
     assembly = AssemblyField(read_only=True)
     #tl_sequence = SequenceSerializer(source="sequence", read_only=True)
@@ -43,7 +45,7 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
     class Meta:
         model = Translation
         # fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'seq_checksum')
-        fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum',)
+        fields = CommonFields.COMMON_FIELD_SET + ('translation_id', 'translation_checksum',)
 
     def __init__(self, *args, **kwargs):
         super(TranslationSerializer, self).__init__(*args, **kwargs)
@@ -51,7 +53,7 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
 
 
 class TranslationTranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
-
+    translation_id = serializers.ReadOnlyField(source='translation.translation_id')
     stable_id = serializers.ReadOnlyField(source='translation.stable_id')
     stable_id_version = serializers.ReadOnlyField(source='translation.stable_id_version')
     assembly = serializers.ReadOnlyField(source='translation.assembly.assembly_name')

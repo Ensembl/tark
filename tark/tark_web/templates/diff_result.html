@@ -204,26 +204,22 @@
     
     
      {% if diff_result.results.has_cds_seq_changed %}
-      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-red">CDS Sequence</a></li>
+      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-red">Coding Sequence</a></li>
      {% else %}
-      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-green">CDS Sequence</a></li>
+      <li><a data-toggle="tab" href="#has_cds_seq_changed"  class="a-diff-green">Coding Sequence</a></li>
      {% endif %}
  
     </ul>    
       
        <div id="tab_content_cds" class="tab-content">
        
-        <div id="has_cds_location_changed" class="tab-pane fade in active" style="padding:10px;">
-        has_cds_location_changed
-        </div> 
+         {% include "cds_location_expander.html" %}
        
         <div id="has_cds_exon_set_changed" class="tab-pane fade in" style="padding:10px;">
         has_cds_exonset_changed
         </div> 
         
-         <div id="has_cds_seq_changed" class="tab-pane fade in" style="padding:10px;">
-        has_cds_sequence_changed
-        </div> 
+        {% include "coding_sequence_expander.html" %}
         
        </div>
       

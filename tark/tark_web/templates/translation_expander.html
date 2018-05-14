@@ -22,7 +22,8 @@
   <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ translation.stable_id }}</span></li>
   <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ translation.stable_id_version }}</span></li>
   <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ translation.assembly }}</span></li>
-  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }}:{{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
+  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_result.diff_me_release }}</span></li--> 
+  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }} : {{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
   <li class="list-group-item list-group-item-info"><strong>Checksums</strong></li>
   <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ translation.loc_checksum }}</span></li>
   <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ translation.sequence.seq_checksum }}</span></li>  
@@ -50,10 +51,10 @@
 
   <li class="list-group-item text-center">Checksums</li>
   
-  {% with diff_result|compare_translation:"loc_checksum, seq_checksum, translation_checksum" as match_results %}
-  {% for has_matches in match_results %}
-   {% for has_match in has_matches %}
-    {% include "checksum_match.html" with has_var_checksum=has_match %}
+  {% with diff_result|compare_translation:"loc_checksum, seq_checksum, translation_checksum" as match_results_checksum %}
+  {% for has_matches_checksum in match_results_checksum %}
+   {% for has_match_checksum in has_matches_checksum %}
+    {% include "checksum_match.html" with has_var_checksum=has_match_checksum %}
    {% endfor %}
      </ul>
   {% endfor %}
@@ -73,7 +74,8 @@
   <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ translation.stable_id }}</span></li>
   <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ translation.stable_id_version }}</span></li>
   <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ translation.assembly }}</span></li>
-  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }}:{{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
+  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_result.diff_with_release }}</span></li--> 
+  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }} : {{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
   <li class="list-group-item list-group-item-warning"><strong>Checksums</strong></li>
   <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ translation.loc_checksum }}</span></li>
   <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ translation.sequence.seq_checksum }}</span></li>  

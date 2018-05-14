@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 import importlib
+from Bio.motifs.meme import Instance
 
 
 class SerializerMixin(object):
@@ -59,7 +60,9 @@ class SerializerMixin(object):
                     if isinstance(one2many[entry], str):
                         print("===REACHED IF ====")
                         module_name, class_name = one2many[entry].rsplit(".", 1)
+                        print("CHECK HERE " + str(module_name)  + " class_name " + class_name)
                         instance_ = getattr(importlib.import_module(module_name), class_name)
+                        print(instance_)
                         self.fields[entry] = instance_(many=True, read_only=True)
                     else:
                         print("===REACHED ELSE ====" + entry)

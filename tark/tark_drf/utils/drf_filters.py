@@ -27,7 +27,7 @@ class CommonFilterBackend(BaseFilterBackend):
 
         stable_id_version = request.query_params.get('stable_id_version', None)
         if stable_id_version is not None:
-            queryset = queryset.filter(stable_id_version=stable_id)
+            queryset = queryset.filter(stable_id_version=stable_id_version)
 
         loc_region = request.query_params.get('loc_region', None)
         if loc_region is not None:
