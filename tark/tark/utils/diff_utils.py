@@ -47,7 +47,7 @@ class DiffUtils(object):
             result_data['count'] = 0  # for output
 
         # add params
-        print(params)
+
         for param_key, param_value in params.items():
             if "expand" not in param_key:
                 result_data[param_key] = param_value
@@ -95,9 +95,10 @@ class DiffUtils(object):
 
         # do translations comparison here
         translation_diff_dict = cls.compare_translations(result_data['diff_with_transcript'], result_data['diff_me_transcript'])
-        print("=======translation_diff_dict=========")
-        print(translation_diff_dict)
-        print("=======translation_diff_dict=========")
+
+        for key,value in translation_diff_dict.items():
+            result_data["results"][key] = value
+
         result_dict.data = result_data
         return result_dict
 
@@ -175,9 +176,10 @@ class DiffUtils(object):
                             print(tl_obj.sequence.seq_checksum)
                             translation["sequence"] = {"sequence":tl_obj.sequence.sequence, "seq_checksum":tl_obj.sequence.seq_checksum}
                             if "exons" in result:
-                                translation["exons"] = result['exons']
+                                exon_set_cds = cls.update_coding_exons(result['exons'], translation)
+                                # translation["exons"] = result['exons']
+                                translation["exons"] = exon_set_cds
                             updated_translations.append(translation)
-                            #break #This is wrong. You should get only one object back
                     result['translations'] = updated_translations
                 else:
                     result['translations'] = None
@@ -185,6 +187,39 @@ class DiffUtils(object):
             print("++++++++AFTER START++++++++++++++")
             print(result['translations'])
             print("++++++++AFTER END++++++++++++++")
+
+    @classmethod
+    def update_coding_exons(cls, exon_set, translation):
+        tl_start = translation["loc_start"]
+        tl_end = translation["loc_end"]
+        tl_strand = translation["loc_strand"]
+        print(" tl_start " + str(tl_start) + " tl_end " + str(tl_end) + " tl_strand " + str(tl_strand))
+        exon_set_cds = []
+        if tl_strand == 1:
+            exon_set_list = exon_set
+        else:
+            exon_set_list = reversed(list(exon_set))
+
+        for exon in exon_set_list:
+                print(exon["exon_order"])
+                print("exon start " + str(exon["loc_start"]) + " exon end " + str(exon["loc_end"]))
+                # check if exon_start is between tl_start and tl_end
+                # check if exon_end is between tl_start and tl_end
+                if exon["loc_start"] >= tl_start and exon["loc_end"] <= tl_end:
+                    exon_set_cds.append(exon)
+                else:
+                    if exon["loc_start"] <= tl_start:
+                        exon["loc_start"] = tl_start
+
+                    if exon["loc_end"] >= tl_end:
+                        exon["loc_end"] = tl_end
+                    exon_set_cds.append(exon)
+                    break
+
+        print("=======update_coding_exons exonset========================")
+        print(exon_set_cds)
+        print("=========================================================")
+        return exon_set_cds
 
     @classmethod
     def compare_translations(cls, first_object, second_object):
@@ -202,25 +237,21 @@ class DiffUtils(object):
 
         diff_dict['has_cds_changed'] = cls.has_cds_changed(first_tl_object, second_tl_object)
         diff_dict['has_translation_changed'] = cls.has_translation_changed(first_tl_object, second_tl_object)
-        print("======diffdict=====")
-        print(diff_dict)
-        print("======diffdict=====")
         return diff_dict
 
     @classmethod
     def has_cds_changed(cls, first_tl_object, second_tl_object):
-        return (cls.has_cds_location_changed(first_tl_object, second_tl_object) and cls.has_cds_exon_set_changed() and cls.has_cds_seq_changed(first_tl_object, second_tl_object))  # @IgnorePep8
+        return (cls.has_cds_location_changed(first_tl_object, second_tl_object) or cls.has_cds_exon_set_changed() or cls.has_cds_seq_changed(first_tl_object, second_tl_object))  # @IgnorePep8
 
     @classmethod
     def has_cds_location_changed(cls, first_tl_object, second_tl_object):
+        print("has_cds_location_changed======================")
         # for the time being, call has_translation_changed
         # return cls.has_translation_changed(first_tl_object, second_tl_object)
         if 'translations' in first_tl_object and 'translations' in second_tl_object:
             print("reached here1 translation=====")
             for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
-                print("reached here1 for translation=====")
                 if 'loc_checksum' in translation_first and 'loc_checksum' in translation_second:
-                    print("reached here12 translation=====")
                     return not (translation_first['loc_checksum'] == translation_second['loc_checksum'])
         else:
             return None
@@ -246,7 +277,6 @@ class DiffUtils(object):
             for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
                 print("reached here1 for translation=====")
                 if 'translation_checksum' in translation_first and 'translation_checksum' in translation_second:
-                    print("reached here12 translation=====")
                     return not (translation_first['translation_checksum'] == translation_second['translation_checksum'])
         else:
             return None

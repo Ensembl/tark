@@ -38,7 +38,7 @@
 <!-- Match -->
   <div class="col-md-2 col-sm-2">
 
-{% with diff_result|compare_translation:"stable_id, stable_id_version, assembly, loc_checksum" as match_results %}
+{% with diff_result|compare_translation:"loc_region, loc_start, loc_end, loc_strand" as match_results %}
   {% for has_matches in match_results %}
     <ul class="list-group">
     <li class="list-group-item text-center">Match</li>

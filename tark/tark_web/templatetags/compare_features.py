@@ -16,7 +16,6 @@ limitations under the License.
 '''
 
 from django import template
-from lib2to3.tests.pytree_idempotency import diff
 register = template.Library()
 
 
@@ -74,7 +73,6 @@ def compare_exon(diff_result, compare_attrs):
     for (diff_me_tr_exon, diff_with_tr_exon) in zip(diff_me_tr_exons, diff_with_tr_exons):
         exon_result = []
         for compare_attr in compare_attr_list:
-            print(" From exon compare " + str(compare_attr))
             is_equal = False
             if compare_attr in diff_me_tr_exon:
                 diff_me_exon_attr = diff_me_tr_exon[compare_attr]
@@ -121,7 +119,6 @@ def compare_translation(diff_result, compare_attrs):
         diff_with_translation_attr = None
         exon_result = []
         for compare_attr in compare_attr_list:
-            print(" From translation compare " + str(compare_attr))
             is_equal = False
             if compare_attr == "seq_checksum":
                 if "sequence" in diff_me_tr_translation and compare_attr in diff_me_tr_translation["sequence"]:
