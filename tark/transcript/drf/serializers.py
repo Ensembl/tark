@@ -45,7 +45,7 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                            Transcript.ONE2MANY_RELATED['EXONTRANSCRIPT']: ExonTranscriptSerializer,
                            }
 
-    #assembly = AssemblyField(read_only=True)
+    assembly = AssemblyField(read_only=True)
     #genes = GeneSerializer(many=True, read_only=True)
     #exons = ExonTranscriptSerializer(source="exontranscript_set", many=True, read_only=True)
 #     translations = TranslationTranscriptSerializer(source='translationtranscript_set', many=True)
