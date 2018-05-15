@@ -1,11 +1,121 @@
 {% extends "base.html" %}
 
+{% block title %}TaRK Help{% endblock %}
+
+{% load staticfiles %}
+
+
 {% block content %}
-
 <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+		   <ul class="list-group">
+		  <li class="list-group-item active">FAQs</li>
+		  <li class="list-group-item"><a href="#tark_summary">{{"What is TaRK?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_services">{{"What services are provided by TaRK?" | truncatechars:60 }}</a></li>
+ 		  <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of TaRK?" | truncatechars:60 }}</a></li>
+		</ul>
+        </div>
+       <div class="col-md-9">
+		<div class="panel panel-info">
 
-ToDO Documentation
+	<div class="panel-heading">
+	<h4 class="panel-title">TaRK FAQ</h4>
+	</div>
 
+	<div class="panel-body" id="tark_faq" name="tark_faq">
+    
+    <h4 id="tark_summary">What is TaRK?</h4>
+    <p>
+    TaRK stands for Transcript ARchive. The goal of TArK is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, <a href="#tark_checksum">checksums</a> are included at a fine grained level.
+    </p>
+    
+    <hr/>
+    <h4 id="tark_services">What services are provided by TaRK?</h4>
+    <dl>
+    <dt>The TaRK web service would provide the following:</dt>
+	 <dd>- querying of existing transcripts and related entities</dd>
+	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
+   </dl>
+ 	
+
+    <hr/>
+    <h4 id="ar_attribute">What attributes are captured for a given Transcript?</h4>
+   <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><strong>Attribute</strong></th>
+        <th><strong>Type</strong></th>
+        <th><strong>Mandatory</strong></th>
+        <th><strong>Description</strong></th>
+        <th><strong>Example</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>StableID</td>
+        <td>String</td>
+        <td>YES</td>
+        <td>stable id of the transcript</td>
+        <td>ENST00000387314</td>
+      </tr>
+     
+     <tr>
+        <td>StableID Version</td>
+        <td>Integer</td>
+        <td>YES</td>
+        <td>stable id version</td>
+        <td>2</td>
+      </tr>
+      
+ 
+    </tbody>
+  </table>
+<hr/>
+    
+    <h4 id="tark_checksum">What do you mean by Checksum? How is it derived?</h4>
+    <p>
+   A checksum is a small-sized datum derived from a block of digital data. The actual procedure which yields the checksum from a data input is called a checksum function or checksum algorithm, which usually output a significantly different value, even for small changes made to the input.
+    </p>
+    
+    <hr/>
+   
+    <hr/>
+    <h4 id="tark_crud">How to do GET operations via REST API?</h4>
+    <div class="panel panel-info ">
+    <div class="panel-heading">GET</div>
+    <div class="panel-body">
+    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/'<br/>
+    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989'<br/>
+    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989&assembly_name=GRCh38'<br/>
+    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989&assembly_name=GRCh38&release_short_name=90'<br/><br/>
+    </div>
+    </div>
+    
+   
+    <hr/>
+    <h4 id="ar_tech_stack">What is the technology stack of TaRK?</h4>
+    <p>
+    <a href="https://www.python.org/">Python3</a>, <a href="https://www.djangoproject.com/">Django</a>, <a href="http://www.django-rest-framework.org/">Django REST Framework</a> and <a href="https://django-rest-swagger.readthedocs.io/en/latest/">Django REST Swagger</a>. Backend support is provided by<a href="https://www.mysql.com/"> MySQL</a>.
+    </p>
+    
+    <a href="#ar_summary">Go Top</a>
+    
+     
+        </div>
+    </div>
+    
+    </div>
+  </div>
 </div>
 
+
+
 {% endblock %}
+
+
+<body></body>
+
+
