@@ -13,6 +13,8 @@
 		  <li class="list-group-item active">FAQs</li>
 		  <li class="list-group-item"><a href="#tark_summary">{{"What is TaRK?" | truncatechars:60 }}</a></li>
 		  <li class="list-group-item"><a href="#tark_services">{{"What services are provided by TaRK?" | truncatechars:60 }}</a></li>
+		   <li class="list-group-item"><a href="#tark_rest">{{"What services are provided by REST TaRK?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_web">{{"What services are provided by Web TaRK?" | truncatechars:60 }}</a></li>
  		  <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
 		  <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
 		  <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of TaRK?" | truncatechars:60 }}</a></li>
@@ -35,12 +37,26 @@
     <hr/>
     <h4 id="tark_services">What services are provided by TaRK?</h4>
     <dl>
-    <dt>The TaRK web service would provide the following:</dt>
-	 <dd>- querying of existing transcripts and related entities</dd>
+    <dt>The TaRK provides the following main services via REST TaRK and Web TaRK:</dt>
+	 <dd>- querying/searching of existing transcripts and related entities</dd>
 	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
    </dl>
  	
-
+ 	<hr/>
+    <h4 id="tark_rest">What services are provided by REST TaRK?</h4>
+    <dl>
+	 <dd>- querying/searching of existing transcripts and related entities applying various filters and GET the results in JSON format</dd>
+	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
+   </dl>
+   
+   	<hr/>
+    <h4 id="tark_we">What services are provided by Web TaRK?</h4>
+    <dl>
+	 <dd>- querying/searching of existing transcripts and related entities</dd>
+	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
+	 <dd>- datatable view for the entities</dd>
+   </dl>
+   
     <hr/>
     <h4 id="ar_attribute">What attributes are captured for a given Transcript?</h4>
    <table class="table table-striped">
@@ -153,8 +169,6 @@
     </p>
     
     <hr/>
-   
-    <hr/>
     <h4 id="tark_crud">How to do GET operations via REST API?</h4>
     <div class="panel panel-info ">
     <div class="panel-heading">GET</div>
@@ -174,9 +188,7 @@
     </p>
     
     <a href="#tark_summary">Go Top</a>
-    
-     
-        </div>
+     </div>
     </div>
     
     </div>
