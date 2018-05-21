@@ -41,7 +41,10 @@ urlpatterns = [
     url(r'^' + api_version + '$', schema_view),
     url(r'^web/', include('tark_web.urls')),
     url(r'^$', views.index, name='index'),
-    url(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'), {"hostname": "http://prem-ml:9000"}, name="tark_help"),
+    url(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'),
+        {"hostname": "http://prem-ml:9000"}, name="tark_help"),
+    url(r'^privacy_notice_tark', TemplateView.as_view(template_name='privacy_notice_tark.html'),
+        name="privacy_notice_tark"),
 
 ]
 
