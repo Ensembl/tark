@@ -20,6 +20,18 @@
    <!-- Navbar JavaScript -->
    <script src='{% static "js/navbar.js" %}' type='text/javascript'></script>
    <link rel="stylesheet" href="{% static "css/navbar.css" %}">
+ 
+    <!-- GDPR JavaScript/CSS -->
+   <script src='{% static "js/gdpr_ensembl.js" %}' type='text/javascript'></script>
+   <link rel="stylesheet" href="{% static "css/gdpr_ensembl.css" %}">
+     
+  <script>
+ $(document).ready(function(){
+  runDataProtectionBanner();
+});
+ 
+</script>
+   
    
 {% block extra_styles %}
 {% endblock %}
