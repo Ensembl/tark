@@ -100,7 +100,7 @@ var dataProtectionSettings =  new Object();
 
 function runDataProtectionBanner() {
   dataProtectionSettings.message = 'This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our ';
-  dataProtectionSettings.link = 'https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark';
+  dataProtectionSettings.link = 'https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark-';
   dataProtectionSettings.termsofuse_link = 'https://www.ebi.ac.uk/about/terms-of-use';
   //dataProtectionSettings.serviceId = 'ensembl-metadata';
   //dataProtectionSettings.dataProtectionVersion = '1.0';
