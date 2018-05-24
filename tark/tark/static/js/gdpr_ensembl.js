@@ -38,8 +38,8 @@ function createDataProtectionBanner() {
   wrapper.innerHTML = "" + 
     "<div class='swagger-ui-wrap' style='padding-left:20px;padding-right:20px;'>" +
     dataProtectionSettings.message +
-    " <a target='_blank' href='" + dataProtectionSettings.link + "' class='white-color'>Privacy Notice</a>&nbsp;and&nbsp;<a target='_blank' href='"+ dataProtectionSettings.termsofuse_link + "' class='white-color'>Terms of Use</a>&nbsp;" +
-     "<a id='data-protection-agree' class='btn agree-button'>I agree, dismiss this banner</a></div>" +
+    " <a target='_blank' href='" + dataProtectionSettings.link + "' class='white-color'>Privacy Notice</a>&nbsp;and&nbsp;<a target='_blank' href='"+ dataProtectionSettings.termsofuse_link + "' class='white-color'>Terms of Use</a>&nbsp;&nbsp;" +
+     "<a id='data-protection-agree' class='btn agree-button'>OK</a></div>" +
     "";
 
   document.body.appendChild(banner);
@@ -100,7 +100,7 @@ var dataProtectionSettings =  new Object();
 
 function runDataProtectionBanner() {
   dataProtectionSettings.message = 'This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our ';
-  dataProtectionSettings.link = '/privacy_notice_tark';
+  dataProtectionSettings.link = 'https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark';
   dataProtectionSettings.termsofuse_link = 'https://www.ebi.ac.uk/about/terms-of-use';
   //dataProtectionSettings.serviceId = 'ensembl-metadata';
   //dataProtectionSettings.dataProtectionVersion = '1.0';
