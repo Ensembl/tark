@@ -175,9 +175,8 @@ class DiffUtils(object):
                             print(tl_obj.sequence.sequence)
                             print(tl_obj.sequence.seq_checksum)
                             translation["sequence"] = {"sequence":tl_obj.sequence.sequence, "seq_checksum":tl_obj.sequence.seq_checksum}
-                            if "exons" in result:
+                            if "exons" in result: #work here again
                                 exon_set_cds = cls.update_coding_exons(result['exons'], translation)
-                                # translation["exons"] = result['exons']
                                 translation["exons"] = exon_set_cds
                             updated_translations.append(translation)
                     result['translations'] = updated_translations
@@ -201,19 +200,20 @@ class DiffUtils(object):
             exon_set_list = reversed(list(exon_set))
 
         for exon in exon_set_list:
-                print(exon["exon_order"])
-                print("exon start " + str(exon["loc_start"]) + " exon end " + str(exon["loc_end"]))
+                exon_cds = exon.copy()
+                print(exon_cds["exon_order"])
+                print("exon start " + str(exon_cds["loc_start"]) + " exon end " + str(exon_cds["loc_end"]))
                 # check if exon_start is between tl_start and tl_end
                 # check if exon_end is between tl_start and tl_end
-                if exon["loc_start"] >= tl_start and exon["loc_end"] <= tl_end:
-                    exon_set_cds.append(exon)
+                if exon_cds["loc_start"] >= tl_start and exon_cds["loc_end"] <= tl_end:
+                    exon_set_cds.append(exon_cds)
                 else:
-                    if exon["loc_start"] <= tl_start:
-                        exon["loc_start"] = tl_start
+                    if exon_cds["loc_start"] <= tl_start:
+                        exon_cds["loc_start"] = tl_start
 
-                    if exon["loc_end"] >= tl_end:
-                        exon["loc_end"] = tl_end
-                    exon_set_cds.append(exon)
+                    if exon_cds["loc_end"] >= tl_end:
+                        exon_cds["loc_end"] = tl_end
+                    exon_set_cds.append(exon_cds)
                     break
 
         print("=======update_coding_exons exonset========================")
