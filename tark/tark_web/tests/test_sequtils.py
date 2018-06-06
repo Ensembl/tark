@@ -39,7 +39,9 @@ class SeqUtilsTest(TestCase):
         query_seq = current_dir + "/data/query.fasta"
         target_seq = current_dir + "/data/target.fasta"
         align_result = TarkSeqUtils.align_sequences(query_seq, target_seq)
+        print("======================ALIGNMENT RESULT=================")
         print(align_result)
+        print("======================ALIGNMENT RESULT=================")
 
     def test_parse_location_string(self):
         loc_string = "5: 62797383 - 63627669 "
@@ -47,3 +49,6 @@ class SeqUtilsTest(TestCase):
         print("Loc region " + loc_region)
         print("Loc start " + loc_start)
         print("Loc end " + loc_end)
+        self.assertEqual(loc_region, "5", "Loc region is ok")
+        self.assertEqual(loc_start, "62797383", "Loc start is ok")
+        self.assertEqual(loc_end, "63627669", "Loc end is ok")

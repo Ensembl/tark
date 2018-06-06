@@ -18,10 +18,11 @@ limitations under the License.
 
 from django.db import models
 from assembly.models import Assembly
-from django.contrib.sessions.models import Session
+
 from tark.fields import ChecksumField
 from sequence.models import Sequence
 from gene.models import Gene
+from session.models import Session
 
 
 class Transcript(models.Model):

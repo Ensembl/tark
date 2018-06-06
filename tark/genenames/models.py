@@ -22,7 +22,7 @@ from session.models import Session
 
 class GeneNames(models.Model):
     gene_names_id = models.AutoField(primary_key=True)
-    external_id = models.PositiveIntegerField(blank=True, null=True)
+    external_id = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     name = models.CharField(max_length=32, blank=True, null=True)
     source = models.CharField(max_length=32, blank=True, null=True)
     primary_id = models.IntegerField(blank=True, null=True)

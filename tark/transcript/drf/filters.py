@@ -21,6 +21,8 @@ from tark_drf.utils.drf_filters import CommonFilterBackend
 from transcript.models import Transcript
 from release.utils.release_utils import ReleaseUtils
 from django.db.models import Q
+import re
+from tark_web.utils.sequtils import TarkSeqUtils
 
 
 class TranscriptFilterBackend(BaseFilterBackend):
@@ -104,6 +106,17 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 queryset = queryset.filter(stable_id=identifier)
             elif "ENSG" in identifier:
                 queryset = queryset.filter(genes__stable_id=identifier)
+            elif ":" in identifier and "-" in identifier:
+                (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(identifier)
+                if loc_region is not None:
+                    queryset = queryset.filter(loc_region=loc_region)
+
+                if loc_start is not None:
+                    queryset = queryset.filter(loc_start__lte=loc_start).filter(loc_end__gte=loc_start)
+
+                # loc_end = request.query_params.get('loc_end', None)
+                if loc_end is not None:
+                    queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
             else:
                 queryset = queryset.filter(genes__hgnc__name__iexact=identifier)
 
@@ -113,11 +126,48 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
             if search_release is not None and len(search_release) > 1:
                 queryset = queryset.filter(transcript_release_set__shortname=search_release)
 
-
-
         return queryset.distinct()
 
     def get_schema_fields(self, view):
         return [DrfFields.identifier_field(), DrfFields.search_release_field(),
                 DrfFields.search_assembly_field(), DrfFields.get_expand_all_field()]
 
+
+class TranscriptSetFilterBackent(BaseFilterBackend):
+
+    def filter_queryset(self, request, queryset, view):
+        stable_id = request.query_params.get('stable_id', 'ENST00000171111')
+        if stable_id is not None:
+            queryset = queryset.filter(stable_id=stable_id)
+
+        diff_me_release = request.query_params.get('diff_me_release', None)
+        diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
+
+        diff_me_assembly = request.query_params.get('diff_me_assembly', ReleaseUtils.get_latest_assembly())
+        diff_with_assembly = request.query_params.get('diff_with_assembly', ReleaseUtils.get_latest_assembly())
+
+        expand_all = request.query_params.get('expand_all', "true")
+
+        print("Stable id " + str(stable_id) + "Diff me " + str(diff_me_release) +
+              "Diff with " + str(diff_with_release) + "expand all " + expand_all)
+
+        if diff_me_release is not None and diff_me_assembly is not None:
+            queryset_me = queryset.filter(assembly__assembly_name__icontains=diff_me_assembly). \
+                filter(transcript_release_set__shortname=diff_me_release)
+            print("=======queryset_me============")
+
+            # get the exontranscript object so you have access to the order of exons
+            # ringos_membership = ringo.membership_set.get(group=beatles)
+
+            print("===================")
+            queryset_with = queryset.filter(assembly__assembly_name__icontains=diff_with_assembly). \
+                filter(transcript_release_set__shortname=diff_with_release)
+
+            queryset = queryset_me | queryset_with   # queryset will contain all unique records of q1 + q2
+
+        return queryset.distinct()
+
+    def get_schema_fields(self, view):
+        return [DrfFields.stable_id_field("Transcript"), DrfFields.diff_me_release_field(),
+                DrfFields.diff_me_assembly_field(), DrfFields.diff_with_release_field(),
+                DrfFields.diff_with_assembly_field(), DrfFields.get_expand_transcript_release_set_field()]

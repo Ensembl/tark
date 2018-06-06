@@ -97,7 +97,7 @@ class DrfFields(object):
             location='query',
             required=False,
             type='string',
-            description='release_short_name to filter(eg: 85)')
+            description='release_short_name to filter(eg: 90)')
         return release_short_name_field
 
     @classmethod

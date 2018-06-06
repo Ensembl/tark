@@ -40,19 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'session',
+    'genome',
     'assembly',
+    'sequence',
     'exon',
     'genenames',
     'gene',
-    'genome',
     'operon',
     'release',
-    'sequence',
-    'session',
-    'tagset',
-    'tark_drf',
     'transcript',
     'translation',
+    'tagset',
+    'tark_drf',
     'tark_web',
     'fixture_magic',
 ]
@@ -118,6 +118,9 @@ else:
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+                }
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',

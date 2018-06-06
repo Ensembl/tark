@@ -42,8 +42,8 @@ class TarkSeqUtils(object):
 
     @classmethod
     def align_sequences(cls, query_fasta, target_fasta):
-        print(str(os.path.isfile(query_fasta)) + str(query_fasta))
-        print(str(os.path.isfile(target_fasta)) + str(target_fasta))
+        #print(str(os.path.isfile(query_fasta)) + str(query_fasta))
+        #print(str(os.path.isfile(target_fasta)) + str(target_fasta))
 
         if os.path.isfile(query_fasta) and os.path.isfile(target_fasta):
             p = subprocess.Popen(["exonerate", query_fasta, target_fasta], stdout=subprocess.PIPE)
@@ -62,3 +62,7 @@ class TarkSeqUtils(object):
         loc_start = matchloc.group(2)
         loc_end = matchloc.group(3)
         return (loc_region, loc_start, loc_end)
+
+    @classmethod
+    def difference_transcript_set(cls, release1, release2):
+        pass

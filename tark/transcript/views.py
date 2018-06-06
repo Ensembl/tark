@@ -29,6 +29,7 @@ from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
 from django_filters.rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
 
 
 class TranscriptList(generics.ListAPIView):
@@ -46,7 +47,14 @@ class TranscriptDatatableView(DataTableListApi):
     serializer_class = TranscriptSerializer
     search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False)
     default_order_by = 1
-    queryset = Transcript.objects.all()
+
+    # queryset = Transcript.objects.all()
+    latest_release = ReleaseUtils.get_latest_release()
+    latest_assembly = ReleaseUtils.get_latest_assembly()
+    print(" Lastest assembly : " + str(latest_assembly))
+    print(" Lastest release : " + str(latest_release))
+    queryset = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
+                                         Q(assembly__assembly_name__icontains=latest_assembly))
 
 
 class TranscriptDetail(generics.RetrieveAPIView):
@@ -63,7 +71,7 @@ class TranscriptDiff(generics.ListAPIView):
 #     def get_queryset(self):
 #         queryset = Transcript.objects.order_by('pk')
 #         return queryset
-    #@setup_eager_loading(TranscriptDiffSerializer)
+    # @setup_eager_loading(TranscriptDiffSerializer)
     def get(self, request, *args, **kwargs):
         stable_id = request.query_params.get('stable_id', None)
         diff_me_release = request.query_params.get('diff_me_release', None)

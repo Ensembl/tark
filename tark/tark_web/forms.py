@@ -84,6 +84,6 @@ class SearchForm(forms.Form):
     current_release = ReleaseUtils.get_latest_release()
 
     species = forms.CharField(widget=forms.Select(choices=SPECIES))
-    search_identifier = forms.CharField(max_length=30, help_text='Please enter valid identifiers')
+    search_identifier = forms.CharField(max_length=200, help_text='Please enter valid identifiers')
     search_assembly = forms.CharField(widget=forms.Select(choices=ASSEMBLY), required=False)
     search_release = forms.CharField(widget=forms.Select(choices=RELEASE), required=False)

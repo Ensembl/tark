@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 from rest_framework.filters import BaseFilterBackend
+from tark_web.utils.sequtils import TarkSeqUtils
 
 
 class CommonFilterBackend(BaseFilterBackend):
@@ -53,19 +54,20 @@ class CommonFilterBackend(BaseFilterBackend):
 
     @classmethod
     def get_location_filter_querysets(cls, request, queryset, view):
-        location = request.query_params.get('location', None)
-        
-        #5: 62797383-63627669
+        loc_string = request.query_params.get('location', None)
 
-        loc_region = request.query_params.get('loc_region', None)
+        # 5: 62797383-63627669
+        (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(loc_string)
+
+        # loc_region = request.query_params.get('loc_region', None)
         if loc_region is not None:
             queryset = queryset.filter(loc_region=loc_region)
 
-        loc_start = request.query_params.get('loc_start', None)
+        # loc_start = request.query_params.get('loc_start', None)
         if loc_start is not None:
             queryset = queryset.filter(loc_start__lte=loc_start).filter(loc_end__gte=loc_start)
 
-        loc_end = request.query_params.get('loc_end', None)
+        # loc_end = request.query_params.get('loc_end', None)
         if loc_end is not None:
             queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
 
