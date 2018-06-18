@@ -47,14 +47,14 @@ class TranscriptDatatableView(DataTableListApi):
     serializer_class = TranscriptSerializer
     search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False)
     default_order_by = 1
-
+    
     # queryset = Transcript.objects.all()
-    latest_release = ReleaseUtils.get_latest_release()
-    latest_assembly = ReleaseUtils.get_latest_assembly()
-    print(" Lastest assembly : " + str(latest_assembly))
-    print(" Lastest release : " + str(latest_release))
-    queryset = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
-                                         Q(assembly__assembly_name__icontains=latest_assembly))
+#     latest_release = ReleaseUtils.get_latest_release()
+#     latest_assembly = ReleaseUtils.get_latest_assembly()
+#     print(" Lastest assembly : " + str(latest_assembly))
+#     print(" Lastest release : " + str(latest_release))
+#     queryset = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
+#                                          Q(assembly__assembly_name__icontains=latest_assembly))
 
 
 class TranscriptDetail(generics.RetrieveAPIView):

@@ -1,0 +1,74 @@
+[
+{
+    "model": "release.releaseset",
+    "pk": 1,
+    "fields": {
+        "shortname": "88",
+        "description": "Ensembl release 88",
+        "assembly": 1,
+        "release_date": "2018-04-18",
+        "session": 1,
+        "release_checksum": "1"
+    }
+},
+{
+    "model": "release.releaseset",
+    "pk": 2,
+    "fields": {
+        "shortname": "89",
+        "description": "Ensembl release 89",
+        "assembly": 1,
+        "release_date": "2018-04-19",
+        "session": 2,
+        "release_checksum": "2"
+    }
+},
+{
+    "model": "release.releaseset",
+    "pk": 3,
+    "fields": {
+        "shortname": "90",
+        "description": "Ensembl release 90",
+        "assembly": 1,
+        "release_date": "2018-04-19",
+        "session": 3,
+        "release_checksum": "3"
+    }
+},
+{
+    "model": "release.releaseset",
+    "pk": 4,
+    "fields": {
+        "shortname": "91",
+        "description": "Ensembl release 91",
+        "assembly": 1,
+        "release_date": "2018-04-19",
+        "session": 4,
+        "release_checksum": "4"
+    }
+},
+{
+    "model": "release.releaseset",
+    "pk": 5,
+    "fields": {
+        "shortname": "92",
+        "description": "Ensembl release 92",
+        "assembly": 1,
+        "release_date": "2018-04-20",
+        "session": 6,
+        "release_checksum": "5"
+    }
+},
+{
+    "model": "release.releaseset",
+    "pk": 6,
+    "fields": {
+        "shortname": "92",
+        "description": "Ensembl release 92 (Grch37)",
+        "assembly": 6,
+        "release_date": "2018-06-05",
+        "session": 7,
+        "release_checksum": "6"
+    }
+}
+]

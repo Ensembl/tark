@@ -1,0 +1,20 @@
+[
+{
+    "model": "assembly.assembly",
+    "pk": 1,
+    "fields": {
+        "genome": 1,
+        "assembly_name": "GRCh38",
+        "session": 1
+    }
+},
+{
+    "model": "assembly.assembly",
+    "pk": 6,
+    "fields": {
+        "genome": 1,
+        "assembly_name": "GRCh37",
+        "session": 7
+    }
+}
+]

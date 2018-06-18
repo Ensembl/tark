@@ -25,6 +25,8 @@ from tark.utils.schema_utils import SchemaUtils
 import requests
 import json
 from django.http.response import JsonResponse
+from transcript.models import Transcript
+from tark_web.forms import CompareSetForm
 
 
 def index(request):
@@ -55,7 +57,21 @@ class DataTableListApi(generics.ListAPIView):
     unfiltered_query_set = None
 
     def get_queryset(self):
-        self.unfiltered_query_set = query_set = super(DataTableListApi, self).get_queryset()
+        #self.unfiltered_query_set = query_set = super(DataTableListApi, self).get_queryset()
+        
+        latest_release = self.kwargs['release_name']
+        latest_assembly = self.kwargs['assembly_name']
+
+        if latest_release is None:
+            latest_release = ReleaseUtils.get_latest_release()
+
+        if latest_assembly is None:
+            latest_assembly = ReleaseUtils.get_latest_assembly()
+
+        print(" Lastest assembly from TranscriptDatatableView: " + str(latest_assembly))
+        print(" Lastest release TranscriptDatatableView: " + str(latest_release))
+        self.unfiltered_query_set = query_set = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
+                                         Q(assembly__assembly_name__icontains=latest_assembly))
 
         order_by_index = int(self.request.query_params.get('order[0][column]', 0))
         orderable = bool(self.request.query_params.get('columns[{}][orderable]'.format(order_by_index), 'false'))
@@ -104,8 +120,11 @@ class DataTableListApi(generics.ListAPIView):
         return result
 
 
-def datatable_view(request, table_name):
-    print("DataTable view called " + table_name)
+def datatable_view(request, table_name, assembly_name, release_name, assembly_name_compare, release_name_compare):
+    print("DataTable view called " + table_name + " assembly_name" + assembly_name + " release_name " +
+          release_name + " assembly_name_compare " +
+          assembly_name_compare + " release_name_compare " + release_name_compare)
+
     server_side_processing = "false"
     if table_name in ['gene', 'transcript', 'translation', 'exon']:
         server_side_processing = "true"
@@ -119,9 +138,23 @@ def datatable_view(request, table_name):
 
     print("server_side_processing " + str(server_side_processing))
 
-    return render(request, 'datatable_view.html', {'table_name': table_name,
+    if request.method == 'POST':
+        print("reached if")
+        compare_set_form = CompareSetForm(request.POST)
+        if compare_set_form.is_valid():
+            print("Form is valid")
+            assembly_name_compare = compare_set_form.cleaned_data['diff_with_assembly']
+            release_name_compare = compare_set_form.cleaned_data['diff_with_release']
+    else:
+        compare_set_form = CompareSetForm()
+
+    return render(request, 'datatable_view.html', {'table_name': table_name, "assembly_name": assembly_name,
+                                                   "release_name": release_name,
+                                                   'assembly_name_compare': assembly_name_compare,
+                                                   'release_name_compare': release_name_compare,
                                                    'server_side_processing': server_side_processing,
-                                                   'data_fields': data_fields})
+                                                   'data_fields': data_fields,
+                                                   'form': compare_set_form})
 
 
 def datatable_fetch(request, table_name):

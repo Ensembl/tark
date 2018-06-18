@@ -118,12 +118,15 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 if loc_end is not None:
                     queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
             else:
+                print("HGNC query=================")
                 queryset = queryset.filter(genes__hgnc__name__iexact=identifier)
 
             if search_assembly is not None and len(search_assembly) > 1:
+                print("search_assembly query=================")
                 queryset = queryset.filter(assembly__assembly_name__iexact=search_assembly)
 
             if search_release is not None and len(search_release) > 1:
+                print("search_release query=================")
                 queryset = queryset.filter(transcript_release_set__shortname=search_release)
 
         return queryset.distinct()

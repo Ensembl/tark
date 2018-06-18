@@ -80,6 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # custom
+                'tark_web.context_processors.init_assembly_releases',
             ],
         },
     },
@@ -206,3 +208,5 @@ SWAGGER_SETTINGS = {
 
 LOGIN_REDIRECT_URL = '/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+CURRENT_ASSEMBLY = "GRCh38"
+CURRENT_RELEASE = "92"

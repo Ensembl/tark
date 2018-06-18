@@ -1,5 +1,35 @@
 {% extends "web_home.html" %}
 
+{% block extra_scripts %}
+ <script>
+ jQuery(function($) {
+    $("#id_diff_me_assembly").change(function () {
+        var assembly_releases = {{ all_assembly_releases|safe|escape }};
+        var cur_assembly_name = $(this).val(); 
+
+        var releases = assembly_releases[cur_assembly_name] || [];
+        
+        var options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_me_release").html(options);
+    });
+    
+    $("#id_diff_with_assembly").change(function () {
+       var assembly_releases = {{ all_assembly_releases|safe|escape }};
+        var cur_assembly_name = $(this).val(); 
+
+        var releases = assembly_releases[cur_assembly_name] || [];
+        var options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_with_release").html(options);
+    });
+  });
+  </script>
+{% endblock %}
+
+
 {% load staticfiles %}
 {% load add_class %}
 
@@ -14,7 +44,7 @@
   </div>
 </div>
 
-<form class="form-horizontal" method="POST" action="">
+<form id="diff_form" class="form-horizontal" method="POST" action="">
 {% csrf_token %}
 
  {% for error in form.non_field_errors %}

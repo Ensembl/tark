@@ -15,12 +15,7 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">FeatureSets
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href={% url 'datatable_view' "transcript" %}>Transcripts</a></li>
-          <li><a href={% url 'datatable_view' "gene" %}>Genes</a></li>
-          <!--
-          <li><a href={% url 'datatable_view' "exon" %}>Exons</a></li>
-          <li><a href={% url 'datatable_view' "translation" %}>Translations</a></li>
-          -->
+          <li><a href={% url 'datatable_view' "transcript" assembly_name release_name assembly_name_compare release_name_compare %}>Transcripts</a></li>
          </ul>
       </li>
      <li><a href="/web/diff/"> Diff-Transcript</a></li>

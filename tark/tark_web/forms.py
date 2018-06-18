@@ -19,71 +19,72 @@ from django import forms
 from release.utils.release_utils import ReleaseUtils
 
 
+class FormUtils(object):
+
+    @classmethod
+    def get_all_assembly_name_tuples(cls):
+        assembly_list = []
+
+        for assembly in ReleaseUtils.get_all_assembly_names():
+            assembly_list.append((assembly, assembly))
+
+        return assembly_list
+
+    @classmethod
+    def get_all_release_name_tuples(cls, assembly_name=None):
+        release_list = []
+
+        for release in ReleaseUtils.get_all_release_short_names(assembly_name):
+            release_list.append((release, release))
+
+        return release_list
+
+    @classmethod
+    def get_all_species_name_tuples(cls):
+        species_list = []
+        species_list.append(('homo_sapiens', 'Homo sapiens'))
+
+        return species_list
+
+
+class CompareSetForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(CompareSetForm, self).__init__(*args, **kwargs)
+        current_release = ReleaseUtils.get_latest_release()
+        current_assembly = ReleaseUtils.get_latest_assembly()
+
+        self.fields['diff_with_assembly'] = forms.CharField(initial=current_assembly,
+                                                            widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_with_release'] = forms.CharField(initial=int(current_release)-1,
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+
+
+
 class DiffForm(forms.Form):
 
-    SPECIES = (
-        ('homo_sapiens', 'Homo sapiens'),
-    )
-
-    ASSEMBLY = (
-        ('GRCh38', 'GRCh38'),
-        ('GRCh37', 'GRCh37'),
-    )
-
-#     RELEASE = (
-#         ('84', '84'),
-#         ('85', '85'),
-#         ('87', '87'),
-#     )
-
-    RELEASE = (
-        ('88', '88'),
-        ('89', '89'),
-        ('90', '90'),
-        ('91', '91'),
-        ('92', '92'),
-    )
-    current_release = ReleaseUtils.get_latest_release()
-
-    species = forms.CharField(widget=forms.Select(choices=SPECIES))
-    stable_id = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
-    diff_me_assembly = forms.CharField(widget=forms.Select(choices=ASSEMBLY))
-    diff_me_release = forms.CharField(widget=forms.Select(choices=RELEASE))
-    diff_with_assembly = forms.CharField(widget=forms.Select(choices=ASSEMBLY))
-    diff_with_release = forms.CharField(initial=current_release, widget=forms.Select(choices=RELEASE))
+    def __init__(self, *args, **kwargs):
+        super(DiffForm, self).__init__(*args, **kwargs)
+        current_release = ReleaseUtils.get_latest_release()
+        current_assembly = ReleaseUtils.get_latest_assembly()
+        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
+        self.fields['stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
+        self.fields['diff_me_assembly'] = forms.CharField(initial=current_assembly,
+                                                          widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_me_release'] = forms.CharField(initial=current_release,
+                                                         widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+        self.fields['diff_with_assembly'] = forms.CharField(initial=current_assembly,
+                                                            widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_with_release'] = forms.CharField(initial=int(current_release)-1,
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
 
 
 class SearchForm(forms.Form):
 
-    SPECIES = (
-        ('homo_sapiens', 'Homo sapiens'),
-    )
-
-    ASSEMBLY = (
-        (' ', ' '),
-        ('GRCh38', 'GRCh38'),
-        ('GRCh37', 'GRCh37'),
-    )
-
-#     RELEASE = (
-#         (' ', ' '),
-#         ('84', '84'),
-#         ('85', '85'),
-#         ('87', '87'),
-#     )
-
-    RELEASE = (
-        (' ', ' '),
-        ('88', '88'),
-        ('89', '89'),
-        ('90', '90'),
-        ('91', '91'),
-        ('92', '92'),
-    )
-
     current_release = ReleaseUtils.get_latest_release()
+    current_assembly = ReleaseUtils.get_latest_assembly()
 
-    species = forms.CharField(widget=forms.Select(choices=SPECIES))
+    species = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
     search_identifier = forms.CharField(max_length=200, help_text='Please enter valid identifiers')
-    search_assembly = forms.CharField(widget=forms.Select(choices=ASSEMBLY), required=False)
-    search_release = forms.CharField(widget=forms.Select(choices=RELEASE), required=False)
+    search_assembly = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()), required=False)
+    search_release = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()), required=False)

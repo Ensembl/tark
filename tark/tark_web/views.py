@@ -20,27 +20,29 @@ from django.shortcuts import render
 from release.utils.release_utils import ReleaseUtils
 from .forms import DiffForm
 import requests
-from tark_web.forms import SearchForm
+from tark_web.forms import SearchForm, FormUtils
+import json
 
 
 def web_home(request):
     """
     View function for home page
     """
-    current_release = ReleaseUtils.get_latest_release()
     # Render the HTML template index.html with data in the context variable
     return render(
         request,
-        'web_home.html',
-        context={'current_release': current_release},
-    )
+        'web_home.html'
+     )
 
 
 def diff_home(request):
     """
     View function for diff query page
     """
+    print("diff home called====")
     current_release = ReleaseUtils.get_latest_release()
+    current_assembly = ReleaseUtils.get_latest_assembly()
+    all_assembly_releases = ReleaseUtils.get_all_assembly_releases()
     # Render the HTML template index.html with data in the context variable
     diff_result = {}
     if request.method == 'POST':
@@ -75,7 +77,6 @@ def diff_home(request):
             print(diff_result)
             print("==================")
             return render(request, 'diff_result.html', context={'form': form,
-                                                                'current_release': current_release,
                                                                 'diff_result': diff_result})
         else:
             print("Reached else1")
@@ -85,7 +86,6 @@ def diff_home(request):
 
         form = DiffForm()
     return render(request, 'tark_diff.html', context={'form': form,
-                                                      'current_release': current_release
                                                       })
 
 
@@ -93,7 +93,7 @@ def search_home(request):
     """
     View function for search query page
     """
-    current_release = ReleaseUtils.get_latest_release()
+
     # Render the HTML template index.html with data in the context variable
     search_result = {}
     if request.method == 'POST':
@@ -123,7 +123,6 @@ def search_home(request):
                 search_result = response.json()
                 print(search_result)
                 return render(request, 'search_result.html', context={'form': search_form,
-                                                                'current_release': current_release,
                                                                 'search_result': search_result})
             else:
                 print("Error")
@@ -134,7 +133,14 @@ def search_home(request):
         print("Reached else2")
 
         search_form = SearchForm()
-    return render(request, 'tark_search.html', context={'form': search_form,
-                                                      'current_release': current_release
-                                                      })
+    return render(request, 'tark_search.html', context={'form': search_form })
+
+def load_releases(request):
+    assembly_name = request.GET.get('assembly_name')
+    rleases = FormUtils.get_all_release_name_tuples(assembly_name)
+    return render(request, 'populate_release.html', {'releases': rleases})
+
+
+
+
 
