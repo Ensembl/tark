@@ -74,10 +74,15 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
      var compare_assembly = $("#id_diff_with_assembly").val();
      var compare_release = $("#id_diff_with_release").val();
      console.log(" compare_assembly " + compare_assembly + " compare_release " + compare_release);
+     var compare_with_well_text='<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000302118 in search box. To compare the current release set with other release set, please choose the release version from below</strong>';
+   
      tark_table_compare.destroy();
      $('#loadingSpinner_compare_with').show();
      tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}",compare_assembly, compare_release);
       e.preventDefault(e);
+     $('#compare_with_well').html(compare_with_well_text);
+      
+      
      });
     
     
@@ -106,7 +111,9 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
     </div>
     
     <div class="row" id="compare_with_div" style="display: none;">
-    <div class="well well-sm" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;"><strong> Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box. To compare the current release set with other release set, please choose the release version from below</strong></div>
+    <div id="compare_with_well" class="well well-sm" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
+    <strong> Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box. To compare the current release set with other release set, please choose the release version from below</strong>
+    </div>
 
     
     <div class="well">
