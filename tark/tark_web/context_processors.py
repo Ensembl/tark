@@ -16,15 +16,18 @@ limitations under the License.
 '''
 from release.utils.release_utils import ReleaseUtils
 import json
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 def init_assembly_releases(request):
     all_assembly_releases = json.dumps(ReleaseUtils.get_all_assembly_releases())
     current_release = ReleaseUtils.get_latest_release()
     current_assembly = ReleaseUtils.get_latest_assembly()
-    print("===from context processor=========")
-    print(all_assembly_releases)
-    print("********************from context processor=========")
+    logger.debug("********************from context processor=========")
+    logger.debug(all_assembly_releases)
+    print("===========reached here==============")
     return {"all_assembly_releases": all_assembly_releases,
             "current_release": current_release,
             "current_assembly": current_assembly,

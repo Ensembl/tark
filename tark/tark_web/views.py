@@ -22,6 +22,9 @@ from .forms import DiffForm
 import requests
 from tark_web.forms import SearchForm, FormUtils
 import json
+import logging
+# Get an instance of a logger
+logger = logging.getLogger("tark")
 
 
 def web_home(request):
