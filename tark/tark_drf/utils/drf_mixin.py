@@ -73,7 +73,6 @@ class SerializerMixin(object):
                         else:
                             self.fields[entry] = one2many[entry](many=True, read_only=True)
 
-        print("*******FIELDS**************")
-        print(self.fields)
-        print("*******FIELDS**************")
-
+#         print("*******FIELDS**************")
+#         print(self.fields)
+#         print("*******FIELDS**************")

@@ -200,6 +200,7 @@ def compare_sequence(diff_result, compare_attr):
 
 @register.filter
 def compare_coding_sequence(diff_result, compare_attr):
+    print("compare coding sequence called")
     is_equal = False
     if len(diff_result['diff_me_transcript']['results']) == 0 or \
             len(diff_result['diff_with_transcript']['results']) == 0:
@@ -210,13 +211,15 @@ def compare_coding_sequence(diff_result, compare_attr):
     diff_me_tr_attr = None
     diff_with_tr_attr = None
 
-    if diff_me_tr and "translations" in diff_me_tr:
+    if diff_me_tr and "translations" in diff_me_tr and len(diff_me_tr["translations"]) > 0:
+        print("reached here1====")
         diff_me_translation = diff_me_tr["translations"][0]
         if diff_me_translation and "sequence" in diff_me_translation and compare_attr in diff_me_translation["sequence"]:
             diff_me_tr_attr = diff_me_translation["sequence"][compare_attr]
             print("diff_me_tr_attr  " + str(diff_me_tr_attr))
 
-    if diff_with_tr and "translations" in diff_with_tr:
+    if diff_with_tr and "translations" in diff_with_tr and len(diff_with_tr["translations"]) > 0:
+        print("reached here2====")
         diff_with_translation = diff_with_tr["translations"][0]
         if diff_with_translation and "sequence" in diff_with_translation and compare_attr in diff_with_translation["sequence"]:
             diff_with_tr_attr = diff_with_translation["sequence"][compare_attr]

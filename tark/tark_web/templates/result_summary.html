@@ -16,10 +16,12 @@
         </td>
 
          <td>
-        {% if diff_result.results.has_translation_changed %}
+        {% if diff_result.results.has_translation_changed == True %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
+       {% elif diff_result.results.has_translation_changed == False %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% else %}
+        <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
         {% endif %}
          </td>
       </tr>
@@ -80,26 +82,32 @@
     <tbody>
       <tr>
         <td>
-        {% if diff_result.results.has_cds_location_changed %}
+        {% if diff_result.results.has_cds_location_changed == True %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
+        {% elif diff_result.results.has_cds_location_changed == False %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+        {% else %}
+          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
         {% endif %}
         </td>
         
         <td>
-         {% if diff_result.results.has_cds_exon_set_changed %}
+         {% if diff_result.results.has_cds_exon_set_changed == True  %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
+        {% elif diff_result.results.has_cds_exon_set_changed == False %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+         {% else %}
+          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
         {% endif %}
         </td>
         
         <td>
-         {% if diff_result.results.has_cds_seq_changed %}
+         {% if diff_result.results.has_cds_seq_changed == True %}
         <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
+        {% elif diff_result.results.has_cds_seq_changed == False  %}
          <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+         {% else %}
+          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
         {% endif %}
         </td>
         

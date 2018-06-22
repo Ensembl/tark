@@ -133,6 +133,10 @@ font-size:80%;
    font-size:2em;
 }
 
+.glyp-diff-noresult{
+   color:#ccc;
+   font-size:2em;
+}
 
 /*
 datatable expansion

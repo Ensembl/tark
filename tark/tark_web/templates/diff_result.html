@@ -105,10 +105,12 @@
     <li><a data-toggle="tab" href="#has_transcript_changed" class="a-diff-green">Transcript</a></li>
     {% endif %}
     
-     {% if diff_result.results.has_translation_changed %}
-    <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-red">Translation</a></li>
-    {% else %}
-    <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-green">Translation</a></li>
+     {% if diff_result.results.has_translation_changed == True %}
+      <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-red">Translation</a></li>
+     {% elif diff_result.results.has_translation_changed == False %}
+      <li><a data-toggle="tab" href="#has_translation_changed" class="a-diff-green">Translation</a></li>
+     {% else %}
+      <li><a data-toggle="tab" href="#no_translation" class="a-diff-noresult">Translation</a></li>
     {% endif %}
     
      {% if diff_result.results.has_cdna_changed %}
@@ -117,11 +119,13 @@
     <li><a data-toggle="tab" href="#has_cdna_changed" class="a-diff-green">CDNA</a></li>
       {% endif %}
       
-    {% if diff_result.results.has_cds_changed %}
+    {% if diff_result.results.has_cds_changed  == True %}
     <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-red">CDS</a></li>
-      {% else %}
+    {% elif diff_result.results.has_cds_changed  == False %}
         <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-green">CDS</a></li>
-       {% endif %}
+    {% else %}
+       <li><a data-toggle="tab" href="#no_translation" class="a-diff-noresult">CDS</a></li>
+    {% endif %}
   </ul>
  
  
@@ -139,6 +143,11 @@
   <!--Translation-->
   <div id="has_translation_changed" class="tab-pane fade in" style="padding:10px;">
   {% include "translation_expander.html" %}
+  </div>
+  
+  <!--No Translation-->
+  <div id="no_translation" class="tab-pane fade in" style="padding:10px;">
+  <strong>No translation. Non-protein coding.</strong>
   </div>
   
   <!--CDNA -->
