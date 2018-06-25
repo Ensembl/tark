@@ -35,11 +35,9 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
         {% endif %}
         
        "data":{'serverSide':{{ server_side_processing }} },
-        columnDefs: [ {
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   0
-        } ],
+        columnDefs: [ { orderable: false, className: 'select-checkbox',  targets:   0 },
+                      { width: 20, targets: 0 }],
+        fixedColumns: true,
         select: {
             style:    'os',
             selector: 'td:first-child'
@@ -57,14 +55,38 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
 }//end function
 
 
+/* function to clear select_transcript_compare_well*/
+function clear_select_transcript_compare_well(){
+	$("#current_stable_id").html("");
+	$("#current_stable_id_version").html("");
+	$("#current_stable_id_assembly").html("");
+	$("#current_stable_id_release").html("");
+
+	$("#compare_stable_id").html("");
+	$("#compare_stable_id_version").html("");
+	$("#compare_stable_id_assembly").html("");
+	$("#compare_stable_id_release").html("");
+}//end function
+
     $(document).ready(function() {
-     $('#select_transcript_compare_well').hide();
+    
      var original_state_compare_well = $("#select_transcript_compare_well").clone();
-     
+     $('#select_transcript_compare_well').hide();
      var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}" );
      var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}" );
 
-     $("#id_diff_with_assembly").change(function () {
+     $("#id_diff_current_assembly").change(function () {
+       var assembly_releases = {{ all_assembly_releases|safe|escape }};
+       var cur_assembly_name = $(this).val(); 
+
+       var releases = assembly_releases[cur_assembly_name] || [];
+       var options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_current_release").html(options);
+     });
+    
+    $("#id_diff_with_assembly").change(function () {
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
        var cur_assembly_name = $(this).val(); 
 
@@ -73,24 +95,51 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
         $("#id_diff_with_release").html(options);
-    });
+     });
     
+    
+     <!--Handle update transcript set click eventfor current set start -->
+     $("#current_transcript_set").click(function (e) {
+     clear_select_transcript_compare_well();
+      
+     var current_assembly = $("#id_diff_current_assembly").val();
+     var current_release = $("#id_diff_current_release").val();
+     console.log(" current_assembly " + current_assembly + " current_release " + current_release);
+     var current_well_text='<strong> Curent Assembly: '+ current_assembly +'  Current Release: '+ current_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
+   
+     tark_table.destroy();
+     $('#loadingSpinner').show();
+
+     tark_table = create_current_release_table("tark_datatable","{{table_name}}",current_assembly, current_release);
+
+      e.preventDefault(e);
+     $('#current_well').html(current_well_text);
+     $("#select_transcript_compare_well").replaceWith(original_state_compare_well);
+     tark_table.rows( { selected: true } ).deselect();
+     tark_table_compare.rows(  { selected: true } ).deselect();
+     });
+     <!--Handle update transcript set click eventfor current set end -->
+    
+    
+    <!--Handle update transcript set click eventfor compare set start -->
      $("#compare_transcript_set").click(function (e) {
+     clear_select_transcript_compare_well();
      var compare_assembly = $("#id_diff_with_assembly").val();
      var compare_release = $("#id_diff_with_release").val();
      console.log(" compare_assembly " + compare_assembly + " compare_release " + compare_release);
-     var compare_with_well_text='<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000296468 in search box. To compare the current release set with other release set, please choose the release version from below</strong>';
+     var compare_with_well_text='<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
    
      tark_table_compare.destroy();
      $('#loadingSpinner_compare_with').show();
+
      tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}",compare_assembly, compare_release);
       e.preventDefault(e);
      $('#compare_with_well').html(compare_with_well_text);
      $("#select_transcript_compare_well").replaceWith(original_state_compare_well);
      tark_table.rows( { selected: true } ).deselect();
      tark_table_compare.rows(  { selected: true } ).deselect();
-
      });
+     <!--Handle update transcript set click eventfor compare set end -->
     
     var stable_id_current = "";
     var stable_id_version_current = "";
@@ -100,6 +149,9 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
         stable_id_version_current = item.stable_id_version;
       });
       console.log("Current selection " + stable_id_current + " stable_id_version_current " + stable_id_version_current);
+      
+      $("#current_stable_id_assembly").html( $("#id_diff_current_assembly").val());
+      $("#current_stable_id_release").html($("#id_diff_current_release").val());
       $('#current_stable_id').html(stable_id_current);
       $('#current_stable_id_version').html(stable_id_version_current);
     });
@@ -112,6 +164,9 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
         stable_id_version_compare = item.stable_id_version;
       });
       console.log("Compare selection " + stable_id_compare + " stable_id_version_compare " + stable_id_version_compare);
+      
+       $("#compare_stable_id_assembly").html($("#id_diff_with_assembly").val());
+       $("#compare_stable_id_release").html($("#id_diff_with_release").val());
        $('#compare_stable_id').html(stable_id_compare);
        $('#compare_stable_id_version').html(stable_id_version_compare);
     });
@@ -133,36 +188,36 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
    <div class="container-fluid" style="padding-left:50px;padding-right:50px;">
    <div class="row">
     <div id="loadingSpinner"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
-    
-     <div id="assembly_release_compare_well" class="row">
+
+    <div id="current_well" class="well well-sm" style="color: #31708f;background-color: #d9edf7;border-color: #bce8f1;"><strong>Current Assembly: "{{ assembly_name }}"  Current Release: "{{ release_name }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong> </div>
+
+     <!-- div assembly_release_current_well start -->
+    <div id="assembly_release_current_well" class="row">
      <div class="col-md-10">
-    <form id="compare_form" class="form-horizontal" method="POST" action="">
+    <form id="current_form" class="form-horizontal" method="POST" action="">
     {% csrf_token %}
   	<div class="form-group">
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
    	<div class="col-md-1">
-    {{ form.diff_with_assembly|add_class:"form-control"}}
+    {{ form.diff_current_assembly|add_class:"form-control"}}
   	</div>
  
    	<div class="col-md-1">
-      {{ form.diff_with_release|add_class:"form-control"}}
+      {{ form.diff_current_release|add_class:"form-control"}}
    	</div>
    	
    	<div class="col-md-2">
-    <button id="compare_transcript_set" type="submit" class="btn btn-primary btn-block">Compare Transcript Sets</button>
+    <button id="current_transcript_set" type="submit" class="btn btn-primary btn-block">Update Transcript Set</button>
     </div>
-   	
 
-   	<label class="control-label col-md-6">(Note: To compare the current release set with any other release set, please select the assembly/release version and click the button)</label>
-
-  	</div>
+    </div>
 
 	</form>
     </div>
     </div>
+     <!-- div assembly_release_current_well end -->
+    <hr/>
     
-    
-    <div class="well well-sm" style="color: #31708f;background-color: #d9edf7;border-color: #bce8f1;"><strong>Current Assembly: "{{ assembly_name }}"  Current Release: "{{ release_name }}". To filter type: ENST00000296468 in search box. </strong> </div>
     <table id="tark_datatable" class="table table-striped table-bordered compact" cellspacing="0" width="95%">
       <thead>
             <tr>
@@ -178,9 +233,38 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
     
     <div class="row" id="compare_with_div" style="display: none;">
     <div id="compare_with_well" class="well well-sm" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
-    <strong> Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box.</strong>
+    <strong> Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>
+    </div>
+   
+   
+    <!-- div assembly_release_compare_well start -->
+    <div id="assembly_release_compare_well" class="row">
+     <div class="col-md-10">
+    <form id="compare_form" class="form-horizontal" method="POST" action="">
+    {% csrf_token %}
+  	<div class="form-group">
+   	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
+   	<div class="col-md-1">
+    {{ form.diff_with_assembly|add_class:"form-control"}}
+  	</div>
+ 
+   	<div class="col-md-1">
+      {{ form.diff_with_release|add_class:"form-control"}}
+   	</div>
+   	
+   	<div class="col-md-2">
+    <button id="compare_transcript_set" type="submit" class="btn btn-success btn-block">Update Transcript Set</button>
     </div>
 
+    </div>
+
+	</form>
+    </div>
+    </div>
+    <hr/>
+
+    
+     <!-- div assembly_release_compare_well end -->
    
     <div id="loadingSpinner_compare_with"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
     
@@ -216,15 +300,15 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
     <td>Current Release Selected</td>
     <td id="current_stable_id"></td>
     <td id="current_stable_id_version"></td>
-    <td id="current_stable_id_assembly">{{ assembly_name }}</td>
-    <td id="current_stable_id_release">{{ release_name }}</td>
+    <td id="current_stable_id_assembly"></td>
+    <td id="current_stable_id_release"></td>
     </tr>
     <tr class="success">
-    <td>Other Release Selected</td>
+    <td>Compare Release Selected</td>
     <td id="compare_stable_id"></td>
     <td id="compare_stable_id_version"></td>
-    <td id="compare_stable_id_assembly">{{ assembly_name_compare }}</td>
-    <td id="compare_stable_id_release">{{ release_name_compare }}</td>
+    <td id="compare_stable_id_assembly"></td>
+    <td id="compare_stable_id_release"></td>
     </tr>
     </table>
 

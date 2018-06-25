@@ -54,6 +54,11 @@ class CompareSetForm(forms.Form):
         current_release = ReleaseUtils.get_latest_release()
         current_assembly = ReleaseUtils.get_latest_assembly()
 
+        self.fields['diff_current_assembly'] = forms.CharField(initial=current_assembly,
+                                                            widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_current_release'] = forms.CharField(initial=int(current_release),
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+
         self.fields['diff_with_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_with_release'] = forms.CharField(initial=int(current_release)-1,
