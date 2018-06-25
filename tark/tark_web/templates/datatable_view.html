@@ -4,6 +4,7 @@
 
 {% load staticfiles %}
 {% load add_class %}
+{% load lookups %}
 
 {% block extra_styles %}
 {% endblock %}
@@ -67,6 +68,8 @@ function clear_select_transcript_compare_well(){
 	$("#compare_stable_id_assembly").html("");
 	$("#compare_stable_id_release").html("");
 }//end function
+
+
 
     $(document).ready(function() {
     
@@ -223,7 +226,7 @@ function clear_select_transcript_compare_well(){
             <tr>
              <th></th>
              {% for fields in data_fields %}
-                <th>{{ fields }}</th>
+                <th>{{ fields|column_mappings }}</th>
              {% endfor %}
             </tr>
       </thead>
@@ -273,7 +276,7 @@ function clear_select_transcript_compare_well(){
             <tr>
              <th></th>
              {% for fields in data_fields %}
-                <th>{{ fields }}</th>
+                   <th>{{ fields|column_mappings }}</th>
              {% endfor %}
             </tr>
       </thead>
