@@ -314,7 +314,7 @@ function clear_select_transcript_compare_well(){
 <!-- Selected transcript comparison start --> 
     <div id="select_transcript_compare_well" class="row col-md-8 col-md-offset-2">
 	<form id="diff_form" class="form-horizontal" method="POST" action="{% url 'diff_home' %}">
-	<input type="hidden" name="csrfmiddlewaretoken" value="rgQrozBRTb4DkoodRikH25vZJMAo6RaByb0Tv75L6i1wk7W9nIePMrF8enHgUKeE">
+	{% csrf_token %}
 	
 
 	<div class="col-md-6">
