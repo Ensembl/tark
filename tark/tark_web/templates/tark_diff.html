@@ -44,67 +44,102 @@
   </div>
 </div>
 
-<form id="diff_form" class="form-horizontal" method="POST" action="">
-{% csrf_token %}
-
- {% for error in form.non_field_errors %}
+<div class="row">
+	<form id="diff_form" class="form-horizontal" method="POST" action="">
+	{% csrf_token %}
+	{% for error in form.non_field_errors %}
       <div class="form-group has-errors text-danger small">
-        {{error}}
+     {{error}}
      </div>
- {% endfor %}
+ 	{% endfor %}
+
+	<div class="col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading"><strong>Diff Me</strong></div>
+				<div class="panel-body">
+
+  				<div class="form-group">
+    			<label class="control-label col-md-3" for="species">Species:</label>
+				    <div class="col-md-6">
+				     {{ form.species|add_class:"form-control" }}
+				    </div>
+				  </div>
+				
+				  <div class="form-group">
+				    <label class="control-label col-md-3" for="stable_id">StableID:</label>
+				    <div class="col-md-6">
+				    {{ form.diff_me_stable_id|add_class:"form-control"}}
+				    </div>
+				    
+				  </div>
+				
+				
+				  <div class="form-group">
+				 
+				  <label class="control-label col-md-3 for="diff_me_assembly">Assembly/Release:</label>
+				   <div class="col-md-4">
+				   {{ form.diff_me_assembly|add_class:"form-control"}}
+				  </div>
+				 
+				   <div class="col-md-2">
+				    {{ form.diff_me_release|add_class:"form-control"}}
+				   </div>
+				  </div>
 
 
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="species">Species:</label>
-    <div class="col-sm-4">
-     {{ form.species|add_class:"form-control" }}
-    </div>
-  </div>
+				
+				
+				</div>
+			</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-success">
+			<div class="panel-heading"><strong>Diff With</strong></div>
+				<div class="panel-body">
+				
+				<div class="form-group">
+    			<label class="control-label col-md-3" for="species">Species:</label>
+				    <div class="col-md-6">
+				     {{ form.species|add_class:"form-control" }}
+				    </div>
+				  </div>
+				
+				  <div class="form-group">
+				    <label class="control-label col-md-3" for="stable_id">StableID:</label>
+				    <div class="col-md-6">
+				    {{ form.diff_with_stable_id|add_class:"form-control"}}
+				    </div>
+				    
+				    
+				  </div>
+				
+				
+				<div class="form-group">
+				  <label class="control-label col-md-3" for="diff_with_assembly">Assembly/Release:</label>
+				  <div class="col-md-4">
+				   {{ form.diff_with_assembly|add_class:"form-control"}}
+				  </div>
+				  
+				   <div class="col-md-2">
+				    {{ form.diff_with_release|add_class:"form-control"}}
+				   </div>
+				  </div>
+				
+					
+					
+					
+					
+					
+				</div>
+			</div>
+	</div>
 
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="stable_id">Transcript Stable ID:</label>
-    <div class="col-sm-4 block">
-    {{ form.stable_id|add_class:"form-control"}}
-    </div>
-  </div>
-
-
-  <div class="form-group">
- 
-  <label class="control-label col-sm-2" for="diff_me_assembly">Diff Me (Assembly/Release):</label>
-   <div class="col-sm-3">
-   {{ form.diff_me_assembly|add_class:"form-control"}}
-  </div>
- 
-   <div class="col-sm-1">
-    {{ form.diff_me_release|add_class:"form-control"}}
-   </div>
-  </div>
-  
-
-
- <div class="form-group">
-  <label class="control-label col-sm-2" for="diff_with_assembly">Diff With (Assembly/Release):</label>
-  <div class="col-sm-3">
-   {{ form.diff_with_assembly|add_class:"form-control"}}
-  </div>
-  
-   <div class="col-sm-1">
-    {{ form.diff_with_release|add_class:"form-control"}}
-   </div>
-  
-  
-  
+<button type="submit" class="btn btn-info btn-block">Diff Transcripts</button>
+</form>
 </div>
 
 
-  <div class="form-group"> 
-    <div class="col-sm-offset-2 col-sm-4">
-      <button type="submit" class="btn btn-primary btn-block">Diff Transcript</button>	
-    </div>
-  </div>
-
-</form>
 
 </div>
 

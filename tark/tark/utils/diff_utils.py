@@ -38,10 +38,11 @@ class DiffUtils(object):
         print("COUNT ==================  " + str(count))
 
         if first_object_ is not None and second_object_ is not None:
+            print("DiffSet comparare_object about to be called")
             diff_set = DiffSet(first_object=first_object_, second_object=second_object_)
             diff_dict = diff_set.compare_objects()
             result_data['results'] = diff_dict
-            result_data['count'] = 1  # for output
+            result_data['count'] = 2  # for output
         else:
             result_data['results'] = diff_dict
             result_data['count'] = 0  # for output
@@ -61,7 +62,7 @@ class DiffUtils(object):
         host_url = http_protocal + '://' + hostname
 
         # get diff me
-        query_url_diff_me = "/api/transcript/?stable_id=" + params['stable_id'] + "&assembly_name=" + \
+        query_url_diff_me = "/api/transcript/?stable_id=" + params['diff_me_stable_id'] + "&assembly_name=" + \
                             params['diff_me_assembly'] + "&release_short_name=" + params['diff_me_release'] + \
                             "&expand_all=true"
 
@@ -78,7 +79,7 @@ class DiffUtils(object):
             result_data['diff_me_transcript'] = diff_me_result
 
         # get diff with
-        query_url_diff_with = "/api/transcript/?stable_id=" + params['stable_id'] + "&assembly_name=" + \
+        query_url_diff_with = "/api/transcript/?stable_id=" + params['diff_with_stable_id'] + "&assembly_name=" + \
             params['diff_with_assembly'] + "&release_short_name=" + params['diff_with_release'] + \
             "&expand_all=true"
 
@@ -138,7 +139,7 @@ class DiffUtils(object):
                     second_object = first_object
                     return (first_object, second_object)
         elif count == 2:
-            print("Reached cound 2")
+            print("Reached count 2")
             first_object = results[0]
             second_object = results[1]
             return (first_object, second_object)
@@ -293,9 +294,9 @@ class DiffSet(object):
         second_object = self.second_object
 
         diff_dict = collections.OrderedDict()
-        diff_dict['stable_id'] = None
-        if first_object['stable_id'] == second_object['stable_id']:
-            diff_dict['stable_id'] = first_object['stable_id']
+        # if first_object['stable_id'] == second_object['stable_id']:
+        diff_dict['diff_me_stable_id'] = first_object['stable_id']
+        diff_dict['diff_with_stable_id'] = second_object['stable_id']
 
         diff_dict['has_transcript_changed'] = self.has_transcript_changed()
         diff_dict['has_location_changed'] = self.has_location_changed()
@@ -303,6 +304,9 @@ class DiffSet(object):
         diff_dict['has_seq_changed'] = self.has_seq_changed()
 
         diff_dict['has_cdna_changed'] = self.has_cdna_changed()
+        print("++++++++++++FROM compare_objects start+++++++")
+        print(diff_dict)
+        print("+++++++++++++FROM compare_objects end++++++")
         return diff_dict
 
     def has_location_changed(self):

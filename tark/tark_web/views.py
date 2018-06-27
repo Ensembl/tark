@@ -37,6 +37,43 @@ def web_home(request):
         'web_home.html'
      )
 
+def diff_compare_set(request, diff_me_stable_id, diff_me_assembly, diff_me_release, diff_with_stable_id, diff_with_assembly, diff_with_release ):
+    print("From diff_from_set " + diff_me_stable_id  + " " + diff_me_assembly + " " +  diff_me_release + " " +  diff_with_stable_id + " " +  diff_with_assembly + " " +  diff_with_release )
+
+    diff_me_stable_id_version = '0'
+    if '.' in diff_me_stable_id:
+        (stable_id,version) = diff_me_stable_id.split('.')
+        diff_me_stable_id = stable_id
+        diff_me_stable_id_version = version
+
+    diff_with_stable_id_version = '0'
+    if '.' in diff_with_stable_id:
+        (stable_id,version) = diff_with_stable_id.split('.')
+        diff_with_stable_id = stable_id
+        diff_with_stable_id_version = version
+
+    hostname = request.get_host()
+    http_protocal = 'https' if request.is_secure() else 'http'
+    print('hostname ' + hostname)
+    print('http_protocal ' + http_protocal)
+    host_url = http_protocal + '://' + hostname
+    query_url = "/api/transcript/diff/?diff_me_stable_id=" + diff_me_stable_id +\
+                        "&diff_me_stable_id_version=" + diff_me_stable_id_version +\
+                        "&diff_with_stable_id=" + diff_with_stable_id +\
+                        "&diff_with_stable_id_version=" + diff_with_stable_id_version +\
+                        "&diff_me_release=" + diff_me_release + \
+                "&diff_me_assembly=" + diff_me_assembly + "&diff_with_release=" + diff_with_release + \
+                "&diff_with_assembly=" + diff_with_assembly + "&expand=transcript_release_set"
+    response = requests.get(host_url + query_url)
+    print(response.status_code)
+    if response.status_code == 200:
+        diff_result = response.json()
+        print("========diff_result========")
+        print(diff_result)
+        print("==================")
+        return render(request, 'diff_result.html', context={'form': DiffForm(),
+                                                                'diff_result': diff_result})
+    
 
 def diff_home(request):
     """
@@ -53,12 +90,29 @@ def diff_home(request):
         form = DiffForm(request.POST)
         if form.is_valid():
             print("Form is valid")
-            stable_id = form.cleaned_data['stable_id']
+            diff_me_stable_id = form.cleaned_data['diff_me_stable_id']
+            diff_me_stable_id_version = '0'
+            diff_with_stable_id = form.cleaned_data['diff_with_stable_id']
+            diff_with_stable_id_version = '0'
             diff_me_assembly = form.cleaned_data['diff_me_assembly']
             diff_me_release = form.cleaned_data['diff_me_release']
             diff_with_assembly = form.cleaned_data['diff_with_assembly']
             diff_with_release = form.cleaned_data['diff_with_release']
-            print("Stable id " + stable_id)
+
+            if '.' in diff_me_stable_id:
+                (stable_id,version) = diff_me_stable_id.split('.')
+                diff_me_stable_id = stable_id
+                diff_me_stable_id_version = version
+
+            if '.' in diff_with_stable_id:
+                (stable_id,version) = diff_with_stable_id.split('.')
+                diff_with_stable_id = stable_id
+                diff_with_stable_id_version = version
+
+            print("diff_me_stable_id " + diff_me_stable_id)
+            print("diff_me_stable_id_version " + diff_me_stable_id_version)
+            print("diff_with_stable_id " + diff_with_stable_id)
+            print("diff_with_stable_id_version " + diff_with_stable_id_version)
             print("diff_me_assembly " + diff_me_assembly)
             print("diff_me_release " + diff_me_release)
             print("diff_with_assembly " + diff_with_assembly)
@@ -69,7 +123,11 @@ def diff_home(request):
             print('hostname ' + hostname)
             print('http_protocal ' + http_protocal)
             host_url = http_protocal + '://' + hostname
-            query_url = "/api/transcript/diff/?stable_id=" + stable_id + "&diff_me_release=" + diff_me_release + \
+            query_url = "/api/transcript/diff/?diff_me_stable_id=" + diff_me_stable_id +\
+                        "&diff_me_stable_id_version=" + diff_me_stable_id_version +\
+                        "&diff_with_stable_id=" + diff_with_stable_id +\
+                        "&diff_with_stable_id_version=" + diff_with_stable_id_version +\
+                        "&diff_me_release=" + diff_me_release + \
                 "&diff_me_assembly=" + diff_me_assembly + "&diff_with_release=" + diff_with_release + \
                 "&diff_with_assembly=" + diff_with_assembly + "&expand=transcript_release_set"
             response = requests.get(host_url + query_url)

@@ -62,15 +62,21 @@
   <a href="/web/diff" class="btn btn-primary btn-xs pull-right">New Diff</a> 
   </div>
   <div class="panel-body">
+  
   <dl class="row">
-  <dt class="col-md-1">Stable ID:</dt>
-  <dd class="col-md-2">{{ diff_result.stable_id }}</dd>
+  <dt class="col-md-3">Diff Me Stable ID:</dt>
+  <dd class="col-md-3">{{ diff_result.diff_me_stable_id }}</dd>
+  
+  <dt class="col-md-3">Diff With Stable ID:</dt>
+  <dd class="col-md-3">{{ diff_result.diff_with_stable_id }}</dd>
+  </dl>
 
-  <dt class="col-md-2">Diff Me Assembly&#47;Release:</dt>
-  <dd class="col-md-2">{{ diff_result.diff_me_assembly }}&#47;{{ diff_result.diff_me_release }}</dd>
-
-  <dt class="col-md-2">Diff With Assembly&#47;Release:</dt>
-  <dd class="col-md-2">{{ diff_result.diff_with_assembly }}&#47;{{ diff_result.diff_with_release }}</dd>
+  <dl class="row">
+  <dt class="col-md-3">Diff Me Assembly&#47;Release:</dt>
+  <dd class="col-md-3">{{ diff_result.diff_me_assembly }}&#47;{{ diff_result.diff_me_release }}</dd>
+  
+  <dt class="col-md-3">Diff With Assembly&#47;Release:</dt>
+  <dd class="col-md-3">{{ diff_result.diff_with_assembly }}&#47;{{ diff_result.diff_with_release }}</dd>
   </dl>
  </div>
 

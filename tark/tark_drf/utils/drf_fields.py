@@ -191,6 +191,16 @@ class DrfFields(object):
         return diff_me_assembly_field
 
     @classmethod
+    def diff_me_stable_id_field(cls):
+        diff_me_stable_id_field = coreapi.Field(
+            name='diff_me_stable_id',
+            location='query',
+            required=True,
+            type='string',
+            description='Diff me stable_id (eg: ENST00000639989)')
+        return diff_me_stable_id_field
+
+    @classmethod
     def diff_me_release_field(cls):
         diff_me_release_field = coreapi.Field(
             name='diff_me_release',
@@ -209,6 +219,16 @@ class DrfFields(object):
             type='string',
             description='assembly_name for diff_me (eg: GRCh38)')
         return diff_me_assembly_field
+
+    @classmethod
+    def diff_with_stable_id_field(cls):
+        diff_with_stable_id_field = coreapi.Field(
+            name='diff_with_stable_id',
+            location='query',
+            required=True,
+            type='string',
+            description='Diff with stable_id (eg: ENST00000639989)')
+        return diff_with_stable_id_field
 
     @classmethod
     def diff_with_release_field(cls):

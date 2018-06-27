@@ -22,7 +22,8 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
          $('#loadingSpinner').hide();
          $('#loadingSpinner_compare_with').hide();
          $('#compare_with_div').show();
-          $('#select_transcript_compare_well').show();
+         $('#select_transcript_compare_well').show();
+         $('#diff_selected_transcript').show();
          
 
         },
@@ -72,9 +73,10 @@ function clear_select_transcript_compare_well(){
 
 
     $(document).ready(function() {
-    
-     var original_state_compare_well = $("#select_transcript_compare_well").clone();
      $('#select_transcript_compare_well').hide();
+     $('#diff_selected_transcript').hide();
+     var original_state_compare_well = $("#select_transcript_compare_well").clone();
+
      var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}" );
      var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}" );
 
@@ -89,7 +91,7 @@ function clear_select_transcript_compare_well(){
         $("#id_diff_current_release").html(options);
      });
     
-    $("#id_diff_with_assembly").change(function () {
+    $("#id_diff_compare_assembly").change(function () {
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
        var cur_assembly_name = $(this).val(); 
 
@@ -97,7 +99,7 @@ function clear_select_transcript_compare_well(){
         var options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
-        $("#id_diff_with_release").html(options);
+        $("#id_diff_compare_release").html(options);
      });
     
     
@@ -127,8 +129,8 @@ function clear_select_transcript_compare_well(){
     <!--Handle update transcript set click eventfor compare set start -->
      $("#compare_transcript_set").click(function (e) {
      clear_select_transcript_compare_well();
-     var compare_assembly = $("#id_diff_with_assembly").val();
-     var compare_release = $("#id_diff_with_release").val();
+     var compare_assembly = $("#id_diff_compare_assembly").val();
+     var compare_release = $("#id_diff_compare_release").val();
      console.log(" compare_assembly " + compare_assembly + " compare_release " + compare_release);
      var compare_with_well_text='<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
    
@@ -153,10 +155,10 @@ function clear_select_transcript_compare_well(){
       });
       console.log("Current selection " + stable_id_current + " stable_id_version_current " + stable_id_version_current);
       
-      $("#current_stable_id_assembly").html( $("#id_diff_current_assembly").val());
-      $("#current_stable_id_release").html($("#id_diff_current_release").val());
-      $('#current_stable_id').html(stable_id_current);
-      $('#current_stable_id_version').html(stable_id_version_current);
+     $("#id_diff_me_assembly").val( $("#id_diff_current_assembly").val());
+     $("#id_diff_me_release").val($("#id_diff_current_release").val());
+     $('#id_diff_me_stable_id').val(stable_id_current);
+
     });
     
     var stable_id_compare = "";
@@ -168,17 +170,39 @@ function clear_select_transcript_compare_well(){
       });
       console.log("Compare selection " + stable_id_compare + " stable_id_version_compare " + stable_id_version_compare);
       
-       $("#compare_stable_id_assembly").html($("#id_diff_with_assembly").val());
-       $("#compare_stable_id_release").html($("#id_diff_with_release").val());
-       $('#compare_stable_id').html(stable_id_compare);
-       $('#compare_stable_id_version').html(stable_id_version_compare);
+       $("#id_diff_with_assembly").val($("#id_diff_compare_assembly").val());
+       $("#id_diff_with_release").val($("#id_diff_compare_release").val());
+       $('#id_diff_with_stable_id').val(stable_id_compare);
+
     });
     
-      
+    /* Diff selected */
     $("#diff_selected_transcript").click(function (e) {
       console.log("diff selected transcript clicked");
+       
+       var diff_me_stable_id = $('#current_stable_id').text();
+       var diff_me_assembly = $("#current_stable_id_assembly").text();
+       var diff_me_release = $("#current_stable_id_release").text();
+       
+       var diff_with_stable_id = $('#compare_stable_id').text();
+       var diff_with_assembly = $("#id_diff_with_assembly").val();
+       var diff_with_release = $("#id_diff_with_release").val();
+       
+       console.log("diff_me_stable_id " + diff_me_stable_id  + " diff_with_stable_id " + diff_with_stable_id);
+       if(diff_me_stable_id && diff_me_assembly && diff_me_release && diff_with_stable_id && diff_with_assembly && diff_with_release){
+        console.log("inside if" );
+        //options = {};
+        request_url = "/web/diff/compare_set/" + diff_me_stable_id + "/" + diff_me_assembly + "/" + diff_me_release + "/" + diff_with_stable_id + "/" + diff_with_assembly + "/" + diff_with_release + "/";
+        console.log(request_url);
+        //$.get(request_url);
+        //options.type = "GET";
+        //options.dataType = "text";
+        //options.error = function (jqXHR, status, err) { alert(status + "from AJAX"); };
+        //$.ajax(options);
+        }
+      
      
-      e.preventDefault(e);
+      //e.preventDefault(e);
     });
    
   });
@@ -245,14 +269,15 @@ function clear_select_transcript_compare_well(){
      <div class="col-md-10">
     <form id="compare_form" class="form-horizontal" method="POST" action="">
     {% csrf_token %}
+   
   	<div class="form-group">
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
    	<div class="col-md-1">
-    {{ form.diff_with_assembly|add_class:"form-control"}}
+    {{ form.diff_compare_assembly|add_class:"form-control"}}
   	</div>
  
    	<div class="col-md-1">
-      {{ form.diff_with_release|add_class:"form-control"}}
+      {{ form.diff_compare_release|add_class:"form-control"}}
    	</div>
    	
    	<div class="col-md-2">
@@ -286,39 +311,71 @@ function clear_select_transcript_compare_well(){
     </div>
 
 <hr>
-<!-- Selected transcript comparison --> 
-    <div id="select_transcript_compare_well" class="col-md-6">
-    <table class="table table-bordered compact">
-     <thead>
-     <tr>
+<!-- Selected transcript comparison start --> 
+    <div id="select_transcript_compare_well" class="row col-md-8 col-md-offset-2">
+	<form id="diff_form" class="form-horizontal" method="POST" action="{% url 'diff_home' %}">
+	<input type="hidden" name="csrfmiddlewaretoken" value="rgQrozBRTb4DkoodRikH25vZJMAo6RaByb0Tv75L6i1wk7W9nIePMrF8enHgUKeE">
+	
 
-      <th>Diff</th>
-      <th>Stable ID</th>
-      <th>Version</th>
-      <th>Assembly</th>
-      <th>Release</th>
-     </tr>
-     </thead>
-    <tr class="info">
-    <td>Current Release Selected</td>
-    <td id="current_stable_id"></td>
-    <td id="current_stable_id_version"></td>
-    <td id="current_stable_id_assembly"></td>
-    <td id="current_stable_id_release"></td>
-    </tr>
-    <tr class="success">
-    <td>Compare Release Selected</td>
-    <td id="compare_stable_id"></td>
-    <td id="compare_stable_id_version"></td>
-    <td id="compare_stable_id_assembly"></td>
-    <td id="compare_stable_id_release"></td>
-    </tr>
-    </table>
+	<div class="col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading"><strong>Diff Me</strong></div>
+				<div class="panel-body">
+  		
+				  <div class="form-group">
+				    <label class="control-label col-md-3" for="stable_id">StableID:</label>
+				    <div class="col-md-6">
+				    <input type="text" name="diff_me_stable_id" class="form-control" id="id_diff_me_stable_id"  maxlength="30" readonly>
+				    </div>
+				  </div>
+				
+				 <div class="form-group">
+				  <label class="control-label col-md-3 for=" diff_me_assembly"="">Assembly/Release:</label>
+				   <div class="col-md-4">
+				   <input type="text" name="diff_me_assembly" class="form-control" id="id_diff_me_assembly"  readonly>
+  				  </div>
+				 
+				   <div class="col-md-2">
+				    <input type="text" name="diff_me_release" class="form-control" id="id_diff_me_release"  readonly>
+				   </div>
+				  </div>
+				
+				</div>
+			</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-success">
+			<div class="panel-heading"><strong>Diff With</strong></div>
+				<div class="panel-body">
+				
+				
+				  <div class="form-group">
+				    <label class="control-label col-md-3" for="stable_id">StableID:</label>
+				    <div class="col-md-6">
+				    <input type="text" name="diff_with_stable_id" class="form-control" id="id_diff_with_stable_id" required="" maxlength="30" readonly>
+				    </div>
+				  </div>
+				
+				<div class="form-group">
+				  <label class="control-label col-md-3" for="diff_with_assembly">Assembly/Release:</label>
+				  <div class="col-md-4">
+				   <input type="text" name="diff_with_assembly" class="form-control" id="id_diff_with_assembly"  readonly>
+ 				  </div>
 
-    <button id="diff_selected_transcript" type="submit" class="btn btn-warning">Diff Selected Transcripts</button>
+				   <div class="col-md-2">
+				    <input type="text" name="diff_with_release" class="form-control" id="id_diff_with_release"  readonly>
+				   </div>
+				  </div>
+				
+				</div>
+			</div>
+	</div>
 
-
-    </div>
+<button type="submit" class="btn btn-info btn-block">Diff Transcripts</button>
+</form>
+</div>
+<!-- Selected transcript comparison end -->
 
 
 

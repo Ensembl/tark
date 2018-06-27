@@ -73,7 +73,8 @@ class TranscriptDiff(generics.ListAPIView):
 #         return queryset
     # @setup_eager_loading(TranscriptDiffSerializer)
     def get(self, request, *args, **kwargs):
-        stable_id = request.query_params.get('stable_id', None)
+        diff_me_stable_id = request.query_params.get('diff_me_stable_id', None)
+        diff_with_stable_id = request.query_params.get('diff_with_stable_id', None)
         diff_me_release = request.query_params.get('diff_me_release', None)
         diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
 
@@ -82,10 +83,12 @@ class TranscriptDiff(generics.ListAPIView):
         expand = request.query_params.get('expand', "transcript_release_set")
 
         print("===========GET===================\n")
-        print("Stable id " + str(stable_id) + "Diff me " + str(diff_me_release) +
+        print("Diff Me Stable id " + str(diff_me_stable_id) + "Diff With Stable id " + str(diff_with_stable_id) +
+              "Diff me " + str(diff_me_release) +
               "Diff with " + str(diff_with_release) + "expand " + expand)
 
-        params = {'stable_id': stable_id, 'diff_me_release': diff_me_release, 'diff_with_release': diff_with_release,
+        params = {'diff_me_stable_id': diff_me_stable_id, 'diff_with_stable_id': diff_with_stable_id,
+                  'diff_me_release': diff_me_release, 'diff_with_release': diff_with_release,
                   'diff_me_assembly': diff_me_assembly, 'diff_with_assembly': diff_with_assembly,
                   'expand': expand}
 

@@ -59,9 +59,9 @@ class CompareSetForm(forms.Form):
         self.fields['diff_current_release'] = forms.CharField(initial=int(current_release),
                                                            widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
 
-        self.fields['diff_with_assembly'] = forms.CharField(initial=current_assembly,
+        self.fields['diff_compare_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
-        self.fields['diff_with_release'] = forms.CharField(initial=int(current_release)-1,
+        self.fields['diff_compare_release'] = forms.CharField(initial=int(current_release)-1,
                                                            widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
 
 
@@ -72,8 +72,9 @@ class DiffForm(forms.Form):
         super(DiffForm, self).__init__(*args, **kwargs)
         current_release = ReleaseUtils.get_latest_release()
         current_assembly = ReleaseUtils.get_latest_assembly()
-        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
-        self.fields['stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
+        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()), required=False)
+        self.fields['diff_me_stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
+        self.fields['diff_with_stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
         self.fields['diff_me_assembly'] = forms.CharField(initial=current_assembly,
                                                           widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_me_release'] = forms.CharField(initial=current_release,
