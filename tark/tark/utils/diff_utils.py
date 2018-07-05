@@ -20,6 +20,7 @@ from exon.models import ExonTranscript
 import json
 from translation.models import Translation
 from django.db.models.query_utils import Q
+from tark.utils.exon_utils import ExonUtils
 
 
 
@@ -94,6 +95,24 @@ class DiffUtils(object):
             cls.get_coding_exons(diff_with_result)
             result_data['diff_with_transcript'] = diff_with_result
 
+        print("=============EXON SET COMPARE  ===============================")
+        print("len==" + str(len(result_data['diff_with_transcript']["results"])))
+        #print(result_data['diff_with_transcript']["results"][0]["exons"])
+
+        exonset_diff_me = None
+        if "results" in result_data['diff_me_transcript'] and len(result_data['diff_me_transcript']["results"]) == 1 and  "exons" in result_data['diff_me_transcript']["results"][0]:
+            exonset_diff_me = result_data['diff_me_transcript']["results"][0]["exons"]
+
+        exonset_diff_with = None
+        if "results" in result_data['diff_with_transcript'] and len(result_data['diff_with_transcript']["results"]) == 1 and "exons" in result_data['diff_with_transcript']["results"][0]:
+            exonset_diff_with = result_data['diff_with_transcript']["results"][0]["exons"]
+
+        exon_set_compare = ExonUtils.exon_set_compare(exonset_diff_me, exonset_diff_with)
+        print(exon_set_compare)
+        result_data["results"]["exon_set_compare"] = exon_set_compare
+        print("=============exon_set_compare===============================")
+
+
         # do translations comparison here
         translation_diff_dict = cls.compare_translations(result_data['diff_with_transcript'], result_data['diff_me_transcript'])
 
@@ -102,6 +121,7 @@ class DiffUtils(object):
 
         result_dict.data = result_data
         return result_dict
+
 
     @classmethod
     def get_compare_objects(cls, result_dict, params):
@@ -304,6 +324,7 @@ class DiffSet(object):
         diff_dict['has_seq_changed'] = self.has_seq_changed()
 
         diff_dict['has_cdna_changed'] = self.has_cdna_changed()
+
         print("++++++++++++FROM compare_objects start+++++++")
         print(diff_dict)
         print("+++++++++++++FROM compare_objects end++++++")

@@ -45,7 +45,40 @@ def compare_transcript(diff_result, compare_attr):
 
 
 @register.filter
-def compare_exon(diff_result, compare_attrs):
+def compare_exon(diff_me_exon, diff_with_exon):
+    compare_attr_list = ['stable_id', 'stable_id_version', 'assembly',
+                         'loc_region', 'loc_start', 'loc_end', 'loc_strand',
+                         'loc_checksum', 'seq_checksum', 'exon_checksum']
+    exon_result = []
+    for compare_attr in compare_attr_list:
+        is_equal = False
+        if compare_attr in diff_me_exon:
+            diff_me_exon_attr = diff_me_exon[compare_attr]
+
+        if compare_attr in diff_with_exon:
+            diff_with_exon_attr = diff_with_exon[compare_attr]
+
+        if diff_me_exon_attr and diff_with_exon_attr:
+            is_equal = str(diff_me_exon_attr) == str(diff_with_exon_attr)
+
+            exon_result.append(is_equal)
+
+    return exon_result
+
+
+@register.filter
+def get_exon_by_exon_order(exon_list, exon_order):
+
+    for exon in exon_list:
+        if exon_order is not None:
+            if exon['exon_order'] == exon_order:
+                return exon
+
+    return None
+
+
+@register.filter
+def compare_exons(diff_result, compare_attrs):
 
     compare_result = []
 
@@ -229,3 +262,10 @@ def compare_coding_sequence(diff_result, compare_attr):
 
     return is_equal
 
+
+@register.filter()
+def zip_lists(a, b):
+    print(zip(a, b))
+    return zip(a, b)
+
+  
