@@ -16,6 +16,7 @@ limitations under the License.
 '''
 
 from django import template
+from tark.utils.exon_utils import ExonUtils
 register = template.Library()
 
 
@@ -47,9 +48,14 @@ def compare_transcript(diff_result, compare_attr):
 @register.filter
 def compare_exon(diff_me_exon, diff_with_exon):
     compare_attr_list = ['stable_id', 'stable_id_version', 'assembly',
-                         'loc_region', 'loc_start', 'loc_end', 'loc_strand',
+                         'loc_region', 'loc_start', 'loc_end', 'length', 'loc_strand',
                          'loc_checksum', 'seq_checksum', 'exon_checksum']
     exon_result = []
+    # computed attributes
+    diff_me_exon["length"] = 0
+    diff_with_exon["length"] = 0
+    diff_me_exon["length"] = int(diff_me_exon["loc_end"]) - int(diff_me_exon["loc_start"])
+    diff_with_exon["length"] = int(diff_with_exon["loc_end"]) - int(diff_with_exon["loc_start"])
     for compare_attr in compare_attr_list:
         is_equal = False
         if compare_attr in diff_me_exon:
@@ -64,6 +70,25 @@ def compare_exon(diff_me_exon, diff_with_exon):
             exon_result.append(is_equal)
 
     return exon_result
+
+
+@register.filter
+def compute_exon_overlap(diff_me_exon, diff_with_exon):
+    start1, end1, start2, end2 = 0, 0, 0, 0
+
+    if diff_me_exon:
+        start1, end1 = diff_me_exon["loc_start"], diff_me_exon["loc_end"]
+
+    if diff_with_exon:
+        start2, end2 = diff_with_exon["loc_start"], diff_with_exon["loc_end"]
+
+    overlap = ExonUtils.compute_overlap(start1, end1, start2, end2)
+    return overlap
+
+
+@register.filter
+def subtract(value, arg):
+    return value - arg
 
 
 @register.filter

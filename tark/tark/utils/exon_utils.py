@@ -60,7 +60,6 @@ class ExonUtils(object):
                     list_set1.append(0)
                     list_set2.append(exon2["exon_order"])
 
-
         compare_result_list = [list_set1, list_set2]
 
         print(list_set1)
@@ -69,3 +68,10 @@ class ExonUtils(object):
 
         return compare_result_list
 
+    @classmethod
+    def compute_overlap(cls, start1, end1, start2, end2):
+        x = range(start1, end1)
+        y = range(start2, end2)
+        xs = set(x)
+        overlap = xs.intersection(y)
+        return len(overlap)
