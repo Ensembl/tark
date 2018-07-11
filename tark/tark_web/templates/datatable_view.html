@@ -13,8 +13,8 @@
 <script type="text/javascript">
 
 
-function create_current_release_table(id_data_table, table_name_, assembly_name_, release_name_){
-    console.log(id_data_table + "  " + table_name_ + "  " + assembly_name_ + "  " + release_name_);
+function create_current_release_table(id_data_table, table_name_, assembly_name_, release_name_, source_name_){
+    console.log(id_data_table + "  " + table_name_ + "  " + assembly_name_ + "  " + release_name_ + "  " + source_name_);
  //datatable
     var tark_table = $('#'+id_data_table).DataTable( {
 
@@ -31,9 +31,9 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
         "pageLength": 5,
         "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
         {% if server_side_processing == 'true' %}
-        "ajax": "/web/datatable_serverside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/",
+        "ajax": "/web/datatable_serverside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
         {% else %}
-         "ajax": "/web/datatable_clientside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/",
+         "ajax": "/web/datatable_clientside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
         {% endif %}
         
        "data":{'serverSide':{{ server_side_processing }} },
@@ -77,9 +77,10 @@ function clear_select_transcript_compare_well(){
      $('#diff_selected_transcript').hide();
      var original_state_compare_well = $("#select_transcript_compare_well").clone();
 
-     var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}" );
-     var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}" );
+     var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}", "{{source_name}}" );
+     var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}", "{{source_name_compare}}"  );
 
+     //event handler for current assembly change
      $("#id_diff_current_assembly").change(function () {
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
        var cur_assembly_name = $(this).val(); 
@@ -91,16 +92,20 @@ function clear_select_transcript_compare_well(){
         $("#id_diff_current_release").html(options);
      });
     
+    //event handler for compare assembly change
     $("#id_diff_compare_assembly").change(function () {
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
        var cur_assembly_name = $(this).val(); 
 
-        var releases = assembly_releases[cur_assembly_name] || [];
-        var options = $.map(releases, function(release){
+       var releases = assembly_releases[cur_assembly_name] || [];
+       var options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
         $("#id_diff_compare_release").html(options);
      });
+    
+    
+    
     
     
      <!--Handle update transcript set click eventfor current set start -->
@@ -115,7 +120,7 @@ function clear_select_transcript_compare_well(){
      tark_table.destroy();
      $('#loadingSpinner').show();
 
-     tark_table = create_current_release_table("tark_datatable","{{table_name}}",current_assembly, current_release);
+     tark_table = create_current_release_table("tark_datatable","{{table_name}}",current_assembly, current_release, current_source);
 
       e.preventDefault(e);
      $('#current_well').html(current_well_text);
@@ -137,7 +142,7 @@ function clear_select_transcript_compare_well(){
      tark_table_compare.destroy();
      $('#loadingSpinner_compare_with').show();
 
-     tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}",compare_assembly, compare_release);
+     tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}",compare_assembly, compare_release, compare_source);
       e.preventDefault(e);
      $('#compare_with_well').html(compare_with_well_text);
      $("#select_transcript_compare_well").replaceWith(original_state_compare_well);
@@ -224,6 +229,11 @@ function clear_select_transcript_compare_well(){
     <form id="current_form" class="form-horizontal" method="POST" action="">
     {% csrf_token %}
   	<div class="form-group">
+  	<label class="control-label col-md-2" for="source">Source:</label>
+   	<div class="col-md-1">
+    {{ form.diff_current_source|add_class:"form-control"}}
+  	</div>
+  	
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
    	<div class="col-md-1">
     {{ form.diff_current_assembly|add_class:"form-control"}}
@@ -270,6 +280,12 @@ function clear_select_transcript_compare_well(){
     <form id="compare_form" class="form-horizontal" method="POST" action="">
     {% csrf_token %}
    
+   <div class="form-group">
+  	<label class="control-label col-md-2" for="source">Source:</label>
+   	<div class="col-md-1">
+    {{ form.diff_compare_source|add_class:"form-control"}}
+  	</div>
+  	
   	<div class="form-group">
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
    	<div class="col-md-1">

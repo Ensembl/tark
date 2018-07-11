@@ -61,5 +61,13 @@
         "start_date": null,
         "status": "2"
     }
+},{
+    "model": "session.session",
+    "pk": 8,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
 }
 ]

@@ -36,11 +36,11 @@ urlpatterns = [
     # search
     url(r'^search/$', views.search_home, name='search_home'),
     #  datatables
-    url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/', datatable_view, name="datatable_view"),
+    url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/', datatable_view, name="datatable_view"),
     url(r'^datatable_clientside/(?P<table_name>[\w]+)/', datatable_fetch, name="datatablefetch_clientside"),
     url(r'^datatable_serverside/assembly', AssemblyDatatableView.as_view(),
         name="datatablefetch_serverside_assembly"),
-    url(r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/', TranscriptDatatableView.as_view(),
+    url(r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/', TranscriptDatatableView.as_view(),
         name="datatablefetch_serverside_transcript"),
     url(r'^datatable_serverside/gene/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/', GeneDatatableView.as_view(),
         name="datatablefetch_serverside_gene"),

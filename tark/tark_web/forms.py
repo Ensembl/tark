@@ -46,6 +46,15 @@ class FormUtils(object):
 
         return species_list
 
+    @classmethod
+    def get_all_sources_tuples(cls):
+        source_list = []
+
+        for source in ReleaseUtils.get_all_release_sources():
+            source_list.append((source, source))
+
+        return source_list
+
 
 class CompareSetForm(forms.Form):
 
@@ -53,17 +62,21 @@ class CompareSetForm(forms.Form):
         super(CompareSetForm, self).__init__(*args, **kwargs)
         current_release = ReleaseUtils.get_latest_release()
         current_assembly = ReleaseUtils.get_latest_assembly()
+        current_source = ReleaseUtils.get_default_source()
 
         self.fields['diff_current_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_current_release'] = forms.CharField(initial=int(current_release),
                                                            widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+        self.fields['diff_current_source'] = forms.CharField(initial=current_source,
+                                                           widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
 
         self.fields['diff_compare_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_compare_release'] = forms.CharField(initial=int(current_release)-1,
                                                            widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
-
+        self.fields['diff_compare_source'] = forms.CharField(initial=current_source,
+                                                           widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
 
 
 class DiffForm(forms.Form):

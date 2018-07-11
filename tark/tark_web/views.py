@@ -31,7 +31,7 @@ def web_home(request):
     """
     View function for home page
     """
-    # Render the HTML template index.html with data in the context variable
+    # Render the HTML template web_home.html with data in the context variable
     return render(
         request,
         'web_home.html'

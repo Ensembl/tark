@@ -8,6 +8,16 @@ from translation.models import Translation
 from tark.fields import ChecksumField
 
 
+class ReleaseSource(models.Model):
+    source_id = models.AutoField(primary_key=True)
+    shortname = models.CharField(unique=True, max_length=24, blank=True, null=True)
+    description = models.CharField(max_length=256, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'release_source'
+
+
 class ReleaseSet(models.Model):
 
     release_id = models.AutoField(primary_key=True)
@@ -17,11 +27,15 @@ class ReleaseSet(models.Model):
     release_date = models.DateField(blank=True, null=True)
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     release_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
+    source = models.ForeignKey(ReleaseSource, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'release_set'
-        unique_together = (('shortname', 'assembly'),)
+        unique_together = (('shortname', 'assembly', 'source'),)
+
+
+
 
 
 # # will deprecate

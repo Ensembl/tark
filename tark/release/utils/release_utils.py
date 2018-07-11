@@ -14,11 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-from release.models import ReleaseSet
+from release.models import ReleaseSet, ReleaseSource
 from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
-import assembly
+from numpy import source
 
 
 class ReleaseUtils(object):
@@ -40,6 +40,11 @@ class ReleaseUtils(object):
         return current_assembly
 
     @classmethod
+    def get_default_source(cls):
+        default_source = getattr(settings, "DEFAULT_SOURCE", "ensembl")
+        return default_source
+
+    @classmethod
     def get_all_releases(cls, assembly_name=None):
         if assembly_name is None:
             assembly_name = cls.get_latest_assembly()
@@ -48,12 +53,18 @@ class ReleaseUtils(object):
         return all_releases
 
     @classmethod
-    def get_all_release_short_names(cls, assembly_name=None):
+    def get_all_release_short_names(cls, assembly_name=None, source_name=None):
         if assembly_name is None:
             assembly_name = cls.get_latest_assembly()
 
-        all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name).values('shortname')
+        if source_name is None:
+            source_name = cls.get_default_source()
+
+        all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name).\
+            filter(source__shortname__iexact=source_name).values('shortname')
+
         all_release_short_names = [release["shortname"] for release in all_releases]
+
         return sorted(all_release_short_names, reverse=True)
 
     @classmethod
@@ -64,14 +75,20 @@ class ReleaseUtils(object):
     @classmethod
     def get_all_assembly_names(cls):
         all_assemblies = Assembly.objects.all().values('assembly_name')
-        all_assemly_names = [assembly["assembly_name"] for assembly in all_assemblies]
-        return all_assemly_names
+        all_assembly_names = [assembly["assembly_name"] for assembly in all_assemblies]
+        return all_assembly_names
 
     @classmethod
-    def get_all_assembly_releases(cls):
+    def get_all_assembly_releases(cls, source_name=None):
         assembly_releases = {}
         all_assembly_names = cls.get_all_assembly_names()
         for assembly_name in all_assembly_names:
-            assembly_releases[assembly_name] = cls.get_all_release_short_names(assembly_name)
+            assembly_releases[assembly_name] = cls.get_all_release_short_names(assembly_name, source_name)
 
         return assembly_releases
+
+    @classmethod
+    def get_all_release_sources(cls):
+        all_sources = ReleaseSource.objects.all().values('shortname')
+        all_source_names = [source["shortname"] for source in all_sources]
+        return all_source_names

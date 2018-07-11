@@ -104,7 +104,8 @@ if 'TRAVIS' in os.environ:
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_new_v1',
+            # 'NAME': 'tark_new_v1',
+            'NAME': 'tark_refseq_v2',
             'USER': 'root',
             'PASSWORD': '',
             'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
@@ -126,7 +127,8 @@ else:
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_new_v1',
+            # 'NAME': 'tark_new_v1',
+            'NAME': 'tark_refseq_v2',
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
@@ -211,3 +213,4 @@ LOGIN_REDIRECT_URL = '/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
 CURRENT_RELEASE = "92"
+DEFAULT_SOURCE = "ensembl"

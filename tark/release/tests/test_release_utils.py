@@ -37,14 +37,14 @@ class ReleaseUtilsTest(TestCase):
 
     def test_get_all_releases(self):
         all_releases = ReleaseUtils.get_all_releases()
-        self.assertEqual(len(all_releases), 5, "Release list match for current release")
+        self.assertEqual(len(all_releases), 6, "Release list match for current release")
 
         all_releases = ReleaseUtils.get_all_releases(assembly_name="GRCh37")
         self.assertEqual(len(all_releases), 1, "Release list match for GRCh37")
 
     def test_get_all_release_short_names(self):
         all_release_short_names = ReleaseUtils.get_all_release_short_names()
-        expected_releases = ['88', '89', '90', '91', '92']
+        expected_releases = ['92', '91', '90', '89', '88']
         self.assertListEqual(all_release_short_names, expected_releases, "Release list match for current release")
 
         all_release_short_names = ReleaseUtils.get_all_release_short_names(assembly_name="GRCh37")
@@ -62,5 +62,14 @@ class ReleaseUtilsTest(TestCase):
 
     def test_get_all_assembly_releases(self):
         all_assembly_releases = ReleaseUtils.get_all_assembly_releases()
-        print(all_assembly_releases)
+        expected_result = {'GRCh37': ['92'], 'GRCh38': ['92', '91', '90', '89', '88']}
+        self.assertDictEqual(all_assembly_releases, expected_result, "Got the right assembly_releases")
 
+        all_assembly_releases_refseq = ReleaseUtils.get_all_assembly_releases(source_name="RefSeq")
+        expected_result_refseq = {'GRCh37': [], 'GRCh38': ['92']}
+        self.assertDictEqual(all_assembly_releases_refseq, expected_result_refseq, "Got the expected result for RefSeq")
+
+    def test_get_all_release_sources(self):
+        all_release_sources = ReleaseUtils.get_all_release_sources()
+        expected_result = ['Ensembl', 'RefSeq']
+        self.assertListEqual(expected_result, all_release_sources, "Got the right sources")

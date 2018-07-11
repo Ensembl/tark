@@ -61,6 +61,7 @@ class DataTableListApi(generics.ListAPIView):
 
         latest_release = self.kwargs['release_name']
         latest_assembly = self.kwargs['assembly_name']
+        latest_source = self.kwargs['source_name']
 
         if latest_release is None:
             latest_release = ReleaseUtils.get_latest_release()
@@ -68,10 +69,15 @@ class DataTableListApi(generics.ListAPIView):
         if latest_assembly is None:
             latest_assembly = ReleaseUtils.get_latest_assembly()
 
-        print(" Lastest assembly from TranscriptDatatableView: " + str(latest_assembly))
-        print(" Lastest release TranscriptDatatableView: " + str(latest_release))
+        if latest_source is None:
+            latest_source = ReleaseUtils.get_default_source()
+
+        print(" Latest assembly from TranscriptDatatableView: " + str(latest_assembly))
+        print(" Latest release TranscriptDatatableView: " + str(latest_release))
+        print(" Latest source TranscriptDatatableView: " + str(latest_source))
+
         self.unfiltered_query_set = query_set = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
-                                         Q(assembly__assembly_name__icontains=latest_assembly))
+                                         Q(assembly__assembly_name__icontains=latest_assembly) &  Q(transcript_release_set__source__shortname__icontains=latest_source))
 
         order_by_index = int(self.request.query_params.get('order[0][column]', 0))
         orderable = bool(self.request.query_params.get('columns[{}][orderable]'.format(order_by_index), 'false'))
@@ -120,10 +126,11 @@ class DataTableListApi(generics.ListAPIView):
         return result
 
 
-def datatable_view(request, table_name, assembly_name, release_name, assembly_name_compare, release_name_compare):
+def datatable_view(request, table_name, assembly_name, release_name, source_name, assembly_name_compare, release_name_compare, source_name_compare):  # @IgnorePep8
     print("DataTable view called " + table_name + " assembly_name" + assembly_name + " release_name " +
           release_name + " assembly_name_compare " +
-          assembly_name_compare + " release_name_compare " + release_name_compare)
+          assembly_name_compare + " release_name_compare " + release_name_compare +
+          " source_name " + source_name + " source_name_compare " + source_name_compare)
 
     server_side_processing = "false"
     if table_name in ['gene', 'transcript', 'translation', 'exon']:
@@ -148,11 +155,14 @@ def datatable_view(request, table_name, assembly_name, release_name, assembly_na
     else:
         compare_set_form = CompareSetForm()
 
-    return render(request, 'datatable_view.html', {'table_name': table_name, "assembly_name": assembly_name,
+    return render(request, 'datatable_view.html', {'table_name': table_name, 
+                                                   "assembly_name": assembly_name,
                                                    "release_name": release_name,
+                                                   "source_name": source_name,
                                                    'assembly_name_compare': assembly_name_compare,
                                                    'release_name_compare': release_name_compare,
                                                    'server_side_processing': server_side_processing,
+                                                   "source_name_compare": source_name_compare,
                                                    'data_fields': data_fields,
                                                    'form': compare_set_form})
 

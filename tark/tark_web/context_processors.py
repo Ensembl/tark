@@ -25,6 +25,7 @@ def init_assembly_releases(request):
     all_assembly_releases = json.dumps(ReleaseUtils.get_all_assembly_releases())
     current_release = ReleaseUtils.get_latest_release()
     current_assembly = ReleaseUtils.get_latest_assembly()
+    source_name = ReleaseUtils.get_default_source()
     logger.debug("********************from context processor=========")
     logger.debug(all_assembly_releases)
     print("===========reached here==============")
@@ -34,5 +35,6 @@ def init_assembly_releases(request):
             "release_name": current_release,
             "assembly_name": current_assembly,
             'release_name_compare': int(current_release) - 1,
-            'assembly_name_compare': current_assembly
+            'assembly_name_compare': current_assembly,
+            'source_name': source_name
             }

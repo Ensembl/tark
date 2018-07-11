@@ -15,7 +15,7 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">FeatureSets
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href={% url 'datatable_view' "transcript" assembly_name release_name assembly_name release_name|add:"-1" %}>Transcripts</a></li>
+          <li><a href={% url 'datatable_view' "transcript" assembly_name release_name source_name assembly_name release_name|add:"-1" source_name %}>Transcripts</a></li>
          </ul>
       </li>
      <li><a href="/web/diff/"> Diff-Transcript</a></li>
