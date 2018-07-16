@@ -75,11 +75,16 @@ class TranscriptDiff(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         diff_me_stable_id = request.query_params.get('diff_me_stable_id', None)
         diff_with_stable_id = request.query_params.get('diff_with_stable_id', None)
+
         diff_me_release = request.query_params.get('diff_me_release', None)
         diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
 
         diff_me_assembly = request.query_params.get('diff_me_assembly', None)
         diff_with_assembly = request.query_params.get('diff_with_assembly', ReleaseUtils.get_latest_assembly())
+
+        diff_me_source = request.query_params.get('diff_me_source', ReleaseUtils.get_default_source())
+        diff_with_source = request.query_params.get('diff_with_source', ReleaseUtils.get_default_source())
+
         expand = request.query_params.get('expand', "transcript_release_set")
 
         print("===========GET===================\n")
@@ -90,6 +95,7 @@ class TranscriptDiff(generics.ListAPIView):
         params = {'diff_me_stable_id': diff_me_stable_id, 'diff_with_stable_id': diff_with_stable_id,
                   'diff_me_release': diff_me_release, 'diff_with_release': diff_with_release,
                   'diff_me_assembly': diff_me_assembly, 'diff_with_assembly': diff_with_assembly,
+                  'diff_me_source': diff_me_source, 'diff_with_source': diff_with_source,
                   'expand': expand}
 
         result = super(TranscriptDiff, self).get(request, *args, **kwargs)

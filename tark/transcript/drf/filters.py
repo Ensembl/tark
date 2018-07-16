@@ -37,6 +37,10 @@ class TranscriptFilterBackend(BaseFilterBackend):
         if release_short_name is not None:
             queryset = queryset.filter(transcript_release_set__shortname__icontains=release_short_name)
 
+        source_name = request.query_params.get('source_name', None)
+        if source_name is not None:
+            queryset = queryset.filter(transcript_release_set__source__shortname__icontains=source_name)
+
         return queryset
 
     def get_schema_fields(self, view):
@@ -60,6 +64,7 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
 
         diff_me_release = request.query_params.get('diff_me_release', ReleaseUtils.get_latest_release())
         diff_me_assembly = request.query_params.get('diff_me_assembly', ReleaseUtils.get_latest_assembly())
+        diff_me_source = request.query_params.get('diff_me_source', ReleaseUtils.get_default_source())
 
         expand_all = request.query_params.get('expand_all', "true")
 
@@ -67,7 +72,8 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
               "expand all " + expand_all)
 
         if diff_me_release is not None and diff_me_assembly is not None:
-            queryset_me = queryset_me.filter(assembly__assembly_name__icontains=diff_me_assembly). \
+            queryset_me = queryset_me.filter(transcript_release_set__source__shortname=diff_me_source).\
+                filter(assembly__assembly_name__icontains=diff_me_assembly). \
                 filter(transcript_release_set__shortname=diff_me_release)
 
         # handle diff with
@@ -75,13 +81,16 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         if diff_with_stable_id is not None:
             print("Inside if diff_with_stable_id " + diff_with_stable_id)
             queryset_with = queryset.filter(stable_id=diff_with_stable_id)
+
         diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
         diff_with_assembly = request.query_params.get('diff_with_assembly', ReleaseUtils.get_latest_assembly())
+        diff_with_source = request.query_params.get('diff_with_source', ReleaseUtils.get_default_source())
 
         print("diff_with_stable_id" + str(diff_with_stable_id) + "Diff me " + str(diff_me_release) +
               "Diff with release " + str(diff_with_release) + "expand all " + expand_all)
         if diff_with_release is not None and diff_with_assembly is not None:
-            queryset_with = queryset_with.filter(assembly__assembly_name__icontains=diff_with_assembly). \
+            queryset_with = queryset_with.filter(transcript_release_set__source__shortname=diff_with_source).\
+                filter(assembly__assembly_name__icontains=diff_with_assembly). \
                 filter(transcript_release_set__shortname=diff_with_release)
 
         queryset = queryset_me | queryset_with   # queryset will contain all unique records of q1 + q2

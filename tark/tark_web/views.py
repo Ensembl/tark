@@ -94,17 +94,22 @@ def diff_home(request):
             diff_me_stable_id_version = '0'
             diff_with_stable_id = form.cleaned_data['diff_with_stable_id']
             diff_with_stable_id_version = '0'
+
             diff_me_assembly = form.cleaned_data['diff_me_assembly']
             diff_me_release = form.cleaned_data['diff_me_release']
+            diff_me_source = form.cleaned_data['diff_me_source']
+
             diff_with_assembly = form.cleaned_data['diff_with_assembly']
             diff_with_release = form.cleaned_data['diff_with_release']
+            diff_with_source = form.cleaned_data['diff_with_source']
 
-            if '.' in diff_me_stable_id:
+
+            if diff_me_source.lower() == "ensembl" and '.' in diff_me_stable_id:
                 (stable_id,version) = diff_me_stable_id.split('.')
                 diff_me_stable_id = stable_id
                 diff_me_stable_id_version = version
 
-            if '.' in diff_with_stable_id:
+            if diff_with_source.lower() == "ensembl" and '.' in diff_with_stable_id:
                 (stable_id,version) = diff_with_stable_id.split('.')
                 diff_with_stable_id = stable_id
                 diff_with_stable_id_version = version
@@ -128,8 +133,12 @@ def diff_home(request):
                         "&diff_with_stable_id=" + diff_with_stable_id +\
                         "&diff_with_stable_id_version=" + diff_with_stable_id_version +\
                         "&diff_me_release=" + diff_me_release + \
-                "&diff_me_assembly=" + diff_me_assembly + "&diff_with_release=" + diff_with_release + \
-                "&diff_with_assembly=" + diff_with_assembly + "&expand=transcript_release_set"
+                "&diff_me_assembly=" + diff_me_assembly + \
+                "&diff_me_source=" + diff_me_source + \
+                "&diff_with_release=" + diff_with_release + \
+                "&diff_with_assembly=" + diff_with_assembly + \
+                "&diff_with_source=" + diff_with_source + \
+                "&expand=transcript_release_set"
             response = requests.get(host_url + query_url)
             print(response.status_code)
             if response.status_code == 200:

@@ -53,6 +53,14 @@ class CommonFilterBackend(BaseFilterBackend):
         return queryset
 
     @classmethod
+    def get_source_name_querysets(cls, request, queryset, view):
+        source_name = request.query_params.get('source_name', None)
+        if source_name is not None:
+            queryset = queryset.filter(release_set__release_source__shortname__icontains=source_name)
+
+        return queryset
+
+    @classmethod
     def get_location_filter_querysets(cls, request, queryset, view):
         loc_string = request.query_params.get('location', None)
 

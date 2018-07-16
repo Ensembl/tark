@@ -81,6 +81,16 @@ class DrfFields(object):
         return expand_transcript_release_set_field
 
     @classmethod
+    def source_name_field(cls):
+        source_name_field = coreapi.Field(
+            name='source_name',
+            location='query',
+            required=False,
+            type='string',
+            description='source_name to filter(eg: Ensembl, RefSeq)')
+        return source_name_field
+
+    @classmethod
     def assembly_name_field(cls):
         assembly_name_field = coreapi.Field(
             name='assembly_name',
@@ -298,7 +308,8 @@ class CommonFields(object):
                         DrfFields.loc_region_field(), DrfFields.loc_strand_field()
                         ]
 
-    COMMON_RELATED_QUERY_SET = [DrfFields.assembly_name_field(), DrfFields.release_short_name_field()]
+    COMMON_RELATED_QUERY_SET = [DrfFields.assembly_name_field(), DrfFields.release_short_name_field(),
+                                DrfFields.source_name_field()]
 
     @classmethod
     def get_common_query_set(cls, model_name=None):

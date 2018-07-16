@@ -30,6 +30,9 @@ class ExonUtils(object):
 
         compare_result = {}
 
+        if exonset1 is None or exonset2 is None:
+            return compare_result
+
         for exon1 in exonset1:
             for exon2 in exonset2:
                 if exon1["loc_start"] >= exon2["loc_start"] and exon1["loc_start"] <= exon2["loc_end"] or \

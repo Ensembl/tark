@@ -22,7 +22,11 @@ logger = logging.getLogger(__name__)
 
 
 def init_assembly_releases(request):
+    # default is ensembl
     all_assembly_releases = json.dumps(ReleaseUtils.get_all_assembly_releases())
+
+    all_assembly_releases_refseq = json.dumps(ReleaseUtils.get_all_assembly_releases("RefSeq"))
+
     current_release = ReleaseUtils.get_latest_release()
     current_assembly = ReleaseUtils.get_latest_assembly()
     source_name = ReleaseUtils.get_default_source()
@@ -30,6 +34,7 @@ def init_assembly_releases(request):
     logger.debug(all_assembly_releases)
     print("===========reached here==============")
     return {"all_assembly_releases": all_assembly_releases,
+            "all_assembly_releases_refseq": all_assembly_releases_refseq,
             "current_release": current_release,
             "current_assembly": current_assembly,
             "release_name": current_release,

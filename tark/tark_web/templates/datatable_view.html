@@ -80,6 +80,39 @@ function clear_select_transcript_compare_well(){
      var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}", "{{source_name}}" );
      var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}", "{{source_name_compare}}"  );
 
+/*
+	 //event handler for current assembly change
+     $("#id_diff_current_source").change(function () {
+       
+       var assembly_releases = {{ all_assembly_releases|safe|escape }};
+       var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
+       var cur_source_name = $(this).val(); 
+	   var cur_assembly_name =  $("#id_diff_current_assembly").val(); 
+	   console.log('cur_assembly_name ' + cur_assembly_name);
+	   
+	   if(cur_source_name == "Ensembl"){
+	    //set assembly
+	    var ensembl_assemblies = Object.keys(assembly_releases_refseq);
+	    console.log(ensembl_assemblies);
+	    var assembly_options = $.map(ensembl_assemblies, function(ensembl_assembly){
+            return '<option value="' + ensembl_assembly + '">' + ensembl_assembly + '</option>'
+        }).join('');
+        $("#id_diff_current_assembly").html(assembly_options);
+        
+        //set release
+	    
+	   }else{
+	    var refseq_assemblies = Object.keys(assembly_releases);
+	    console.log(refseq_assemblies);
+	   }
+       var releases = assembly_releases[cur_assembly_name] || [];
+       
+       var release_options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_current_release").html(release_options);
+     });
+ */    
      //event handler for current assembly change
      $("#id_diff_current_assembly").change(function () {
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
@@ -114,8 +147,9 @@ function clear_select_transcript_compare_well(){
       
      var current_assembly = $("#id_diff_current_assembly").val();
      var current_release = $("#id_diff_current_release").val();
-     console.log(" current_assembly " + current_assembly + " current_release " + current_release);
-     var current_well_text='<strong> Curent Assembly: '+ current_assembly +'  Current Release: '+ current_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
+     var current_source = $("#id_diff_current_source").val();
+     console.log(" current_source " + current_source + " current_assembly " + current_assembly + " current_release " + current_release + " current_source " + current_source);
+     var current_well_text='<strong> Current Source: '+ current_source + '<strong> Curent Assembly: '+ current_assembly +'  Current Release: '+ current_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
    
      tark_table.destroy();
      $('#loadingSpinner').show();
@@ -136,8 +170,9 @@ function clear_select_transcript_compare_well(){
      clear_select_transcript_compare_well();
      var compare_assembly = $("#id_diff_compare_assembly").val();
      var compare_release = $("#id_diff_compare_release").val();
-     console.log(" compare_assembly " + compare_assembly + " compare_release " + compare_release);
-     var compare_with_well_text='<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
+     var compare_source = $("#id_diff_compare_source").val();
+     console.log(" compare_source " + compare_source + " compare_assembly " + compare_assembly + " compare_release " + compare_release);
+     var compare_with_well_text='<strong> Compare Source: '+ compare_source + '<strong> Compare Assembly: '+ compare_assembly +'  Compare Release: '+ compare_release +'. To filter type: ENST00000296468 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>';
    
      tark_table_compare.destroy();
      $('#loadingSpinner_compare_with').show();
@@ -162,6 +197,7 @@ function clear_select_transcript_compare_well(){
       
      $("#id_diff_me_assembly").val( $("#id_diff_current_assembly").val());
      $("#id_diff_me_release").val($("#id_diff_current_release").val());
+     $("#id_diff_me_source").val($("#id_diff_current_source").val());
      $('#id_diff_me_stable_id').val(stable_id_current);
 
     });
@@ -177,6 +213,7 @@ function clear_select_transcript_compare_well(){
       
        $("#id_diff_with_assembly").val($("#id_diff_compare_assembly").val());
        $("#id_diff_with_release").val($("#id_diff_compare_release").val());
+       $("#id_diff_with_source").val($("#id_diff_compare_source").val());
        $('#id_diff_with_stable_id').val(stable_id_compare);
 
     });
@@ -188,6 +225,7 @@ function clear_select_transcript_compare_well(){
        var diff_me_stable_id = $('#current_stable_id').text();
        var diff_me_assembly = $("#current_stable_id_assembly").text();
        var diff_me_release = $("#current_stable_id_release").text();
+       var diff_me_source = $("#current_stable_id_source").text();
        
        var diff_with_stable_id = $('#compare_stable_id').text();
        var diff_with_assembly = $("#id_diff_with_assembly").val();
@@ -229,13 +267,13 @@ function clear_select_transcript_compare_well(){
     <form id="current_form" class="form-horizontal" method="POST" action="">
     {% csrf_token %}
   	<div class="form-group">
-  	<label class="control-label col-md-2" for="source">Source:</label>
-   	<div class="col-md-1">
+  	<label class="control-label col-md-1" for="source">Source:</label>
+   	<div class="col-md-2">
     {{ form.diff_current_source|add_class:"form-control"}}
   	</div>
   	
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
-   	<div class="col-md-1">
+   	<div class="col-md-2">
     {{ form.diff_current_assembly|add_class:"form-control"}}
   	</div>
  
@@ -243,7 +281,7 @@ function clear_select_transcript_compare_well(){
       {{ form.diff_current_release|add_class:"form-control"}}
    	</div>
    	
-   	<div class="col-md-2">
+   	<div class="col-md-3">
     <button id="current_transcript_set" type="submit" class="btn btn-primary btn-block">Update Transcript Set</button>
     </div>
 
@@ -281,14 +319,14 @@ function clear_select_transcript_compare_well(){
     {% csrf_token %}
    
    <div class="form-group">
-  	<label class="control-label col-md-2" for="source">Source:</label>
-   	<div class="col-md-1">
+  	<label class="control-label col-md-1" for="source">Source:</label>
+   	<div class="col-md-2">
     {{ form.diff_compare_source|add_class:"form-control"}}
   	</div>
   	
   	<div class="form-group">
    	<label class="control-label col-md-2" for="assembly">Assembly/Release:</label>
-   	<div class="col-md-1">
+   	<div class="col-md-2">
     {{ form.diff_compare_assembly|add_class:"form-control"}}
   	</div>
  
@@ -296,7 +334,7 @@ function clear_select_transcript_compare_well(){
       {{ form.diff_compare_release|add_class:"form-control"}}
    	</div>
    	
-   	<div class="col-md-2">
+   	<div class="col-md-3">
     <button id="compare_transcript_set" type="submit" class="btn btn-success btn-block">Update Transcript Set</button>
     </div>
 
@@ -328,7 +366,7 @@ function clear_select_transcript_compare_well(){
 
 <hr>
 <!-- Selected transcript comparison start --> 
-    <div id="select_transcript_compare_well" class="row col-md-8 col-md-offset-2">
+    <div id="select_transcript_compare_well" class="row col-md-12">
 	<form id="diff_form" class="form-horizontal" method="POST" action="{% url 'diff_home' %}">
 	{% csrf_token %}
 	
@@ -345,6 +383,13 @@ function clear_select_transcript_compare_well(){
 				    </div>
 				  </div>
 				
+				<div class="form-group">
+				  <label class="control-label col-md-3 for="diff_me_source"="">Source:</label>
+				   <div class="col-md-6">
+				   <input type="text" name="diff_me_source" class="form-control" id="id_diff_me_source"  readonly>
+  				  </div>
+  				 </div>
+  				   
 				 <div class="form-group">
 				  <label class="control-label col-md-3 for=" diff_me_assembly"="">Assembly/Release:</label>
 				   <div class="col-md-4">
@@ -366,12 +411,19 @@ function clear_select_transcript_compare_well(){
 				<div class="panel-body">
 				
 				
-				  <div class="form-group">
+			    <div class="form-group">
 				    <label class="control-label col-md-3" for="stable_id">StableID:</label>
 				    <div class="col-md-6">
 				    <input type="text" name="diff_with_stable_id" class="form-control" id="id_diff_with_stable_id" required="" maxlength="30" readonly>
 				    </div>
-				  </div>
+				</div>
+				
+				<div class="form-group">
+				  <label class="control-label col-md-3 for="diff_with_source"="">Source:</label>
+				   <div class="col-md-6">
+				   <input type="text" name="diff_with_source" class="form-control" id="id_diff_with_source"  readonly>
+  				  </div>
+  				</div>
 				
 				<div class="form-group">
 				  <label class="control-label col-md-3" for="diff_with_assembly">Assembly/Release:</label>

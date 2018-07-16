@@ -204,9 +204,9 @@ class DiffUtils(object):
                 else:
                     result['translations'] = None
 
-            print("++++++++AFTER START++++++++++++++")
-            print(result['translations'])
-            print("++++++++AFTER END++++++++++++++")
+            #print("++++++++AFTER START++++++++++++++")
+            #print(result['translations'])
+            #print("++++++++AFTER END++++++++++++++")
 
     @classmethod
     def update_coding_exons(cls, exon_set, translation):
@@ -245,7 +245,7 @@ class DiffUtils(object):
     @classmethod
     def compare_translations(cls, first_object, second_object):
         diff_dict = collections.OrderedDict()
-        if "results" in first_object and "results" in second_object:
+        if "results" in first_object and len(first_object["results"]) > 0 and "results" in second_object and len(second_object["results"]) > 0:
             first_tl_object = first_object["results"][0]
             second_tl_object = second_object["results"][0]
         else:
