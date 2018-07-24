@@ -35,22 +35,6 @@ class ReleaseSet(models.Model):
         unique_together = (('shortname', 'assembly', 'source'),)
 
 
-
-
-
-# # will deprecate
-# class ReleaseTag(models.Model):
-#     feature_id = models.PositiveIntegerField(primary_key=True)
-#     feature_type = models.PositiveIntegerField()
-#     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
-#     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'release_tag'
-#         unique_together = (('feature_id', 'feature_type', 'release'),)
-
-
 class GeneReleaseTag(models.Model):
     feature = models.ForeignKey(Gene, models.DO_NOTHING)
     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)

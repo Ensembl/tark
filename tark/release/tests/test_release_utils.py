@@ -22,8 +22,8 @@ from django.conf import settings
 
 
 class ReleaseUtilsTest(TestCase):
-    fixtures = ['session', 'assembly', 'release_set']
-    multi_db = True
+    fixtures = ['assembly', 'release_set']
+    #multi_db = True
 
     def test_get_latest_release(self):
         latest_release = ReleaseUtils.get_latest_release()
@@ -37,14 +37,14 @@ class ReleaseUtilsTest(TestCase):
 
     def test_get_all_releases(self):
         all_releases = ReleaseUtils.get_all_releases()
-        self.assertEqual(len(all_releases), 6, "Release list match for current release")
+        self.assertEqual(len(all_releases), 3, "Release list match for current release")
 
         all_releases = ReleaseUtils.get_all_releases(assembly_name="GRCh37")
         self.assertEqual(len(all_releases), 1, "Release list match for GRCh37")
 
     def test_get_all_release_short_names(self):
         all_release_short_names = ReleaseUtils.get_all_release_short_names()
-        expected_releases = ['92', '91', '90', '89', '88']
+        expected_releases = ['92', '91']
         self.assertListEqual(all_release_short_names, expected_releases, "Release list match for current release")
 
         all_release_short_names = ReleaseUtils.get_all_release_short_names(assembly_name="GRCh37")
@@ -62,7 +62,7 @@ class ReleaseUtilsTest(TestCase):
 
     def test_get_all_assembly_releases(self):
         all_assembly_releases = ReleaseUtils.get_all_assembly_releases()
-        expected_result = {'GRCh37': ['92'], 'GRCh38': ['92', '91', '90', '89', '88']}
+        expected_result = {'GRCh37': ['92'], 'GRCh38': ['92', '91']}
         self.assertDictEqual(all_assembly_releases, expected_result, "Got the right assembly_releases")
 
         all_assembly_releases_refseq = ReleaseUtils.get_all_assembly_releases(source_name="RefSeq")

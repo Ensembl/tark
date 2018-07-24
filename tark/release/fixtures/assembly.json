@@ -1,4 +1,77 @@
 [
+
+{
+    "model": "session.session",
+    "pk": 1,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 2,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 3,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 4,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 5,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 6,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "session.session",
+    "pk": 7,
+    "fields": {
+        "client_id": "HGNC loader",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "genome.genome",
+    "pk": 1,
+    "fields": {
+        "name": "homo_sapiens",
+        "tax_id": 9606,
+        "session": 1
+    }
+},
 {
     "model": "assembly.assembly",
     "pk": 1,
@@ -14,7 +87,37 @@
     "fields": {
         "genome": 1,
         "assembly_name": "GRCh37",
-        "session": 7
+        "session": 6
+    }
+},
+{
+    "model": "assembly.assemblyalias",
+    "pk": 1,
+    "fields": {
+        "alias": "GCA_000001405.27",
+        "genome": 1,
+        "assembly": 1,
+        "session": 1
+    }
+},
+{
+    "model": "assembly.assemblyalias",
+    "pk": 2,
+    "fields": {
+        "alias": "GCA_000001405.25",
+        "genome": 1,
+        "assembly": 1,
+        "session": 2
+    }
+},
+{
+    "model": "assembly.assemblyalias",
+    "pk": 6,
+    "fields": {
+        "alias": "GCA_000001405.14",
+        "genome": 1,
+        "assembly": 6,
+        "session": 6
     }
 }
 ]

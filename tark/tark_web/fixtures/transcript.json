@@ -1,0 +1,92 @@
+[
+{
+    "model": "transcript.transcript",
+    "pk": 1,
+    "fields": {
+        "stable_id": "ENST00000380152",
+        "stable_id_version": 7,
+        "assembly": 1,
+        "loc_start": 32315474,
+        "loc_end": 32400266,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "1",
+        "exon_set_checksum": "1",
+        "transcript_checksum": "1",
+        "sequence": "1",
+        "session": 1
+    }
+},
+{
+    "model": "transcript.transcript",
+    "pk": 2,
+    "fields": {
+        "stable_id": "ENST00000530893",
+        "stable_id_version": 6,
+        "assembly": 1,
+        "loc_start": 32315505,
+        "loc_end": 32333291,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "2",
+        "exon_set_checksum": "2",
+        "transcript_checksum": "2",
+        "sequence": "2",
+        "session": 1
+    }
+},
+{
+    "model": "transcript.transcript",
+    "pk": 3,
+    "fields": {
+        "stable_id": "ENST00000614259",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32316461,
+        "loc_end": 32362659,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "3",
+        "exon_set_checksum": "3",
+        "transcript_checksum": "3",
+        "sequence": "3",
+        "session": 1
+    }
+},
+{
+    "model": "transcript.transcript",
+    "pk": 4,
+    "fields": {
+        "stable_id": "ENST00000528762",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32370971,
+        "loc_end": 32379495,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "4",
+        "exon_set_checksum": "4",
+        "transcript_checksum": "4",
+        "sequence": "4",
+        "session": 1
+    }
+},
+{
+    "model": "transcript.transcript",
+    "pk": 5,
+    "fields": {
+        "stable_id": "ENST00000470094",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32379840,
+        "loc_end": 32398272,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "5",
+        "exon_set_checksum": "5",
+        "transcript_checksum": "5",
+        "sequence": "5",
+        "session": 1
+    }
+}
+]

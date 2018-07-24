@@ -29,11 +29,7 @@ urlpatterns = [
     url(r'^$', views.web_home, name='web_home'),
     # diff
     url(r'^diff/$', views.diff_home, name='diff_home'),
-    #print("From diff_from_set " + diff_me_stable_id  + " " + diff_me_assembly + " " +  diff_me_release + " " +  diff_with_stable_id + " " +  diff_with_assembly + " " +  diff_with_release )
-
-    url(r'^diff/compare_set/(?P<diff_me_stable_id>[\w]+)/(?P<diff_me_assembly>[\w]+)/(?P<diff_me_release>[\w]+)/(?P<diff_with_stable_id>[\w]+)/(?P<diff_with_assembly>[\w]+)/(?P<diff_with_release>[\w]+)/', views.diff_compare_set, name='diff_compare_set'),
-
-    # search
+     # search
     url(r'^search/$', views.search_home, name='search_home'),
     #  datatables
     url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/', datatable_view, name="datatable_view"),

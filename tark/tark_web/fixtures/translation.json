@@ -1,0 +1,288 @@
+[
+{
+    "model": "translation.translation",
+    "pk": 1,
+    "fields": {
+        "stable_id": "ENSP00000369497",
+        "stable_id_version": 3,
+        "assembly": 1,
+        "loc_start": 32316461,
+        "loc_end": 32398770,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "BF8226A4BB25F655B4545ACEB2C0E1233D21C814",
+        "translation_checksum": "2DAFEEE4E4394F56F26660F8012FE2B2579E5FA9",
+        "sequence": "70543E7B80F8B964B126A5AA165F236CA9DC132F",
+        "session": 1
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 2,
+    "fields": {
+        "stable_id": "ENSP00000433168",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32370971,
+        "loc_end": 32376670,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "AF06B9B26BA2FC696F626B282084E39A81A40097",
+        "translation_checksum": "E4A14F60877B98370C6A9EC0B5643C159C6A379D",
+        "sequence": "61E588517C441683487E3544921C77D73CC64ACE",
+        "session": 1
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 3,
+    "fields": {
+        "stable_id": "ENSP00000434898",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32379840,
+        "loc_end": 32396092,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "BBF556A2C4137456C1A36056060B0600069064FE",
+        "translation_checksum": "D1F4674AF14E9477944CF900FA596E68DAB9B602",
+        "sequence": "60C14BB76D1F5DBDFAC05858FF27E1643457004F",
+        "session": 1
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 4,
+    "fields": {
+        "stable_id": "ENSP00000439902",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32316461,
+        "loc_end": 32398770,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "BF8226A4BB25F655B4545ACEB2C0E1233D21C814",
+        "translation_checksum": "2B55594089011983BDAFED409B84607DB90ADF63",
+        "sequence": "70543E7B80F8B964B126A5AA165F236CA9DC132F",
+        "session": 1
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 5,
+    "fields": {
+        "stable_id": "LRG_293p1",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 5982,
+        "loc_end": 88291,
+        "loc_strand": 1,
+        "loc_region": "LRG_293",
+        "loc_checksum": "90C167B2C22D2C54A5F28D7B3748AB6FA99BAC48",
+        "translation_checksum": "8454260F20537B72A0566E7BBF2019C5D0180F52",
+        "sequence": "1AF3655CC1574C789180E193E44065414561FFE9",
+        "session": 1
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 16,
+    "fields": {
+        "stable_id": "NP_000050.2",
+        "stable_id_version": 1,
+        "assembly": 1,
+        "loc_start": 32316461,
+        "loc_end": 32398770,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "BF8226A4BB25F655B4545ACEB2C0E1233D21C814",
+        "translation_checksum": "6CEA4BBD922CA21E5046FCA2E3F74EF1C2C5A9AF",
+        "sequence": "70543E7B80F8B964B126A5AA165F236CA9DC132F",
+        "session": 4
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 22,
+    "fields": {
+        "stable_id": "ENSP00000369497",
+        "stable_id_version": 3,
+        "assembly": 6,
+        "loc_start": 32890598,
+        "loc_end": 32972907,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "D74430E0F1B05D1A765E844813308BEE650B64E8",
+        "translation_checksum": "E035D5F20E8378AEC492B8B61AB6F0403FC6C495",
+        "sequence": "70543E7B80F8B964B126A5AA165F236CA9DC132F",
+        "session": 6
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 23,
+    "fields": {
+        "stable_id": "ENSP00000435699",
+        "stable_id_version": 2,
+        "assembly": 6,
+        "loc_start": 32899266,
+        "loc_end": 32907428,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "4E7E97CC645E547D5F35493CC321C92D446F818A",
+        "translation_checksum": "EAEDE8B96362E5B24D31FDC37CC4F4BA089C615B",
+        "sequence": "FBFB963DAFB5B2A5CE39FB37ECE8D3A2E6C8AEB2",
+        "session": 6
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 24,
+    "fields": {
+        "stable_id": "ENSP00000433168",
+        "stable_id_version": 1,
+        "assembly": 6,
+        "loc_start": 32945108,
+        "loc_end": 32950807,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "2D4C1833A34B9A24A45F766A948A1362D39AB203",
+        "translation_checksum": "6B385D43EB7ABEF3D048DDB0312007786C73442D",
+        "sequence": "61E588517C441683487E3544921C77D73CC64ACE",
+        "session": 6
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 25,
+    "fields": {
+        "stable_id": "ENSP00000434898",
+        "stable_id_version": 1,
+        "assembly": 6,
+        "loc_start": 32953977,
+        "loc_end": 32970229,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "5814B36CADC6D76A0A380E2C268CE2FA6268BD9F",
+        "translation_checksum": "D7BD2CCEAFF87C6279CEB0B2BAED816D7782BA0E",
+        "sequence": "60C14BB76D1F5DBDFAC05858FF27E1643457004F",
+        "session": 6
+    }
+},
+{
+    "model": "translation.translation",
+    "pk": 26,
+    "fields": {
+        "stable_id": "ENSP00000439902",
+        "stable_id_version": 1,
+        "assembly": 6,
+        "loc_start": 32890598,
+        "loc_end": 32972907,
+        "loc_strand": 1,
+        "loc_region": "13",
+        "loc_checksum": "D74430E0F1B05D1A765E844813308BEE650B64E8",
+        "translation_checksum": "FAC359CC1002592FAB8E58A97C395797CFBB2508",
+        "sequence": "70543E7B80F8B964B126A5AA165F236CA9DC132F",
+        "session": 6
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 1,
+    "fields": {
+        "transcript": 1,
+        "translation": 1,
+        "session": 1
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 2,
+    "fields": {
+        "transcript": 4,
+        "translation": 2,
+        "session": 1
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 3,
+    "fields": {
+        "transcript": 5,
+        "translation": 3,
+        "session": 1
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 4,
+    "fields": {
+        "transcript": 7,
+        "translation": 4,
+        "session": 1
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 5,
+    "fields": {
+        "transcript": 8,
+        "translation": 5,
+        "session": 1
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 16,
+    "fields": {
+        "transcript": 25,
+        "translation": 16,
+        "session": 4
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 22,
+    "fields": {
+        "transcript": 34,
+        "translation": 22,
+        "session": 6
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 23,
+    "fields": {
+        "transcript": 35,
+        "translation": 23,
+        "session": 6
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 24,
+    "fields": {
+        "transcript": 36,
+        "translation": 24,
+        "session": 6
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 25,
+    "fields": {
+        "transcript": 37,
+        "translation": 25,
+        "session": 6
+    }
+},
+{
+    "model": "translation.translationtranscript",
+    "pk": 26,
+    "fields": {
+        "transcript": 39,
+        "translation": 26,
+        "session": 6
+    }
+}
+]

@@ -98,6 +98,7 @@ class TranscriptDiff(generics.ListAPIView):
                   'diff_me_source': diff_me_source, 'diff_with_source': diff_with_source,
                   'expand': expand}
 
+
         result = super(TranscriptDiff, self).get(request, *args, **kwargs)
         updated_result = DiffUtils.get_diff_dict(request, result, params)
         print("========UPDATED RESULT START======\n")

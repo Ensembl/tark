@@ -21,6 +21,7 @@ import json
 from translation.models import Translation
 from django.db.models.query_utils import Q
 from tark.utils.exon_utils import ExonUtils
+from tark_web.utils.apiutils import ApiUtils
 
 
 
@@ -54,20 +55,9 @@ class DiffUtils(object):
             if "expand" not in param_key:
                 result_data[param_key] = param_value
 
-        # get host url - move to utils
-        hostname = request.get_host()
-        http_protocal = 'https' if request.is_secure() else 'http'
-        print('hostname ' + hostname)
-        print('http_protocal ' + http_protocal)
+        query_url_diff_me = ApiUtils.get_feature_url(request,"transcript", "diff_me", params)
 
-        host_url = http_protocal + '://' + hostname
-
-        # get diff me
-        query_url_diff_me = "/api/transcript/?stable_id=" + params['diff_me_stable_id'] + "&assembly_name=" + \
-                            params['diff_me_assembly'] + "&release_short_name=" + params['diff_me_release'] + \
-                            "&expand_all=true"
-
-        response_diff_me = requests.get(host_url + query_url_diff_me)
+        response_diff_me = requests.get(query_url_diff_me)
         print(response_diff_me.status_code)
 
         if response_diff_me.status_code == 200:
@@ -79,12 +69,10 @@ class DiffUtils(object):
             cls.get_coding_exons(diff_me_result)
             result_data['diff_me_transcript'] = diff_me_result
 
-        # get diff with
-        query_url_diff_with = "/api/transcript/?stable_id=" + params['diff_with_stable_id'] + "&assembly_name=" + \
-            params['diff_with_assembly'] + "&release_short_name=" + params['diff_with_release'] + \
-            "&expand_all=true"
+        query_url_diff_with = ApiUtils.get_feature_url(request,"transcript", "diff_with", params)
 
-        response_diff_with = requests.get(host_url + query_url_diff_with)
+        # response_diff_with = requests.get(host_url + query_url_diff_with)
+        response_diff_with = requests.get(query_url_diff_with)
         print(response_diff_with.status_code)
 
         if response_diff_with.status_code == 200:

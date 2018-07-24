@@ -104,6 +104,40 @@ class DiffForm(forms.Form):
         self.fields['diff_me_source'] = forms.CharField(initial=default_source,
                                                            widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
 
+    def get_cleaned_data(self):
+        diff_me_stable_id = self.cleaned_data['diff_me_stable_id']
+        diff_me_stable_id_version = '0'
+        diff_me_source = self.cleaned_data['diff_me_source']
+
+        diff_with_stable_id = self.cleaned_data['diff_with_stable_id']
+        diff_with_stable_id_version = '0'
+        diff_with_source = self.cleaned_data['diff_with_source']
+
+        diff_form_data_dict = {}
+        diff_form_data_dict['diff_me_stable_id'] = diff_me_stable_id
+
+        if diff_me_source.lower() == "ensembl" and '.' in diff_me_stable_id:
+                (stable_id, version) = diff_me_stable_id.split('.')
+                diff_me_stable_id = stable_id
+                diff_me_stable_id_version = version
+        diff_form_data_dict['diff_me_stable_id_version'] = diff_me_stable_id_version
+
+        diff_form_data_dict['diff_me_assembly'] = self.cleaned_data['diff_me_assembly']
+        diff_form_data_dict['diff_me_release'] = self.cleaned_data['diff_me_release']
+        diff_form_data_dict['diff_me_source'] = diff_me_source
+
+        diff_form_data_dict['diff_with_stable_id'] = diff_with_stable_id
+        if diff_with_source.lower() == "ensembl" and '.' in diff_with_stable_id:
+                (stable_id, version) = diff_with_stable_id.split('.')
+                diff_with_stable_id = stable_id
+                diff_with_stable_id_version = version
+        diff_form_data_dict['diff_with_stable_id_version'] = diff_with_stable_id_version
+
+        diff_form_data_dict['diff_with_assembly'] = self.cleaned_data['diff_with_assembly']
+        diff_form_data_dict['diff_with_release'] = self.cleaned_data['diff_with_release']
+        diff_form_data_dict['diff_with_source'] = diff_with_source
+
+        return diff_form_data_dict
 
 
 class SearchForm(forms.Form):
