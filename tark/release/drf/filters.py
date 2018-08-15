@@ -18,4 +18,3 @@ limitations under the License.
 
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.compat import coreapi
-from tark_drf.utils.drf_filters import DrfFilters

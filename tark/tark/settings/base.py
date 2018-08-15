@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'tagset',
     'tark_drf',
     'tark_web',
+    'refseq_loader',
     'fixture_magic',
 ]
 
@@ -208,8 +209,28 @@ SWAGGER_SETTINGS = {
     'VALIDATOR_URL': None,
 }
 
+LOG_FILE = os.path.join(BASE_DIR, 'logs/tark.log')
+print(LOG_FILE)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+     },
+}
 
-LOGIN_REDIRECT_URL = '/'
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
 CURRENT_RELEASE = "92"

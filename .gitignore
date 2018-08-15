@@ -13,6 +13,7 @@ coverage.xml
 secrets.py
 *_initial.py
 log
+logs
 apache
 tmp
 migrations

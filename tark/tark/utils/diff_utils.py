@@ -16,13 +16,10 @@ limitations under the License.
 '''
 import collections
 import requests
-from exon.models import ExonTranscript
-import json
 from translation.models import Translation
 from django.db.models.query_utils import Q
 from tark.utils.exon_utils import ExonUtils
 from tark_web.utils.apiutils import ApiUtils
-
 
 
 class DiffUtils(object):
@@ -32,7 +29,7 @@ class DiffUtils(object):
 
         result_data = result_dict.data
         count = result_data['count']
-        results = result_data['results']
+        results = result_data['results']  # @UnusedVariable
         diff_dict = collections.OrderedDict()
 
         (first_object_, second_object_) = cls.get_compare_objects(result_dict, params)
@@ -55,7 +52,7 @@ class DiffUtils(object):
             if "expand" not in param_key:
                 result_data[param_key] = param_value
 
-        query_url_diff_me = ApiUtils.get_feature_url(request,"transcript", "diff_me", params)
+        query_url_diff_me = ApiUtils.get_feature_url(request, "transcript", "diff_me", params)
 
         response_diff_me = requests.get(query_url_diff_me)
         print(response_diff_me.status_code)
@@ -69,7 +66,7 @@ class DiffUtils(object):
             cls.get_coding_exons(diff_me_result)
             result_data['diff_me_transcript'] = diff_me_result
 
-        query_url_diff_with = ApiUtils.get_feature_url(request,"transcript", "diff_with", params)
+        query_url_diff_with = ApiUtils.get_feature_url(request, "transcript", "diff_with", params)
 
         # response_diff_with = requests.get(host_url + query_url_diff_with)
         response_diff_with = requests.get(query_url_diff_with)
@@ -85,14 +82,14 @@ class DiffUtils(object):
 
         print("=============EXON SET COMPARE  ===============================")
         print("len==" + str(len(result_data['diff_with_transcript']["results"])))
-        #print(result_data['diff_with_transcript']["results"][0]["exons"])
+        # print(result_data['diff_with_transcript']["results"][0]["exons"])
 
         exonset_diff_me = None
-        if "results" in result_data['diff_me_transcript'] and len(result_data['diff_me_transcript']["results"]) == 1 and  "exons" in result_data['diff_me_transcript']["results"][0]:
+        if "results" in result_data['diff_me_transcript'] and len(result_data['diff_me_transcript']["results"]) == 1 and  "exons" in result_data['diff_me_transcript']["results"][0]:  # @IgnorePep8
             exonset_diff_me = result_data['diff_me_transcript']["results"][0]["exons"]
 
         exonset_diff_with = None
-        if "results" in result_data['diff_with_transcript'] and len(result_data['diff_with_transcript']["results"]) == 1 and "exons" in result_data['diff_with_transcript']["results"][0]:
+        if "results" in result_data['diff_with_transcript'] and len(result_data['diff_with_transcript']["results"]) == 1 and "exons" in result_data['diff_with_transcript']["results"][0]:  # @IgnorePep8
             exonset_diff_with = result_data['diff_with_transcript']["results"][0]["exons"]
 
         exon_set_compare = ExonUtils.exon_set_compare(exonset_diff_me, exonset_diff_with)
@@ -100,16 +97,15 @@ class DiffUtils(object):
         result_data["results"]["exon_set_compare"] = exon_set_compare
         print("=============exon_set_compare===============================")
 
-
         # do translations comparison here
-        translation_diff_dict = cls.compare_translations(result_data['diff_with_transcript'], result_data['diff_me_transcript'])
+        translation_diff_dict = cls.compare_translations(result_data['diff_with_transcript'],
+                                                         result_data['diff_me_transcript'])
 
-        for key,value in translation_diff_dict.items():
+        for key, value in translation_diff_dict.items():
             result_data["results"][key] = value
 
         result_dict.data = result_data
         return result_dict
-
 
     @classmethod
     def get_compare_objects(cls, result_dict, params):
@@ -172,29 +168,26 @@ class DiffUtils(object):
                         tl_stable_id = translation["stable_id"]
                         tl_stable_id_version = translation["stable_id_version"]
                         tl_translation_id = translation["translation_id"]
-                        print("========response_diff_with======="  + str(tl_stable_id)  + "  " + str(tl_stable_id_version)  + "  " + str(tl_translation_id))
+
                         criterion1 = Q(stable_id=tl_stable_id)
                         criterion2 = Q(stable_id_version=tl_stable_id_version)
                         criterion3 = Q(translation_id=tl_translation_id)
-                        # tl_query_set = Translation.objects.filter(criterion1 & criterion2).select_related('transcript').select_related('sequence').distinct()
-                        tl_query_set = Translation.objects.filter(criterion1 & criterion2 & criterion3).select_related('sequence').distinct()
-                        # tl_query_set = Translation.objects.filter(stable_id=tl_statble_id).filter(stable_id_version=tl_statble_id_version).select_related('sequence')
+
+                        tl_query_set = Translation.objects.filter(criterion1 & criterion2 & criterion3).select_related('sequence').distinct()  # @IgnorePep8
+
                         for tl_obj in tl_query_set:
                             print("Entering tl_query_set================")
                             print(tl_obj.sequence.sequence)
                             print(tl_obj.sequence.seq_checksum)
-                            translation["sequence"] = {"sequence":tl_obj.sequence.sequence, "seq_checksum":tl_obj.sequence.seq_checksum}
-                            if "exons" in result: #work here again
+                            translation["sequence"] = {"sequence": tl_obj.sequence.sequence,
+                                                       "seq_checksum": tl_obj.sequence. seq_checksum}
+                            if "exons" in result:  # work here again
                                 exon_set_cds = cls.update_coding_exons(result['exons'], translation)
                                 translation["exons"] = exon_set_cds
                             updated_translations.append(translation)
                     result['translations'] = updated_translations
                 else:
                     result['translations'] = None
-
-            #print("++++++++AFTER START++++++++++++++")
-            #print(result['translations'])
-            #print("++++++++AFTER END++++++++++++++")
 
     @classmethod
     def update_coding_exons(cls, exon_set, translation):
@@ -233,7 +226,8 @@ class DiffUtils(object):
     @classmethod
     def compare_translations(cls, first_object, second_object):
         diff_dict = collections.OrderedDict()
-        if "results" in first_object and len(first_object["results"]) > 0 and "results" in second_object and len(second_object["results"]) > 0:
+        if "results" in first_object and len(first_object["results"]) > 0 and "results" in second_object and \
+                len(second_object["results"]) > 0:
             first_tl_object = first_object["results"][0]
             second_tl_object = second_object["results"][0]
         else:
@@ -275,7 +269,8 @@ class DiffUtils(object):
         if 'translations' in first_tl_object and 'translations' in second_tl_object:
             for translation_first, translation_second in zip(first_tl_object['translations'], second_tl_object['translations']):  # @IgnorePep8
                 if 'sequence' in translation_first and 'sequence' in translation_second:
-                    return not (translation_first['sequence']['seq_checksum'] == translation_second['sequence']['seq_checksum'])
+                    return not (translation_first['sequence']['seq_checksum'] ==
+                                translation_second['sequence']['seq_checksum'])
         else:
             return None
 

@@ -46,8 +46,8 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                            }
 
     assembly = AssemblyField(read_only=True)
-    #genes = GeneSerializer(many=True, read_only=True)
-    #exons = ExonTranscriptSerializer(source="exontranscript_set", many=True, read_only=True)
+    # genes = GeneSerializer(many=True, read_only=True)
+    # exons = ExonTranscriptSerializer(source="exontranscript_set", many=True, read_only=True)
 #     translations = TranslationTranscriptSerializer(source='translationtranscript_set', many=True)
 
     class Meta:

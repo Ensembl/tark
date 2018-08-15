@@ -47,12 +47,7 @@
  {% endfor %}
 
 
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="species">Species:</label>
-    <div class="col-sm-4">
-     {{ form.species|add_class:"form-control" }}
-    </div>
-  </div>
+
 
   <div class="form-group">
     <label class="control-label col-sm-2" for="search_identifier">Identifier:</label>
@@ -62,25 +57,10 @@
   </div>
 
 
-  <div class="form-group">
-   <label class="control-label col-sm-2" for="assembly">Assembly/Release:</label>
-   <div class="col-sm-3">
-   {{ form.search_assembly|add_class:"form-control"}}
-  </div>
- 
-   <div class="col-sm-1">
-    {{ form.search_release|add_class:"form-control"}}
-   </div>
-  </div>
-  
-
-
-
-
 
   <div class="form-group"> 
     <div class="col-sm-offset-2 col-sm-4">
-      <button type="submit" class="btn btn-primary btn-block">Search Transcript</button>	
+      <button type="submit" class="btn btn-primary btn-block">Search</button>	
     </div>
   </div>
 

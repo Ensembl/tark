@@ -142,10 +142,10 @@ class DiffForm(forms.Form):
 
 class SearchForm(forms.Form):
 
-    current_release = ReleaseUtils.get_latest_release()
-    current_assembly = ReleaseUtils.get_latest_assembly()
+#     current_release = ReleaseUtils.get_latest_release()
+#     current_assembly = ReleaseUtils.get_latest_assembly()
 
-    species = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
+#     species = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
     search_identifier = forms.CharField(max_length=200, help_text='Please enter valid identifiers')
-    search_assembly = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()), required=False)
-    search_release = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()), required=False)
+#     search_assembly = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()), required=False)
+#     search_release = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()), required=False)

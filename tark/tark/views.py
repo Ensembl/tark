@@ -76,8 +76,10 @@ class DataTableListApi(generics.ListAPIView):
         print(" Latest release TranscriptDatatableView: " + str(latest_release))
         print(" Latest source TranscriptDatatableView: " + str(latest_source))
 
-        self.unfiltered_query_set = query_set = Transcript.objects.filter(Q(transcript_release_set__shortname__icontains=latest_release) &
-                                         Q(assembly__assembly_name__icontains=latest_assembly) &  Q(transcript_release_set__source__shortname__icontains=latest_source))
+        self.unfiltered_query_set = query_set = Transcript.objects.filter(
+                Q(transcript_release_set__shortname__icontains=latest_release) &
+                Q(assembly__assembly_name__icontains=latest_assembly) &
+                Q(transcript_release_set__source__shortname__icontains=latest_source))
 
         order_by_index = int(self.request.query_params.get('order[0][column]', 0))
         orderable = bool(self.request.query_params.get('columns[{}][orderable]'.format(order_by_index), 'false'))
@@ -155,7 +157,7 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
     else:
         compare_set_form = CompareSetForm()
 
-    return render(request, 'datatable_view.html', {'table_name': table_name, 
+    return render(request, 'datatable_view.html', {'table_name': table_name,
                                                    "assembly_name": assembly_name,
                                                    "release_name": release_name,
                                                    "source_name": source_name,

@@ -89,17 +89,19 @@ def search_home(request):
         if search_form.is_valid():
             print("Form is valid")
             search_identifier = search_form.cleaned_data['search_identifier']
-            search_assembly = search_form.cleaned_data['search_assembly']
-            search_release = search_form.cleaned_data['search_release']
+#             search_assembly = search_form.cleaned_data['search_assembly']
+#             search_release = search_form.cleaned_data['search_release']
 
             print("Stable id " + search_identifier)
-            print("assembly " + search_assembly)
-            print("release " + search_release)
+#             print("assembly " + search_assembly)
+#             print("release " + search_release)
             host_url = ApiUtils.get_host_url(request)
 
+#             query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
+#                         "&expand_all=true&search_release=" + search_release + \
+#                 "&search_assembly=" + search_assembly
             query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-                        "&expand_all=true&search_release=" + search_release + \
-                "&search_assembly=" + search_assembly
+                        "&expand_all=true"
             response = requests.get(host_url + query_url)
             print(response.status_code)
             if response.status_code == 200:
