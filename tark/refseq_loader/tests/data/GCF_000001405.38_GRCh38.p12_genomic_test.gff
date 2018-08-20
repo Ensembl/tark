@@ -1,0 +1,35 @@
+##gff-version 3
+#!gff-spec-version 1.21
+#!processor NCBI annotwriter
+#!genome-build GRCh38.p12
+#!genome-build-accession NCBI_Assembly:GCF_000001405.38
+#!annotation-source NCBI Homo sapiens Annotation Release 109
+##sequence-region NC_000001.11 1 248956422
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=9606
+NC_000001.11	RefSeq	region	1	248956422	.	+	.	ID=id0;Dbxref=taxon:9606;Name=1;chromosome=1;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000010.11	RefSeq	region	1	133797422	.	+	.	ID=id973724;Dbxref=taxon:9606;Name=10;chromosome=10;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000011.10	RefSeq	region	1	135086622	.	+	.	ID=id1065830;Dbxref=taxon:9606;Name=11;chromosome=11;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000012.12	RefSeq	region	1	133275309	.	+	.	ID=id1163836;Dbxref=taxon:9606;Name=12;chromosome=12;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000013.11	RefSeq	region	1	114364328	.	+	.	ID=id1267334;Dbxref=taxon:9606;Name=13;chromosome=13;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000014.9	RefSeq	region	1	107043718	.	+	.	ID=id1307127;Dbxref=taxon:9606;Name=14;chromosome=14;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000016.10	RefSeq	region	1	90338345	.	+	.	ID=id1432531;Dbxref=taxon:9606;Name=16;chromosome=16;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000017.11	RefSeq	region	1	83257441	.	+	.	ID=id1504151;Dbxref=taxon:9606;Name=17;chromosome=17;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000018.10	RefSeq	region	1	80373285	.	+	.	ID=id1603883;Dbxref=taxon:9606;Name=18;chromosome=18;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000019.10	RefSeq	region	1	58617616	.	+	.	ID=id1639583;Dbxref=taxon:9606;Name=19;chromosome=19;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000020.11	RefSeq	region	1	64444167	.	+	.	ID=id1719962;Dbxref=taxon:9606;Name=20;chromosome=20;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000021.9	RefSeq	region	1	46709983	.	+	.	ID=id1761719;Dbxref=taxon:9606;Name=21;chromosome=21;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000022.11	RefSeq	region	1	50818468	.	+	.	ID=id1782865;Dbxref=taxon:9606;Name=22;chromosome=22;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000023.11	RefSeq	region	1	156040895	.	+	.	ID=id1824311;Dbxref=taxon:9606;Name=X;chromosome=X;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_000024.10	RefSeq	region	1	57227415	.	+	.	ID=id1877672;Dbxref=taxon:9606;Name=Y;chromosome=Y;gbkey=Src;genome=chromosome;mol_type=genomic DNA
+NC_012920.1	RefSeq	region	1	16569	.	+	.	ID=id1959760;Dbxref=taxon:9606;Is_circular=true;Name=MT;country=United Kingdom: Great Britain;gbkey=Src;genome=mitochondrion;isolation-source=caucasian;mol_type=genomic DNA;note=this is the rCRS;tissue-type=placenta
+NC_000010.11	BestRefSeq	gene	6010694	6062370	.	-	.	ID=gene27397;Dbxref=GeneID:3559,HGNC:HGNC:6008,MIM:147730;Name=IL2RA;description=interleukin 2 receptor subunit alpha;gbkey=Gene;gene=IL2RA;gene_biotype=protein_coding;gene_synonym=CD25,IDDM10,IL2R,IMD41,p55,TCGFR
+
+NC_000010.11	BestRefSeq	mRNA	6010694	6062370	.	-	.	ID=rna80734;Parent=gene27397;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;Name=NM_000417.2;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6062088	6062370	.	-	.	ID=id977749;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6025834	6026025	.	-	.	ID=id977750;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6024244	6024354	.	-	.	ID=id977751;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6021478	6021693	.	-	.	ID=id977752;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6019870	6019941	.	-	.	ID=id977753;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6019428	6019499	.	-	.	ID=id977754;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6018053	6018119	.	-	.	ID=id977755;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
+NC_000010.11	BestRefSeq	exon	6010694	6012896	.	-	.	ID=id977756;Parent=rna80734;Dbxref=GeneID:3559,Genbank:NM_000417.2,HGNC:HGNC:6008,MIM:147730;gbkey=mRNA;gene=IL2RA;product=interleukin 2 receptor subunit alpha%2C transcript variant 1;transcript_id=NM_000417.2
