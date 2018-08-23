@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
 import os
 import wget
-from refseq_loader.handlers.refseq.FileHandlers import GFFHandler
+
 import sys
 # import the logging library
 import logging
+from refseq_loader.handlers.refseq.gffhandler import GFFHandler
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
