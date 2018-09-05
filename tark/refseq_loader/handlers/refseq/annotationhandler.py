@@ -44,16 +44,17 @@ class AnnotationHandler(object):
         return gene
 
     @classmethod
-    def get_annotated_transcript(cls, fasta_handler, chrom, mRNA_feature):
+    def get_annotated_transcript(cls, sequence_handler, chrom, mRNA_feature):
         print(mRNA_feature)
         print("\t\t    Type: " + str(mRNA_feature.type) +
               "  ID: " + str(mRNA_feature.id) +
-              "  Location start:" + str(mRNA_feature.location.start) +
+              "  Location start:" + str(mRNA_feature.location.start + 1) +
               "  Location end: " + str(mRNA_feature.location.end))
         print(mRNA_feature.qualifiers)
         # print(fasta_handler.get_fasta_seq_by_id(mRNA_feature.qualifiers['transcript_id'][0]))
         transcript = {}
-        transcript['loc_start'] = str(mRNA_feature.location.start)
+        # Note we have shifted one base here
+        transcript['loc_start'] = str(mRNA_feature.location.start + 1)
         transcript['loc_end'] = str(mRNA_feature.location.end)
         transcript['loc_strand'] = str(mRNA_feature.location.strand)
         transcript['loc_region'] = str(chrom)
@@ -65,21 +66,49 @@ class AnnotationHandler(object):
         transcript['session_id'] = None
         transcript['transcript_checksum'] = None
         transcript['exon_set_checksum'] = None
-        transcript['seq_checksum'] = None
         transcript['loc_checksum'] = None
-        transcript['sequence'] = fasta_handler.get_fasta_seq_by_id(mRNA_feature.qualifiers['transcript_id'][0])
+        transcript['sequence'] = sequence_handler.get_sequence_by_id(mRNA_feature.qualifiers['transcript_id'][0])
+        transcript['seq_checksum'] = ChecksumHandler.get_seq_checksum(transcript, 'sequence')
         return transcript
 
     @classmethod
-    def get_annotated_exons(cls, seq_region, relative_exon_locations_with_seq):
+    def get_annotated_exons(cls, sequence_handler, seq_region, transcript_identifier, refseq_exon_list):
+        exon_sequences = sequence_handler.get_exon_sequences_by_identifier(transcript_identifier)
         annotated_exons = []
-        for exon_feature in relative_exon_locations_with_seq:
-            annotated_exons.append(cls.get_annotated_exon(seq_region, exon_feature))
+        if len(refseq_exon_list) != len(exon_sequences):
+            return None
+
+        for exon_feature, exon_sequence in zip(refseq_exon_list, exon_sequences):
+            print(exon_feature)
+            print(exon_sequence)
+            annotated_exons.append(cls.get_annotated_exon(seq_region, exon_feature, exon_sequence))
 
         return annotated_exons
 
     @classmethod
-    def get_annotated_cds(cls, seq_region, cds_list):
+    def get_annotated_exon(cls, seq_region, exon_feature, exon_sequence):
+        exon = {}
+        exon['assembly_id'] = "1"
+        exon['loc_start'] = exon_feature["exon_start"]
+        exon['loc_end'] = exon_feature["exon_end"]
+        exon['loc_strand'] = exon_feature["exon_strand"]
+        exon['loc_region'] = str(seq_region)
+
+        exon['loc_checksum'] = ChecksumHandler.get_location_checksum(exon)
+
+        exon['exon_order'] = exon_feature["exon_order"]
+        exon['stable_id'] = exon_feature["exon_stable_id"]
+        exon['stable_id_version'] = exon_feature["exon_stable_id_version"]
+
+        exon['session_id'] = None
+        exon['exon_seq'] = exon_sequence
+        exon['seq_checksum'] = ChecksumHandler.get_seq_checksum(exon, 'exon_seq')
+        exon['exon_checksum'] = ChecksumHandler.get_exon_checksum(exon)
+
+        return exon
+
+    @classmethod
+    def get_annotated_cds(cls, protein_sequence_handler, seq_region, protein_id, cds_list):
 
         cds_strand = cds_list[0]['cds_strand']
         protein_id = cds_list[0]['protein_id']
@@ -93,8 +122,9 @@ class AnnotationHandler(object):
         translation['loc_end'] = translation_end
         translation['loc_strand'] = cds_strand
         translation['loc_region'] = seq_region
+        translation['translation_seq'] = protein_sequence_handler.get_fasta_seq_by_id(protein_id)
         translation['translation_checksum'] = None
-        translation['seq_checksum'] = None
+        translation['seq_checksum'] = ChecksumHandler.get_seq_checksum(translation, 'translation_seq')
         translation['session_id'] = None
         translation['assembly_id'] = None
 
@@ -115,28 +145,6 @@ class AnnotationHandler(object):
             return (cds_start[0], cds_end[0])
         else:
             return (0, 0)
-
-    @classmethod
-    def get_annotated_exon(cls, seq_region, exon_feature):
-        exon = {}
-        exon['assembly_id'] = "1"
-        exon['loc_start'] = exon_feature["exon_seq_region_start"]
-        exon['loc_end'] = exon_feature["exon_seq_region_end"]
-        exon['loc_strand'] = exon_feature["exon_seq_region_strand"]
-        exon['loc_region'] = str(seq_region)
-
-        exon['loc_checksum'] = ChecksumHandler.get_location_checksum(exon)
-
-        exon['exon_order'] = exon_feature["exon_order"]
-        exon['stable_id'] = exon_feature["exon_stable_id"]
-        exon['stable_id_version'] = exon_feature["exon_stable_id_version"]
-
-        exon['session_id'] = None
-        exon['exon_seq'] = exon_feature['exon_seq']
-        exon['seq_checksum'] = ChecksumHandler.get_seq_checksum(exon, 'exon_seq')
-        exon['exon_checksum'] = ChecksumHandler.get_exon_checksum(exon)
-
-        return exon
 
     @classmethod
     def parse_qualifiers(cls, qualifiers, key_qualifier, attr=None):
@@ -177,39 +185,3 @@ class AnnotationHandler(object):
 
         # print(relative_exon_locations_with_seq)
         return features_with_seq
-
-    @classmethod
-    def get_relative_exon_location(cls, seq_region, refseq_exon_list):
-
-        relative_refseq_exon_list = []
-        current_exon_end = 1
-        for exon in refseq_exon_list:
-            # print(exon)
-            relative_refseq_exon_dict = {}
-            relative_refseq_exon_dict['exon_order'] = exon['exon_order']
-            relative_refseq_exon_dict['exon_stable_id'] = exon['exon_stable_id']
-            relative_refseq_exon_dict['exon_stable_id_version'] = 1
-            # print("Processing Exon order " + str(relative_refseq_exon_dict['exon_order']))
-            if relative_refseq_exon_dict['exon_order'] == 1:
-                relative_refseq_exon_dict['exon_start'] = 1
-                relative_refseq_exon_dict['exon_end'] = int(exon['exon_end']) - int(exon['exon_start'])
-            else:
-                relative_refseq_exon_dict['exon_start'] = current_exon_end + 1
-                relative_refseq_exon_dict['exon_end'] = current_exon_end + \
-                    int(exon['exon_end']) - int(exon['exon_start'])
-
-            # current_exon_start = relative_refseq_exon_dict['exon_start']
-            current_exon_end = relative_refseq_exon_dict['exon_end']
-            # annotate with actual data
-            relative_refseq_exon_dict['exon_seq_region_start'] = exon['exon_start']
-            relative_refseq_exon_dict['exon_seq_region_end'] = exon['exon_end']
-            relative_refseq_exon_dict['exon_seq_region_strand'] = exon['exon_strand']
-            relative_refseq_exon_dict['exon_seq_region'] = str(seq_region)
-
-            relative_refseq_exon_list.append(relative_refseq_exon_dict)
-            # print("=========")
-            # print(relative_refseq_exon_dict)
-            # print("=========")
-
-        # print(relative_refseq_exon_list)
-        return relative_refseq_exon_list

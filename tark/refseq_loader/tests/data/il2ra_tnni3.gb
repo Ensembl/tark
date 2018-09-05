@@ -1,0 +1,696 @@
+LOCUS       NM_000417               3216 bp    mRNA    linear   PRI 02-SEP-2018
+DEFINITION  Homo sapiens interleukin 2 receptor subunit alpha (IL2RA),
+            transcript variant 1, mRNA.
+ACCESSION   NM_000417
+VERSION     NM_000417.2
+KEYWORDS    RefSeq.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 3216)
+  AUTHORS   Sadras T, Heatley SL, Kok CH, Dang P, Galbraith KM, McClure BJ,
+            Muskovic W, Venn NC, Moore S, Osborn M, Revesz T, Moore AS, Hughes
+            TP, Yeung D, Sutton R and White DL.
+  TITLE     Differential expression of MUC4, GPR110 and IL2RA defines two
+            groups of CRLF2-rearranged acute lymphoblastic leukemia patients
+            with distinct secondary lesions
+  JOURNAL   Cancer Lett. 408, 92-101 (2017)
+   PUBMED   28866095
+  REMARK    GeneRIF: High IL2RA expression is associated with CRLF2-rearranged
+            acute lymphoblastic leukemia.
+REFERENCE   2  (bases 1 to 3216)
+  AUTHORS   Schwedhelm K, Thorpe J, Murray SA, Gavin M, Speake C, Greenbaum C,
+            Cerosaletti K, Buckner J and Long SA.
+  TITLE     Attenuated IL-2R signaling in CD4 memory T cells of T1D subjects is
+            intrinsic and dependent on activation state
+  JOURNAL   Clin. Immunol. 181, 67-74 (2017)
+   PUBMED   28645874
+  REMARK    GeneRIF: In T1D, low IL-2 responsiveness was most pronounced in
+            memory T effector cells. Reduced IL-2 responses in memory T
+            effector cells were not rescued by resting, remained lower after
+            activation and proliferation, and were absent in type 2 diabetes.
+REFERENCE   3  (bases 1 to 3216)
+  AUTHORS   Nukui A, Masuda A, Abe H, Arai K, Yoshida KI and Kamai T.
+  TITLE     Increased serum level of soluble interleukin-2 receptor is
+            associated with a worse response of metastatic clear cell renal
+            cell carcinoma to interferon alpha and sequential VEGF-targeting
+            therapy
+  JOURNAL   BMC Cancer 17 (1), 372 (2017)
+   PUBMED   28545581
+  REMARK    GeneRIF: Increased serum level of soluble interleukin-2 receptor is
+            associated with a worse response of metastatic clear cell renal
+            cell carcinoma to interferon alpha and sequential VEGF-targeting
+            therapy.
+            Publication Status: Online-Only
+REFERENCE   4  (bases 1 to 3216)
+  AUTHORS   Buhelt S, Ratzer RL, Christensen JR, Bornsen L, Sellebjerg F and
+            Sondergaard HB.
+  TITLE     Relationship between soluble CD25 and gene expression in healthy
+            individuals and patients with multiple sclerosis
+  JOURNAL   Cytokine 93, 15-25 (2017)
+   PUBMED   28511943
+  REMARK    GeneRIF: Relationship between soluble CD25 and gene expression in
+            healthy individuals and patients with multiple sclerosis.
+REFERENCE   5  (bases 1 to 3216)
+  AUTHORS   Bharwani KD, Dirckx M, Stronks DL, Dik WA, Schreurs MWJ and Huygen
+            FJPM.
+  TITLE     Elevated Plasma Levels of sIL-2R in Complex Regional Pain Syndrome:
+            A Pathogenic Role for T-Lymphocytes?
+  JOURNAL   Mediators Inflamm. 2017, 2764261 (2017)
+   PUBMED   28634419
+  REMARK    GeneRIF: sIL-2R could be a promising new marker for determining
+            inflammatory disease activity in CRPS.
+REFERENCE   6  (bases 1 to 3216)
+  AUTHORS   Purvis SF, Georges DL, Williams TM and Lederman MM.
+  TITLE     Suppression of interleukin-2 and interleukin-2 receptor expression
+            in Jurkat cells stably expressing the human immunodeficiency virus
+            Tat protein
+  JOURNAL   Cell. Immunol. 144 (1), 32-42 (1992)
+   PUBMED   1394441
+REFERENCE   7  (bases 1 to 3216)
+  AUTHORS   Carter CR, Hancock BW and Rees RC.
+  TITLE     The augmentation of lymphokine-activated killer activity following
+            pulsing of human peripheral blood mononuclear cells with
+            recombinant human interleukin-2
+  JOURNAL   Cancer Immunol. Immunother. 35 (4), 264-270 (1992)
+   PUBMED   1511461
+REFERENCE   8  (bases 1 to 3216)
+  AUTHORS   Kanegane H, Miyawaki T, Kato K, Yokoi T, Uehara T, Yachie A and
+            Taniguchi N.
+  TITLE     A novel subpopulation of CD45RA+ CD4+ T cells expressing IL-2
+            receptor alpha-chain (CD25) and having a functionally transitional
+            nature into memory cells
+  JOURNAL   Int. Immunol. 3 (12), 1349-1356 (1991)
+   PUBMED   1685671
+REFERENCE   9  (bases 1 to 3216)
+  AUTHORS   Kuziel WA and Greene WC.
+  TITLE     Interleukin-2 and the IL-2 receptor: new insights into structure
+            and function
+  JOURNAL   J. Invest. Dermatol. 94 (6 Suppl), 27S-32S (1990)
+   PUBMED   1693645
+  REMARK    Review article
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from AL157395.17, X01057.1 and
+            AL137186.18.
+            On Nov 28, 2009 this sequence version replaced NM_000417.1.
+            
+            Summary: The interleukin 2 (IL2) receptor alpha (IL2RA) and beta
+            (IL2RB) chains, together with the common gamma chain (IL2RG),
+            constitute the high-affinity IL2 receptor. Homodimeric alpha chains
+            (IL2RA) result in low-affinity receptor, while homodimeric beta
+            (IL2RB) chains produce a medium-affinity receptor. Normally an
+            integral-membrane protein, soluble IL2RA has been isolated and
+            determined to result from extracellular proteolyisis.
+            Alternately-spliced IL2RA mRNAs have been isolated, but the
+            significance of each is presently unknown. Mutations in this gene
+            are associated with interleukin 2 receptor alpha
+            deficiency.[provided by RefSeq, Nov 2009].
+            
+            Transcript Variant: This variant (1) represents the longest
+            transcript and encodes the longest isoform (1).
+            
+            Sequence Note: This RefSeq record was created from transcript and
+            genomic sequence data to make the sequence consistent with the
+            reference genome assembly. The genomic coordinates used for the
+            transcript record were based on transcript alignments.
+            
+            Publication Note:  This RefSeq record includes a subset of the
+            publications that are available for this gene. Please see the Gene
+            record to access additional publications.
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: X01057.1, AK223313.1 [ECO:0000332]
+            RNAseq introns              :: single sample supports all introns
+                                           SAMEA2142670, SAMEA2151358
+                                           [ECO:0000348]
+            ##Evidence-Data-END##
+            COMPLETENESS: complete on the 3' end.
+PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
+            1-62                AL157395.17        6404-6465           c
+            63-2367             X01057.1           24-2328
+            2368-3216           AL137186.18        144397-145245       c
+FEATURES             Location/Qualifiers
+     source          1..3216
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="10"
+                     /map="10p15.1"
+     gene            1..3216
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /note="interleukin 2 receptor subunit alpha"
+                     /db_xref="GeneID:3559"
+                     /db_xref="HGNC:HGNC:6008"
+                     /db_xref="MIM:147730"
+     exon            1..283
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     STS             141..1238
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /db_xref="UniSTS:489660"
+     misc_feature    148..150
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /note="upstream in-frame stop codon"
+     CDS             220..1038
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /note="isoform 1 precursor is encoded by transcript
+                     variant 1; TAC antigen; IL-2R subunit alpha; IL-2 receptor
+                     subunit alpha; interleukin 2 receptor, alpha"
+                     /codon_start=1
+                     /product="interleukin-2 receptor subunit alpha isoform 1
+                     precursor"
+                     /protein_id="NP_000408.1"
+                     /db_xref="CCDS:CCDS7076.1"
+                     /db_xref="GeneID:3559"
+                     /db_xref="HGNC:HGNC:6008"
+                     /db_xref="MIM:147730"
+                     /translation="MDSYLLMWGLLTFIMVPGCQAELCDDDPPEIPHATFKAMAYKEG
+                     TMLNCECKRGFRRIKSGSLYMLCTGNSSHSSWDNQCQCTSSATRNTTKQVTPQPEEQK
+                     ERKTTEMQSPMQPVDQASLPGHCREPPPWENEATERIYHFVVGQMVYYQCVQGYRALH
+                     RGPAESVCKMTHGKTRWTQPQLICTGEMETSQFPGEEKPQASPEGRPESETSCLVTTT
+                     DFQIQTEMAATMETSIFTTEYQVAVAGCVFLLISVLLLSGLTWQRRQRKSRRTI"
+     sig_peptide     220..282
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="COORDINATES: ab initio prediction:SignalP:4.0"
+     mat_peptide     283..1035
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /product="Interleukin-2 receptor subunit alpha"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="propagated from UniProtKB/Swiss-Prot (P01589.1)"
+     misc_feature    940..996
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="propagated from UniProtKB/Swiss-Prot (P01589.1);
+                     transmembrane region"
+     exon            284..475
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            476..586
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            587..802
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            803..874
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            875..946
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            947..1013
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1014..3216
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /inference="alignment:Splign:2.1.0"
+     STS             1029..1893
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /standard_name="IL2RA_V107"
+                     /db_xref="UniSTS:277378"
+     STS             1058..1262
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /standard_name="STS-X01057"
+                     /db_xref="UniSTS:82054"
+     regulatory      1337..1342
+                     /regulatory_class="polyA_signal_sequence"
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+     polyA_site      1349
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+     STS             2132..2160
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /standard_name="D3S1674"
+                     /db_xref="UniSTS:148451"
+     STS             2141..2257
+                     /gene="IL2RA"
+                     /gene_synonym="CD25; IDDM10; IL2R; IMD41; p55; TCGFR"
+                     /standard_name="D22S296"
+                     /db_xref="UniSTS:147641"
+ORIGIN      
+        1 ggcagtttcc tggctgaaca cgccagccca atacttaaag agagcaactc ctgactccga
+       61 tagagactgg atggacccac aagggtgaca gcccaggcgg accgatcttc ccatcccaca
+      121 tcctccggcg cgatgccaaa aagaggctga cggcaactgg gccttctgca gagaaagacc
+      181 tccgcttcac tgccccggct ggtcccaagg gtcaggaaga tggattcata cctgctgatg
+      241 tggggactgc tcacgttcat catggtgcct ggctgccagg cagagctctg tgacgatgac
+      301 ccgccagaga tcccacacgc cacattcaaa gccatggcct acaaggaagg aaccatgttg
+      361 aactgtgaat gcaagagagg tttccgcaga ataaaaagcg ggtcactcta tatgctctgt
+      421 acaggaaact ctagccactc gtcctgggac aaccaatgtc aatgcacaag ctctgccact
+      481 cggaacacaa cgaaacaagt gacacctcaa cctgaagaac agaaagaaag gaaaaccaca
+      541 gaaatgcaaa gtccaatgca gccagtggac caagcgagcc ttccaggtca ctgcagggaa
+      601 cctccaccat gggaaaatga agccacagag agaatttatc atttcgtggt ggggcagatg
+      661 gtttattatc agtgcgtcca gggatacagg gctctacaca gaggtcctgc tgagagcgtc
+      721 tgcaaaatga cccacgggaa gacaaggtgg acccagcccc agctcatatg cacaggtgaa
+      781 atggagacca gtcagtttcc aggtgaagag aagcctcagg caagccccga aggccgtcct
+      841 gagagtgaga cttcctgcct cgtcacaaca acagattttc aaatacagac agaaatggct
+      901 gcaaccatgg agacgtccat atttacaaca gagtaccagg tagcagtggc cggctgtgtt
+      961 ttcctgctga tcagcgtcct cctcctgagt gggctcacct ggcagcggag acagaggaag
+     1021 agtagaagaa caatctagaa aaccaaaaga acaagaattt cttggtaaga agccgggaac
+     1081 agacaacaga agtcatgaag cccaagtgaa atcaaaggtg ctaaatggtc gcccaggaga
+     1141 catccgttgt gcttgcctgc gttttggaag ctctgaagtc acatcacagg acacggggca
+     1201 gtggcaacct tgtctctatg ccagctcagt cccatcagag agcgagcgct acccacttct
+     1261 aaatagcaat ttcgccgttg aagaggaagg gcaaaaccac tagaactctc catcttattt
+     1321 tcatgtatat gtgttcatta aagcatgaat ggtatggaac tctctccacc ctatatgtag
+     1381 tataaagaaa agtaggttta cattcatctc attccaactt cccagttcag gagtcccaag
+     1441 gaaagcccca gcactaacgt aaatacacaa cacacacact ctaccctata caactggaca
+     1501 ttgtctgcgt ggttcctttc tcagccgctt ctgactgctg attctcccgt tcacgttgcc
+     1561 taataaacat ccttcaagaa ctctgggctg ctacccagaa atcattttac ccttggctca
+     1621 atcctctaag ctaaccccct tctactgagc cttcagtctt gaatttctaa aaaacagagg
+     1681 ccatggcaga ataatctttg ggtaacttca aaacggggca gccaaaccca tgaggcaatg
+     1741 tcaggaacag aaggatgaat gaggtcccag gcagagaatc atacttagca aagttttacc
+     1801 tgtgcgttac taattggcct ctttaagagt tagtttcttt gggattgcta tgaatgatac
+     1861 cctgaatttg gcctgcacta atttgatgtt tacaggtgga cacacaaggt gcaaatcaat
+     1921 gcgtacgttt cctgagaagt gtctaaaaac accaaaaagg gatccgtaca ttcaatgttt
+     1981 atgcaaggaa ggaaagaaag aaggaagtga agagggagaa gggatggagg tcacactggt
+     2041 agaacgtaac cacggaaaag agcgcatcag gcctggcacg gtggctcagg cctataaccc
+     2101 cagctcccta ggagaccaag gcgggagcat ctcttgaggc caggagtttg agaccagcct
+     2161 gggcagcata gcaagacaca tccctacaaa aaattagaaa ttggctggat gtggtggcat
+     2221 acgcctgtag tcctagccac tcaggaggct gaggcaggag gattgcttga gcccaggagt
+     2281 tcgaggctgc agtcagtcat gatggcacca ctgcactcca gcctgggcaa cagagcaaga
+     2341 tcctgtcttt aaggaaaaaa agacaagatg agcataccag cagtccttga acattatcaa
+     2401 aaagttcagc atattagaat caccgggagg ccttgttaaa agagttcgct gggcccatct
+     2461 tcagagtctc tgagttgttg gtctggaata gagccaaatg ttttgtgtgt ctaacaattc
+     2521 ccaggtgctg ttgctgctgc tactattcca ggaacacact ttgagaacca ttgtgttatt
+     2581 gctctgcacg cccacccact ctcaactccc acgaaaaaaa tcaacttcca gagctaagat
+     2641 ttcggtggaa gtcctggttc catatctggt gcaagatctc ccctcacgaa tcagttgagt
+     2701 caacattcta gctcaacaac atcacacgat taacattaac gaaaattatt catttgggaa
+     2761 actatcagcc agttttcact tctgaagggg caggagagtg ttatgagaaa tcacggcagt
+     2821 tttcagcagg gtccagattc agattaaata actattttct gtcatttctg tgaccaacca
+     2881 catacaaaca gactcatctg tgcactctcc ccctccccct tcaggtatat gttttctgag
+     2941 taaagttgaa aagaatctca gaccagaaaa tatagatata tatttaaatc ttacttgagt
+     3001 agaactgatt acgacttttg ggtgttgagg ggtctataag atcaaaactt ttccatgata
+     3061 atactaagat gttatcgacc atttatctgt ccttctctca aaagtgtatg gtggaatttt
+     3121 ccagaagcta tgtgatacgt gatgatgtca tcactctgct gttaacatat aataaattta
+     3181 ttgctattgt ttataaaaga ataaatgata tttttt
+//
+LOCUS       NM_000363                866 bp    mRNA    linear   PRI 01-JUL-2018
+DEFINITION  Homo sapiens troponin I3, cardiac type (TNNI3), mRNA.
+ACCESSION   NM_000363
+VERSION     NM_000363.4
+KEYWORDS    RefSeq.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 866)
+  AUTHORS   Klein BA, Reiz B, Robertson IM, Irving M, Li L, Sun YB and Sykes
+            BD.
+  TITLE     Reversible Covalent Reaction of Levosimendan with Cardiac Troponin
+            C in Vitro and in Situ
+  JOURNAL   Biochemistry 57 (15), 2256-2265 (2018)
+   PUBMED   29558109
+  REMARK    GeneRIF: Reversible Covalent Reaction of Levosimendan with Cardiac
+            Troponin C in Vitro and in Situ.
+REFERENCE   2  (bases 1 to 866)
+  AUTHORS   Arnadottir A, Falk Klein C and Iversen K.
+  TITLE     Head-to-head comparison of cardiac troponin T and troponin I in
+            patients without acute coronary syndrome: a systematic review
+  JOURNAL   Biomarkers 22 (8), 701-708 (2017)
+   PUBMED   28545334
+  REMARK    GeneRIF: Studies indicate that in patients with end-stage renal
+            disease (ESRD), elevation of cardiac-specific troponin T (cTnT) was
+            more frequent than elevation of troponin I (cTnI) [Review].
+            Review article
+REFERENCE   3  (bases 1 to 866)
+  AUTHORS   Agnello L, Bivona G, Novo G, Scazzone C, Muratore R, Levantino P,
+            Bellia C, Lo Sasso B and Ciaccio M.
+  TITLE     Heart-type fatty acid binding protein is a sensitive biomarker for
+            early AMI detection in troponin negative patients: a pilot study
+  JOURNAL   Scand. J. Clin. Lab. Invest. 77 (6), 428-432 (2017)
+   PUBMED   28650717
+  REMARK    GeneRIF: the frequency of h-FABP positivity among acute myocardial
+            infarction patients was higher than that of hs-TnI, which would
+            have missed six of them; however, hs-TnI area under curve was
+            superior to that of h-FABP.
+REFERENCE   4  (bases 1 to 866)
+  AUTHORS   Krasniqi X, Berisha B, Gashi M, Kocinaj D, Jashari F and Vincelj J.
+  TITLE     Influence of apelin-12 on troponin levels and the rate of MACE in
+            STEMI patients
+  JOURNAL   BMC Cardiovasc Disord 17 (1), 195 (2017)
+   PUBMED   28728608
+  REMARK    GeneRIF: Apelin-12 influences troponin I levels in the acute phase
+            of STEMI, whereas during the non-acute phase, low apelin levels
+            were associated with a high rate of MACE.
+            Publication Status: Online-Only
+REFERENCE   5  (bases 1 to 866)
+  AUTHORS   Cirino,A.L. and Ho,C.
+  TITLE     Hypertrophic Cardiomyopathy Overview
+  JOURNAL   (in) Adam MP, Ardinger HH, Pagon RA, Wallace SE, Bean LJH, Stephens
+            K and Amemiya A (Eds.);
+            GENEREVIEWS((R));
+            (1993)
+   PUBMED   20301725
+REFERENCE   6  (bases 1 to 866)
+  AUTHORS   Hershberger,R.E. and Morales,A.
+  TITLE     Dilated Cardiomyopathy Overview
+  JOURNAL   (in) Adam MP, Ardinger HH, Pagon RA, Wallace SE, Bean LJH, Stephens
+            K and Amemiya A (Eds.);
+            GENEREVIEWS((R));
+            (1993)
+   PUBMED   20301486
+REFERENCE   7  (bases 1 to 866)
+  AUTHORS   MacGeoch C, Barton PJ, Vallins WJ, Bhavsar P and Spurr NK.
+  TITLE     The human cardiac troponin I locus: assignment to chromosome
+            19p13.2-19q13.2
+  JOURNAL   Hum. Genet. 88 (1), 101-104 (1991)
+   PUBMED   1959915
+REFERENCE   8  (bases 1 to 866)
+  AUTHORS   Hunkeler NM, Kullman J and Murphy AM.
+  TITLE     Troponin I isoform expression in human heart
+  JOURNAL   Circ. Res. 69 (5), 1409-1414 (1991)
+   PUBMED   1934363
+REFERENCE   9  (bases 1 to 866)
+  AUTHORS   Mittmann K, Jaquet K and Heilmeyer LM Jr.
+  TITLE     A common motif of two adjacent phosphoserines in bovine, rabbit and
+            human cardiac troponin I
+  JOURNAL   FEBS Lett. 273 (1-2), 41-45 (1990)
+   PUBMED   2226863
+REFERENCE   10 (bases 1 to 866)
+  AUTHORS   Vallins WJ, Brand NJ, Dabhade N, Butler-Browne G, Yacoub MH and
+            Barton PJ.
+  TITLE     Molecular cloning of human cardiac troponin I using polymerase
+            chain reaction
+  JOURNAL   FEBS Lett. 270 (1-2), 57-61 (1990)
+   PUBMED   2226790
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from AK223451.1.
+            This sequence is a reference standard in the RefSeqGene project.
+            On Jul 5, 2007 this sequence version replaced NM_000363.3.
+            
+            Summary: Troponin I (TnI), along with troponin T (TnT) and troponin
+            C (TnC), is one of 3 subunits that form the troponin complex of the
+            thin filaments of striated muscle. TnI is the inhibitory subunit;
+            blocking actin-myosin interactions and thereby mediating striated
+            muscle relaxation. The TnI subfamily contains three genes:
+            TnI-skeletal-fast-twitch, TnI-skeletal-slow-twitch, and
+            TnI-cardiac. This gene encodes the TnI-cardiac protein and is
+            exclusively expressed in cardiac muscle tissues. Mutations in this
+            gene cause familial hypertrophic cardiomyopathy type 7 (CMH7) and
+            familial restrictive cardiomyopathy (RCM). [provided by RefSeq, Jul
+            2008].
+            
+            Publication Note:  This RefSeq record includes a subset of the
+            publications that are available for this gene. Please see the Gene
+            record to access additional publications.
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: AK223451.1, EU747720.1 [ECO:0000332]
+            RNAseq introns              :: single sample supports all introns
+                                           SAMEA2151741, SAMEA2154361
+                                           [ECO:0000348]
+            ##Evidence-Data-END##
+            COMPLETENESS: complete on the 3' end.
+PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
+            1-866               AK223451.1         1-866
+FEATURES             Location/Qualifiers
+     source          1..866
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="19"
+                     /map="19q13.42"
+     gene            1..866
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /note="troponin I3, cardiac type"
+                     /db_xref="GeneID:7137"
+                     /db_xref="HGNC:HGNC:11947"
+                     /db_xref="MIM:191044"
+     exon            1..154
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     STS             75..797
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /db_xref="UniSTS:483794"
+     CDS             144..776
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /note="troponin I type 3 (cardiac); cardiomyopathy,
+                     dilated 2A (autosomal recessive)"
+                     /codon_start=1
+                     /product="troponin I, cardiac muscle"
+                     /protein_id="NP_000354.4"
+                     /db_xref="CCDS:CCDS42628.1"
+                     /db_xref="GeneID:7137"
+                     /db_xref="HGNC:HGNC:11947"
+                     /db_xref="MIM:191044"
+                     /translation="MADGSSDAAREPRPAPAPIRRRSSNYRAYATEPHAKKKSKISAS
+                     RKLQLKTLLLQIAKQELEREAEERRGEKGRALSTRCQPLELAGLGFAELQDLCRQLHA
+                     RVDKVDEERYDIEAKVTKNITEIADLTQKIFDLRGKFKRPTLRRVRISADAMMQALLG
+                     ARAKESLDLRAHLKQVKKEDTEKENREVGDWRKNIDALSGMEGRKKKFES"
+     misc_feature    147..149
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="N-acetylalanine. {ECO:0000269|PubMed:2226863};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     acetylation site"
+     misc_feature    156..158
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    159..161
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    210..212
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine, by PKA and PKD/PRKD1.
+                     {ECO:0000269|PubMed:15514163, ECO:0000269|PubMed:2226863,
+                     ECO:0000269|PubMed:22972900, ECO:0000269|PubMed:9346285};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    213..215
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine, by PKA and PKD/PRKD1.
+                     {ECO:0000269|PubMed:15514163, ECO:0000269|PubMed:2226863,
+                     ECO:0000269|PubMed:22972900, ECO:0000269|PubMed:9346285};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    219..221
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphotyrosine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    234..236
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine, by STK4/MST1.
+                     {ECO:0000269|PubMed:18986304}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    237..380
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     Region: Involved in binding TNC"
+     misc_feature    267..269
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine, by PKC/PRKCE.
+                     {ECO:0000250|UniProtKB:P48787}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    273..275
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine, by PKC/PRKCE.
+                     {ECO:0000250|UniProtKB:P48787}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    294..296
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine, by STK4/MST1.
+                     {ECO:0000269|PubMed:18986304,
+                     ECO:0000269|PubMed:22972900}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    372..374
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    375..377
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    381..383
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Involved in TNI-TNT interactions; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); other site"
+     misc_feature    432..434
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Involved in TNI-TNT interactions; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); other site"
+     misc_feature    528..590
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     Region: Involved in binding TNC and actin"
+     misc_feature    528..530
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine, by STK4/MST1.
+                     {ECO:0000269|PubMed:18986304}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    570..572
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine, by STK4/MST1.
+                     {ECO:0000269|PubMed:18986304,
+                     ECO:0000269|PubMed:22972900}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    591..593
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine, by PAK3.
+                     {ECO:0000269|PubMed:12242269}; propagated from
+                     UniProtKB/Swiss-Prot (P19429.3); phosphorylation site"
+     misc_feature    639..641
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    684..686
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphothreonine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     misc_feature    738..740
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /experiment="experimental evidence, no additional details
+                     recorded"
+                     /note="Phosphoserine. {ECO:0000269|PubMed:22972900};
+                     propagated from UniProtKB/Swiss-Prot (P19429.3);
+                     phosphorylation site"
+     exon            155..167
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            168..251
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            252..293
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            294..425
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            426..515
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            516..692
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     exon            693..843
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+                     /inference="alignment:Splign:2.1.0"
+     regulatory      819..824
+                     /regulatory_class="polyA_signal_sequence"
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+     polyA_site      843
+                     /gene="TNNI3"
+                     /gene_synonym="CMD1FF; CMD2A; CMH7; cTnI; RCM1; TNNC1"
+ORIGIN      
+        1 agtgtcctcg gggagtctca agcagcccgg aggagactga cggtccctgg gaccctgaag
+       61 gtcacccggg cggccccctc actgaccctc caaacgcccc tgtcctcgcc ctgcctcctg
+      121 ccattcccgg cctgagtctc agcatggcgg atgggagcag cgatgcggct agggaacctc
+      181 gccctgcacc agccccaatc agacgccgct cctccaacta ccgcgcttat gccacggagc
+      241 cgcacgccaa gaaaaaatct aagatctccg cctcgagaaa attgcagctg aagactctgc
+      301 tgctgcagat tgcaaagcaa gagctggagc gagaggcgga ggagcggcgc ggagagaagg
+      361 ggcgcgctct gagcacccgc tgccagccgc tggagttggc cgggctgggc ttcgcggagc
+      421 tgcaggactt gtgccgacag ctccacgccc gtgtggacaa ggtggatgaa gagagatacg
+      481 acatagaggc aaaagtcacc aagaacatca cggagattgc agatctgact cagaagatct
+      541 ttgaccttcg aggcaagttt aagcggccca ccctgcggag agtgaggatc tctgcagatg
+      601 ccatgatgca ggcgctgctg ggggcccggg ctaaggagtc cctggacctg cgggcccacc
+      661 tcaagcaggt gaagaaggag gacaccgaga aggaaaaccg ggaggtggga gactggcgca
+      721 agaacatcga tgcactgagt ggaatggagg gccgcaagaa aaagtttgag agctgagcct
+      781 tcctgcctac tgcccctgcc ctgaggaggg ccctgaggaa taaagcttct ctctgagctg
+      841 aaaaaaaaaa aaaaaaaaaa aaaaaa
+//
+

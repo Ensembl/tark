@@ -3,6 +3,7 @@ from Bio.SeqFeature import SeqFeature, FeatureLocation
 import os
 from refseq_loader.handlers.refseq.fastahandler import FastaHandler
 from refseq_loader.handlers.refseq.gffhandler import GFFHandler
+from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
 
 
 '''
@@ -18,16 +19,29 @@ class AnnotationHandlerTest(TestCase):
 
         self.fasta_file = TEST_DATA_DIR + "IL2RA_GCF_000001405.38_GRCh38.p12_rna.fna"
 
+        self.fasta_file_protein = TEST_DATA_DIR + "IL2RA_GCF_000001405.38_GRCh38.p12_protein.faa"
+
         self.gff_file = TEST_DATA_DIR + "GCF_000001405.38_GRCh38.p12_genomic_test.gff"
-        # print(fasta_file)
-        # fasta_file = ''
+
+        self.genbank_file = TEST_DATA_DIR + "il2ra_tnni3.gb"
+
         if not os.path.exists(self.fasta_file):
             raise FileNotFoundError("File not found " + self.fasta_file)  # @UndefinedVariable
 
         if not os.path.exists(self.gff_file):
             raise FileNotFoundError("File not found " + self.gff_file)  # @UndefinedVariable
 
-        self. fasta_handler = FastaHandler(self.fasta_file)
+        if not os.path.exists(self.genbank_file):
+            raise FileNotFoundError("File not found " + self.genbank_file)  # @UndefinedVariable
+
+        if not os.path.exists(self.fasta_file_protein):
+            raise FileNotFoundError("File not found " + self.fasta_file_protein)  # @UndefinedVariable
+
+        self.fasta_handler = FastaHandler(self.fasta_file)
+
+        self.fasta_handler_protein = FastaHandler(self.fasta_file_protein)
+
+        self.sequence_hanlder = GenBankHandler(self.genbank_file)
 
         self.mRNA_sequence = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAGACTGGATGGACCCACAAGGGTG"\
             "ACAGCCCAGGCGGACCGATCTTCCCATCCCACATCCTCCGGCGCGATGCCAAAAAGAGGCTGACGGCAACTGGGCCTTCTGCAGAGAA"\
@@ -85,6 +99,11 @@ class AnnotationHandlerTest(TestCase):
             {'cds_strand': '-1', 'cds_id': 'cds56040', 'cds_end': '6012896', 'cds_start': '6012871',
              'protein_id': 'NP_000408.1', 'cds_order': 8}]
 
+        self.translation_seq = "MDSYLLMWGLLTFIMVPGCQAELCDDDPPEIPHATFKAMAYKEGTMLNCECKRGFRRIKSGSLYMLCTGNSSHSS"\
+                               "WDNQCQCTSSATRNTTKQVTPQPEEQKERKTTEMQSPMQPVDQASLPGHCREPPPWENEATERIYHFVVGQMVYYQCV"\
+                               "QGYRALHRGPAESVCKMTHGKTRWTQPQLICTGEMETSQFPGEEKPQASPEGRPESETSCLVTTTDFQIQTEMAATMETS"\
+                               "IFTTEYQVAVAGCVFLLISVLLLSGLTWQRRQRKSRRTI"
+
     def test_get_annotated_gene(self):
         qualifiers_ = {"Dbxref": ['GeneID:3559', 'HGNC:HGNC:6008', 'MIM:147730'],
                        "ID": ['gene27397'],
@@ -126,28 +145,32 @@ class AnnotationHandlerTest(TestCase):
                                   type="mRNA", id='rna80734', qualifiers=qualifiers_)
 
         chrom = '10'
-        annotated_transcript = GFFHandler.get_annotated_transcript(self.fasta_handler, chrom, mRNA_feature)
+        annotated_transcript = GFFHandler.get_annotated_transcript(self.sequence_hanlder, chrom, mRNA_feature)
+        print(annotated_transcript)
 
         expected_annotated_transcript = {'loc_region': '10',
                                          'sequence': self.mRNA_sequence,
                                          'session_id': None, 'loc_strand': '-1', 'loc_end': '6062370',
                                          'assembly_id': '1', 'stable_id': 'NM_000417',
-                                         'stable_id_version': '2', 'transcript_checksum': None, 'seq_checksum': None,
+                                         'stable_id_version': '2', 'transcript_checksum': None,
+                                         'seq_checksum': '74EB357B801F80AAC6345D1B7300F3723B9561DC',
                                          'exon_set_checksum': None, 'loc_checksum': None,
-                                         'loc_start': '6010693'}
+                                         'loc_start': '6010694'}
 
         self.assertEqual(expected_annotated_transcript, annotated_transcript, "Got back the right annotated transcript")
 
     def test_get_annotated_exon(self):
 
         exon_feature = {'exon_order': '7',
-                        'exon_seq_region_strand': '-1', 'exon_stable_id': 'id977755',
-                        'exon_end': 1013, 'exon_seq_region_start': '6018052',
+                        'exon_strand': '-1', 'exon_stable_id': 'id977755',
+                        'exon_start': '6018052',
                         'exon_seq': 'TGGCCGGCTGTGTTTTCCTGCTGATCAGCGTCCTCCTCCTGAGTGGGCTCACCTGGCAGCGGAGACA',
-                        'exon_seq_region': '10', 'exon_stable_id_version': '1', 'exon_start': 947,
-                        'exon_seq_region_end': '6018119'}
+                        'exon_seq_region': '10', 'exon_stable_id_version': '1',
+                        'exon_end': '6018119'}
         chrom = '10'
-        annotated_exon = GFFHandler.get_annotated_exon(chrom, exon_feature)
+
+        exon_sequence = exon_feature['exon_seq']
+        annotated_exon = GFFHandler.get_annotated_exon(chrom, exon_feature, exon_sequence)
 
         expected_annotated_exon = {'loc_region': '10',
                                    'exon_order': '7',
@@ -174,8 +197,46 @@ class AnnotationHandlerTest(TestCase):
                                 'loc_start': '6012871', 'loc_end': '6062151',
                                 'session_id': None, 'translation_checksum': None,
                                 'stable_id': 'NP_000408', 'loc_region': 10,
-                                'loc_strand': '-1', 'stable_id_version': '1'}
+                                'loc_strand': '-1', 'stable_id_version': '1',
+                                'translation_seq': self.translation_seq,
+                                'seq_checksum': 'D51D73686E3257015EC2BF894ECC394ADE844270'}
 
         seq_region = 10
-        translation = GFFHandler.get_annotated_cds(seq_region, self.cds_list)
+
+        translation = GFFHandler.get_annotated_cds(self.fasta_handler_protein, seq_region, "NP_000408.1", self.cds_list)
         self.assertEqual(translation, expected_translation, "Got the right translation")
+
+    def test_get_seq_region_from_refseq_accession(self):
+        refseq_accession = 'NC_000001.11'
+        seq_region = GFFHandler.get_seq_region_from_refseq_accession(refseq_accession)
+        self.assertEqual(seq_region, 1, "Got the right chr 1")
+
+        refseq_accession = 'NC_000024.10'
+        seq_region = GFFHandler.get_seq_region_from_refseq_accession(refseq_accession)
+        self.assertEqual(seq_region, 'Y', "Got the right chr Y")
+
+        refseq_accession = 'NC_000023.11'
+        seq_region = GFFHandler.get_seq_region_from_refseq_accession(refseq_accession)
+        self.assertEqual(seq_region, "X", "Got the right chr X")
+
+        refseq_accession = 'NC_000001.11'
+        seq_region = GFFHandler.get_seq_region_from_refseq_accession(refseq_accession)
+        self.assertEqual(seq_region, 1, "Got the right chr 1")
+
+        refseq_accession = 'NC_000010.11'
+        seq_region = GFFHandler.get_seq_region_from_refseq_accession(refseq_accession)
+        self.assertEqual(seq_region, 10, "Got the right chr 10")
+
+    def test_parse_qualifiers(self):
+        gene_qualifer = {'Dbxref': ['GeneID:3559', 'HGNC:HGNC:6008', 'MIM:147730'],
+                         'Name': ['IL2RA'], 'gbkey': ['Gene'],
+                         'description': ['interleukin 2 receptor subunit alpha'],
+                         'gene': ['IL2RA'], 'source': ['BestRefSeq'],
+                         'ID': ['gene27397'],
+                         'gene_synonym': ['CD25', 'IDDM10', 'IL2R', 'IMD41', 'p55', 'TCGFR'],
+                         'gene_biotype': ['protein_coding']}
+        hgnc_id = GFFHandler.parse_qualifiers(gene_qualifer, "Dbxref", "HGNC:HGNC")
+        self.assertEquals(hgnc_id, '6008', 'Got the right HGNC 6008')
+
+        gene_id = GFFHandler.parse_qualifiers(gene_qualifer, "Dbxref", "GeneID")
+        self.assertEquals(gene_id, '3559', 'Got the right gene id 3559')

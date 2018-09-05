@@ -6,6 +6,7 @@ import sys
 # import the logging library
 import logging
 from refseq_loader.handlers.refseq.gffhandler import GFFHandler
+from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -16,9 +17,16 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = 'Load refseq data from GBFF and GFF3 files'
-    refseq_ftp_root = "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/latest_assembly_versions/GCF_000001405.38_GRCh38.p12/"  # @IgnorePep8
-    refseq_gff_file_gz = "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
-    refseq_fasta_file_gz = "GCF_000001405.38_GRCh38.p12_rna.fna.gz"
+    ini_file = "refseq_source.ini"
+    config_handler = ConfigHandler(ini_file)
+    default_config = config_handler.get_section_config()
+#     refseq_ftp_root = "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/latest_assembly_versions/GCF_000001405.38_GRCh38.p12/"  # @IgnorePep8
+#     refseq_gff_file_gz = "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
+#     refseq_fasta_file_gz = "GCF_000001405.38_GRCh38.p12_rna.fna.gz"
+
+    refseq_ftp_root = default_config.get("refseq_ftp_root")
+    refseq_gff_file_gz = default_config.get("refseq_gff_file_gz")
+    refseq_fasta_file_gz = default_config.get("refseq_fasta_file_gz")
 
     def add_arguments(self, parser):
         parser.add_argument('--download_dir',  help='Download Dir')
@@ -80,9 +88,13 @@ class Command(BaseCommand):
                 # filter_feature_gene = 'OR8K1'
                 # filter_feature_transcript = 'NM_001002907.1'
 
-                filter_region = 'NC_000010.11'  # chr10
-                filter_feature_gene = 'IL2RA'
-                filter_feature_transcript = 'NM_000417.2'
+                #                 filter_region = 'NC_000010.11'  # chr10
+                #                 filter_feature_gene = 'IL2RA'
+                #                 filter_feature_transcript = 'NM_000417.2'
+                # TNNAI3
+                filter_region = 'NC_000019.10'  # chr19
+                filter_feature_gene = 'TNNI3'
+                filter_feature_transcript = 'NM_000363.4'
                 try:
                     GFFHandler.parse_gff(downloaded_gff_url_unzipped, downloaded_fasta_url_unzipped, filter_region,
                                          filter_feature_gene, filter_feature_transcript)

@@ -7,43 +7,24 @@ from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
 
 
 '''
-/manage.py test refseq_loader.tests.test_filehandler --settings=tark.settings.test
+/manage.py test refseq_loader.tests.test_genbankhandler --settings=tark.settings.test
 '''
 
 
-class GFFHandlerTest(TestCase):
+class GenBankHandlerTest(TestCase):
     def setUp(self):
         APP_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         print("APP_BASE_DIR dir " + str(APP_BASE_DIR))
         TEST_DATA_DIR = APP_BASE_DIR + "/tests/data/"
 
-        self.fasta_file = TEST_DATA_DIR + "IL2RA_GCF_000001405.38_GRCh38.p12_rna.fna"
-
-        self.fasta_file_protein = TEST_DATA_DIR + "IL2RA_GCF_000001405.38_GRCh38.p12_protein.faa"
-
-        self.gff_file = TEST_DATA_DIR + "GCF_000001405.38_GRCh38.p12_genomic_test.gff"
-
         self.genbank_file = TEST_DATA_DIR + "il2ra_tnni3.gb"
-
-        if not os.path.exists(self.fasta_file):
-            raise FileNotFoundError("File not found " + self.fasta_file)  # @UndefinedVariable
-
-        if not os.path.exists(self.gff_file):
-            raise FileNotFoundError("File not found " + self.gff_file)  # @UndefinedVariable
 
         if not os.path.exists(self.genbank_file):
             raise FileNotFoundError("File not found " + self.genbank_file)  # @UndefinedVariable
 
-        if not os.path.exists(self.fasta_file_protein):
-            raise FileNotFoundError("File not found " + self.fasta_file_protein)  # @UndefinedVariable
+        self.genbank_handler = GenBankHandler(self.genbank_file)
 
-        self.fasta_handler = FastaHandler(self.fasta_file)
-
-        self.fasta_handler_protein = FastaHandler(self.fasta_file_protein)
-
-        self.sequence_hanlder = GenBankHandler(self.genbank_file)
-
-        self.mRNA_sequence = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAGACTGGATGGACCCACAAGGGTG"\
+        self.mRNA_sequence_il2ra = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAGACTGGATGGACCCACAAGGGTG"\
             "ACAGCCCAGGCGGACCGATCTTCCCATCCCACATCCTCCGGCGCGATGCCAAAAAGAGGCTGACGGCAACTGGGCCTTCTGCAGAGAA"\
             "AGACCTCCGCTTCACTGCCCCGGCTGGTCCCAAGGGTCAGGAAGATGGATTCATACCTGCTGATGTGGGGACTGCTCACGTTCATCAT"\
             "GGTGCCTGGCTGCCAGGCAGAGCTCTGTGACGATGACCCGCCAGAGATCCCACACGCCACATTCAAAGCCATGGCCTACAAGGAAGGA"\
@@ -81,35 +62,32 @@ class GFFHandlerTest(TestCase):
             "CATTTATCTGTCCTTCTCTCAAAAGTGTATGGTGGAATTTTCCAGAAGCTATGTGATACGTGATGATGTCATCACTCTGCTGTTAACA"\
             "TATAATAAATTTATTGCTATTGTTTATAAAAGAATAAATGATATTTTTT"
 
-    def test_fasta_handler(self):
-        fasta_seq_il2ra = self.fasta_handler.get_fasta_seq_by_id("NM_000417.2")
-        self.assertEqual(fasta_seq_il2ra, self.mRNA_sequence, "Got the right sequence")
-        self.assertEqual(len(fasta_seq_il2ra), len(self.mRNA_sequence), "Got the sequence with same length")
+        self.mRNA_sequence_tnni3 = "AGTGTCCTCGGGGAGTCTCAAGCAGCCCGGAGGAGACTGACGGTCCCTGGGACCCTGAAGGTCACCCGGGCGGCCCCCTC"\
+            "ACTGACCCTCCAAACGCCCCTGTCCTCGCCCTGCCTCCTGCCATTCCCGGCCTGAGTCTCAGCATGGCGGATGGGAGCAG"\
+            "CGATGCGGCTAGGGAACCTCGCCCTGCACCAGCCCCAATCAGACGCCGCTCCTCCAACTACCGCGCTTATGCCACGGAGC"\
+            "CGCACGCCAAGAAAAAATCTAAGATCTCCGCCTCGAGAAAATTGCAGCTGAAGACTCTGCTGCTGCAGATTGCAAAGCAA"\
+            "GAGCTGGAGCGAGAGGCGGAGGAGCGGCGCGGAGAGAAGGGGCGCGCTCTGAGCACCCGCTGCCAGCCGCTGGAGTTGGC"\
+            "CGGGCTGGGCTTCGCGGAGCTGCAGGACTTGTGCCGACAGCTCCACGCCCGTGTGGACAAGGTGGATGAAGAGAGATACG"\
+            "ACATAGAGGCAAAAGTCACCAAGAACATCACGGAGATTGCAGATCTGACTCAGAAGATCTTTGACCTTCGAGGCAAGTTT"\
+            "AAGCGGCCCACCCTGCGGAGAGTGAGGATCTCTGCAGATGCCATGATGCAGGCGCTGCTGGGGGCCCGGGCTAAGGAGTC"\
+            "CCTGGACCTGCGGGCCCACCTCAAGCAGGTGAAGAAGGAGGACACCGAGAAGGAAAACCGGGAGGTGGGAGACTGGCGCA"\
+            "AGAACATCGATGCACTGAGTGGAATGGAGGGCCGCAAGAAAAAGTTTGAGAGCTGAGCCTTCCTGCCTACTGCCCCTGCC"\
+            "CTGAGGAGGGCCCTGAGGAATAAAGCTTCTCTCTGAGCTGAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
-        # check exons
-        fasta_seq_il2ra_exon1 = self.fasta_handler.get_fasta_seq_by_id("NM_000417.2", 1, 283)
-        expected_exon_seeq = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAGACTGGATGG"\
-            "ACCCACAAGGGTGACAGCCCAGGCGGACCGATCTTCCCATCCCACATCCTCCGGCGCGAT"\
-            "GCCAAAAAGAGGCTGACGGCAACTGGGCCTTCTGCAGAGAAAGACCTCCGCTTCACTGCCCCG"\
-            "GCTGGTCCCAAGGGTCAGGAAGATGGATTCATACCTGCTGATGTGGGGACTGCTCACGTTCATCATGGTGCCTGGCTGCCAGGCAG"
-        self.assertEqual(len(fasta_seq_il2ra_exon1), len(expected_exon_seeq), "Exon seq length is equal")
-        self.assertEqual(fasta_seq_il2ra_exon1, expected_exon_seeq, "Exon seq is equal")
+    def test_get_sequence_by_id(self):
+        fasta_seq_il2ra = self.genbank_handler.get_sequence_by_id("NM_000417.2")
+        self.assertEqual(fasta_seq_il2ra, self.mRNA_sequence_il2ra, "Got the right sequence")
+        self.assertEqual(len(fasta_seq_il2ra), len(self.mRNA_sequence_il2ra), "Got the sequence with same length")
 
-        fasta_seq_protein = self.fasta_handler_protein.get_fasta_seq_by_id("NP_000408.1")
-        expected_protein_seq = "MDSYLLMWGLLTFIMVPGCQAELCDDDPPEIPHATFKAMAYKEGTMLNCECKRGFRRIKSGSLYMLCTGNSSHSSWDNQC"\
-                               "QCTSSATRNTTKQVTPQPEEQKERKTTEMQSPMQPVDQASLPGHCREPPPWENEATERIYHFVVGQMVYYQCVQGYRALH"\
-                               "RGPAESVCKMTHGKTRWTQPQLICTGEMETSQFPGEEKPQASPEGRPESETSCLVTTTDFQIQTEMAATMETSIFTTEYQ"\
-                               "VAVAGCVFLLISVLLLSGLTWQRRQRKSRRTI"
-        self.assertEqual(len(fasta_seq_protein), len(expected_protein_seq), "Protein seq length is equal")
-        self.assertEqual(fasta_seq_protein, expected_protein_seq, "Protein seq is equal")
-        print(fasta_seq_protein)
+        fasta_seq_tnni3 = self.genbank_handler.get_sequence_by_id("NM_000363.4")
+        self.assertEqual(fasta_seq_tnni3, self.mRNA_sequence_tnni3, "Got the right sequence")
+        self.assertEqual(len(fasta_seq_tnni3), len(self.mRNA_sequence_tnni3), "Got the sequence with same length")
 
-    def test_gff_hander(self):
-        # Use it only for trial runs
-        # ./manage.py test refseq_loader.tests.test_filehandler.GFFHandlerTest.test_gff_hander --settings=tark.settings.test @IgnorePep8
-        status = GFFHandler.parse_gff_with_genbank(self.gff_file, self.genbank_file, self.fasta_file_protein,
-                                                   filter_region="NC_000010.11")
-        self.assertTrue(status, 'Parsing done')
-
+    def test_get_seq_record_by_id(self):
+        identifier = "NM_000363.4"
+        exon_sequences = self.genbank_handler.get_exon_sequences_by_identifier(identifier)
+        print("\n\n")
+        print(exon_sequences)
+        # self.assertEqual(self.mRNA_sequence_tnni3.startswith(str(concatinated_exon_sequence)), "Got the right sequence")
 
 
