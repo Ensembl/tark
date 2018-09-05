@@ -102,7 +102,9 @@ class GFFHandlerTest(TestCase):
                                "VAVAGCVFLLISVLLLSGLTWQRRQRKSRRTI"
         self.assertEqual(len(fasta_seq_protein), len(expected_protein_seq), "Protein seq length is equal")
         self.assertEqual(fasta_seq_protein, expected_protein_seq, "Protein seq is equal")
-        print(fasta_seq_protein)
+
+        fasta_il2ra_exon_seq = self.fasta_handler.get_fasta_seq_by_id("NM_000417.2:1-283")
+        self.assertEqual(fasta_seq_il2ra_exon1, fasta_il2ra_exon_seq, "Got the right exon seq")
 
     def test_gff_hander(self):
         # Use it only for trial runs

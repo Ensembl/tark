@@ -66,13 +66,16 @@ class AnnotationHandler(object):
         transcript['session_id'] = None
         transcript['transcript_checksum'] = None
         transcript['exon_set_checksum'] = None
-        transcript['loc_checksum'] = None
+        transcript['loc_checksum'] = ChecksumHandler.get_location_checksum(transcript)
         transcript['sequence'] = sequence_handler.get_sequence_by_id(mRNA_feature.qualifiers['transcript_id'][0])
         transcript['seq_checksum'] = ChecksumHandler.get_seq_checksum(transcript, 'sequence')
         return transcript
 
     @classmethod
     def get_annotated_exons(cls, sequence_handler, seq_region, transcript_identifier, refseq_exon_list):
+        print("====REFSEQ EXON LIST=====")
+        print(refseq_exon_list)
+        print("====================")
         exon_sequences = sequence_handler.get_exon_sequences_by_identifier(transcript_identifier)
         annotated_exons = []
         if len(refseq_exon_list) != len(exon_sequences):

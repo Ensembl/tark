@@ -67,6 +67,14 @@ class ChecksumHandler(object):
 
     @classmethod
     def get_transcript_checksum(cls, feature):
+
+        # my $transcript_checksum =  Bio::EnsEMBL::Tark::DB->checksum_array( @loc_pieces, $transcript->stable_id(), $transcript->version(),
+        #                    ($session_pkg->{exon_set_checksum} ? $session_pkg->{exon_set_checksum} : undef),
+        #                    $seq_checksum );
+        pass
+
+    @classmethod
+    def get_exon_set_checksum(cls, transcript_feature):
         pass
 
     @classmethod
