@@ -24,9 +24,9 @@ class ChecksumHandler(object):
     # Join an array of values with a ':' delimeter and find a sha1 checksum of it
     @classmethod
     def checksum_list(cls, attr_list):
-
+        print("===checksum_list called====")
         cs = hashlib.sha1()  # update to other latest sha implementations
-
+        print("===from checusm list1")
         if len(attr_list) > 1:
             attr_list_joined = ':'.join(attr_list)
         elif len(attr_list) == 1:
@@ -36,6 +36,8 @@ class ChecksumHandler(object):
 
         cs.update(attr_list_joined.encode('utf-8').strip())
         hex_digest = binascii.hexlify(cs.digest()).decode('ascii').upper()
+        print("===from checusm list2")
+        print(hex_digest)
         return hex_digest
 
     @classmethod
@@ -66,16 +68,23 @@ class ChecksumHandler(object):
         return cls.checksum_list([gene_loc_checksum, other_attrs_checksum])
 
     @classmethod
-    def get_transcript_checksum(cls, feature):
-
-        # my $transcript_checksum =  Bio::EnsEMBL::Tark::DB->checksum_array( @loc_pieces, $transcript->stable_id(), $transcript->version(),
-        #                    ($session_pkg->{exon_set_checksum} ? $session_pkg->{exon_set_checksum} : undef),
-        #                    $seq_checksum );
-        pass
+    def get_transcript_checksum(cls, transcript):
+        print("get_transcript_checksum called======")
+        transcript_checksum = ChecksumHandler.checksum_list([
+                                    transcript['loc_checksum'],
+                                    transcript['stable_id'],
+                                    transcript['stable_id_version'],
+                                    transcript['exon_set_checksum'],
+                                    transcript['seq_checksum']
+                                    ])
+        print(transcript_checksum)
+        return transcript_checksum
 
     @classmethod
-    def get_exon_set_checksum(cls, transcript_feature):
-        pass
+    def get_exon_set_checksum(cls, exons_list):
+        exon_checksum_list = [exon['exon_checksum'] for exon in exons_list]
+        exon_set_checksum = ChecksumHandler.checksum_list(exon_checksum_list)
+        return exon_set_checksum
 
     @classmethod
     def get_seq_checksum(cls, feature, seq_attr=None):

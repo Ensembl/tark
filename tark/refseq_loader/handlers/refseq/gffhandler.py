@@ -20,6 +20,7 @@ from refseq_loader.handlers.refseq.fastahandler import FastaHandler
 from refseq_loader.handlers.refseq.annotationhandler import AnnotationHandler
 from refseq_loader.handlers.refseq.databasehandler import DatabaseHandler
 from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
+from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 
 
 class GFFHandler(AnnotationHandler, DatabaseHandler):
@@ -90,8 +91,6 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                                     if filter_feature_transcript not in mRNA_feature.qualifiers['transcript_id'][0]:
                                         continue
 
-                                annotated_transcript = cls.get_annotated_transcript(sequence_handler, seq_region,
-                                                                                    mRNA_feature)
                                 print("\n")
     #                             # mRNA level
                                 refseq_exon_list = []
@@ -153,16 +152,28 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                                 print("=================")
                                 print(annotated_translation)
                                 print("=================")
+
+                                print("=========GET exon_set_checksum=============")
+                                exon_set_checksum = ChecksumHandler.get_exon_set_checksum(annotated_exons)
                                 # print(annotated_exons)
+                                annotated_transcript = cls.get_annotated_transcript(sequence_handler, seq_region,
+                                                                                    mRNA_feature)
+
                                 annotated_transcript['exons'] = annotated_exons
+                                annotated_transcript['exon_set_checksum'] = exon_set_checksum
                                 annotated_transcript['translation'] = annotated_translation
+                                print("***************annotated transcript")
+                                print(annotated_transcript)
+                                print("***************annotated transcript")
+                                annotated_transcript['transcript_checksum'] = ChecksumHandler.get_transcript_checksum(annotated_transcript)  # @IgnorePep8
 
                                 annotated_transcripts.append(annotated_transcript)
                             annotated_gene['transcripts'] = annotated_transcripts
                             feature_object_to_save = {}
                             feature_object_to_save["gene"] = annotated_gene
                             cls.save_features_to_database(feature_object_to_save)
-        except:
+        except Exception as e:
+            print('Failed to parse file: '+ str(e))
             return False
 
         return True

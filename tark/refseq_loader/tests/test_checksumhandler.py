@@ -69,3 +69,30 @@ class ChecksumHandlerTest(TestCase):
     def test_checksum_gene(self):
         gene_checksum = ChecksumHandler.get_gene_checksum(self.annotated_gene)
         self.assertEqual('D6F2AD08879C8D1705A5A1347A11726DE0C7F973', gene_checksum, "Got back the gene_checksum")
+
+    def test_get_exonset_checksum(self):
+
+        exon_annotated_list = [
+                    {'exon_checksum': '5BA7824E11A730B9698576162647EE5484B80698'},
+                    {'exon_checksum': 'AC2B51B3552E23A2A29335E59F00BDEF7479FD58'},
+                    {'exon_checksum': 'C9AF9E2E270E7AFD690664C80DCCBF74D970DC91'},
+                    {'exon_checksum': '1C510AC68E16A324A94E914C91DBEB5CE9BAA789'},
+                    {'exon_checksum': '9BA73E58C5233E2A2B5B85EBA1BBD136060A61BB'},
+                    {'exon_checksum': 'ECDD2E3366ADA9CF56688C64E74B5D35DD70A855'},
+                    {'exon_checksum': '29EFBD053BD00437A75A84ACABACB843D154C644'},
+                    {'exon_checksum': '570D61944862E9A0939055D2A4F93C14B97806F9'}]
+
+        exon_set_checksum = ChecksumHandler.get_exon_set_checksum(exon_annotated_list)
+        self.assertEqual("41AAF60E3E251CF7AB2798BD7AF05B3630B82B6D", exon_set_checksum,
+                         "Got the right exon_set_checksum")
+
+    def test_get_transcript_checksum(self):
+        transcript = {'stable_id': 'NM_000417', 'stable_id_version': '2',
+                      'seq_checksum': '74EB357B801F80AAC6345D1B7300F3723B9561DC',
+                      'exon_set_checksum': '41AAF60E3E251CF7AB2798BD7AF05B3630B82B6D',
+                      'loc_checksum': '61407C2B6D7BE167F878F15680D3A6ECC9DFFD3F'}
+        expected_transcript_checksum = '70B156F0004D2F6D30280DF959F7F9A623375612'
+        transcript_checksum = ChecksumHandler.get_transcript_checksum(transcript)
+        self.assertEqual(expected_transcript_checksum, transcript_checksum, "Got back the right transcript checksum")
+
+        print(transcript_checksum)

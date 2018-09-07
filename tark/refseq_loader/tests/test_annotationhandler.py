@@ -157,7 +157,8 @@ class AnnotationHandlerTest(TestCase):
                                          'loc_checksum': '61407C2B6D7BE167F878F15680D3A6ECC9DFFD3F',
                                          'loc_start': '6010694'}
 
-        self.assertEqual(expected_annotated_transcript, annotated_transcript, "Got back the right annotated transcript")
+        self.assertDictEqual(expected_annotated_transcript, annotated_transcript,
+                             "Got back the right annotated transcript")
 
     def test_get_annotated_exons(self):
 
