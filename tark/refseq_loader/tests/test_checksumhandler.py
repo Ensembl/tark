@@ -22,7 +22,7 @@ class ChecksumHandlerTest(TestCase):
 
         self.annotated_gene = {'loc_start': '6010693', 'hgnc_id': '6008',
                                'gene_checksum': None,
-                               'loc_checksum': None,
+                               'loc_checksum': '51BA025EBD0EFEC96758D44D82C0B21FD450989F',
                                'loc_end': '6062370', 'loc_region': '10', 'stable_id': '3559',
                                'session_id': None, 'loc_strand': '-1', 'assembly_id': "1",
                                'stable_id_version': 1}
@@ -68,7 +68,7 @@ class ChecksumHandlerTest(TestCase):
 
     def test_checksum_gene(self):
         gene_checksum = ChecksumHandler.get_gene_checksum(self.annotated_gene)
-        self.assertEqual('D6F2AD08879C8D1705A5A1347A11726DE0C7F973', gene_checksum, "Got back the gene_checksum")
+        self.assertEqual('2CA3A84E6B88426315EFC032BE0026464B1732F0', gene_checksum, "Got back the gene_checksum")
 
     def test_get_exonset_checksum(self):
 
@@ -91,8 +91,6 @@ class ChecksumHandlerTest(TestCase):
                       'seq_checksum': '74EB357B801F80AAC6345D1B7300F3723B9561DC',
                       'exon_set_checksum': '41AAF60E3E251CF7AB2798BD7AF05B3630B82B6D',
                       'loc_checksum': '61407C2B6D7BE167F878F15680D3A6ECC9DFFD3F'}
-        expected_transcript_checksum = '70B156F0004D2F6D30280DF959F7F9A623375612'
+        expected_transcript_checksum = '43BBAEF6504868906601FC91F144E2811CC0F585'
         transcript_checksum = ChecksumHandler.get_transcript_checksum(transcript)
         self.assertEqual(expected_transcript_checksum, transcript_checksum, "Got back the right transcript checksum")
-
-        print(transcript_checksum)

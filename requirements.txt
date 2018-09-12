@@ -12,3 +12,5 @@ biopython==1.70
 bcbio-gff==0.6.4
 wget
 pyfaidx
+mysql-connector-python
+

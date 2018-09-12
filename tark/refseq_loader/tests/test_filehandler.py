@@ -1,5 +1,4 @@
 from django.test import TestCase
-from Bio.SeqFeature import SeqFeature, FeatureLocation
 import os
 from refseq_loader.handlers.refseq.fastahandler import FastaHandler
 from refseq_loader.handlers.refseq.gffhandler import GFFHandler
@@ -112,6 +111,3 @@ class GFFHandlerTest(TestCase):
         status = GFFHandler.parse_gff_with_genbank(self.gff_file, self.genbank_file, self.fasta_file_protein,
                                                    filter_region="NC_000010.11")
         self.assertTrue(status, 'Parsing done')
-
-
-

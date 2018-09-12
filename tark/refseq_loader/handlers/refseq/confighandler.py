@@ -16,15 +16,21 @@ limitations under the License.
 '''
 
 import configparser
+from django.conf import settings
 
 
 class ConfigHandler(object):
 
-    def __init__(self, ini_file):
-        self.ini_file = ini_file
-        print("Loading ini_file...please wait...")
+    def __init__(self, ini_file=None):
+        if ini_file is None:
+            # get the default ini file from settings
+            self.ini_file = settings.INI_FILE
+        else:
+            self.ini_file = ini_file
+
+        print("Loading ini_file...please wait..." + self.ini_file)
         config = configparser.ConfigParser()
-        config.read(ini_file)
+        config.read(self.ini_file)
         self.config = config
 
     def get_section_config(self, section_name=None):
@@ -33,4 +39,3 @@ class ConfigHandler(object):
         else:
             config = self.config[section_name]
         return config
-

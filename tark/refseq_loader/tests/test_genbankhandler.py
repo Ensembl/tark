@@ -1,8 +1,5 @@
 from django.test import TestCase
-from Bio.SeqFeature import SeqFeature, FeatureLocation
 import os
-from refseq_loader.handlers.refseq.fastahandler import FastaHandler
-from refseq_loader.handlers.refseq.gffhandler import GFFHandler
 from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
 
 
@@ -24,7 +21,8 @@ class GenBankHandlerTest(TestCase):
 
         self.genbank_handler = GenBankHandler(self.genbank_file)
 
-        self.mRNA_sequence_il2ra = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAGACTGGATGGACCCACAAGGGTG"\
+        self.mRNA_sequence_il2ra = "GGCAGTTTCCTGGCTGAACACGCCAGCCCAATACTTAAAGAGAGCAACTCCTGACTCCGATAGAG"\
+            "ACTGGATGGACCCACAAGGGTG"\
             "ACAGCCCAGGCGGACCGATCTTCCCATCCCACATCCTCCGGCGCGATGCCAAAAAGAGGCTGACGGCAACTGGGCCTTCTGCAGAGAA"\
             "AGACCTCCGCTTCACTGCCCCGGCTGGTCCCAAGGGTCAGGAAGATGGATTCATACCTGCTGATGTGGGGACTGCTCACGTTCATCAT"\
             "GGTGCCTGGCTGCCAGGCAGAGCTCTGTGACGATGACCCGCCAGAGATCCCACACGCCACATTCAAAGCCATGGCCTACAAGGAAGGA"\
@@ -88,6 +86,3 @@ class GenBankHandlerTest(TestCase):
         exon_sequences = self.genbank_handler.get_exon_sequences_by_identifier(identifier)
         print("\n\n")
         print(exon_sequences)
-        # self.assertEqual(self.mRNA_sequence_tnni3.startswith(str(concatinated_exon_sequence)), "Got the right sequence")
-
-

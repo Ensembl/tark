@@ -27,3 +27,6 @@ class ConfigHandlerTest(TestCase):
         expected_ftp_root = 'ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/latest_assembly_versions/GCF_000001405.38_GRCh38.p12/'  # @IgnorePep8
         self.assertEqual(expected_ftp_root, config_ftp_root, "Got back ftp root")
         self.assertEqual(expected_ftp_root, config_ftp_root_via_get, "Got back ftp root via get")
+
+        default_config = ConfigHandler().get_section_config()
+        self.assertIsNotNone(default_config, "config is not none")

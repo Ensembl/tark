@@ -26,7 +26,7 @@ class ChecksumHandler(object):
     def checksum_list(cls, attr_list):
         print("===checksum_list called====")
         cs = hashlib.sha1()  # update to other latest sha implementations
-        print("===from checusm list1")
+
         if len(attr_list) > 1:
             attr_list_joined = ':'.join(attr_list)
         elif len(attr_list) == 1:
@@ -52,33 +52,29 @@ class ChecksumHandler(object):
 
     @classmethod
     def get_exon_checksum(cls, feature):
-
         exon_loc_checksum = cls.get_location_checksum(feature)
         exon_seq_checksum = cls.get_seq_checksum(feature, "exon_seq")
 
         return cls.checksum_list([exon_loc_checksum, exon_seq_checksum])
 
     @classmethod
-    def get_gene_checksum(cls, feature):
-        gene_loc_checksum = cls.get_location_checksum(feature)
+    def get_gene_checksum(cls, gene):
+        attr_list = cls.get_attribute_values(cls.get_gene_attributes(), gene)
+        attrs_checksum = cls.checksum_list(attr_list)
 
-        other_attr_list = cls.get_attribute_values(cls.get_gene_attributes(), feature)
-        other_attrs_checksum = cls.checksum_list(other_attr_list)
-
-        return cls.checksum_list([gene_loc_checksum, other_attrs_checksum])
+        return cls.checksum_list([attrs_checksum])
 
     @classmethod
     def get_transcript_checksum(cls, transcript):
-        print("get_transcript_checksum called======")
-        transcript_checksum = ChecksumHandler.checksum_list([
-                                    transcript['loc_checksum'],
-                                    transcript['stable_id'],
-                                    transcript['stable_id_version'],
-                                    transcript['exon_set_checksum'],
-                                    transcript['seq_checksum']
-                                    ])
-        print(transcript_checksum)
-        return transcript_checksum
+        attr_list = cls.get_attribute_values(cls.get_transcript_attributes(), transcript)
+        attrs_checksum = cls.checksum_list(attr_list)
+        return cls.checksum_list([attrs_checksum])
+
+    @classmethod
+    def get_translation_checksum(cls, translation):
+        attr_list = cls.get_attribute_values(cls.get_translation_attributes(), translation)
+        attrs_checksum = cls.checksum_list(attr_list)
+        return cls.checksum_list([attrs_checksum])
 
     @classmethod
     def get_exon_set_checksum(cls, exons_list):
@@ -88,7 +84,6 @@ class ChecksumHandler(object):
 
     @classmethod
     def get_seq_checksum(cls, feature, seq_attr=None):
-
         if seq_attr is None:
             seq_attr = 'sequence'
 
@@ -107,8 +102,14 @@ class ChecksumHandler(object):
 
     @classmethod
     def get_gene_attributes(cls):
-        return ['hgnc_id', 'stable_id', 'stable_id_version']
+        return ['loc_checksum', 'hgnc_id', 'stable_id', 'stable_id_version']
 
     @classmethod
     def get_transcript_attributes(cls):
-        pass
+        return ['loc_checksum', 'stable_id', 'stable_id_version', 'exon_set_checksum', 'seq_checksum']
+
+    @classmethod
+    def get_translation_attributes(cls):
+        return ['loc_checksum', 'stable_id', 'stable_id_version', 'seq_checksum']
+
+  

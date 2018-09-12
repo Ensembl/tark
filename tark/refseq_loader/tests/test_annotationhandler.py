@@ -118,7 +118,7 @@ class AnnotationHandlerTest(TestCase):
                           type="gene", id='gene27397', qualifiers=qualifiers_)
 
         expected_annotated_gene = {'loc_start': '6010693', 'hgnc_id': '6008',
-                                   'gene_checksum': '98F8C355517BB7A39D9114B66995A88CF71EEDA0',  # @IgnorePep8
+                                   'gene_checksum': '2CA3A84E6B88426315EFC032BE0026464B1732F0',  # @IgnorePep8
                                    'loc_checksum': '51BA025EBD0EFEC96758D44D82C0B21FD450989F',
                                    'loc_end': '6062370', 'loc_region': '10', 'stable_id': '3559',
                                    'session_id': None, 'loc_strand': '-1', 'assembly_id': "1",
@@ -279,12 +279,14 @@ class AnnotationHandlerTest(TestCase):
 
     def test_get_annotated_cds(self):
 
-        expected_translation = {'assembly_id': None, 'seq_checksum': None,
+        expected_translation = {'assembly_id': "1",
                                 'loc_start': '6012871', 'loc_end': '6062151',
                                 'session_id': None, 'translation_checksum': None,
                                 'stable_id': 'NP_000408', 'loc_region': 10,
                                 'loc_strand': '-1', 'stable_id_version': '1',
                                 'translation_seq': self.translation_seq,
+                                'loc_checksum': 'DB296E005904C33AFABB28412EB79288F7D0D203',
+                                'translation_checksum': 'B5247CF2C8D20A3111DA8F756EDA79659C54AF48',
                                 'seq_checksum': 'D51D73686E3257015EC2BF894ECC394ADE844270'}
 
         seq_region = 10

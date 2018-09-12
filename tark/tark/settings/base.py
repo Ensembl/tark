@@ -134,6 +134,14 @@ else:
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
+        },
+        'tark_loader': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'tark_refseq_new',
+            'USER': secrets.DATABASE_USER,
+            'PASSWORD': secrets.DATABASE_PASSWORD,
+            'HOST': secrets.DATABASE_HOST,
+            'PORT': secrets.DATABASE_PORT,
         }
     }
 
@@ -235,3 +243,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
 CURRENT_RELEASE = "92"
 DEFAULT_SOURCE = "ensembl"
+INI_FILE = os.path.join(BASE_DIR, '../refseq_loader/management/commands/refseq_source.ini')

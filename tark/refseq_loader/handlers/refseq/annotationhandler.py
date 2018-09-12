@@ -16,6 +16,7 @@ limitations under the License.
 '''
 import re
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
+from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 
 
 class AnnotationHandler(object):
@@ -29,18 +30,20 @@ class AnnotationHandler(object):
         gene['loc_region'] = str(chrom)
         gene['stable_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "GeneID")
         gene['stable_id_version'] = 1
-        gene['assembly_id'] = "1"
+        gene['assembly_id'] = ConfigHandler().get_section_config()["assembly_id"]
         gene['hgnc_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "HGNC:HGNC")
         gene['session_id'] = None
-        loc_checksum_bits = [gene['assembly_id'], gene['loc_region'],
-                             gene['loc_start'], gene['loc_end'],
-                             gene['loc_strand']]
-        gene_list_bits = [gene['hgnc_id'], gene['stable_id'], gene['stable_id_version']]
-        gene_checksum_bits = loc_checksum_bits + [str(bit) for bit in gene_list_bits if bit is not None]
-        gene['gene_checksum'] = ChecksumHandler.checksum_list(gene_checksum_bits)
-        gene['loc_checksum'] = ChecksumHandler.checksum_list([gene['assembly_id'], gene['loc_region'],
-                                                              gene['loc_start'], gene['loc_end'],
-                                                              gene['loc_strand']])
+        gene['loc_checksum'] = ChecksumHandler.get_location_checksum(gene)
+        gene['gene_checksum'] = ChecksumHandler.get_gene_checksum(gene)
+#         loc_checksum_bits = [gene['assembly_id'], gene['loc_region'],
+#                              gene['loc_start'], gene['loc_end'],
+#                              gene['loc_strand']]
+#         gene_list_bits = [gene['hgnc_id'], gene['stable_id'], gene['stable_id_version']]
+#         gene_checksum_bits = loc_checksum_bits + [str(bit) for bit in gene_list_bits if bit is not None]
+#         gene['gene_checksum'] = ChecksumHandler.checksum_list(gene_checksum_bits)
+#         gene['loc_checksum'] = ChecksumHandler.checksum_list([gene['assembly_id'], gene['loc_region'],
+#                                                               gene['loc_start'], gene['loc_end'],
+#                                                               gene['loc_strand']])
         return gene
 
     @classmethod
@@ -126,10 +129,11 @@ class AnnotationHandler(object):
         translation['loc_strand'] = cds_strand
         translation['loc_region'] = seq_region
         translation['translation_seq'] = protein_sequence_handler.get_fasta_seq_by_id(protein_id)
-        translation['translation_checksum'] = None
         translation['seq_checksum'] = ChecksumHandler.get_seq_checksum(translation, 'translation_seq')
         translation['session_id'] = None
-        translation['assembly_id'] = None
+        translation['loc_checksum'] = ChecksumHandler.get_location_checksum(translation)
+        translation['assembly_id'] = "1"
+        translation['translation_checksum'] = ChecksumHandler.get_translation_checksum(translation)
 
         return translation
 
