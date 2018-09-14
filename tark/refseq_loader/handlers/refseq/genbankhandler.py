@@ -55,7 +55,7 @@ class GenBankHandler():
             raise ValueError("Genbank Handler not initialized")
 
     def get_exon_sequences_by_identifier(self, identifier):
-
+        print("get_exon_sequences_by_identifier " + str(identifier))
         seq_record = self.get_seq_record_by_id(identifier)
 
         exon_sequences = []

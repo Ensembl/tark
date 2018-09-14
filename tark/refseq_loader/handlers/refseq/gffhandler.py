@@ -26,16 +26,24 @@ from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 class GFFHandler(AnnotationHandler, DatabaseHandler):
 
     @classmethod
-    def parse_gff_with_genbank(cls, gff_file, sequence_file, protein_sequence_file, filter_region=None, filter_feature_gene=None, filter_feature_transcript=None):  # @IgnorePep8
+    def parse_gff_with_genbank(cls, downloaded_files, filter_region=None, filter_feature_gene=None, filter_feature_transcript=None):  # @IgnorePep8
         """
         Builds the gene model from GFF file and uses the genbank to fetch the sequence
         Use the filters while testing the loader
         """
+
+        gff_file = downloaded_files["gff"]
+        # sequence_file = downloaded_files["fasta"]  # don't need this
+        protein_sequence_file = downloaded_files["protein"]
+        genbank_file = downloaded_files["gbff"]
+
         print(" GFF file from parse_gff " + gff_file)
-        print(" Sequence file from parse_gff " + sequence_file)
+        # print(" Sequence file from parse_gff " + sequence_file)
+        print(" Protein file from parse_gff " + protein_sequence_file)
+        print(" Genbank file from parse_gff " + genbank_file)
 
         try:
-            sequence_handler = GenBankHandler(sequence_file)
+            sequence_handler = GenBankHandler(genbank_file)
             protein_sequence_handler = FastaHandler(protein_sequence_file)
             # Examine for available regions
             examiner = GFF.GFFExaminer()

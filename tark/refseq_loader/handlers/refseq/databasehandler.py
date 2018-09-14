@@ -32,7 +32,8 @@ class DatabaseHandler(object):
             "user": "prem",
             "password": "prem",
             "host": "localhost",
-            "database": "test_tark_refseq_new"
+            "database": "tark_refseq_new"
+            # "database": "test_tark_refseq_new"
         }
         self.cnxpool = pooling_connector.MySQLConnectionPool(pool_name="mypool",
                                                              **dbconfig)
@@ -61,12 +62,55 @@ class DatabaseHandler(object):
 
         return row_id
 
+    @classmethod
+    def save_features_to_database(cls,  features):
+        print("****************FINAL OBJECT TO SAVE******************")
+        print(features)
+        print("*******************************************************")
+        init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
+        session_id = cls.populate_parent_tables(init_table_list)
+        transcript_gene = FeatureHandler.add_features(features, session_id)
+        print(transcript_gene)
 
     @classmethod
-    def save_features_to_database(cls,  annotated_gene):
-        print("****************FINAL OBJECT TO SAVE******************")
-        print(annotated_gene)
-        print("*******************************************************")
+    def populate_parent_tables(cls, init_table_list):
+
+        session_id = None
+        genome_id = None
+        assembly_id = None
+        if "session" in init_table_list:
+            session_id = SessionHandler.start_session("Test Client")
+            print(".........Popultating SESSION table.........\n")
+
+        if "genome" in init_table_list:
+            genome_data = {"name": "homo_sapiens", "tax_id": str(9606), "session_id": str(session_id)}
+            genome_id = GenomeHandler.load_genome(genome_data)
+            print(".........Popultating GENOME table.........\n")
+
+        if "assembly" in init_table_list:
+            assembly_data = {"genome_id": str(genome_id), "assembly_name": "GRCh38", "session_id": str(session_id)}
+            assembly_id = AssemblyHandler.load_assembly(assembly_data)
+            print(".........Popultating ASSEMBLY table.........\n")
+
+        if "assembly_alias" in init_table_list:
+            assembly_alias_data = {"alias": "GCA_000001405.25", "genome_id": str(genome_id),
+                                   "assembly_id": str(assembly_id), "session_id": str(session_id)}
+            AssemblyHandler.load_assembly_alias(assembly_alias_data)
+            print(".........Popultating ASSEMBLY ALIAS table.........\n")
+
+        if "release_source" in init_table_list:
+            release_source = {"shortname": "Ensembl", "description": "Ensembl data imports from Human Core DBs"}
+            ReleaseSourceHandler.load_release_source(release_source)
+            print(".........Popultating RELEASE SOURCE table.........\n")
+
+            release_source = {"shortname": "RefSeq", "description": "RefSeq data imports from RefSeq GFF"}
+            ReleaseSourceHandler.load_release_source(release_source)
+            print(".........Popultating REFSEQ table.........\n")
+
+        ReleaseHandler.load_release_set(session_id)
+
+        return session_id
+
 
 class SessionHandler(object):
 
@@ -106,7 +150,7 @@ class ReleaseHandler(object):
         print(list(data_release_set.values()))
         release_set_checksum = ChecksumHandler.checksum_list(list(data_release_set.values()))
         data_release_set["release_checksum"] = release_set_checksum
-        #data_release_set["release_checksum"] = None
+        # data_release_set["release_checksum"] = None
         print(data_release_set)
         # Insert release set
         insert_release_set = ("INSERT INTO release_set (shortname, description, assembly_id, release_date, session_id, \
@@ -167,10 +211,20 @@ class AssemblyHandler(object):
 class FeatureHandler(object):
 
     @classmethod
-    def add_features(cls, features):
-        gene_feature = features["gene"]
-        cls.add_gene(gene_feature)
-        pass
+    def add_features(cls, features, session_id):
+
+        gene_id = None
+        gene_feature = None
+        if "gene" in features:
+            gene_feature = features["gene"]
+            gene_id = cls.add_gene(gene_feature)
+
+        transcript_gene_ids_list = []
+        if "transcripts" in features and gene_id:
+            transcript_gene_ids = cls.add_transcripts(gene_feature["transcripts"], gene_id, session_id)
+            transcript_gene_ids_list.append(transcript_gene_ids)
+
+        return transcript_gene_ids_list
 
     @classmethod
     def add_gene(cls, gene, session_id):
@@ -202,58 +256,117 @@ class FeatureHandler(object):
                             X%(exon_set_checksum)s, X%(seq_checksum)s, %(session_id)s) \
                             ON DUPLICATE KEY UPDATE transcript_id=LAST_INSERT_ID(transcript_id)")
 
-        loaded_transcript_list = []
+        transcript_ids = []
         for transcript in transcripts:
             transcript_data = {k: v for (k, v) in transcript.items() if k not in ["exons", "translation"]}
             transcript_data["session_id"] = session_id
 
-            transcript_sequence = transcript_data["sequence"]
-            print(transcript_data)
-            sequence_data = {"sequence": transcript_data["sequence"], \
+            sequence_data = {"sequence": transcript_data["sequence"],
                              "seq_checksum": transcript_data["seq_checksum"],
                              }
             seq_id = cls.add_sequence(sequence_data, session_id)
             print("Seq id " + str(seq_id))
             transcript_id = DatabaseHandler().insert_data(insert_transcript, transcript_data)
-            loaded_transcript_list.append(transcript_id)
+            exon_transcript_ids = cls.add_exons(transcript["exons"], transcript_id, session_id)  # @UnusedVariable
 
-        print(loaded_transcript_list)
+            if transcript["translation"]:
+                translation_id = cls.add_translation(transcript["translation"], transcript_id, session_id)
+                translation_transcript_id = cls.add_translation_transcript(translation_id,  # @UnusedVariable
+                                                                           transcript_id, session_id)
+            transcript_ids.append(transcript_id)
 
-    @classmethod
-    def add_exons(cls, exon_data):
-        # $sth = $dbh->prepare("INSERT INTO exon (stable_id, stable_id_version, assembly_id, loc_region, loc_start, loc_end, loc_strand, loc_checksum, exon_checksum, seq_checksum, session_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE exon_id=LAST_INSERT_ID(exon_id)");
-        pass
-
-    @classmethod
-    def add_translation(cls, translation):
-        #     $sth = $dbh->prepare("INSERT INTO translation (stable_id, stable_id_version, assembly_id, loc_region, loc_start, loc_end, loc_strand, loc_checksum, translation_checksum, seq_checksum, session_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE translation_id=LAST_INSERT_ID(translation_id)");
-        pass
+        transcript_gene_ids = cls.add_transcript_gene(transcript_ids, gene_id, session_id)
+        return transcript_gene_ids
 
     @classmethod
-    def add_transcript_gene(cls, transcript_gene):
-        #     $sth = $dbh->prepare("INSERT INTO transcript_gene (gene_id, transcript_id, session_id) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE gene_transcript_id=LAST_INSERT_ID(gene_transcript_id)");
-        pass
+    def add_exons(cls, exons, transcript_id, session_id):
+        insert_exon = ("INSERT INTO exon (stable_id, stable_id_version, assembly_id,\
+                        loc_region, loc_start, loc_end, loc_strand, loc_checksum,\
+                        exon_checksum, seq_checksum, session_id)\
+                        VALUES (%(stable_id)s, %(stable_id_version)s, %(assembly_id)s,\
+                        %(loc_region)s, %(loc_start)s, %(loc_end)s, %(loc_strand)s, X%(loc_checksum)s,\
+                        X%(exon_checksum)s, X%(seq_checksum)s, %(session_id)s)\
+                        ON DUPLICATE KEY UPDATE exon_id=LAST_INSERT_ID(exon_id)")
+        exon_ids = []
+        for exon in exons:
+            exon["session_id"] = session_id
+
+            sequence_data = {"sequence": exon["exon_seq"],
+                             "seq_checksum": exon["seq_checksum"],
+                             }
+            seq_id = cls.add_sequence(sequence_data, session_id)
+            print("Seq id " + str(seq_id))
+            exon_id = DatabaseHandler().insert_data(insert_exon, exon)
+            exon_ids.append(exon_id)
+
+        exon_transcript_ids = cls.add_exon_transcript(exon_ids, transcript_id, session_id)
+        return exon_transcript_ids
 
     @classmethod
-    def add_exon_transcript(cls, exon_transcript):
-        #$sth = $dbh->prepare("INSERT INTO exon_transcript (transcript_id, exon_id, exon_order, session_id) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE exon_transcript_id=LAST_INSERT_ID(exon_transcript_id)");
-        pass
+    def add_translation(cls, translation, transcript_id, session_id):
+        translation["session_id"] = session_id
+        insert_translation = ("INSERT INTO translation (stable_id, stable_id_version, assembly_id,\
+                                loc_region, loc_start, loc_end, loc_strand, loc_checksum,\
+                                translation_checksum, seq_checksum, session_id)\
+                                VALUES\
+                                (%(stable_id)s, %(stable_id_version)s, %(assembly_id)s,\
+                                %(loc_region)s, %(loc_start)s, %(loc_end)s, %(loc_strand)s, X%(loc_checksum)s,\
+                                X%(translation_checksum)s, X%(seq_checksum)s, %(session_id)s)\
+                                ON DUPLICATE KEY UPDATE translation_id=LAST_INSERT_ID(translation_id)")
+
+        sequence_data = {"sequence": translation["translation_seq"],
+                         "seq_checksum": translation["seq_checksum"],
+                         }
+        seq_id = cls.add_sequence(sequence_data, session_id)
+        print("Seq id " + str(seq_id))
+        translation_id = DatabaseHandler().insert_data(insert_translation, translation)
+        return translation_id
 
     @classmethod
-    def add_translation_transcript(cls, translation_transcript):
-        #     $sth = $dbh->prepare("INSERT INTO translation_transcript (transcript_id, translation_id, session_id) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE transcript_translation_id=LAST_INSERT_ID(transcript_translation_id)");
-        pass
+    def add_translation_transcript(cls, translation_id, transcript_id, session_id):
+        insert_translation = ("INSERT INTO translation_transcript (transcript_id, translation_id, session_id)\
+                                VALUES\
+                                (%(transcript_id)s, %(translation_id)s, %(session_id)s)\
+                                ON DUPLICATE KEY UPDATE\
+                                transcript_translation_id=LAST_INSERT_ID(transcript_translation_id)")
+        translation_transcript_data = {"transcript_id": transcript_id, "translation_id": translation_id,
+                                       "session_id": session_id}
+        translation_transcript_id = DatabaseHandler().insert_data(insert_translation, translation_transcript_data)
+        return translation_transcript_id
+
+    @classmethod
+    def add_transcript_gene(cls, transcript_ids, gene_id, session_id):
+        insert_transcript_gene = ("INSERT INTO transcript_gene (gene_id, transcript_id, session_id) \
+                                    VALUES (\
+                                    %(gene_id)s, %(transcript_id)s, %(session_id)s) \
+                                    ON DUPLICATE KEY UPDATE \
+                                    gene_transcript_id=LAST_INSERT_ID(gene_transcript_id)")
+        transcript_gene_ids_list = []
+        for transcript_id in transcript_ids:
+            transcript_gene_data = {"gene_id": gene_id, "transcript_id": transcript_id, "session_id": session_id}
+            DatabaseHandler().insert_data(insert_transcript_gene, transcript_gene_data)
+            transcript_gene_ids = {"transcript_id": transcript_id, "gene_id": gene_id}
+            transcript_gene_ids_list.append(transcript_gene_ids)
+
+        return transcript_gene_ids_list
+
+    @classmethod
+    def add_exon_transcript(cls, exon_ids, transcript_id, session_id):
+        insert_exon_transcript = ("INSERT INTO exon_transcript (transcript_id, exon_id, exon_order, session_id)\
+                                    VALUES (%(transcript_id)s, %(exon_id)s, %(exon_order)s, %(session_id)s)\
+                                    ON DUPLICATE KEY UPDATE exon_transcript_id=LAST_INSERT_ID(exon_transcript_id)")
+        exon_order = 1
+        for exon_id in exon_ids:
+            exon_transcript_data = {"transcript_id": transcript_id, "exon_id": exon_id, "exon_order": exon_order,
+                                    "session_id": session_id}
+            exon_transcript_id = DatabaseHandler().insert_data(insert_exon_transcript,  # @UnusedVariable
+                                                               exon_transcript_data)
+            exon_order = exon_order + 1
 
     @classmethod
     def add_sequence(cls, sequence_data, session_id):
-        # $sth = $dbh->prepare("INSERT IGNORE INTO sequence (seq_checksum, sequence, session_id) VALUES (?, ?, ?)");
         sequence_data["session_id"] = session_id
         insert_sequence = ("INSERT IGNORE INTO sequence (seq_checksum, sequence, session_id) \
                             VALUES (X%(seq_checksum)s, %(sequence)s, %(session_id)s)")
         seq_id = DatabaseHandler().insert_data(insert_sequence, sequence_data)
-        
-        print(seq_id)
         return seq_id
-
-
-
