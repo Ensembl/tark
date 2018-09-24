@@ -5,7 +5,7 @@ from refseq_loader.handlers.refseq.fastahandler import FastaHandler
 from refseq_loader.handlers.refseq.gffhandler import GFFHandler
 from refseq_loader.handlers.refseq.databasehandler import SessionHandler,\
     ReleaseHandler, GenomeHandler, AssemblyHandler, ReleaseSourceHandler,\
-    FeatureHandler
+    FeatureHandler, DatabaseHandler
 import gene
 from pip._vendor.requests.sessions import session
 import collections
@@ -19,11 +19,19 @@ import collections
 class DatabaseHandlerTest(TestCase):
 
     SESSION_ID = None
+    ASSEMBLY_ID = None
 
     @classmethod
     def setUpTestData(cls):
-        session_id = cls.populate_parent_tables()
-        DatabaseHandlerTest.SESSION_ID = session_id
+        init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
+        parent_ids = cls.populate_parent_tables_test(init_table_list)
+#         session_id_ = parent_ids["session_id"]
+#         assembly_id_ = parent_ids["assembly_id"]
+        cls.SESSION_ID = parent_ids["session_id"]
+        cls.ASSEMBLY_ID = parent_ids["assembly_id"]
+        print(parent_ids)
+        print(DatabaseHandlerTest.SESSION_ID)
+        print(DatabaseHandlerTest.ASSEMBLY_ID)
 
     def setUp(self):
         APP_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -165,77 +173,110 @@ class DatabaseHandlerTest(TestCase):
         genome_id = GenomeHandler.load_genome(genome_data)
         self.assertIsNotNone(genome_id, "Got back genome_id")
 
-        assembly_data = {"genome_id": str(1), "assembly_name": "GRCh38", "session_id": str(1)}
+        assembly_data = {"genome_id": str(genome_id), "assembly_name": "GRCh38", "session_id": str(session_id)}
         assembly_id = AssemblyHandler.load_assembly(assembly_data)
         self.assertIsNotNone(assembly_id, "Got back assembly_id")
 
-        release_source = {"shortname": "Ensembl_test", "description": "Ensembl data imports from Human Core DBs"}
+        release_source = {"shortname": "Ensembl_test2", "description": "Ensembl data imports from Human Core DBs"}
         release_source_id = ReleaseSourceHandler.load_release_source(release_source)
         self.assertIsNotNone(release_source_id, "Got back release_source_id")
 
-        release_source = {"shortname": "RefSeq_test", "description": "RefSeq data imports from RefSeq GFF"}
+        release_source = {"shortname": "RefSeq_test2", "description": "RefSeq data imports from RefSeq GFF"}
         release_source_id = ReleaseSourceHandler.load_release_source(release_source)
         self.assertIsNotNone(release_source_id, "Got back release_source_id")
 
-        data_release_set = collections.OrderedDict()
-        data_release_set["shortname"] = "94"
-        data_release_set["description"] = "Refseq release 94"
-        data_release_set["assembly_id"] = "1"
-        data_release_set["release_date"] = "12-09-2018"
-        data_release_set["session_id"] = "1"
-        data_release_set["source_id"] = "2"
-        release_id = ReleaseHandler.load_release_set(session_id, data_release_set)
-        self.assertIsNotNone(release_id, "Got back release_id")
+#         data_release_set = collections.OrderedDict()
+#         data_release_set["shortname"] = "94"
+#         data_release_set["description"] = "Refseq release 94"
+#         data_release_set["assembly_id"] = "1"
+#         data_release_set["release_date"] = "12-09-2018"
+#         data_release_set["session_id"] = "1"
+#         data_release_set["source_id"] = "2"
+#         release_id = ReleaseHandler.load_release_set(session_id, data_release_set)
+#         self.assertIsNotNone(release_id, "Got back release_id")
 
     def test_add_gene(self):
         # note: have issues with hgnc_id, so remove it for now
-        gene_id = FeatureHandler.add_gene(self.il2ra_obj2save["gene"], DatabaseHandlerTest.SESSION_ID)
-        self.assertEqual(1, gene_id, "Got back gene_id")
+        feature_handler = FeatureHandler(session_id=DatabaseHandlerTest.SESSION_ID,
+                                         assembly_id=DatabaseHandlerTest.ASSEMBLY_ID)
+        gene_id = feature_handler.add_gene(self.il2ra_obj2save["gene"])
+        self.assertIsNotNone(gene_id, "Got back gene_id")
 
         # try to load the same gene again
-        gene_id = FeatureHandler.add_gene(self.il2ra_obj2save["gene"], DatabaseHandlerTest.SESSION_ID)
-        self.assertEqual(1, gene_id, "Got back same gene_id")
+        gene_id = feature_handler.add_gene(self.il2ra_obj2save["gene"])
+        self.assertIsNotNone(gene_id, "Got back same gene_id")
 
     def test_add_transcripts(self):
         # note: have issues with hgnc_id, so remove it for now
-        gene_id = FeatureHandler.add_gene(self.il2ra_obj2save["gene"], DatabaseHandlerTest.SESSION_ID)
-        self.assertEqual(1, gene_id, "Got back gene_id")
+        feature_handler = FeatureHandler(session_id=DatabaseHandlerTest.SESSION_ID,
+                                         assembly_id=DatabaseHandlerTest.ASSEMBLY_ID)
+        gene_id = feature_handler.add_gene(self.il2ra_obj2save["gene"])
+        self.assertIsNotNone(gene_id, "Got back gene_id")
 
         expectd_transcript_ids = [{'gene_id': 1, 'transcript_id': 1}]
-        transcript_ids = FeatureHandler.add_transcripts(self.il2ra_obj2save["gene"]["transcripts"],
-                                                        gene_id, DatabaseHandlerTest.SESSION_ID)
+        transcript_ids = feature_handler.add_transcripts(self.il2ra_obj2save["gene"]["transcripts"],
+                                                         gene_id)
         print(transcript_ids)
         self.assertListEqual([{'gene_id': 1, 'transcript_id': 1}], expectd_transcript_ids,
                              "Received the transcript ids")
 
     def test_add_sequence(self):
+        feature_handler = FeatureHandler(session_id=DatabaseHandlerTest.SESSION_ID,
+                                         assembly_id=DatabaseHandlerTest.ASSEMBLY_ID)
         sequence_data = {"sequence": self.fasta_handler.get_fasta_seq_by_id("NM_000417.2"),
                          "seq_checksum": "74EB357B801F80AAC6345D1B7300F3723B9561DC",
                          }
-        sequence_id = FeatureHandler.add_sequence(sequence_data, DatabaseHandlerTest.SESSION_ID)
+        sequence_id = feature_handler.add_sequence(sequence_data)
         self.assertEqual(0, sequence_id, "Inserted sequence")
-        sequence_id = FeatureHandler.add_sequence(sequence_data, DatabaseHandlerTest.SESSION_ID)
+        sequence_id = feature_handler.add_sequence(sequence_data)
         self.assertEqual(0, sequence_id, "Sequence not inserted")
 
     @classmethod
-    def populate_parent_tables(cls):
-        session_id = SessionHandler.start_session("Test Client")
+    def populate_parent_tables_test(cls, init_table_list):
 
-        genome_data = {"name": "homo_sapiens", "tax_id": str(9606), "session_id": str(session_id)}
-        GenomeHandler.load_genome(genome_data)
+        session_id = None
+        genome_id = None
+        assembly_id = None
 
-        assembly_data = {"genome_id": "1", "assembly_name": "GRCh38", "session_id": "1"}
-        AssemblyHandler.load_assembly(assembly_data)
+        parent_ids = {}
+        if "session" in init_table_list:
+            session_id = SessionHandler.start_session("Test Client")
+            # session_id = "1"
+            parent_ids['session_id'] = session_id
+            print(".........Popultating SESSION table.........\n")
 
-        assembly_alias_data = {"alias": "GCA_000001405.25", "genome_id": "1", "assembly_id": "1", "session_id": "1"}
-        AssemblyHandler.load_assembly_alias(assembly_alias_data)
+        if "genome" in init_table_list:
+            genome_data = {"name": "homo_sapiens", "tax_id": str(9606), "session_id": str(session_id)}
+            genome_id = GenomeHandler.load_genome(genome_data)
+            parent_ids['genome_id'] = genome_id
+            print(".........Popultating GENOME table.........\n")
 
-        release_source = {"shortname": "Ensembl", "description": "Ensembl data imports from Human Core DBs"}
-        ReleaseSourceHandler.load_release_source(release_source)
+        if "assembly" in init_table_list:
+            assembly_data = {"genome_id": str(genome_id), "assembly_name": "GRCh38", "session_id": str(session_id)}
+            assembly_id = AssemblyHandler.load_assembly(assembly_data)
+#             assembly_id = "1"
+            parent_ids['assembly_id'] = assembly_id
+            print(".........Popultating ASSEMBLY table.........\n")
 
-        release_source = {"shortname": "RefSeq", "description": "RefSeq data imports from RefSeq GFF"}
-        ReleaseSourceHandler.load_release_source(release_source)
+        if "assembly_alias" in init_table_list:
+            assembly_alias_data = {"alias": "GCA_000001405.25", "genome_id": str(genome_id),
+                                   "assembly_id": str(assembly_id), "session_id": str(session_id)}
+            assembly_alias_id = AssemblyHandler.load_assembly_alias(assembly_alias_data)
+            parent_ids['assembly_alias_id'] = assembly_alias_id
+            print(".........Popultating ASSEMBLY ALIAS table.........\n")
 
-        ReleaseHandler.load_release_set(session_id)
+        if "release_source" in init_table_list:
+            release_source = {"shortname": "Ensembl_test", "description": "Ensembl data imports from Human Core DBs"}
+            release_source_ensembl = ReleaseSourceHandler.load_release_source(release_source)
+            parent_ids['release_source_ensembl'] = release_source_ensembl
+            print(".........Popultating RELEASE SOURCE table.........\n")
 
-        return session_id
+            release_source = {"shortname": "RefSeq_test", "description": "RefSeq data imports from RefSeq GFF"}
+            release_source_refseq = ReleaseSourceHandler.load_release_source(release_source)
+            parent_ids['release_source_refseq'] = release_source_refseq
+            print(".........Popultating REFSEQ table.........\n")
+
+#         release_set_id = ReleaseHandler.load_release_set(assembly_id, session_id)
+#         parent_ids['release_set'] = release_set_id
+         
+        return parent_ids
