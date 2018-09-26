@@ -52,7 +52,7 @@
 
  <div class="row">
    <div class="col-md-3 col-sm-3">
-     <a href="/web/datatable/transcript/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
+    <a href={% url 'datatable_view' "transcript" assembly_name release_name source_name assembly_name release_name|add:"-1" source_name %}><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
      <h3 class="text-center">List Features</h3>
      <p>View genes, transcripts, exons, translations and others as datatables.</p>
   </div>

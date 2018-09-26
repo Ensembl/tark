@@ -66,13 +66,15 @@ class Command(BaseCommand):
 
         if len(downloaded_files) == 4:
                 try:
-                    filter_region = 'NC_000010.11'  # chr10
-                    filter_feature_gene = 'IL2RA'
-                    filter_feature_transcript = 'NM_000417.2'
-                    GFFHandler.parse_gff_with_genbank(downloaded_files,
-                                                      filter_region,
-                                                      filter_feature_gene,
-                                                      filter_feature_transcript)
+#                     filter_region = 'NC_000010.11'  # chr10
+#                     filter_feature_gene = 'IL2RA'
+#                     filter_feature_transcript = 'NM_000417.2'
+#                     GFFHandler.parse_gff_with_genbank(downloaded_files,
+#                                                       filter_region,
+#                                                       filter_feature_gene,
+#                                                       filter_feature_transcript)
+                    GFFHandler.parse_gff_with_genbank(downloaded_files)
+
                 except:
                     print("Unexpected error:", sys.exc_info()[0])
                     raise

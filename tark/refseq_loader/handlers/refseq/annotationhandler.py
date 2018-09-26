@@ -21,6 +21,8 @@ from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 
 class AnnotationHandler(object):
 
+    ASSEMBLY_ID = ConfigHandler().get_section_config()["assembly_id"]
+
     @classmethod
     def get_annotated_gene(cls, chrom, gene_feature):
         gene = {}
@@ -30,7 +32,7 @@ class AnnotationHandler(object):
         gene['loc_region'] = str(chrom)
         gene['stable_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "GeneID")
         gene['stable_id_version'] = 1
-        gene['assembly_id'] = ConfigHandler().get_section_config()["assembly_id"]
+        gene['assembly_id'] = cls.ASSEMBLY_ID
         # make it none for the moment, otherwise you will get integrity exception
         # gene['hgnc_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "HGNC:HGNC")
         gene['hgnc_id'] = None
@@ -67,7 +69,7 @@ class AnnotationHandler(object):
         (transcript_stable_id, transcript_stable_id_version) = stable_id.split(".")
         transcript['stable_id'] = transcript_stable_id
         transcript['stable_id_version'] = transcript_stable_id_version
-        transcript['assembly_id'] = ConfigHandler().get_section_config()["assembly_id"]
+        transcript['assembly_id'] = cls.ASSEMBLY_ID
         transcript['session_id'] = None
         transcript['transcript_checksum'] = None
         transcript['exon_set_checksum'] = None
@@ -82,6 +84,14 @@ class AnnotationHandler(object):
         print(refseq_exon_list)
         print("====================")
         exon_sequences = sequence_handler.get_exon_sequences_by_identifier(transcript_identifier)
+        print("========from get_annotated_exons==== ")
+        print(refseq_exon_list)
+        print("+++++++++++++")
+        print(exon_sequences)
+        print("----------------")
+        print(len(refseq_exon_list))
+        print(len(exon_sequences))
+        print("===================")
         annotated_exons = []
         if len(refseq_exon_list) != len(exon_sequences):
             return None
@@ -96,7 +106,7 @@ class AnnotationHandler(object):
     @classmethod
     def get_annotated_exon(cls, seq_region, exon_feature, exon_sequence):
         exon = {}
-        exon['assembly_id'] = ConfigHandler().get_section_config()["assembly_id"]
+        exon['assembly_id'] = cls.ASSEMBLY_ID
         exon['loc_start'] = exon_feature["exon_start"]
         exon['loc_end'] = exon_feature["exon_end"]
         exon['loc_strand'] = exon_feature["exon_strand"]
@@ -134,7 +144,7 @@ class AnnotationHandler(object):
         translation['seq_checksum'] = ChecksumHandler.get_seq_checksum(translation, 'translation_seq')
         translation['session_id'] = None
         translation['loc_checksum'] = ChecksumHandler.get_location_checksum(translation)
-        translation['assembly_id'] = ConfigHandler().get_section_config()["assembly_id"]
+        translation['assembly_id'] = cls.ASSEMBLY_ID
         translation['translation_checksum'] = ChecksumHandler.get_translation_checksum(translation)
 
         return translation

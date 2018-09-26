@@ -59,26 +59,29 @@ class DatabaseHandler(object):
         except Exception as e:
             print('Failed to insert: ' + str(e))
             exit(0)
-
+        print("Returning row_id " + str(row_id))
         return row_id
 
     @classmethod
-    def save_features_to_database(cls,  features):
+    def save_features_to_database(cls,  features, parent_ids):
         print("****************FINAL OBJECT TO SAVE******************")
         print(features)
         print("*******************************************************")
-        init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
-        parent_ids = cls.populate_parent_tables(init_table_list)
+        #init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
+        #parent_ids = cls.populate_parent_tables()
         session_id_ = parent_ids["session_id"]
         assembly_id_ = parent_ids["assembly_id"]
+        release_id_ = parent_ids["release_id"]
 
-        feature_handler = FeatureHandler(session_id=session_id_, assembly_id=assembly_id_)
+        feature_handler = FeatureHandler(session_id=session_id_, assembly_id=assembly_id_, release_id=release_id_)
         transcript_gene = feature_handler.add_features(features)
         print(transcript_gene)
 
-
     @classmethod
-    def populate_parent_tables(cls, init_table_list):
+    def populate_parent_tables(cls, init_table_list=None):
+
+        if init_table_list is None:
+            init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
 
         session_id = None
         genome_id = None
@@ -120,9 +123,19 @@ class DatabaseHandler(object):
             parent_ids['release_source_refseq'] = release_source_refseq
             print(".........Popultating REFSEQ table.........\n")
 
-        release_set_id = ReleaseHandler.load_release_set(assembly_id, session_id)
-        parent_ids['release_set'] = release_set_id
-         
+        # load data_release_set
+        today = datetime.now().date()
+        default_config = ConfigHandler().get_section_config()
+        data_release_set = collections.OrderedDict()
+        data_release_set["shortname"] = default_config["shortname"]
+        data_release_set["description"] = default_config["description"]
+        data_release_set["assembly_id"] = str(assembly_id)
+        data_release_set["release_date"] = str(today)
+        data_release_set["session_id"] = str(session_id)
+        data_release_set["source_id"] = str(release_source_refseq)
+        release_set_id = ReleaseHandler.load_release_set(assembly_id, session_id, data_release_set)
+        parent_ids['release_id'] = release_set_id
+
         return parent_ids
 
 
@@ -227,9 +240,10 @@ class AssemblyHandler(object):
 
 class FeatureHandler(object):
 
-    def __init__(self, session_id=0, assembly_id=0):
+    def __init__(self, session_id=0, assembly_id=0, release_id=0):
         self._session_id = session_id
         self._assembly_id = assembly_id
+        self._release_id = release_id
 
     @property
     def session_id(self):
@@ -251,18 +265,27 @@ class FeatureHandler(object):
         print("Setting assembly_id")
         self._assembly_id = assembly_id
 
-    @classmethod
-    def add_features(cls, features):
+    @property
+    def release_id(self):
+        print("Getting release_id")
+        return self._release_id
+
+    @release_id.setter
+    def release_id(self, release_id):
+        print("Setting release_id")
+        self._release_id = release_id
+
+    def add_features(self, features):
 
         gene_id = None
         gene_feature = None
         if "gene" in features:
             gene_feature = features["gene"]
-            gene_id = cls.add_gene(gene_feature)
+            gene_id = self.add_gene(gene_feature)
 
         transcript_gene_ids_list = []
         if "transcripts" in gene_feature and gene_id:
-            transcript_gene_ids = cls.add_transcripts(gene_feature["transcripts"], gene_id)
+            transcript_gene_ids = self.add_transcripts(gene_feature["transcripts"], gene_id)
             transcript_gene_ids_list.append(transcript_gene_ids)
 
         return transcript_gene_ids_list
@@ -281,6 +304,8 @@ class FeatureHandler(object):
                         %(hgnc_id)s,  X%(gene_checksum)s,  %(session_id)s) \
                         ON DUPLICATE KEY UPDATE gene_id=LAST_INSERT_ID(gene_id)")
         gene_id = DatabaseHandler().insert_data(insert_gene, gene_data)
+
+        self.add_release_tag(feature_id=gene_id, feature_type="gene")
         return gene_id
 
     def add_transcripts(self, transcripts, gene_id):
@@ -308,10 +333,12 @@ class FeatureHandler(object):
             seq_id = self.add_sequence(sequence_data)
             print("Seq id " + str(seq_id))
             transcript_id = DatabaseHandler().insert_data(insert_transcript, transcript_data)
+            self.add_release_tag(feature_id=transcript_id, feature_type="transcript")
             exon_transcript_ids = self.add_exons(transcript["exons"], transcript_id)  # @UnusedVariable
 
             if transcript["translation"]:
                 translation_id = self.add_translation(transcript["translation"], transcript_id)
+                self.add_release_tag(feature_id=translation_id, feature_type="translation")
                 translation_transcript_id = self.add_translation_transcript(translation_id,  # @UnusedVariable
                                                                             transcript_id)
             transcript_ids.append(transcript_id)
@@ -338,6 +365,7 @@ class FeatureHandler(object):
             seq_id = self.add_sequence(sequence_data)
             print("Seq id " + str(seq_id))
             exon_id = DatabaseHandler().insert_data(insert_exon, exon)
+            self.add_release_tag(feature_id=exon_id, feature_type="exon")
             exon_ids.append(exon_id)
 
         exon_transcript_ids = self.add_exon_transcript(exon_ids, transcript_id)
@@ -389,6 +417,16 @@ class FeatureHandler(object):
             transcript_gene_ids_list.append(transcript_gene_ids)
 
         return transcript_gene_ids_list
+
+    def add_release_tag(self, feature_id, feature_type):
+        session_id = self.session_id
+        release_id = self.release_id
+
+        release_tag = {"feature_id": feature_id, "release_id": release_id, "session_id": session_id}
+        insert_release_tag = ("INSERT IGNORE INTO " + feature_type+"_release_tag (feature_id, release_id, session_id) \
+                                VALUES \
+                                (%(feature_id)s,  %(release_id)s, %(session_id)s )")
+        feature_release_tag_id = DatabaseHandler().insert_data(insert_release_tag, release_tag)  # @UnusedVariable
 
     def add_exon_transcript(self, exon_ids, transcript_id):
         insert_exon_transcript = ("INSERT INTO exon_transcript (transcript_id, exon_id, exon_order, session_id)\

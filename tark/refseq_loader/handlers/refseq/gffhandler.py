@@ -21,6 +21,8 @@ from refseq_loader.handlers.refseq.annotationhandler import AnnotationHandler
 from refseq_loader.handlers.refseq.databasehandler import DatabaseHandler
 from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
+import sys
+import traceback
 
 
 class GFFHandler(AnnotationHandler, DatabaseHandler):
@@ -47,6 +49,10 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
             protein_sequence_handler = FastaHandler(protein_sequence_file)
             # Examine for available regions
             examiner = GFF.GFFExaminer()
+
+            #load the parent tables
+            parent_ids = cls.populate_parent_tables()
+            print(parent_ids)
 
             with open(gff_file) as gff_handle_examiner:
                 possible_limits = examiner.available_limits(gff_handle_examiner)
@@ -94,7 +100,11 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                             # gene level
                             annotated_transcripts = []
                             for mRNA_feature in gene_feature.sub_features:
-                                transcript_id = mRNA_feature.qualifiers['transcript_id'][0]
+                                if 'transcript_id' in mRNA_feature.qualifiers:
+                                    transcript_id = mRNA_feature.qualifiers['transcript_id'][0]
+                                else:
+                                    continue
+
                                 if filter_feature_transcript is not None and 'transcript_id' in mRNA_feature.qualifiers:
                                     if filter_feature_transcript not in mRNA_feature.qualifiers['transcript_id'][0]:
                                         continue
@@ -157,6 +167,10 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                                                                                   refseq_cds_list)
                                 print("=========AFTER ANNOTATIONS")
                                 print(annotated_exons)
+                                
+                                if annotated_exons is None or len(annotated_exons) == 0:
+                                    break
+                                    
                                 print("=================")
                                 print(annotated_translation)
                                 print("=================")
@@ -179,9 +193,15 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                             annotated_gene['transcripts'] = annotated_transcripts
                             feature_object_to_save = {}
                             feature_object_to_save["gene"] = annotated_gene
-                            cls.save_features_to_database(feature_object_to_save)
+
+                            cls.save_features_to_database(feature_object_to_save, parent_ids)
         except Exception as e:
             print('Failed to parse file: '+ str(e))
+            print("Exception in user code:")
+            print("-"*60)
+            traceback.print_exc(file=sys.stdout)
+            print("-"*60)
+
             return False
 
         return True
