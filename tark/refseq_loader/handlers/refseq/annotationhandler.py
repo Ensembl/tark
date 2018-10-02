@@ -34,8 +34,8 @@ class AnnotationHandler(object):
         gene['stable_id_version'] = 1
         gene['assembly_id'] = cls.ASSEMBLY_ID
         # make it none for the moment, otherwise you will get integrity exception
-        # gene['hgnc_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "HGNC:HGNC")
-        gene['hgnc_id'] = None
+        gene['hgnc_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "HGNC:HGNC")
+        # gene['hgnc_id'] = None
         gene['session_id'] = None
         gene['loc_checksum'] = ChecksumHandler.get_location_checksum(gene)
         gene['gene_checksum'] = ChecksumHandler.get_gene_checksum(gene)

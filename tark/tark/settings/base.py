@@ -107,6 +107,7 @@ if 'TRAVIS' in os.environ:
             'ENGINE': 'django.db.backends.mysql',
             # 'NAME': 'tark_new_v1',
             'NAME': 'tark_refseq_v2',
+            #'NAME': 'tark_refseq_new4',
             'USER': 'root',
             'PASSWORD': '',
             'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
@@ -129,7 +130,8 @@ else:
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
             # 'NAME': 'tark_new_v1',
-            'NAME': 'tark_refseq_v2',
+             'NAME': 'tark_refseq_v2',
+            #'NAME': 'tark_refseq_new4',
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,

@@ -207,7 +207,7 @@ class DrfFields(object):
             location='query',
             required=True,
             type='string',
-            description='Diff me stable_id (eg: ENST00000639989)')
+            description='Diff me stable_id (eg: ENST00000380152)')
         return diff_me_stable_id_field
 
     @classmethod
@@ -237,7 +237,7 @@ class DrfFields(object):
             location='query',
             required=True,
             type='string',
-            description='Diff with stable_id (eg: ENST00000639989)')
+            description='Diff with stable_id (eg: ENST00000380152)')
         return diff_with_stable_id_field
 
     @classmethod
@@ -263,7 +263,7 @@ class DrfFields(object):
 
     @classmethod
     def get_stable_id_example(cls, model_name):
-        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000639989', 'Exon': 'ENSE00001184784',
+        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000380152', 'Exon': 'ENSE00001184784',
                         'Translation': 'ENSP00000369497'}
         print ("Model anme  " + str(model_name))
         if model_name in example_dict:

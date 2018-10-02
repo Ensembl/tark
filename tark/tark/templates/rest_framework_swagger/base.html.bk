@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>TaRK</title>
+  <title>Tark</title>
   <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
   <link href='{% static "rest_framework_swagger/css/typography.css" %}' media='screen' rel='stylesheet' type='text/css'/>
   <link href='{% static "rest_framework_swagger/css/reset.css" %}' media='screen' rel='stylesheet' type='text/css'/>
@@ -60,8 +60,8 @@
     
     <ul class="nav navbar-nav">
     
-      <li><a class="navbar-brand" id="logo" href="/">TaRK</a></li>
-      <li><a href="/">About TaRK</a></li>
+      <li><a class="navbar-brand" id="logo" href="/">Tark</a></li>
+      <li><a href="/">About Tark</a></li>
       <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
     </ul>
   </div>

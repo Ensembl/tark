@@ -8,6 +8,8 @@ import logging
 from refseq_loader.handlers.refseq.gffhandler import GFFHandler
 from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 from refseq_loader.handlers.refseq.downloadhandler import DownloadHandler
+from cProfile import Profile
+from django.template.defaultfilters import default
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -42,8 +44,17 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--download_dir',  help='Download Dir')
+        parser.add_argument('--profile',  help='Show cProfile information', default=False)
 
     def handle(self, *args, **options):
+        if options.get('profile', False):
+            profiler = Profile()
+            profiler.runcall(self._handle, *args, **options)
+            profiler.print_stats()
+        else:
+            self._handle(*args, **options)
+
+    def _handle(self, *args, **options):
         print(args)
         print('=========')
         print(options)
@@ -66,87 +77,20 @@ class Command(BaseCommand):
 
         if len(downloaded_files) == 4:
                 try:
-#                     filter_region = 'NC_000010.11'  # chr10
+                    # filter_region = 'NC_000010.11'  # chr10
+                    filter_region = 'NC_000007.14'  # chr7
+                    filter_feature_gene = "C7orf13"
 #                     filter_feature_gene = 'IL2RA'
 #                     filter_feature_transcript = 'NM_000417.2'
 #                     GFFHandler.parse_gff_with_genbank(downloaded_files,
 #                                                       filter_region,
 #                                                       filter_feature_gene,
 #                                                       filter_feature_transcript)
+                    # GFFHandler.parse_gff_with_genbank(downloaded_files, filter_region)
                     GFFHandler.parse_gff_with_genbank(downloaded_files)
 
                 except:
                     print("Unexpected error:", sys.exc_info()[0])
                     raise
 
-    def handle_depre(self, *args, **options):
 
-        print(args)
-        print('=========')
-        print(options)
-
-        download_dir_ = options['download_dir']
-
-        download_dir_ = download_dir_ if download_dir_ else "tmp_refseq/"
-        fasta_status = None
-
-        print('download_dir ' + download_dir_)
-
-        if not os.path.exists(download_dir_):
-            print("path doesn't exists. Creating dir at " + download_dir_)
-            os.makedirs(download_dir_)
-
-        print('Beginning refseq gff file download with wget module..........')
-        gff_url = self.refseq_ftp_root + self.refseq_gff_file_gz
-        downloaded_gff_url = download_dir_ + self.refseq_gff_file_gz
-        base = os.path.basename(self.refseq_gff_file_gz)
-        downloaded_gff_url_unzipped = download_dir_ + os.path.splitext(base)[0]
-        print(downloaded_gff_url_unzipped)
-        if not os.path.exists(downloaded_gff_url):
-            wget.download(gff_url, download_dir_)
-            print('File doesnt exists ' + downloaded_gff_url + '\n')
-        else:
-            print("File already exists at " + downloaded_gff_url)
-            if not os.path.exists(downloaded_gff_url_unzipped):
-                gff_status = os.system('gunzip ' + downloaded_gff_url)
-                if not gff_status == 0:
-                    raise ValueError("Unzipped GFF file not found ")
-
-        self.stdout.write(self.style.SUCCESS('\nSuccessfully Downloaded refseq gff file to ' + download_dir_ + '\n'))
-
-        print('Beginning refseq fasta file download with wget module..........')
-        fasta_url = self.refseq_ftp_root + self.refseq_fasta_file_gz
-        downloaded_fasta_url = download_dir_ + self.refseq_fasta_file_gz
-        if not os.path.exists(downloaded_fasta_url):
-            print('File doesnt exists ' + downloaded_fasta_url + '\n')
-            wget.download(fasta_url, download_dir_)
-            self.stdout.write(self.style.SUCCESS('\nSuccessfully Downloaded refseq fasta file to ' +
-                                                 download_dir_ + '\n'))
-        else:
-            print("File already exists at " + downloaded_fasta_url)
-            base = os.path.basename(self.refseq_fasta_file_gz)
-            downloaded_fasta_url_unzipped = download_dir_ + os.path.splitext(base)[0]
-            print(downloaded_fasta_url_unzipped)
-            if not os.path.exists(downloaded_fasta_url_unzipped):
-                fasta_status = os.system('gunzip ' + downloaded_fasta_url)
-                if fasta_status == 0:
-                    raise ValueError("Unzipped fasta file not found ")
-
-            if os.path.exists(downloaded_gff_url_unzipped) and os.path.exists(downloaded_fasta_url_unzipped):
-                # filter_region ='NC_000011.10' # chr11
-                # filter_feature_gene = 'OR8K1'
-                # filter_feature_transcript = 'NM_001002907.1'
-
-                #                 filter_region = 'NC_000010.11'  # chr10
-                #                 filter_feature_gene = 'IL2RA'
-                #                 filter_feature_transcript = 'NM_000417.2'
-                # TNNAI3
-                filter_region = 'NC_000019.10'  # chr19
-                filter_feature_gene = 'TNNI3'
-                filter_feature_transcript = 'NM_000363.4'
-                try:
-                    GFFHandler.parse_gff_with_genbank(downloaded_gff_url_unzipped, downloaded_fasta_url_unzipped, protein_sequence_file_url_unzipped, filter_region,
-                                         filter_feature_gene, filter_feature_transcript)
-                except:
-                    print("Unexpected error:", sys.exc_info()[0])
-                    raise

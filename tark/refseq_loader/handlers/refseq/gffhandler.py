@@ -25,7 +25,7 @@ import sys
 import traceback
 
 
-class GFFHandler(AnnotationHandler, DatabaseHandler):
+class GFFHandler(AnnotationHandler):
 
     @classmethod
     def parse_gff_with_genbank(cls, downloaded_files, filter_region=None, filter_feature_gene=None, filter_feature_transcript=None):  # @IgnorePep8
@@ -50,8 +50,8 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
             # Examine for available regions
             examiner = GFF.GFFExaminer()
 
-            #load the parent tables
-            parent_ids = cls.populate_parent_tables()
+            # load the parent tables
+            parent_ids = DatabaseHandler.getInstance().populate_parent_tables()
             print(parent_ids)
 
             with open(gff_file) as gff_handle_examiner:
@@ -194,7 +194,7 @@ class GFFHandler(AnnotationHandler, DatabaseHandler):
                             feature_object_to_save = {}
                             feature_object_to_save["gene"] = annotated_gene
 
-                            cls.save_features_to_database(feature_object_to_save, parent_ids)
+                            DatabaseHandler.getInstance().save_features_to_database(feature_object_to_save, parent_ids)
         except Exception as e:
             print('Failed to parse file: '+ str(e))
             print("Exception in user code:")

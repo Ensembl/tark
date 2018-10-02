@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}TaRK Help{% endblock %}
+{% block title %}Tark Help{% endblock %}
 
 {% load staticfiles %}
 
@@ -11,46 +11,46 @@
         <div class="col-md-3">
 		   <ul class="list-group">
 		  <li class="list-group-item active">FAQs</li>
-		  <li class="list-group-item"><a href="#tark_summary">{{"What is TaRK?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_services">{{"What services are provided by TaRK?" | truncatechars:60 }}</a></li>
-		   <li class="list-group-item"><a href="#tark_rest">{{"What services are provided by REST TaRK?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_web">{{"What services are provided by Web TaRK?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_summary">{{"What is Tark?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_services">{{"What services are provided by Tark?" | truncatechars:60 }}</a></li>
+		   <li class="list-group-item"><a href="#tark_rest">{{"What services are provided by REST Tark?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_web">{{"What services are provided by Web Tark?" | truncatechars:60 }}</a></li>
  		  <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
 		  <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of TaRK?" | truncatechars:60 }}</a></li>
+		  <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of Tark?" | truncatechars:60 }}</a></li>
 		</ul>
         </div>
        <div class="col-md-9">
 		<div class="panel panel-info">
 
 	<div class="panel-heading">
-	<h4 class="panel-title">TaRK FAQ</h4>
+	<h4 class="panel-title">Tark FAQ</h4>
 	</div>
 
 	<div class="panel-body" id="tark_faq" name="tark_faq">
     
-    <h4 id="tark_summary">What is TaRK?</h4>
+    <h4 id="tark_summary">What is Tark?</h4>
     <p>
-    TaRK stands for Transcript ARchive. The goal of TArK is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, <a href="#tark_checksum">checksums</a> are included at a fine grained level.
+    Tark stands for Transcript ARchive. The goal of TArK is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, <a href="#tark_checksum">checksums</a> are included at a fine grained level.
     </p>
     
     <hr/>
-    <h4 id="tark_services">What services are provided by TaRK?</h4>
+    <h4 id="tark_services">What services are provided by Tark?</h4>
     <dl>
-    <dt>The TaRK provides the following main services via REST TaRK and Web TaRK:</dt>
+    <dt>The Tark provides the following main services via REST Tark and Web Tark:</dt>
 	 <dd>- querying/searching of existing transcripts and related entities</dd>
 	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
    </dl>
  	
  	<hr/>
-    <h4 id="tark_rest">What services are provided by REST TaRK?</h4>
+    <h4 id="tark_rest">What services are provided by REST Tark?</h4>
     <dl>
 	 <dd>- querying/searching of existing transcripts and related entities applying various filters and GET the results in JSON format</dd>
 	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
    </dl>
    
    	<hr/>
-    <h4 id="tark_we">What services are provided by Web TaRK?</h4>
+    <h4 id="tark_we">What services are provided by Web Tark?</h4>
     <dl>
 	 <dd>- querying/searching of existing transcripts and related entities</dd>
 	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
@@ -182,7 +182,7 @@
     
    
     <hr/>
-    <h4 id="ar_tech_stack">What is the technology stack of TaRK?</h4>
+    <h4 id="ar_tech_stack">What is the technology stack of Tark?</h4>
     <p>
     <a href="https://www.python.org/">Python3</a>, <a href="https://www.djangoproject.com/">Django</a>, <a href="http://www.django-rest-framework.org/">Django REST Framework</a> and <a href="https://django-rest-swagger.readthedocs.io/en/latest/">Django REST Swagger</a>. Backend support is provided by<a href="https://www.mysql.com/"> MySQL</a>.
     </p>
