@@ -19,7 +19,7 @@ from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
 from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
-from tark_drf.utils.drf_fields import AssemblyField, CommonFields, GeneNameField
+from tark_drf.utils.drf_fields import AssemblyField, CommonFields
 from release.models import TranscriptReleaseTag
 from transcript.models import Transcript
 from sequence.drf.serializers import SequenceSerializer
