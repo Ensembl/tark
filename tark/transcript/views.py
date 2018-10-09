@@ -20,7 +20,8 @@ from rest_framework import generics
 from tark_drf.utils.decorators import setup_eager_loading, expand_all_related
 from transcript.models import Transcript
 from transcript.drf.serializers import TranscriptSerializer,\
-    TranscriptDiffSerializer, TranscriptSearchSerializer
+    TranscriptDiffSerializer, TranscriptSearchSerializer,\
+    TranscriptDataTableSerializer
 from transcript.drf.filters import TranscriptFilterBackend,\
     TranscriptDiffFilterBackend, TranscriptSearchFilterBackend
 from tark.utils.diff_utils import DiffUtils
@@ -42,8 +43,15 @@ class TranscriptList(generics.ListAPIView):
 
 
 class TranscriptDatatableView(DataTableListApi):
-    serializer_class = TranscriptSerializer
-    search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False)
+    # serializer_class = TranscriptSerializer
+    serializer_class = TranscriptDataTableSerializer
+    search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False,
+                                                    include_parents_=True,
+                                                    exclude_fields=["loc_strand", "loc_region", "loc_checksum",
+                                                                    "exon_set_checksum",
+                                                                    "transcript_checksum"],
+                                                    include_fields=["genes"])
+    # search_parameters.append("genes")
     default_order_by = 1
 
 

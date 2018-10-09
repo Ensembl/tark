@@ -28,9 +28,10 @@ def column_mappings(col_name):
         col_names["loc_end"] = "End"
         col_names["loc_strand"] = "Strand"
         col_names["loc_region"] = "Region"
-        col_names["loc_checksum"] = "LocationChecksum"
-        col_names["exon_set_checksum"] = "ExonSetChecksum"
-        col_names["transcript_checksum"] = "TranscriptChecksum"
+#         col_names["loc_checksum"] = "LocationChecksum"
+#         col_names["exon_set_checksum"] = "ExonSetChecksum"
+#         col_names["transcript_checksum"] = "TranscriptChecksum"
+        col_names["genes"] = "Gene"
 
         if col_name in col_names:
             return col_names[col_name]

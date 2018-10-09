@@ -98,15 +98,23 @@ class DataTableListApi(generics.ListAPIView):
 
         # print('search parameters ' + str(self.search_parameters))
         q = Q()
-
         if len(search_queries) > 0 and search_queries[0] != u'':
             for params in self.search_parameters:
+                if "genes" == params:
+                    for query in search_queries:
+                        temp = {
+                            '{}__hgnc__name__icontains'.format(params): query,
+                        }
+                        q |= Q(**temp)
+                else:
+                    for query in search_queries:
+                        if not query.isdigit() and params in ["transcript_id", "stable_id_version", "loc_start", "loc_end"]:
+                            continue
 
-                for query in search_queries:
-                    temp = {
-                        '{}__icontains'.format(params): query,
-                    }
-                    q |= Q(**temp)
+                        temp = {
+                            '{}__icontains'.format(params): query,
+                        }
+                        q |= Q(**temp)
 
         query_set = query_set.filter(q)
 
@@ -143,7 +151,13 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
     # print(mappings)
 
     if table_name in mappings:
-        data_fields = SchemaUtils.get_field_names(mappings[table_name], table_name, True)
+        data_fields = SchemaUtils.get_field_names(mappings[table_name], table_name,
+                                                  exclude_pk=True,
+                                                  include_parents_=True,
+                                                  exclude_fields=["loc_checksum",
+                                                                  "exon_set_checksum",
+                                                                  "transcript_checksum"],
+                                                  include_fields = ["genes"])
 
     print("server_side_processing " + str(server_side_processing))
 

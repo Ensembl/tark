@@ -19,7 +19,7 @@ from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
 from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
-from tark_drf.utils.drf_fields import AssemblyField, CommonFields
+from tark_drf.utils.drf_fields import AssemblyField, CommonFields, GeneNameField
 from release.models import TranscriptReleaseTag
 from transcript.models import Transcript
 from sequence.drf.serializers import SequenceSerializer
@@ -52,11 +52,33 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Transcript
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence', )
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence')
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)
         self.set_related_fields(TranscriptSerializer, **kwargs)
+
+
+class TranscriptDataTableSerializer(TranscriptSerializer):
+
+    genes = serializers.SerializerMethodField(read_only=True)
+
+    def get_genes(self, obj):
+        print("From get_genes====================")
+        gene_names = ""
+        for gene in obj.genes.all():
+            gene_names = gene_names + gene.hgnc.name
+
+        return gene_names
+
+    class Meta:
+        model = Transcript
+        fields = CommonFields.COMMON_FIELD_SET + ('genes', )
+
+#
+#     def __init__(self, *args, **kwargs):
+#         super(TranscriptDataTableSerializer, self).__init__(*args, **kwargs)
+#         self.set_related_fields(TranscriptDataTableSerializer, **kwargs)
 
 
 class TranscriptDiffSerializer(TranscriptSerializer):

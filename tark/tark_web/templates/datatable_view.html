@@ -31,6 +31,10 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
         "pageLength": 5,
         "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
         {% if server_side_processing == 'true' %}
+        "processing": true,
+        "language": {
+            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+         },
         "ajax": "/web/datatable_serverside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
         {% else %}
          "ajax": "/web/datatable_clientside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
@@ -79,20 +83,23 @@ function clear_select_transcript_compare_well(){
 
      var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}", "{{source_name}}" );
      var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}", "{{source_name_compare}}"  );
-
-/*
+      
+     
+      
+       var assembly_releases = {{ all_assembly_releases|safe|escape }};
+       var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
+       var assembly_releases_ensembl = {{ all_assembly_releases_ensembl|safe|escape }};
 	 //event handler for current assembly change
      $("#id_diff_current_source").change(function () {
        
-       var assembly_releases = {{ all_assembly_releases|safe|escape }};
-       var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
+
        var cur_source_name = $(this).val(); 
 	   var cur_assembly_name =  $("#id_diff_current_assembly").val(); 
 	   console.log('cur_assembly_name ' + cur_assembly_name);
 	   
 	   if(cur_source_name == "Ensembl"){
 	    //set assembly
-	    var ensembl_assemblies = Object.keys(assembly_releases_refseq);
+	    var ensembl_assemblies = Object.keys(assembly_releases_ensembl);
 	    console.log(ensembl_assemblies);
 	    var assembly_options = $.map(ensembl_assemblies, function(ensembl_assembly){
             return '<option value="' + ensembl_assembly + '">' + ensembl_assembly + '</option>'
@@ -100,41 +107,86 @@ function clear_select_transcript_compare_well(){
         $("#id_diff_current_assembly").html(assembly_options);
         
         //set release
-	    
-	   }else{
-	    var refseq_assemblies = Object.keys(assembly_releases);
-	    console.log(refseq_assemblies);
-	   }
-       var releases = assembly_releases[cur_assembly_name] || [];
+        var releases = assembly_releases_ensembl[cur_assembly_name] || [];
        
        var release_options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
         $("#id_diff_current_release").html(release_options);
-     });
- */    
-     //event handler for current assembly change
-     $("#id_diff_current_assembly").change(function () {
-       var assembly_releases = {{ all_assembly_releases|safe|escape }};
-       var cur_assembly_name = $(this).val(); 
+	    
+	   }else{
+	    var refseq_assemblies = Object.keys(assembly_releases_refseq);
+	    console.log(refseq_assemblies);
+	    var assembly_options = $.map(refseq_assemblies, function(refseq_assembly){
+            return '<option value="' + refseq_assembly + '">' + refseq_assembly + '</option>'
+        }).join('');
+        $("#id_diff_current_assembly").html(assembly_options);
 
-       var releases = assembly_releases[cur_assembly_name] || [];
-       var options = $.map(releases, function(release){
+	  
+       var releases = assembly_releases_refseq[cur_assembly_name] || [];
+       
+       var release_options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
-        $("#id_diff_current_release").html(options);
+        $("#id_diff_current_release").html(release_options);
+        
+        }
+        
      });
+     
+  
+
     
     //event handler for compare assembly change
-    $("#id_diff_compare_assembly").change(function () {
-       var assembly_releases = {{ all_assembly_releases|safe|escape }};
-       var cur_assembly_name = $(this).val(); 
+     $("#id_diff_compare_source").change(function () {
+       var cur_source_name = $(this).val(); 
+       var cur_assembly_name = $("#id_diff_compare_assembly").val(); 
 
-       var releases = assembly_releases[cur_assembly_name] || [];
-       var options = $.map(releases, function(release){
+      if(cur_source_name == "Ensembl"){
+      console.log("===reached if=======");
+	    //set assembly
+	    var ensembl_assemblies = Object.keys(assembly_releases_ensembl);
+	    console.log(ensembl_assemblies);
+	    var assembly_options = $.map(ensembl_assemblies, function(ensembl_assembly){
+            return '<option value="' + ensembl_assembly + '">' + ensembl_assembly + '</option>'
+        }).join('');
+        $("#id_diff_compare_assembly").html(assembly_options);
+        
+        //set release
+        var releases = assembly_releases_ensembl[cur_assembly_name] || [];
+       
+       var release_options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
-        $("#id_diff_compare_release").html(options);
+        $("#id_diff_compare_release").html(release_options);
+	    
+	   }else{
+	     console.log("===reached else=======");
+	    var refseq_assemblies = Object.keys(assembly_releases_refseq);
+	    console.log(refseq_assemblies);
+	    var assembly_options = $.map(refseq_assemblies, function(refseq_assembly){
+            return '<option value="' + refseq_assembly + '">' + refseq_assembly + '</option>'
+        }).join('');
+        $("#id_diff_compare_assembly").html(assembly_options);
+       
+       console.log("==================");
+       console.log(assembly_releases_refseq);
+       var releases = assembly_releases_refseq[cur_assembly_name] || [];
+       console.log(releases);
+       console.log("==================");
+        
+       var release_options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_compare_release").html(release_options);
+        
+        }
+     
+     
+     
+     
+     
+     
      });
     
     
@@ -259,7 +311,7 @@ function clear_select_transcript_compare_well(){
    <div class="row">
     <div id="loadingSpinner"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
 
-    <div id="current_well" class="well well-sm" style="color: #31708f;background-color: #d9edf7;border-color: #bce8f1;"><strong>Current Assembly: "{{ assembly_name }}"  Current Release: "{{ release_name }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong> </div>
+    <div id="current_well" class="well well-sm" style="color: #31708f;background-color: #d9edf7;border-color: #bce8f1;"><strong>Current Source: "{{ source_name }}" Current Assembly: "{{ assembly_name }}"  Current Release: "{{ release_name }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong> </div>
 
      <!-- div assembly_release_current_well start -->
     <div id="assembly_release_current_well" class="row">
@@ -308,7 +360,7 @@ function clear_select_transcript_compare_well(){
     
     <div class="row" id="compare_with_div" style="display: none;">
     <div id="compare_with_well" class="well well-sm" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
-    <strong> Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>
+    <strong>Compare Source: "{{ source_name_compare }}"  Compare Assembly: "{{ assembly_name_compare }}"  Compare Release: "{{ release_name_compare }}". To filter type: ENST00000302118 in search box. Select the assembly/release version and click the "Update Transcript Set" button to reload a different set</strong>
     </div>
    
    
