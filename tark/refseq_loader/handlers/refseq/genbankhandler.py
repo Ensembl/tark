@@ -29,15 +29,23 @@ class GenBankHandler():
 
     def get_seq_record_by_id(self, identifier):
         if self.indexed_data is not None:
-            seq_record = self.indexed_data[identifier]
-            return seq_record
+            try:
+                seq_record = self.indexed_data[identifier]
+                return seq_record
+            except Exception as e:
+                print('Failed to parse id: ' + str(identifier) + " " + str(e))
+                return None
         else:
             raise ValueError("Genbank Handler not initialized")
 
     def get_sequence_by_id(self, identifier):
         if self.indexed_data is not None:
-            seq = self.indexed_data[identifier].seq
-            return str(seq)
+            try:
+                seq = self.indexed_data[identifier].seq
+                return str(seq)
+            except Exception as e:
+                print('Failed to parse id: ' + str(identifier) + " " + str(e))
+                return None
         else:
             raise ValueError("Genbank Handler not initialized")
 
@@ -57,7 +65,8 @@ class GenBankHandler():
     def get_exon_sequences_by_identifier(self, identifier):
         print("get_exon_sequences_by_identifier " + str(identifier))
         seq_record = self.get_seq_record_by_id(identifier)
-
+        if seq_record is None:
+            return None
         exon_sequences = []
         for feature in seq_record.features:
             if feature.type == 'exon':

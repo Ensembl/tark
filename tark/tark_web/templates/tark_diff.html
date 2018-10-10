@@ -3,28 +3,105 @@
 {% block extra_scripts %}
  <script>
  jQuery(function($) {
-    $("#id_diff_me_assembly").change(function () {
-        var assembly_releases = {{ all_assembly_releases|safe|escape }};
-        var cur_assembly_name = $(this).val(); 
-
-        var releases = assembly_releases[cur_assembly_name] || [];
-        
-        var options = $.map(releases, function(release){
-            return '<option value="' + release + '">' + release + '</option>'
-        }).join('');
-        $("#id_diff_me_release").html(options);
-    });
     
-    $("#id_diff_with_assembly").change(function () {
+    
        var assembly_releases = {{ all_assembly_releases|safe|escape }};
-        var cur_assembly_name = $(this).val(); 
+       var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
+       var assembly_releases_ensembl = {{ all_assembly_releases_ensembl|safe|escape }};
+	 //event handler for diff me source change
+     $("#id_diff_me_source").change(function () {
+       
 
-        var releases = assembly_releases[cur_assembly_name] || [];
-        var options = $.map(releases, function(release){
+       var cur_source_name = $(this).val(); 
+	   var cur_assembly_name =  $("#id_diff_me_assembly").val(); 
+	   console.log('cur_assembly_name ' + cur_assembly_name);
+	   
+	   if(cur_source_name == "Ensembl"){
+	    //set assembly
+	    var ensembl_assemblies = Object.keys(assembly_releases_ensembl);
+	    console.log(ensembl_assemblies);
+	    var assembly_options = $.map(ensembl_assemblies, function(ensembl_assembly){
+            return '<option value="' + ensembl_assembly + '">' + ensembl_assembly + '</option>'
+        }).join('');
+        $("#id_diff_me_assembly").html(assembly_options);
+        
+        //set release
+        var releases = assembly_releases_ensembl[cur_assembly_name] || [];
+       
+       var release_options = $.map(releases, function(release){
             return '<option value="' + release + '">' + release + '</option>'
         }).join('');
-        $("#id_diff_with_release").html(options);
-    });
+        $("#id_diff_me_release").html(release_options);
+	    
+	   }else{
+	    var refseq_assemblies = Object.keys(assembly_releases_refseq);
+	    console.log(refseq_assemblies);
+	    var assembly_options = $.map(refseq_assemblies, function(refseq_assembly){
+            return '<option value="' + refseq_assembly + '">' + refseq_assembly + '</option>'
+        }).join('');
+        $("#id_diff_me_assembly").html(assembly_options);
+
+	  
+       var releases = assembly_releases_refseq[cur_assembly_name] || [];
+       console.log(releases)
+       var release_options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_me_release").html(release_options);
+        
+        }
+        
+     });
+    
+    
+     //event handler for diff with source change
+     $("#id_diff_with_source").change(function () {
+       
+
+       var cur_source_name = $(this).val(); 
+	   var cur_assembly_name =  $("#id_diff_with_assembly").val(); 
+	   console.log('cur_assembly_name ' + cur_assembly_name);
+	   
+	   if(cur_source_name == "Ensembl"){
+	    //set assembly
+	    var ensembl_assemblies = Object.keys(assembly_releases_ensembl);
+	    console.log(ensembl_assemblies);
+	    var assembly_options = $.map(ensembl_assemblies, function(ensembl_assembly){
+            return '<option value="' + ensembl_assembly + '">' + ensembl_assembly + '</option>'
+        }).join('');
+        $("#id_diff_with_assembly").html(assembly_options);
+        
+        //set release
+        var releases = assembly_releases_ensembl[cur_assembly_name] || [];
+       
+       var release_options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_with_release").html(release_options);
+	    
+	   }else{
+	    var refseq_assemblies = Object.keys(assembly_releases_refseq);
+	    console.log(refseq_assemblies);
+	    var assembly_options = $.map(refseq_assemblies, function(refseq_assembly){
+            return '<option value="' + refseq_assembly + '">' + refseq_assembly + '</option>'
+        }).join('');
+        $("#id_diff_with_assembly").html(assembly_options);
+
+	  
+       var releases = assembly_releases_refseq[cur_assembly_name] || [];
+       console.log(releases)
+       var release_options = $.map(releases, function(release){
+            return '<option value="' + release + '">' + release + '</option>'
+        }).join('');
+        $("#id_diff_with_release").html(release_options);
+        
+        }
+        
+     });
+    
+    
+    
+    
   });
   </script>
 {% endblock %}

@@ -12,7 +12,6 @@
 {% block extra_scripts %}
 <script type="text/javascript">
 
-
 function create_current_release_table(id_data_table, table_name_, assembly_name_, release_name_, source_name_){
     console.log(id_data_table + "  " + table_name_ + "  " + assembly_name_ + "  " + release_name_ + "  " + source_name_);
  //datatable
@@ -77,18 +76,54 @@ function clear_select_transcript_compare_well(){
 
 
     $(document).ready(function() {
+     
+	//init the fields
+	var current_pathname = window.location.pathname; // Returns path only
+	console.log("current_pathname " + current_pathname);
+	
+	var myRegexp = /\/web\/datatable\/transcript\/(\w+)\/(\d+)\/(ensembl|refseq)\/(\w+)\/(\d+)\/(ensembl|refseq)\//;
+	var match = myRegexp.exec(current_pathname);
+	console.log(match[1]); 
+	var cur_assembly = match[1];
+	console.log(match[2]);
+	var cur_release = match[2];
+	console.log(match[3]);
+	var cur_source = match[3];
+	
+	console.log(match[4]);
+	var compare_assembly = match[4];
+	console.log(match[5]);
+	var compare_release = match[5];
+	console.log(match[6]);
+	var compare_source = match[6];
+	
+	cur_source = cur_source == "refseq" ? "RefSeq" : cur_source;
+	cur_source = cur_source == "ensembl" ? "Ensembl" : cur_source;
+	
+	compare_source = compare_source == "refseq" ? "RefSeq" : compare_source;
+	compare_source = compare_source == "ensembl" ? "Ensembl" : compare_source;
+
      $('#select_transcript_compare_well').hide();
      $('#diff_selected_transcript').hide();
      var original_state_compare_well = $("#select_transcript_compare_well").clone();
 
      var tark_table = create_current_release_table("tark_datatable","{{table_name}}", "{{assembly_name}}", "{{release_name}}", "{{source_name}}" );
-     var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}", "{{source_name_compare}}"  );
-      
      
-      
-       var assembly_releases = {{ all_assembly_releases|safe|escape }};
-       var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
-       var assembly_releases_ensembl = {{ all_assembly_releases_ensembl|safe|escape }};
+     var tark_table_compare = create_current_release_table("tark_datatable_compare_with","{{table_name}}", "{{assembly_name_compare}}", "{{release_name_compare}}", "{{source_name_compare}}"  );
+     
+     
+     $("#id_diff_current_source").val(cur_source);
+     $("#id_diff_current_assembly").val(cur_assembly);
+     $("#id_diff_current_release").val(cur_release);
+     
+     $("#id_diff_compare_source").val(compare_source);
+     $("#id_diff_compare_assembly").val(compare_assembly);
+     $("#id_diff_compare_release").val(compare_release);
+     
+
+     var assembly_releases = {{ all_assembly_releases|safe|escape }};
+     var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
+     var assembly_releases_ensembl = {{ all_assembly_releases_ensembl|safe|escape }};
 	 //event handler for current assembly change
      $("#id_diff_current_source").change(function () {
        

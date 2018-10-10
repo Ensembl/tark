@@ -37,11 +37,14 @@ class FastaHandler(object):
             if start is not None and end is not None:
                 seq_record = self.fasta_handler.get_seq(identifier, start, end)
             else:
-                fasta_record = self.fasta_handler[identifier]
-                len_fasta_record = len(fasta_record)
-                print("len_fasta_record " + str(len_fasta_record))
-                seq_record = self.fasta_handler.get_seq(identifier, 1, len_fasta_record)
-
-            return seq_record.seq
+                try:
+                    fasta_record = self.fasta_handler[identifier]
+                    len_fasta_record = len(fasta_record)
+                    print("len_fasta_record " + str(len_fasta_record))
+                    seq_record = self.fasta_handler.get_seq(identifier, 1, len_fasta_record)
+                    return seq_record.seq
+                except Exception as e:
+                    print('Failed to get seq id: ' + str(identifier) + " " + str(e))
+                    return None
         else:
             raise ValueError("Fasta seq not found for id " + identifier)

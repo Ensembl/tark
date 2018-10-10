@@ -80,25 +80,16 @@ class AnnotationHandler(object):
 
     @classmethod
     def get_annotated_exons(cls, sequence_handler, seq_region, transcript_identifier, refseq_exon_list):
-        print("====REFSEQ EXON LIST=====")
-        print(refseq_exon_list)
-        print("====================")
         exon_sequences = sequence_handler.get_exon_sequences_by_identifier(transcript_identifier)
-        print("========from get_annotated_exons==== ")
-        print(refseq_exon_list)
-        print("+++++++++++++")
-        print(exon_sequences)
-        print("----------------")
-        print(len(refseq_exon_list))
-        print(len(exon_sequences))
-        print("===================")
         annotated_exons = []
+
+        if exon_sequences is None:
+            return None
+
         if len(refseq_exon_list) != len(exon_sequences):
             return None
 
         for exon_feature, exon_sequence in zip(refseq_exon_list, exon_sequences):
-            print(exon_feature)
-            print(exon_sequence)
             annotated_exons.append(cls.get_annotated_exon(seq_region, exon_feature, exon_sequence))
 
         return annotated_exons
@@ -152,7 +143,6 @@ class AnnotationHandler(object):
     @classmethod
     def get_translation_loc(cls, cds_list):
         cds = cds_list[0]
-        print(cds)
         if(cds['cds_strand'] == '1'):
             cds_start = [cds['cds_start'] for cds in cds_list if cds['cds_order'] == 1]
             cds_end = [cds['cds_end'] for cds in cds_list if cds['cds_order'] == len(cds_list)]

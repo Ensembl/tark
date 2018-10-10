@@ -44,8 +44,8 @@ class DatabaseHandler(object):
             "user": "prem",
             "password": "prem",
             "host": "localhost",
-            "database": "tark_refseq_new4"
-            # "database": "test_tark_refseq_new"
+            #"database": "tark_refseq_new4"
+            "database": "tark_refseq_dryrun"
         }
         self.cnxpool = pooling_connector.MySQLConnectionPool(pool_name="mypool",
                                                              **dbconfig)
@@ -70,6 +70,18 @@ class DatabaseHandler(object):
     def insert_data(self, insert_sql, insert_data, FOREIGN_KEY_CHECKS=1):
         print(insert_sql)
         print(insert_data)
+
+        checksum_keys = [key for key in list(insert_data.keys()) if "checksum" in key and insert_data[key] is None]
+        print("===========checksum keys=============")
+        ['loc_checksum', 'exon_set_checksum', 'transcript_checksum', 'seq_checksum']
+        print(checksum_keys)
+
+        for key in checksum_keys:
+            if key in insert_sql:
+                sql_str = "X%(" + key + ")s"
+                sql_str_to_replace = "%(" + key + ")s"
+                insert_sql = insert_sql.replace(sql_str, sql_str_to_replace, 1)
+
         row_id = None
         try:
             self.cnx = self.cnxpool.get_connection()
@@ -96,8 +108,6 @@ class DatabaseHandler(object):
         print("****************FINAL OBJECT TO SAVE******************")
         print(features)
         print("*******************************************************")
-        #init_table_list = ["session", "genome", "assembly", "assembly_alias", "release_source"]
-        #parent_ids = cls.populate_parent_tables()
         session_id_ = parent_ids["session_id"]
         assembly_id_ = parent_ids["assembly_id"]
         release_id_ = parent_ids["release_id"]
@@ -105,6 +115,7 @@ class DatabaseHandler(object):
         feature_handler = FeatureHandler(session_id=session_id_, assembly_id=assembly_id_, release_id=release_id_)
         transcript_gene = feature_handler.add_features(features)
         print(transcript_gene)
+        return transcript_gene
 
     @classmethod
     def populate_parent_tables(cls, init_table_list=None):
@@ -203,8 +214,6 @@ class ReleaseHandler(object):
             data_release_set["session_id"] = str(session_id)
             data_release_set["source_id"] = default_config["source"]
 
-        print(data_release_set)
-        print(list(data_release_set.values()))
         release_set_checksum = ChecksumHandler.checksum_list(list(data_release_set.values()))
         data_release_set["release_checksum"] = release_set_checksum
         # data_release_set["release_checksum"] = None
@@ -310,7 +319,12 @@ class FeatureHandler(object):
         gene_feature = None
         if "gene" in features:
             gene_feature = features["gene"]
-            gene_id = self.add_gene(gene_feature)
+            if "transcripts" in gene_feature and len(gene_feature["transcripts"]) > 0:
+                gene_id = self.add_gene(gene_feature)
+            else:
+                print("=========  No transcripts to add for this gene =======")
+                print(gene_feature)
+                return None
 
         transcript_gene_ids_list = []
         if "transcripts" in gene_feature and gene_id:
@@ -332,9 +346,8 @@ class FeatureHandler(object):
                         %(loc_region)s, %(loc_start)s,  %(loc_end)s,  %(loc_strand)s,  X%(loc_checksum)s, \
                         %(hgnc_id)s,  X%(gene_checksum)s,  %(session_id)s) \
                         ON DUPLICATE KEY UPDATE gene_id=LAST_INSERT_ID(gene_id)")
-        #DatabaseHandler.getInstance().execute_set_statements("SET FOREIGN_KEY_CHECKS = 0")
+
         gene_id = DatabaseHandler.getInstance().insert_data(insert_gene, gene_data, FOREIGN_KEY_CHECKS=0)
-        #DatabaseHandler.getInstance().execute_set_statements("SET FOREIGN_KEY_CHECKS = 1")
 
         self.add_release_tag(feature_id=gene_id, feature_type="gene")
         return gene_id
@@ -364,6 +377,7 @@ class FeatureHandler(object):
             seq_id = self.add_sequence(sequence_data)
             print("Seq id " + str(seq_id))
             transcript_id = DatabaseHandler.getInstance().insert_data(insert_transcript, transcript_data)
+
             self.add_release_tag(feature_id=transcript_id, feature_type="transcript")
             exon_transcript_ids = self.add_exons(transcript["exons"], transcript_id)  # @UnusedVariable
 

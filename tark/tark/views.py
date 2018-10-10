@@ -116,7 +116,7 @@ class DataTableListApi(generics.ListAPIView):
                         }
                         q |= Q(**temp)
 
-        query_set = query_set.filter(q)
+        query_set = query_set.filter(q).distinct()
 
         if order_by == '':
             return query_set

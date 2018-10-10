@@ -31,12 +31,13 @@ class FormUtils(object):
         return assembly_list
 
     @classmethod
-    def get_all_release_name_tuples(cls, assembly_name=None, source_name="Ensembl"):
+    def get_all_release_name_tuples(cls, assembly_name=None, source_name=None):
         release_list = []
 
         for release in ReleaseUtils.get_all_release_short_names(assembly_name, source_name):
-            release_list.append((release, release))
+                release_list.append((release, release))
 
+        print(release_list)
         return release_list
 
     @classmethod
@@ -67,14 +68,14 @@ class CompareSetForm(forms.Form):
         self.fields['diff_current_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_current_release'] = forms.CharField(initial=int(current_release),
-                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples(source_name="all")))  # @IgnorePep8
         self.fields['diff_current_source'] = forms.CharField(initial=current_source,
                                                            widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
 
         self.fields['diff_compare_assembly'] = forms.CharField(initial=current_assembly,
                                                             widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_compare_release'] = forms.CharField(initial=int(current_release)-1,
-                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples(source_name="all")))  # @IgnorePep8
         self.fields['diff_compare_source'] = forms.CharField(initial=current_source,
                                                            widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
 

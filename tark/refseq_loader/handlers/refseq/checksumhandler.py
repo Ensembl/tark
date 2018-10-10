@@ -24,7 +24,6 @@ class ChecksumHandler(object):
     # Join an array of values with a ':' delimeter and find a sha1 checksum of it
     @classmethod
     def checksum_list(cls, attr_list):
-        print("===checksum_list called====")
         cs = hashlib.sha1()  # update to other latest sha implementations
 
         if len(attr_list) > 1:
@@ -34,11 +33,12 @@ class ChecksumHandler(object):
         else:
             return None
 
-        cs.update(attr_list_joined.encode('utf-8').strip())
-        hex_digest = binascii.hexlify(cs.digest()).decode('ascii').upper()
-        print("===from checusm list2")
-        print(hex_digest)
-        return hex_digest
+        if attr_list_joined is not None:
+            cs.update(attr_list_joined.encode('utf-8').strip())
+            hex_digest = binascii.hexlify(cs.digest()).decode('ascii').upper()
+            return hex_digest
+        else:
+            return None
 
     @classmethod
     def checksum_hexlify(cls, byte_checksum):
@@ -87,7 +87,9 @@ class ChecksumHandler(object):
         if seq_attr is None:
             seq_attr = 'sequence'
 
-        seq_checksum = cls.checksum_list([feature[seq_attr]])
+        seq_checksum = None
+        if seq_attr in feature and feature[seq_attr] is not None:
+            seq_checksum = cls.checksum_list([feature[seq_attr]])
 
         return seq_checksum
 
@@ -111,5 +113,3 @@ class ChecksumHandler(object):
     @classmethod
     def get_translation_attributes(cls):
         return ['loc_checksum', 'stable_id', 'stable_id_version', 'seq_checksum']
-
-  

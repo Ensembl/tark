@@ -22,6 +22,8 @@ class GFFHandlerTest(TestCase):
 
         self.gff_file = TEST_DATA_DIR + "GCF_000001405.38_GRCh38.p12_genomic_test.gff"
 
+        self.gff_file_xr = TEST_DATA_DIR + "xr_test.gff"
+
         self.genbank_file = TEST_DATA_DIR + "il2ra_tnni3.gb"
 
         if not os.path.exists(self.fasta_file):
@@ -109,9 +111,8 @@ class GFFHandlerTest(TestCase):
         # Use it only for trial runs
         # ./manage.py test refseq_loader.tests.test_filehandler.GFFHandlerTest.test_gff_hander --settings=tark.settings.test @IgnorePep8
         downloaded_files = {}
-        downloaded_files["gff"] = self.gff_file
+        downloaded_files["gff"] = self.gff_file_xr
         downloaded_files["protein"] = self.fasta_file_protein
         downloaded_files["gbff"] = self.genbank_file
-        status = GFFHandler.parse_gff_with_genbank(downloaded_files,
-                                                   filter_region="NC_000010.11")
+        status = GFFHandler.parse_gff_with_genbank(downloaded_files, filter_region=None, filter_feature_gene=None, filter_feature_transcript=None, dryrun=False)
 #         self.assertTrue(status, 'Parsing done')
