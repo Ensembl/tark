@@ -83,24 +83,36 @@ class DiffUtilsTest(TestCase):
         self.assertDictEqual(diff_with_transcript, expected_diff_with_transcript,
                              "Got back the right diff with transcript")
 
-        # now just change the transcript start by one base pair
+        # now just change the transcript loc_checksum
         diff_with_transcript["loc_checksum"] = '66D0AE073CF5E8C3C55EC29AB1392AD363376D24'
         compare_results_all = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
 
         compare_has_results = compare_results_all["results"]
         self.assertEqual(compare_has_results["has_location_changed"], True, "Got the right has_location_changed")
 
-        expected_compare_has_results = {'has_transcript_changed': False,
-                                        'diff_me_release': '93', 'diff_me_stable_id_version': 7,
-                                        'diff_with_assembly': 'GRCh38', 'has_exon_set_changed': False,
-                                        'has_location_changed': True, 'has_translation_seq_changed': False,
-                                        'has_translation_location_changed': False,
-                                        'has_translation_stable_id_version_changed': False,
-                                        'diff_with_stable_id_version': 7, 'has_stable_id_version_changed': False,
-                                        'has_seq_changed': False, 'has_translation_changed': False,
+        expected_compare_has_results = {'has_hgnc_changed': None,
+                                        'has_exon_set_changed': False,
+                                        'diff_me_stable_id_version': 7,
+                                        'diff_with_stable_id_version': 7,
+                                        'diff_me_stable_id': 'ENST00000380152',
                                         'diff_with_stable_id': 'ENST00000380152',
-                                        'has_translation_stable_id_changed': False,
-                                        'has_stable_id_changed': False, 'diff_me_stable_id': 'ENST00000380152',
-                                        'diff_me_assembly': 'GRCh38', 'diff_with_release': '93'}
+                                        'diff_with_assembly': 'GRCh38',
+                                        'diff_me_assembly': 'GRCh38',
+                                        'diff_me_release': '93',
+                                        'diff_with_release': '93',
+                                        'has_translation_changed': False,
+                                        'has_translation_seq_changed': False,
+                                        'has_gene_changed': None,
+                                        'has_gene_location_changed': True,
+                                        'has_stable_id_version_changed': False,
+                                        'has_gene_stable_id_version_changed': False,
+                                        'has_translation_location_changed': False,
+                                        'has_gene_stable_id_changed': False,
+                                        'has_transcript_changed': False,
+                                        'has_location_changed': True,
+                                        'has_stable_id_changed': False,
+                                        'has_seq_changed': False,
+                                        'has_translation_stable_id_version_changed': False,
+                                        'has_translation_stable_id_changed': False}
 
         self.assertDictEqual(compare_has_results, expected_compare_has_results, "Got the expected has_changed results")
