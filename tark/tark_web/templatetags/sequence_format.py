@@ -22,12 +22,8 @@ register = template.Library()
 
 @register.filter
 def format_fasta(sequence, seq_id):
-    print("====format fasta called from sequence_format ====")
-    print(seq_id)
     fasta_seq = TarkSeqUtils.format_fasta(sequence, id_=seq_id)
-    print(fasta_seq)
     sequence = fasta_seq
-
     return sequence
 
 

@@ -29,6 +29,14 @@ from release.utils.release_utils import ReleaseUtils
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
 from rest_framework.pagination import PageNumberPagination
+from tark_web.utils.apiutils import ApiUtils
+import requests
+from tark_web.templatetags import search_result_formatter
+from translation.models import Translation
+import json
+from rest_framework.response import Response
+from tark.utils.request_utils import RequestUtils
+from lib2to3.tests.pytree_idempotency import diff
 
 
 class TranscriptList(generics.ListAPIView):
@@ -66,37 +74,77 @@ class TranscriptDiff(generics.ListAPIView):
     filter_backends = (TranscriptDiffFilterBackend, )
 
     def get(self, request, *args, **kwargs):
-        params = {}
-        params['diff_me_stable_id'] = request.query_params.get('diff_me_stable_id', None)
-        params['diff_with_stable_id'] = request.query_params.get('diff_with_stable_id', None)
 
-        params['diff_me_release'] = request.query_params.get('diff_me_release', None)
-        params['diff_with_release'] = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
+        # get diff me transcript
+        params_diff_me = RequestUtils.get_query_params(request, "diff_me")
+        diff_me_transcript = self.get_search_results(request, params_diff_me, True)
+        print("diff_me_transcript==========")
+        print(diff_me_transcript)
 
-        params['diff_me_assembly'] = request.query_params.get('diff_me_assembly', None)
-        params['diff_with_assembly'] = request.query_params.get('diff_with_assembly',
-                                                                ReleaseUtils.get_latest_assembly())
+        # get diff with trancscript
+        params_diff_with = RequestUtils.get_query_params(request, "diff_with")
+        diff_with_transcript = self.get_search_results(request, params_diff_with, True)
+        print("diff_with_transcript=========")
+        print(diff_with_transcript)
 
-        params['diff_me_source'] = request.query_params.get('diff_me_source',
-                                                            ReleaseUtils.get_default_source())
-        params['diff_with_source'] = request.query_params.get('diff_with_source',
-                                                              ReleaseUtils.get_default_source())
+        # compare the two transcripts
+        compare_results = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
 
-        params['expand'] = request.query_params.get('expand', "transcript_release_set")
+        # for tark rest, add count, previous, next
+        #compare_result_response_body = DiffUtils.get_results_as_response_body(compare_results)
 
+        print("===========compare_results===============")
+        print(compare_results)
+        return Response(compare_results)
 
-#         params = {'diff_me_stable_id': diff_me_stable_id, 'diff_with_stable_id': diff_with_stable_id,
-#                   'diff_me_release': diff_me_release, 'diff_with_release': diff_with_release,
-#                   'diff_me_assembly': diff_me_assembly, 'diff_with_assembly': diff_with_assembly,
-#                   'diff_me_source': diff_me_source, 'diff_with_source': diff_with_source,
-#                   'expand': expand}
+    def get_search_results(self, request, diff_query_params, attach_translation_seq=True, attach_gene=True):
 
-        result = super(TranscriptDiff, self).get(request, *args, **kwargs)
-        updated_result = DiffUtils.get_diff_dict(request, result, params)
-        print("========UPDATED RESULT START======\n")
-        print(updated_result)
-        print("========UPDATED RESULT END=======\n")
-        return updated_result
+        host_url = ApiUtils.get_host_url(request)
+        query_url = "/api/transcript/?"
+
+        query_param_string = RequestUtils.get_query_param_string(diff_query_params)
+        query_url = query_url + query_param_string
+        print("==========query url==============")
+        print(query_url)
+
+        response = requests.get(host_url + query_url)
+        if response.status_code == 200:
+            search_result = response.json()
+            
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        print(search_result)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        
+        if search_result is not None and "count" in search_result and search_result["count"] == 1 and "results" in search_result:  # @IgnorePep8
+            search_result = search_result["results"][0]
+
+            if "transcript_release_set" in search_result:
+                for release_set in search_result["transcript_release_set"]:
+                    if "release_short_name" in diff_query_params and "shortname" in release_set:
+                        if diff_query_params["release_short_name"] == release_set["shortname"]:
+                            search_result["transcript_release_set"] = release_set
+
+            if attach_translation_seq is True:
+                if "translations" in search_result:
+                    translation = search_result["translations"][0]
+                    if "translation_id" in translation:
+                        tl_translation_id = translation["translation_id"]
+                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')  # @IgnorePep8
+                        print("===========tl_query_et========")
+                        print(tl_query_set)
+                        if tl_query_set is not None and len(tl_query_set) == 1:
+                            tl_obj = tl_query_set[0]
+                            print("Entering tl_query_set================")
+                            print(tl_obj.sequence.sequence)
+                            translation["sequence"] = tl_obj.sequence.sequence
+                            translation["seq_checksum"] = tl_obj.sequence.seq_checksum
+                            search_result["translations"] = translation
+            if attach_gene is True:
+                if "genes" in search_result:
+                    gene = search_result["genes"][0]
+                    search_result["gene"] = gene
+
+        return search_result
 
 
 class NotPaginatedSetPagination(PageNumberPagination):

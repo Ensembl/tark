@@ -1,8 +1,7 @@
 {% load add_class %}
 {% load compare_features %} 
  
- 
-  {% if has_var_checksum %}
+  {% if has_var_checksum == False %}
     <li class="list-group-item list-group-item-success text-center">
     <i class="glyphicon glyphicon-ok"></i>
   {% else %}

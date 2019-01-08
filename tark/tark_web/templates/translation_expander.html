@@ -10,79 +10,74 @@
   <div class="well well-sm well-diff-green" ><strong>Translation Compare</strong></div>
   {% endif %}
 
+
 <div class="row">
   
   <!--Translation1 -->
   <div class="col-md-5 col-sm-5">
-  {% with diff_result.diff_me_transcript.results.0 as diff_me_tr %}
-   {% with diff_me_tr.translations as diff_me_tr_translations %}
-   {% for translation in diff_me_tr_translations %}
+
+   {% with diff_result.diff_me_transcript.translations as diff_me_tr_translation %}
      <ul class="list-group">
   <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ translation.stable_id }}</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ translation.stable_id_version }}</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ translation.assembly }}</span></li>
-  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_result.diff_me_release }}</span></li--> 
-  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }} : {{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
+  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ diff_me_tr_translation.stable_id }}</span></li>
+  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ diff_me_tr_translation.stable_id_version }}</span></li>
+  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ diff_me_tr_translation.assembly }}</span></li>
+  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_me_tr_translation.diff_me_release }}</span></li--> 
+  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ diff_me_tr_translation.loc_region }} : {{ diff_me_tr_translation.loc_start }} - {{ diff_me_tr_translation.loc_end }} : {{ diff_me_tr_translation.loc_strand }}</span></li>
   <li class="list-group-item list-group-item-info"><strong>Checksums</strong></li>
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ translation.loc_checksum }}</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ translation.sequence.seq_checksum }}</span></li>  
-  <li class="list-group-item">Transl Checksum <span class="label label-primary label-diff">{{ translation.translation_checksum }}</span></li> 
+  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ diff_me_tr_translation.loc_checksum }}</span></li>
+  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ diff_me_tr_translation.seq_checksum }}</span></li>  
+  <li class="list-group-item">Transl Checksum <span class="label label-primary label-diff">{{ diff_me_tr_translation.translation_checksum }}</span></li> 
     </ul>
-   {% endfor %}
   {% endwith %}
-{% endwith %}
   </div>
 <!--Translation1 End-->
 
 
 <!-- Match -->
   <div class="col-md-2 col-sm-2">
-
-{% with diff_result|compare_translation:"stable_id, stable_id_version, assembly, loc_checksum" as match_results %}
-  {% for has_matches in match_results %}
-    <ul class="list-group">
+  
+  <ul class="list-group">
     <li class="list-group-item text-center">Match</li>
-   {% for has_match in has_matches %}
-    {% include "checksum_match.html" with has_var_checksum=has_match %}
-   {% endfor %}
-  {% endfor %}
-{% endwith %}
+   {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_translation_stable_id_changed %}
+   {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_stable_id_version_changed %}
+
+    {% if diff_result.diff_me_transcript.translations.assembly == diff_result.diff_with_transcript.translations.assembly %}
+  {% include "checksum_match.html" with has_var_checksum=False %}
+  {% else %}
+  {% include "checksum_match.html" with has_var_checksum=True %}
+  {% endif %}
+  
+   {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_translation_location_changed %}
+  
 
   <li class="list-group-item text-center">Checksums</li>
   
-  {% with diff_result|compare_translation:"loc_checksum, seq_checksum, translation_checksum" as match_results_checksum %}
-  {% for has_matches_checksum in match_results_checksum %}
-   {% for has_match_checksum in has_matches_checksum %}
-    {% include "checksum_match.html" with has_var_checksum=has_match_checksum %}
-   {% endfor %}
-     </ul>
-  {% endfor %}
-{% endwith %}
-
+  {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_translation_location_changed %}
+  {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_translation_seq_changed %}
+  {% include "checksum_match.html" with has_var_checksum=diff_result.results.has_translation_changed %}
+   
+  </ul>
   </div>
+
 <!-- Match -->
 
 
  <!--Translation2 -->
   <div class="col-md-5 col-sm-5">
-  {% with diff_result.diff_with_transcript.results.0 as diff_with_tr %}
-   {% with diff_with_tr.translations as diff_with_tr_translations %}
-   {% for translation in diff_with_tr_translations %}
+ {% with diff_result.diff_with_transcript.translations as diff_with_tr_translation %}
      <ul class="list-group">
   <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ translation.stable_id }}</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ translation.stable_id_version }}</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ translation.assembly }}</span></li>
-  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_result.diff_with_release }}</span></li--> 
-  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ translation.loc_region }} : {{ translation.loc_start }} - {{ translation.loc_end }} : {{ translation.loc_strand }}</span></li>
+  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ diff_with_tr_translation.stable_id }}</span></li>
+  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ diff_with_tr_translation.stable_id_version }}</span></li>
+  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ diff_with_tr_translation.assembly }}</span></li>
+  <!--li class="list-group-item">Ensembl Release <span class="label label-primary label-diff">{{ diff_with_tr_translation }}</span></li--> 
+  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ diff_with_tr_translation.loc_region }} : {{ diff_with_tr_translation.loc_start }} - {{ diff_with_tr_translation.loc_end }} : {{ diff_with_tr_translation.loc_strand }}</span></li>
   <li class="list-group-item list-group-item-warning"><strong>Checksums</strong></li>
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ translation.loc_checksum }}</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ translation.sequence.seq_checksum }}</span></li>  
-  <li class="list-group-item">Transl Checksum <span class="label label-primary label-diff">{{ translation.translation_checksum }}</span></li> 
+  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ diff_with_tr_translation.loc_checksum }}</span></li>
+  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ diff_with_tr_translation.seq_checksum }}</span></li>  
+  <li class="list-group-item">Transl Checksum <span class="label label-primary label-diff">{{ diff_with_tr_translation.translation_checksum }}</span></li> 
     </ul>
-   {% endfor %}
-  {% endwith %}
 {% endwith %}
   </div>
   <!--Translation2 End-->

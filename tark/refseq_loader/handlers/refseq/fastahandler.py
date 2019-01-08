@@ -36,6 +36,8 @@ class FastaHandler(object):
         if self.fasta_handler is not None:
             if start is not None and end is not None:
                 seq_record = self.fasta_handler.get_seq(identifier, start, end)
+                if seq_record is not None:
+                    return seq_record
             else:
                 try:
                     fasta_record = self.fasta_handler[identifier]

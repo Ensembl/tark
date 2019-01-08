@@ -65,18 +65,18 @@
   
   <dl class="row">
   <dt class="col-md-3">Diff Me Stable ID:</dt>
-  <dd class="col-md-3">{{ diff_result.diff_me_stable_id }}</dd>
+  <dd class="col-md-3">{{ diff_result.results.diff_me_stable_id }}</dd>
   
   <dt class="col-md-3">Diff With Stable ID:</dt>
-  <dd class="col-md-3">{{ diff_result.diff_with_stable_id }}</dd>
+  <dd class="col-md-3">{{ diff_result.results.diff_with_stable_id }}</dd>
   </dl>
 
   <dl class="row">
   <dt class="col-md-3">Diff Me Assembly&#47;Release:</dt>
-  <dd class="col-md-3">{{ diff_result.diff_me_assembly }}&#47;{{ diff_result.diff_me_release }}</dd>
+  <dd class="col-md-3">{{ diff_result.results.diff_me_assembly }}&#47;{{ diff_result.results.diff_me_release }}</dd>
   
   <dt class="col-md-3">Diff With Assembly&#47;Release:</dt>
-  <dd class="col-md-3">{{ diff_result.diff_with_assembly }}&#47;{{ diff_result.diff_with_release }}</dd>
+  <dd class="col-md-3">{{ diff_result.results.diff_with_assembly }}&#47;{{ diff_result.results.diff_with_release }}</dd>
   </dl>
  </div>
 
@@ -125,9 +125,9 @@
     <li><a data-toggle="tab" href="#has_cdna_changed" class="a-diff-green">CDNA</a></li>
       {% endif %}
       
-    {% if diff_result.results.has_cds_changed  == True %}
+    {% if diff_result.results.has_translation_changed  == True %}
     <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-red">CDS</a></li>
-    {% elif diff_result.results.has_cds_changed  == False %}
+    {% elif diff_result.results.has_translation_changed  == False %}
         <li><a data-toggle="tab" href="#has_cds_changed" class="a-diff-green">CDS</a></li>
     {% else %}
        <li><a data-toggle="tab" href="#no_translation" class="a-diff-noresult">CDS</a></li>
@@ -183,7 +183,7 @@
     </ul>    
       
        <div id="tab_content_cdna" class="tab-content">
-         {% include "location_expander.html" %}
+        {% include "location_expander.html" %}
        
         {% include "exonset_expander.html" %}
         
@@ -227,13 +227,13 @@
       
        <div id="tab_content_cds" class="tab-content">
        
-         {% include "cds_location_expander.html" %}
+        {% include "cds_location_expander.html" %}
        
         <div id="has_cds_exon_set_changed" class="tab-pane fade in" style="padding:10px;">
         has_cds_exonset_changed
         </div> 
         
-        {% include "coding_sequence_expander.html" %}
+       {% include "coding_sequence_expander.html" %}
         
        </div>
       

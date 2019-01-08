@@ -105,9 +105,7 @@ if 'TRAVIS' in os.environ:
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            # 'NAME': 'tark_new_v1',
-            'NAME': 'tark_refseq_v2',
-            #'NAME': 'tark_refseq_new4',
+            'NAME': 'tark_refseq_new4',
             'USER': 'root',
             'PASSWORD': '',
             'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
@@ -129,9 +127,8 @@ else:
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            # 'NAME': 'tark_new_v1',
-             'NAME': 'tark_refseq_v2',
             #'NAME': 'tark_refseq_new4',
+            'NAME': 'tark_refseq_dryrun',
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
@@ -139,7 +136,7 @@ else:
         },
         'tark_loader': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_refseq_new',
+            'NAME': 'tark_refseq_dryrun',
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
@@ -243,6 +240,6 @@ LOGGING = {
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
-CURRENT_RELEASE = "92"
+CURRENT_RELEASE = "93"
 DEFAULT_SOURCE = "ensembl"
 INI_FILE = os.path.join(BASE_DIR, '../refseq_loader/management/commands/refseq_source.ini')

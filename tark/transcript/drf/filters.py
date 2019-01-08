@@ -23,6 +23,7 @@ from release.utils.release_utils import ReleaseUtils
 from django.db.models import Q
 import re
 from tark_web.utils.sequtils import TarkSeqUtils
+from Bio.SubsMat.MatrixInfo import ident
 
 
 class TranscriptFilterBackend(BaseFilterBackend):
@@ -35,13 +36,16 @@ class TranscriptFilterBackend(BaseFilterBackend):
 
         release_short_name = request.query_params.get('release_short_name', None)
         if release_short_name is not None:
-            queryset = queryset.filter(transcript_release_set__shortname__icontains=release_short_name)
+            queryset = queryset.filter(transcript_release_set__shortname=release_short_name)
 
         source_name = request.query_params.get('source_name', None)
         if source_name is not None:
             queryset = queryset.filter(transcript_release_set__source__shortname__icontains=source_name)
 
-        return queryset
+        if queryset is not None:
+            return queryset.distinct()
+        else:
+            return None
 
     def get_schema_fields(self, view):
         return CommonFields.get_common_query_set("Transcript") + CommonFields.COMMON_RELATED_QUERY_SET + \
@@ -100,10 +104,13 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return [DrfFields.diff_me_stable_id_field(), DrfFields.diff_me_release_field(),
+                DrfFields.diff_me_source_field(),
                 DrfFields.diff_me_assembly_field(), DrfFields.diff_with_stable_id_field(),
+                DrfFields.diff_with_source_field(),
                 DrfFields.diff_with_release_field(),
-                DrfFields.diff_with_assembly_field(),
-                DrfFields.get_expand_transcript_release_set_field()]
+                DrfFields.diff_with_assembly_field()]
+
+                # DrfFields.get_expand_transcript_release_set_field()]
 
 
 class TranscriptSearchFilterBackend(BaseFilterBackend):
@@ -112,18 +119,8 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     """
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
-#         search_assembly = request.query_params.get('search_assembly')
-#         search_release = request.query_params.get('search_release')
-
-#         print("identifier " + str(identifier) + "search_assembly " + str(search_assembly) +
-#               "search_release " + str(search_release))
-#
-        print("identifier " + str(identifier) + "search_assembly ")
-
+        print("=====Identifier from filter_queryset " + identifier)
         if identifier is not None:
-            # queryset = queryset.filter(Q(stable_id=identifier) | Q(genes__stable_id=identifier) |
-            # Q(genes__hgnc__name__icontains=identifier))
-            print(" Identifier " + identifier)
             if "ENST" in identifier or "LRG" in identifier or "NM_" in identifier:
                 queryset = queryset.filter(stable_id=identifier)
             elif "ENSG" in identifier:
@@ -140,16 +137,11 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 if loc_end is not None:
                     queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
             else:
-                print("HGNC query=================")
                 queryset = queryset.filter(genes__hgnc__name__iexact=identifier)
 
-#             if search_assembly is not None and len(search_assembly) > 1:
-#                 print("search_assembly query=================")
-#                 queryset = queryset.filter(assembly__assembly_name__iexact=search_assembly)
-# 
-#             if search_release is not None and len(search_release) > 1:
-#                 print("search_release query=================")
-#                 queryset = queryset.filter(transcript_release_set__shortname=search_release)
+#         print("==========Queryset==============")
+#         print(queryset.distinct().query)
+#         print("==========Queryset==============")
 
         return queryset.distinct()
 

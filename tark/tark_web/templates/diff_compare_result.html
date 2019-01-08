@@ -1,0 +1,321 @@
+{% extends "web_home.html" %}
+
+{% block extra_jq_scripts %}
+	$('.collapse').on('shown.bs.collapse', function(){
+		$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+	}).on('hidden.bs.collapse', function(){
+		$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+	});       
+{% endblock %}
+
+
+{% block extra_styles %}
+<style>
+
+.tab-pane {
+
+   // border-left: 1px solid #ddd;
+   // border-right: 1px solid #ddd;
+   // border-bottom: 1px solid #ddd;
+    //border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+}
+
+.nav-tabs{
+  background-color:#C8D3DB;
+  margin-bottom: 0;
+}
+
+.nav-diff-li-a {
+    padding: 5px;
+}
+
+.nav-tabs > li > a{
+  border-radius: 5px;
+}
+.nav-tabs > li > a:hover{
+  background-color: #3D515F !important;
+    border-radius: 5px;
+    color:#fff;
+    border:1px solid black;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+    background-color: #227093 !important;
+    color:#fff;
+    border:2px solid #3F515F;
+}
+</style>
+
+
+
+{% endblock %}
+
+{% load staticfiles %}
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+
+
+
+{% block content %}
+
+<div class="container" style="padding-top:20px;">
+
+ <div id="current_well" class="well well-sm text-center" style="background-color: #d9edf7 !important;"><strong>TRANSCRIPT DIFF SUMMARY REPORT</strong> </div>
+
+
+<div class="row">
+
+<div class="col-md-8">
+<table id="compare_result" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript as diff_me_tr %}
+{% with diff_result.diff_with_transcript as diff_with_tr %}
+{% with diff_result.results as diff_result %}
+
+<tr style="background-color: #4b6584;color:#ffffff">
+    <th>Transcript</th>
+    <th>DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
+    <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
+</tr>
+<tr>
+<td>StableID</td><td>{{ diff_me_tr.stable_id }} </td><td>{{ diff_with_tr.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
+</tr>
+<tr>
+<td>StableID Version</td><td>{{ diff_me_tr.stable_id_version }} </td><td>{{ diff_with_tr.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
+</tr>
+<tr>
+<td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+</tr>
+
+<tr>
+    <th>Checksum</th>
+    <th></th><th></th><th></th>
+</tr>
+<tr>
+<td>Location</td><td>{{ diff_me_tr.loc_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.loc_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+</tr>
+<tr>
+<td>Exonset</td><td>{{ diff_me_tr.exon_set_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.exon_set_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
+</tr>
+<tr>
+<td>Sequence</td><td>{{ diff_me_tr.sequence.seq_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.sequence.seq_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
+</tr>
+<tr>
+    <td>Transcript</td>
+    <td>{{ diff_me_tr.transcript_checksum|truncatechars:25 }}</td>
+    <td>{{ diff_with_tr.transcript_checksum|truncatechars:25 }}</td>
+    <td style="text-align:center">{% include "match_include.html" with has_var_checksum=diff_result.has_transcript_changed %}</td>
+</tr>
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+</table>
+
+
+<!--Translations-->
+
+{% if diff_result.diff_me_transcript.translations %}
+<table id="compare_result" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript.translations as diff_me_tl %}
+{% with diff_result.diff_with_transcript.translations as diff_with_tl %}
+{% with diff_result.results as diff_result %}
+
+<tr style="background-color: #60a3bc;color:#000000">
+    <th>Translation</th>
+    <th>DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
+    <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
+</tr>
+<tr>
+<td>StableID</td><td>{{ diff_me_tl.stable_id }} </td><td>{{ diff_with_tl.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
+</tr>
+<tr>
+<td>StableID Version</td><td>{{ diff_me_tl.stable_id_version }} </td><td>{{ diff_with_tl.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
+</tr>
+<tr>
+<td>Location</td><td>{{diff_me_tl|get_location_string}}</td><td>{{diff_with_tl|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+</tr>
+
+<tr>
+    <th>Checksum</th>
+    <th></th>
+    <th></th>
+    <th></th>
+</tr>
+<tr>
+<td>Location</td><td>{{ diff_me_tl.loc_checksum|truncatechars:25 }} </td><td>{{ diff_with_tl.loc_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
+</tr>
+<tr>
+<td>Sequence</td><td>{{ diff_me_tl.seq_checksum|truncatechars:25 }} </td><td>{{ diff_with_tl.seq_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
+</tr>
+<tr>
+    <td>Translation</td>
+    <td>{{ diff_me_tl.translation_checksum|truncatechars:25 }}</td>
+    <td>{{ diff_with_tl.translation_checksum|truncatechars:25 }}</td>
+    <td style="text-align:center">{% include "match_include.html" with has_var_checksum=diff_result.has_translation_changed %}</td>
+</tr>
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+</table>
+{% endif %}
+
+<!-- accordion -->
+
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default">
+    	<div class="panel-heading" data-target="#Collapseone" data-toggle="collapse" data-parent="#accordion">
+        	<h4 class="panel-title">
+            	<a href="#.">
+                	<span class="glyphicon glyphicon-plus"></span>
+                    Gene
+                </a>
+            </h4>
+        </div>
+        <div class="panel-collapse collapse" id="Collapseone">
+        	<div class="panel-body">
+                           <!--Genes-->
+
+{% if diff_result.diff_me_transcript.gene %}
+<table id="compare_result" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript.gene as diff_me_gene %}
+{% with diff_result.diff_with_transcript.gene as diff_with_gene %}
+{% with diff_result.results as diff_result %}
+
+<tr style="background-color: #a5b1c2;color:#000000">
+    <th>Gene</th>
+    <th>DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
+    <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
+</tr>
+<tr>
+<td>StableID</td><td>{{ diff_me_gene.stable_id }} </td><td>{{ diff_with_gene.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_stable_id_changed %}</td>
+</tr>
+<tr>
+<td>StableID Version</td><td>{{ diff_me_gene.stable_id_version }} </td><td>{{ diff_with_gene.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_stable_id_version_changed %}</td>
+</tr>
+<tr>
+<td>HGNC</td><td>{{diff_me_gene.hgnc}}</td><td>{{diff_with_gene.hgnc}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_hgnc_changed %}</td>
+</tr>
+<tr>
+<td>Location</td><td>{{diff_me_gene|get_location_string}}</td><td>{{diff_with_gene|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_location_changed %}</td>
+</tr>
+
+<tr>
+    <th>Checksum</th>
+    <th></th>
+    <th></th>
+    <th></th>
+</tr>
+<tr>
+<td>Location</td><td>{{ diff_me_gene.loc_checksum|truncatechars:25 }} </td><td>{{ diff_with_gene.loc_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_location_changed %}</td>
+</tr>
+<tr>
+<td>Gene</td><td>{{ diff_me_gene.gene_checksum|truncatechars:25 }} </td><td>{{ diff_with_gene.gene_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_changed %}</td>
+</tr>
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+</table>
+{% endif %}
+            </div>
+        </div>
+     </div>
+
+     
+</div>
+
+
+
+
+</div>
+
+
+<div class="col-md-4">
+<div class="row">
+
+<div class="panel panel-primary ">
+  <div class="panel-heading">
+  <i class="glyphicon glyphicon-info-sign"></i> <strong>Summary</strong>
+  <a href="/web/diff" class="btn btn-info btn-xs pull-right">New Diff</a> 
+  </div>
+
+  <div class="panel-body" style="padding:20px;">
+  
+  <div class="row">
+  <h5 style="float:left"><strong>Transcript</strong></h5>
+  {% if diff_result.results.has_transcript_changed == True %}
+  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
+  {% else %}
+  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  {% endif %}
+  </div>
+  
+   <div class="row">
+  <h5 style="float:left"><strong>Translation</strong></h5>
+  {% if diff_result.results.has_translation_changed == True %}
+  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
+  {% elif diff_result.results.has_translation_changed == False %}
+  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  {% else %}
+  <h5 style="float:right">N/A</h5>
+  {% endif %}
+  </div>
+  
+   <div class="row">
+  <h5 style="float:left"><strong>Gene</strong></h5>
+  {% if diff_result.results.has_gene_changed == True %}
+  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
+  {% elif diff_result.results.has_gene_changed == False %}
+  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  {% else %}
+  <h5 style="float:right">N/A</h5>
+  {% endif %}
+  </div>
+  
+  </div>
+</div>
+</div> <!--row -->
+</div> <!--col-md-4-->
+
+<div class="col-md-4">
+<div class="row">
+
+<div class="panel panel-info ">
+  <div class="panel-heading">
+  <i class="glyphicon glyphicon-info-sign"></i> <strong>Transcript History</strong>
+  </div>
+
+  <div class="panel-body" style="padding:20px;">
+  More Info
+  </div>
+ </div>
+
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="row">
+
+<div class="panel panel-warning ">
+  <div class="panel-heading">
+  <i class="glyphicon glyphicon-info-sign"></i> <strong>RefSeq Overlaps</strong>
+  </div>
+
+  <div class="panel-body" style="padding:20px;">
+  RefSeq Overlap
+  </div>
+ </div>
+
+</div>
+</div>
+
+</div> <!--close container -->
+ 
+
+
+{% endblock %}

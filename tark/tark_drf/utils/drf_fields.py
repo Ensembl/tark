@@ -221,6 +221,16 @@ class DrfFields(object):
         return diff_me_release_field
 
     @classmethod
+    def diff_me_source_field(cls):
+        diff_me_source_field = coreapi.Field(
+            name='diff_me_source',
+            location='query',
+            required=False,
+            type='string',
+            description='source_name to diff me(eg: RefSeq or Ensembl)')
+        return diff_me_source_field
+
+    @classmethod
     def diff_me_assembly_field(cls):
         diff_me_assembly_field = coreapi.Field(
             name='diff_me_assembly',
@@ -250,6 +260,16 @@ class DrfFields(object):
             description='release_short_name to diff with(eg: 86 default to highest release in the releaset set - ' +
             str(ReleaseUtils.get_latest_release()) + ' )')
         return diff_with_release_field
+
+    @classmethod
+    def diff_with_source_field(cls):
+        diff_with_source_field = coreapi.Field(
+            name='diff_with_source',
+            location='query',
+            required=False,
+            type='string',
+            description='source_name to diff with(eg: RefSeq or Ensembl)')
+        return diff_with_source_field
 
     @classmethod
     def diff_with_assembly_field(cls):
@@ -291,7 +311,6 @@ class ChecksumFieldSerializer(serializers.Field):
 
 
 class AssemblyField(serializers.RelatedField):
-    print("*******AssemblyField***************************")
     def to_representation(self, value):
         if value is not None:
             return value.assembly_name

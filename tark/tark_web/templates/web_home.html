@@ -30,6 +30,17 @@
       <li></li>
       <li><a href="https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark-" target="_blank"> Privacy Notice</a></li>
     </ul>
+    
+     <div id="search">
+    <form action="/web/search/" method="POST">
+    <div class="form-group" style="text-align: right;">
+    {% csrf_token %}
+      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search.." class="form-control" style="display:inline;width:20%;">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </div>
+    </form>
+  </div>    
+    
   </div>
 </nav>
 
@@ -50,7 +61,7 @@
 
  <div class="row">
    <div class="col-md-3 col-sm-3">
-    <a href={% url 'datatable_view' "transcript" assembly_name release_name source_name assembly_name release_name|add:"-1" source_name %}><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
+     <a href={% url 'datatable_view' "transcript" assembly_name release_name source_name assembly_name "89" "refseq" %}><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
      <h3 class="text-center">List Features</h3>
      <p>View genes, transcripts, exons, translations and others as datatables.</p>
   </div>

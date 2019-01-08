@@ -63,8 +63,11 @@ def diff_home(request):
             print("========diff_result========")
             print(diff_result)
             print("==================")
-            return render(request, 'diff_result.html', context={'form': form,
-                                                                'diff_result': diff_result})
+            return render(request, 'diff_compare_result.html',
+                          context={'form': form,
+                                   'diff_result': diff_result})
+#             return render(request, 'diff_result.html', context={'form': form,
+#                                                                 'diff_result': diff_result})
         else:
             print("Reached else1")
             print(form.errors)
@@ -107,7 +110,7 @@ def search_home(request):
             if response.status_code == 200:
                 print("Reached if ")
                 search_result = response.json()
-                print(search_result)
+                #print(search_result)
                 return render(request, 'search_result.html', context={'form': search_form,
                                                                       'search_result': search_result})
             else:

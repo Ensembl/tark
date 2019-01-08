@@ -22,8 +22,6 @@ class ApiUtils(object):
     def get_host_url(cls, request):
         hostname = request.get_host()
         http_protocal = 'https' if request.is_secure() else 'http'
-        print('hostname ' + hostname)
-        print('http_protocal ' + http_protocal)
         host_url = http_protocal + '://' + hostname
         return host_url
 
@@ -40,7 +38,8 @@ class ApiUtils(object):
             else:
                 query_param = query_param + "&" + key + "=" + value
 
-        query_param = query_param + "&expand=transcript_release_set"
+        # query_param = query_param + "&expand=transcript_release_set,translations,sequence"
+        query_param = query_param + "&expand_all=true"
 
         feature_diff_url = host_url + query_url + query_param
         print("=========feature diff url ============")

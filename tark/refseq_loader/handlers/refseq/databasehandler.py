@@ -54,7 +54,7 @@ class DatabaseHandler(object):
         DatabaseHandler.__instance = self
 
     def execute_set_statements(self, set_statement):
-        print(set_statement)
+        # print(set_statement)
         try:
             self.cnx = self.cnxpool.get_connection()
             self.cur = self.cnx.cursor()
@@ -68,13 +68,10 @@ class DatabaseHandler(object):
         return status
 
     def insert_data(self, insert_sql, insert_data, FOREIGN_KEY_CHECKS=1):
-        print(insert_sql)
-        print(insert_data)
+        # print(insert_sql)
+        # print(insert_data)
 
         checksum_keys = [key for key in list(insert_data.keys()) if "checksum" in key and insert_data[key] is None]
-        print("===========checksum keys=============")
-        ['loc_checksum', 'exon_set_checksum', 'transcript_checksum', 'seq_checksum']
-        print(checksum_keys)
 
         for key in checksum_keys:
             if key in insert_sql:
@@ -101,13 +98,13 @@ class DatabaseHandler(object):
         except Exception as e:
             print('Failed to insert: ' + str(e))
             exit(0)
-        print("Returning row_id " + str(row_id))
+        # print("Returning row_id " + str(row_id))
         return row_id
 
     def save_features_to_database(self,  features, parent_ids):
-        print("****************FINAL OBJECT TO SAVE******************")
-        print(features)
-        print("*******************************************************")
+        # print("****************FINAL OBJECT TO SAVE******************")
+        # print(features)
+        # print("*******************************************************")
         session_id_ = parent_ids["session_id"]
         assembly_id_ = parent_ids["assembly_id"]
         release_id_ = parent_ids["release_id"]
@@ -217,7 +214,7 @@ class ReleaseHandler(object):
         release_set_checksum = ChecksumHandler.checksum_list(list(data_release_set.values()))
         data_release_set["release_checksum"] = release_set_checksum
         # data_release_set["release_checksum"] = None
-        print(data_release_set)
+        # print(data_release_set)
         # Insert release set
         insert_release_set = ("INSERT INTO release_set (shortname, description, assembly_id, release_date, session_id, \
                                 release_checksum, source_id) VALUES \
@@ -285,32 +282,26 @@ class FeatureHandler(object):
 
     @property
     def session_id(self):
-        print("Getting session_id")
         return self._session_id
 
     @session_id.setter
     def session_id(self, session_id):
-        print("Setting session_id")
         self._session_id = session_id
 
     @property
     def assembly_id(self):
-        print("Getting assembly_id")
         return self._assembly_id
 
     @assembly_id.setter
     def assembly_id(self, assembly_id):
-        print("Setting assembly_id")
         self._assembly_id = assembly_id
 
     @property
     def release_id(self):
-        print("Getting release_id")
         return self._release_id
 
     @release_id.setter
     def release_id(self, release_id):
-        print("Setting release_id")
         self._release_id = release_id
 
     def add_features(self, features):
@@ -322,8 +313,6 @@ class FeatureHandler(object):
             if "transcripts" in gene_feature and len(gene_feature["transcripts"]) > 0:
                 gene_id = self.add_gene(gene_feature)
             else:
-                print("=========  No transcripts to add for this gene =======")
-                print(gene_feature)
                 return None
 
         transcript_gene_ids_list = []
@@ -375,7 +364,7 @@ class FeatureHandler(object):
                              "seq_checksum": transcript_data["seq_checksum"],
                              }
             seq_id = self.add_sequence(sequence_data)
-            print("Seq id " + str(seq_id))
+            # print("Seq id " + str(seq_id))
             transcript_id = DatabaseHandler.getInstance().insert_data(insert_transcript, transcript_data)
 
             self.add_release_tag(feature_id=transcript_id, feature_type="transcript")
@@ -408,7 +397,7 @@ class FeatureHandler(object):
                              "seq_checksum": exon["seq_checksum"],
                              }
             seq_id = self.add_sequence(sequence_data)
-            print("Seq id " + str(seq_id))
+            # print("Seq id " + str(seq_id))
             exon_id = DatabaseHandler.getInstance().insert_data(insert_exon, exon)
             self.add_release_tag(feature_id=exon_id, feature_type="exon")
             exon_ids.append(exon_id)
@@ -433,7 +422,7 @@ class FeatureHandler(object):
                          "seq_checksum": translation["seq_checksum"],
                          }
         seq_id = self.add_sequence(sequence_data)
-        print("Seq id " + str(seq_id))
+        # print("Seq id " + str(seq_id))
         translation_id = DatabaseHandler.getInstance().insert_data(insert_translation, translation)
         return translation_id
 

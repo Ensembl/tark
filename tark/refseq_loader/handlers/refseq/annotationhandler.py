@@ -52,12 +52,12 @@ class AnnotationHandler(object):
 
     @classmethod
     def get_annotated_transcript(cls, sequence_handler, chrom, mRNA_feature):
-        print(mRNA_feature)
-        print("\t\t    Type: " + str(mRNA_feature.type) +
-              "  ID: " + str(mRNA_feature.id) +
-              "  Location start:" + str(mRNA_feature.location.start + 1) +
-              "  Location end: " + str(mRNA_feature.location.end))
-        print(mRNA_feature.qualifiers)
+        # print(mRNA_feature)
+        # print("\t\t    Type: " + str(mRNA_feature.type) +
+        #      "  ID: " + str(mRNA_feature.id) +
+        #      "  Location start:" + str(mRNA_feature.location.start + 1) +
+        #      "  Location end: " + str(mRNA_feature.location.end))
+        # print(mRNA_feature.qualifiers)
         # print(fasta_handler.get_fasta_seq_by_id(mRNA_feature.qualifiers['transcript_id'][0]))
         transcript = {}
         # Note we have shifted one base here
@@ -191,6 +191,5 @@ class AnnotationHandler(object):
             feature[feature_type + '_seq'] = feature_seq
             features_with_seq.append(feature)
             # print(exon_seq)
-
         # print(relative_exon_locations_with_seq)
         return features_with_seq

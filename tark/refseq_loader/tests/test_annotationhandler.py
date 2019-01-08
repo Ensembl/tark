@@ -118,8 +118,8 @@ class AnnotationHandlerTest(TestCase):
         gene = SeqFeature(FeatureLocation(6010693, 6062370, strand=-1),
                           type="gene", id='gene27397', qualifiers=qualifiers_)
 
-        expected_annotated_gene = {'loc_start': '6010693', 'hgnc_id': None,
-                                   'gene_checksum': '8510CF99DF8CB01ED57F13B2696B021DA5B7756F',  # @IgnorePep8
+        expected_annotated_gene = {'loc_start': '6010693', 'hgnc_id': '6008',
+                                   'gene_checksum': '2CA3A84E6B88426315EFC032BE0026464B1732F0',  # @IgnorePep8
                                    'loc_checksum': '51BA025EBD0EFEC96758D44D82C0B21FD450989F',
                                    'loc_end': '6062370', 'loc_region': '10', 'stable_id': '3559',
                                    'session_id': None, 'loc_strand': '-1', 'assembly_id': "1",

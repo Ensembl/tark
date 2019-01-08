@@ -22,14 +22,10 @@ register = template.Library()
 
 @register.filter
 def compare_transcript(diff_result, compare_attr):
-    is_equal = False
+    has_changed = False
 
-    if len(diff_result['diff_me_transcript']['results']) == 0 or \
-            len(diff_result['diff_with_transcript']['results']) == 0:
-        return is_equal
-
-    diff_me_tr = diff_result['diff_me_transcript']['results'][0]
-    diff_with_tr = diff_result['diff_with_transcript']['results'][0]
+    diff_me_tr = diff_result['diff_me_transcript']
+    diff_with_tr = diff_result['diff_with_transcript']
     diff_me_tr_attr = None
     diff_with_tr_attr = None
 
@@ -39,10 +35,10 @@ def compare_transcript(diff_result, compare_attr):
     if diff_with_tr and compare_attr in diff_with_tr:
         diff_with_tr_attr = diff_with_tr[compare_attr]
 
-    if diff_me_tr_attr and diff_with_tr_attr:
+    if has_changed and diff_with_tr_attr:
         is_equal = str(diff_me_tr_attr) == str(diff_with_tr_attr)
 
-    return is_equal
+    return not has_changed
 
 
 @register.filter
@@ -144,7 +140,6 @@ def compare_exons(diff_result, compare_attrs):
             exon_result.append(is_equal)
         compare_result.append(exon_result)
 
-
     return compare_result
 
 
@@ -157,46 +152,46 @@ def compare_translation(diff_result, compare_attrs):
         return compare_result
 
     compare_attr_list = [attr.strip() for attr in compare_attrs.split(',')]
+#
+#     if len(diff_result['diff_me_transcript']['results']) == 0 or \
+#             len(diff_result['diff_with_transcript']['results']) == 0:
+#         return compare_result
 
-    if len(diff_result['diff_me_transcript']['results']) == 0 or \
-            len(diff_result['diff_with_transcript']['results']) == 0:
-        return compare_result
-
-    diff_me_tr = diff_result['diff_me_transcript']['results'][0]
-    diff_with_tr = diff_result['diff_with_transcript']['results'][0]
+    diff_me_tr = diff_result['diff_me_transcript']
+    diff_with_tr = diff_result['diff_with_transcript']
 
     if 'translations' in diff_me_tr:
-        diff_me_tr_translations = diff_me_tr['translations']
+        diff_me_tr_translation = diff_me_tr['translations']
 
     if 'translations' in diff_with_tr:
-        diff_with_tr_translations = diff_with_tr['translations']
+        diff_with_tr_translation = diff_with_tr['translations']
 
     print("==========compare attrs list from translation===  " + str(compare_attrs))
-    for (diff_me_tr_translation, diff_with_tr_translation) in zip(diff_me_tr_translations, diff_with_tr_translations):
-        diff_me_translation_attr = None
-        diff_with_translation_attr = None
-        exon_result = []
-        for compare_attr in compare_attr_list:
-            is_equal = False
-            if compare_attr == "seq_checksum":
-                if "sequence" in diff_me_tr_translation and compare_attr in diff_me_tr_translation["sequence"]:
-                    diff_me_translation_attr = diff_me_tr_translation["sequence"][compare_attr]
+ #   for (diff_me_tr_translation, diff_with_tr_translation) in zip(diff_me_tr_translations, diff_with_tr_translations):
+    diff_me_translation_attr = None
+    diff_with_translation_attr = None
+    exon_result = []
+    for compare_attr in compare_attr_list:
+        is_equal = False
+        if compare_attr == "seq_checksum":
+            if "sequence" in diff_me_tr_translation and compare_attr in diff_me_tr_translation["sequence"]:
+                diff_me_translation_attr = diff_me_tr_translation["sequence"][compare_attr]
 
-                if "sequence" in diff_with_tr_translation and compare_attr in diff_with_tr_translation["sequence"]:
-                    diff_with_translation_attr = diff_with_tr_translation["sequence"][compare_attr]
-            else:
-                if compare_attr in diff_me_tr_translation:
-                    diff_me_translation_attr = diff_me_tr_translation[compare_attr]
+            if "sequence" in diff_with_tr_translation and compare_attr in diff_with_tr_translation["sequence"]:
+                diff_with_translation_attr = diff_with_tr_translation["sequence"][compare_attr]
+        else:
+            if compare_attr in diff_me_tr_translation:
+                diff_me_translation_attr = diff_me_tr_translation[compare_attr]
 
-                if compare_attr in diff_with_tr_translation:
-                    diff_with_translation_attr = diff_with_tr_translation[compare_attr]
+            if compare_attr in diff_with_tr_translation:
+                diff_with_translation_attr = diff_with_tr_translation[compare_attr]
 
-            if diff_me_translation_attr and diff_with_translation_attr:
-                print("Diff me tl  " + str(diff_me_translation_attr)  + "  Diff with tl   " + str(diff_with_translation_attr))
-                is_equal = str(diff_me_translation_attr) == str(diff_with_translation_attr)
+        if diff_me_translation_attr and diff_with_translation_attr:
+            print("Diff me tl  " + str(diff_me_translation_attr)  + "  Diff with tl   " + str(diff_with_translation_attr))
+            is_equal = str(diff_me_translation_attr) == str(diff_with_translation_attr)
 
-            exon_result.append(is_equal)
-        compare_result.append(exon_result)
+        exon_result.append(is_equal)
+    compare_result.append(exon_result)
 
     return compare_result
 
@@ -229,6 +224,11 @@ def compare_location(diff_result):
                     return True
 
     return is_equal
+
+
+@register.filter
+def get_location_string(transcript):
+    return str(transcript['loc_region']) + " : " + str(transcript['loc_start']) + " - " + str(transcript['loc_end'])
 
 
 @register.filter

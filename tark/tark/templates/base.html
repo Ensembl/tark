@@ -32,6 +32,9 @@
   <script>
  $(document).ready(function(){
   runDataProtectionBanner();
+  
+  {% block extra_jq_scripts %}
+  {% endblock %}
 });
  
 </script>
@@ -65,6 +68,15 @@
       <li></li>
      <li><a href="https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark-" target="_blank"> Privacy Notice</a></li>
     </ul>
+    <div id="search">
+    <form action="/web/search/" method="POST">
+    <div class="form-group" style="text-align: right;">
+    {% csrf_token %}
+      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search.." class="form-control" style="display:inline;width:20%;">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </div>
+    </form>
+  </div>    
   </div>
 </nav>
 
@@ -82,6 +94,21 @@
     
     <p class="text-justify" style="font-size: 1.8rem;">This beta is provided to give the community an opportunity to explore Tark's functionality. Please provide feedback on possible improvements to help meet future needs. Note, this is a beta site and should not be counted upon to be stable, the API may change and this server may be unavailable at times..</p> 
   </div>
+  
+  
+   <div class="row" id="search_big">
+    <div class="col-md-12">
+    <form action="/web/search/" method="POST">
+    <div class="form-group" style="text-align: center;">
+    {% csrf_token %}
+      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search..eg: BRCA2, ENST00000470094, NM_000059" class="form-control input-lg" style="display:inline;width:60%;">
+      <button type="submit"><i class="fa fa-search fa-2x"></i></button>
+    </div>
+    </form>
+  </div>  
+  </div>  
+
+<p style="padding-top:40px;"></p>
 
  <div class="row">
    <div class="col-md-4 col-sm-4">

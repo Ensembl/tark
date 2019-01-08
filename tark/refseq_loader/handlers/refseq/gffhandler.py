@@ -54,7 +54,7 @@ class GFFHandler(AnnotationHandler):
             parent_ids = None
             if not dryrun:
                 parent_ids = DatabaseHandler.getInstance().populate_parent_tables()
-                print(parent_ids)
+                # print(parent_ids)
 
             with open(gff_file) as gff_handle_examiner:
                 possible_limits = examiner.available_limits(gff_handle_examiner)
@@ -91,23 +91,23 @@ class GFFHandler(AnnotationHandler):
                                 if not gene_feature.qualifiers['gene'][0] == filter_feature_gene:
                                     continue
                             # print("gene qualifiers")
-                            print("\t Type: " + str(gene_feature.type) + " ID: " + str(gene_feature.id) +
-                                  "  Ref: " + str(gene_feature.ref) +
-                                  "  Location start:" + str(gene_feature.location.start) +
-                                  "  Location end:" + str(gene_feature.location.end))
+                            #print("\t Type: " + str(gene_feature.type) + " ID: " + str(gene_feature.id) +
+                            #      "  Ref: " + str(gene_feature.ref) +
+                            #      "  Location start:" + str(gene_feature.location.start) +
+                            #      "  Location end:" + str(gene_feature.location.end))
                             # print(gene_feature)
-                            print("\n")
+                            #print("\n")
                             annotated_gene = cls.get_annotated_gene(seq_region, gene_feature)
 
                             # gene level
                             annotated_transcripts = []
                             for mRNA_feature in gene_feature.sub_features:
-                                print("==============mRNA_feature.qualifiers===============")
-                                print( mRNA_feature.qualifiers)
-                                print("==============mRNA_feature.qualifiers===============")
+                                # print("==============mRNA_feature.qualifiers===============")
+                                # print( mRNA_feature.qualifiers)
+                                # print("==============mRNA_feature.qualifiers===============")
                                 if 'transcript_id' in mRNA_feature.qualifiers:
                                     transcript_id = mRNA_feature.qualifiers['transcript_id'][0]
-                                    print("Has transcript id " + str(transcript_id))
+                                    # print("Has transcript id " + str(transcript_id))
                                 else:
                                     continue
 
@@ -115,7 +115,7 @@ class GFFHandler(AnnotationHandler):
                                     if filter_feature_transcript not in mRNA_feature.qualifiers['transcript_id'][0]:
                                         continue
 
-                                print("\n")
+                                # print("\n")
     #                             # mRNA level
                                 refseq_exon_list = []
                                 refseq_exon_order = 1
@@ -125,7 +125,7 @@ class GFFHandler(AnnotationHandler):
                                 for mRNA_sub_feature in mRNA_feature.sub_features:
                                     refseq_exon_dict = {}
                                     if 'exon' in mRNA_sub_feature.type:
-                                        print("Transcript Has exons" + str(mRNA_sub_feature.id))
+                                        # print("Transcript Has exons" + str(mRNA_sub_feature.id))
                                         refseq_exon_dict['exon_stable_id'] = str(mRNA_sub_feature.id)
                                         refseq_exon_dict['exon_stable_id_version'] = 1  # dummmy version
                                         refseq_exon_dict['exon_order'] = refseq_exon_order
@@ -138,7 +138,7 @@ class GFFHandler(AnnotationHandler):
 
                                     refseq_cds_dict = {}
                                     if 'CDS' in mRNA_sub_feature.type:
-                                        print("Transcript Has CDS" + str(mRNA_sub_feature.id))
+                                        # print("Transcript Has CDS" + str(mRNA_sub_feature.id))
                                         refseq_cds_dict['cds_order'] = refseq_cds_order
                                         # note that we are shifting one base here
                                         refseq_cds_dict['cds_start'] = str(mRNA_sub_feature.location.start + 1)
@@ -149,12 +149,12 @@ class GFFHandler(AnnotationHandler):
                                         refseq_cds_list.append(refseq_cds_dict)
                                         refseq_cds_order += 1
 
-                                    print("\t\t\t    Type: " + str(mRNA_sub_feature.type) +
-                                          " ID: " + str(mRNA_sub_feature.id) +
-                                          "    Ref: " + str(mRNA_sub_feature.ref) +
-                                          "  Location " + str(mRNA_sub_feature.location))
+                                    # print("\t\t\t    Type: " + str(mRNA_sub_feature.type) +
+                                    #       " ID: " + str(mRNA_sub_feature.id) +
+                                    #      "    Ref: " + str(mRNA_sub_feature.ref) +
+                                    #      "  Location " + str(mRNA_sub_feature.location))
 
-                                    print("\n")
+                                    # print("\n")
 
 #                                 print("=========BEFORE ANNOTATIONS")
 #                                 print(refseq_exon_list)
@@ -171,7 +171,7 @@ class GFFHandler(AnnotationHandler):
                                                                               refseq_exon_list)
 
                                     if annotated_exons is not None and len(annotated_exons) > 0:
-                                        print("=========GET exon_set_checksum=============")
+                                        # print("=========GET exon_set_checksum=============")
                                         exon_set_checksum = ChecksumHandler.get_exon_set_checksum(annotated_exons)
                                         annotated_transcript['exon_set_checksum'] = exon_set_checksum
                                         annotated_transcript['exons'] = annotated_exons
@@ -197,7 +197,7 @@ class GFFHandler(AnnotationHandler):
                             annotated_gene['transcripts'] = annotated_transcripts
                             feature_object_to_save = {}
                             feature_object_to_save["gene"] = annotated_gene
-                            print(feature_object_to_save)
+                            # print(feature_object_to_save)
                             if not dryrun:
                                 status = DatabaseHandler.getInstance().save_features_to_database(feature_object_to_save,
                                                                                                  parent_ids)

@@ -30,8 +30,6 @@ class TarkSeqUtils(object):
     @classmethod
     def format_fasta(cls, sequence, id_="ID_", name_="", description_=""):
 
-        print("====format fasta called from TarkSeqUtils====")
-
         record = SeqRecord(Seq(sequence, generic_dna),
                            id=id_, name=name_, description=description_)
 
@@ -42,8 +40,8 @@ class TarkSeqUtils(object):
 
     @classmethod
     def align_sequences(cls, query_fasta, target_fasta):
-        #print(str(os.path.isfile(query_fasta)) + str(query_fasta))
-        #print(str(os.path.isfile(target_fasta)) + str(target_fasta))
+        # print(str(os.path.isfile(query_fasta)) + str(query_fasta))
+        # print(str(os.path.isfile(target_fasta)) + str(target_fasta))
 
         if os.path.isfile(query_fasta) and os.path.isfile(target_fasta):
             p = subprocess.Popen(["exonerate", query_fasta, target_fasta], stdout=subprocess.PIPE)
@@ -53,11 +51,7 @@ class TarkSeqUtils(object):
     @classmethod
     def parse_location_string(cls, loc_string):
         loc_string = loc_string.replace(" ", "")
-        print(loc_string)
         matchloc = re.search(r'(\w+):(\d+)-(\d+)', loc_string)
-        print(matchloc.group(1))
-        print(matchloc.group(2))
-        print(matchloc.group(3))
         loc_region = matchloc.group(1)
         loc_start = matchloc.group(2)
         loc_end = matchloc.group(3)
