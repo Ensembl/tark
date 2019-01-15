@@ -17,15 +17,15 @@ limitations under the License.
 
 
 from django.test.testcases import TestCase
-from tark.utils.diff_utils import DiffUtils
+from tark.utils.diff_utils import DiffUtils, DiffSet
+from tark.utils.exon_utils import ExonUtils
 
 
 # ./manage.py test tark.tests.test_diff_utils --settings=tark.settings.test
 class DiffUtilsTest(TestCase):
 
-    def test_compare_transcripts(self):
-
-        diff_me_transcript = {'sequence': {'seq_checksum': 'D2C34F223CFA61D10CD5CBD22BEA1189BAABC0A8',
+    def setUp(self):
+        self.diff_me_transcript = {'sequence': {'seq_checksum': 'D2C34F223CFA61D10CD5CBD22BEA1189BAABC0A8',
                                            'sequence': 'GGGCTTGTGGCGCGAGCTTCTGAAACT'},
                               'transcript_checksum': '78287E1D4D9DF3AA437555886C2DDF2D03789D56',
                               'loc_end': 32400266, 'loc_checksum': '66D0AE073CF5E8C3C55EC29AB1392AD363376D23',
@@ -46,10 +46,23 @@ class DiffUtilsTest(TestCase):
                                                          'release_date': '2018-10-03',
                                                          'assembly': 1, 'release_id': 2, 'source': 1,
                                                          'shortname': '93'}}
+        
+        diff_me_exon_set = [
+            {'exon_order': 1, 'seq_checksum': 'seq_A', 'loc_checksum': 'loc_A', 'exon_checksum': 'exon_A'},
+            {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B'},
+            {'exon_order': 3, 'seq_checksum': 'seq_C', 'loc_checksum': 'loc_C', 'exon_checksum': 'exon_C'},
+            {'exon_order': 4, 'seq_checksum': 'seq_D', 'loc_checksum': 'loc_D', 'exon_checksum': 'exon_D'},
+            {'exon_order': 5, 'seq_checksum': 'seq_E', 'loc_checksum': 'loc_E', 'exon_checksum': 'exon_E'},
+            ]
 
+        self.diff_me_transcript['exons'] = diff_me_exon_set
         # initially test that both transcripts are same
-        diff_with_transcript = diff_me_transcript.copy()
+        self.diff_with_transcript = self.diff_me_transcript.copy()
 
+    def test_compare_transcripts(self):
+
+        diff_me_transcript = self.diff_me_transcript
+        diff_with_transcript = self.diff_with_transcript
         compare_results_all = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
         compare_results = compare_results_all["results"]
 
@@ -116,3 +129,66 @@ class DiffUtilsTest(TestCase):
                                         'has_translation_stable_id_changed': False}
 
         self.assertDictEqual(compare_has_results, expected_compare_has_results, "Got the expected has_changed results")
+
+        # exon comparison
+        exonsets_diffwith2diffme = compare_results_all['exonsets_diffwith2diffme']
+        expected_result = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
+        self.assertListEqual(expected_result, exonsets_diffwith2diffme, "Got expected compare results")
+        exonsets_diffme2diffwith = compare_results_all['exonsets_diffme2diffwith']
+        self.assertListEqual(expected_result, exonsets_diffme2diffwith, "Got expected compare results")
+
+    def test_compare_exons(self):
+
+        diff_me_exon_list = [
+            {'exon_order': 1, 'seq_checksum': 'seq_A', 'loc_checksum': 'loc_A', 'exon_checksum': 'exon_A'},
+            {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B'},
+            {'exon_order': 3, 'seq_checksum': 'seq_C', 'loc_checksum': 'loc_C', 'exon_checksum': 'exon_C'},
+            {'exon_order': 4, 'seq_checksum': 'seq_D', 'loc_checksum': 'loc_D', 'exon_checksum': 'exon_D'},
+            {'exon_order': 5, 'seq_checksum': 'seq_E', 'loc_checksum': 'loc_E', 'exon_checksum': 'exon_E'},
+            ]
+
+        diff_with_exon_list = [
+            {'exon_order': 1, 'seq_checksum': 'seq_A', 'loc_checksum': 'loc_A', 'exon_checksum': 'exon_A'},
+            {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B'},
+            {'exon_order': 3, 'seq_checksum': 'seq_C', 'loc_checksum': 'loc_C', 'exon_checksum': 'exon_C'},
+            {'exon_order': 4, 'seq_checksum': 'seq_D', 'loc_checksum': 'loc_D', 'exon_checksum': 'exon_D'},
+            {'exon_order': 5, 'seq_checksum': 'seq_E', 'loc_checksum': 'loc_E', 'exon_checksum': 'exon_E'},
+            ]
+
+        compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
+        expected_result = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
+        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results")
+
+        # change diff_me_exon_list 2nd exon
+        diff_me_exon_list[1] = {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B_no_match'}
+        compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
+        expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5]]
+        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results with no match for E2")
+
+        # insert new exon, now exonset1 has more exons than exonset2
+        diff_me_exon_list.append({'exon_order': 6, 'seq_checksum': 'seq_F', 'loc_checksum': 'loc_F',
+                                  'exon_checksum': 'exon_F_no_match'})
+        compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
+        expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5], [6, 0]]
+        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results for inserted E6")
+
+        # insert  three new exons in exonset2
+        diff_with_exon_list.append({'exon_order': 6, 'seq_checksum': 'seq_F', 'loc_checksum': 'loc_F',
+                                  'exon_checksum': 'exon_F_no_match'})
+        diff_with_exon_list.append({'exon_order': 7, 'seq_checksum': 'seq_G', 'loc_checksum': 'loc_G',
+                                  'exon_checksum': 'exon_G_no_match'})
+        diff_with_exon_list.append({'exon_order': 8, 'seq_checksum': 'seq_H', 'loc_checksum': 'loc_H',
+                                  'exon_checksum': 'exon_H_no_match'})
+        compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
+        expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5], [6, 6], [0, 7], [0, 8]]
+        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results for inserted E6")
+
+        # do the compliment
+        compare_exon_results = ExonUtils.compare_exon_sets( diff_with_exon_list, diff_me_exon_list)
+        expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5]]
+        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results by swapping the exons")
+
+
+
+
+

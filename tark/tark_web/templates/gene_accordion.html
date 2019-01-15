@@ -19,7 +19,7 @@
                            <!--Genes-->
 
 {% if diff_result.diff_me_transcript.gene %}
-<table id="compare_result" class="table table-bordered table-striped table-condensed">
+<table id="compare_result_gene" class="table table-bordered table-striped table-condensed">
 {% with diff_result.diff_me_transcript.gene as diff_me_gene %}
 {% with diff_result.diff_with_transcript.gene as diff_with_gene %}
 {% with diff_result.results as diff_result %}
@@ -36,7 +36,7 @@
 <td>StableID Version</td><td>{{ diff_me_gene.stable_id_version }} </td><td>{{ diff_with_gene.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_stable_id_version_changed %}</td>
 </tr>
 <tr>
-<td>HGNC</td><td>{{diff_me_gene.hgnc}}</td><td>{{diff_with_gene.hgnc}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_hgnc_changed %}</td>
+<td>HGNC</td><td><strong>{{diff_me_gene.hgnc}}</strong></td><td><strong>{{diff_with_gene.hgnc}}</strong></td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_hgnc_changed %}</td>
 </tr>
 <tr>
 <td>Location</td><td>{{diff_me_gene|get_location_string}}</td><td>{{diff_with_gene|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_location_changed %}</td>
@@ -62,7 +62,6 @@
 {% endif %}
             </div>
         </div>
-     </div>
 
      
 </div>

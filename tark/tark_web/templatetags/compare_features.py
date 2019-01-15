@@ -228,7 +228,13 @@ def compare_location(diff_result):
 
 @register.filter
 def get_location_string(transcript):
-    return str(transcript['loc_region']) + " : " + str(transcript['loc_start']) + " - " + str(transcript['loc_end'])
+    print("===Transcript=====")
+    print(transcript)
+    print("===Transcript=====")
+    if 'loc_region' in transcript and 'loc_start' in transcript and 'loc_end' in transcript:
+        return str(transcript['loc_region']) + " : " + str(transcript['loc_start']) + " - " + str(transcript['loc_end'])
+
+    return ""
 
 
 @register.filter

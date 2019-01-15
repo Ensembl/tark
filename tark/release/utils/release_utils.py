@@ -86,7 +86,8 @@ class ReleaseUtils(object):
         assembly_releases = {}
         all_assembly_names = cls.get_all_assembly_names()
         for assembly_name in all_assembly_names:
-            assembly_releases[assembly_name] = cls.get_all_release_short_names(assembly_name, source_name)
+            if len(cls.get_all_release_short_names(assembly_name, source_name)) > 0:
+                assembly_releases[assembly_name] = cls.get_all_release_short_names(assembly_name, source_name)
 
         return assembly_releases
 

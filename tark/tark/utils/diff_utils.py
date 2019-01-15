@@ -17,6 +17,7 @@ limitations under the License.
 import collections
 from translation.models import Translation
 from django.db.models.query_utils import Q
+from tark.utils.exon_utils import ExonUtils
 
 
 class DiffUtils(object):
@@ -26,16 +27,21 @@ class DiffUtils(object):
 
         diff_set = DiffSet(first_object=diff_me_transcript, second_object=diff_with_transcript)
         compare_diff_dict = diff_set.compare_objects()
-        compare_results = cls.get_results_as_response_body(compare_diff_dict, diff_set)
+        (compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme) = diff_set.compare_exons()
+
+        compare_results = cls.get_results_as_response_body(compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set)
+        print(compare_results)
         return compare_results
 
     @classmethod
-    def get_results_as_response_body(cls, compare_diff_dict, diff_set):
+    def get_results_as_response_body(cls, compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set):
         response_body_dict = {"count": 1, "next": None, "previous": None, "results": []}
         results = {key: value for (key, value) in compare_diff_dict.items()}
         response_body_dict["results"] = results
         response_body_dict["diff_me_transcript"] = diff_set.first_object
         response_body_dict["diff_with_transcript"] = diff_set.second_object
+        response_body_dict["exonsets_diffme2diffwith"] = compare_exon_sets_diffme2diffwith
+        response_body_dict["exonsets_diffwith2diffme"] = compare_exon_sets_diffwith2diffme
         return response_body_dict
 
     @classmethod
@@ -176,6 +182,24 @@ class DiffSet(object):
                                                     feature_type="gene")
 
         return self.diff_dict
+
+    def compare_exons(self):
+        first_exon_list = None
+        if 'exons' in self.first_object:
+            first_exon_list = self.first_object['exons']
+
+        second_exon_list = None
+        if 'exons' in self.second_object:
+            second_exon_list = self.second_object['exons']
+
+        if first_exon_list is not None and second_exon_list is not None:
+            # if both exonsets are same, we expect expected_result = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
+            # if only first 3 exons match, we expect expected_result = [[1, 1], [2, 2], [3, 3], [4, 0], [5, 0]]
+            compare_results_first2second = ExonUtils.compare_exon_sets(first_exon_list, second_exon_list)
+            compare_results_second2first = ExonUtils.compare_exon_sets(second_exon_list, first_exon_list)
+            return (compare_results_first2second, compare_results_second2first)
+
+        return None
 
     def has_feature_attribute_changed(self, feature_attribute=None, feature_type=None):
         if feature_type is not None and feature_type in self.first_object and feature_type in self.second_object:

@@ -14,19 +14,42 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
+import sys
 
 
 class ExonUtils(object):
 
     @classmethod
-    def exon_set_compare(cls, exonset1, exonset2):
-        print("******====FROM exon_set_compare set1===========")
-        print(exonset1)
-        print("*******===FROM exon_set_compare===========")
+    def compare_exon_sets(cls, exonset1, exonset2):
 
-        print("******====FROM exon_set_compare set2===========")
-        print(exonset2)
-        print("*******===FROM exon_set_compare===========")
+        compare_results = []
+
+        for exon1 in exonset1:
+            match_exists = False
+            for exon2 in exonset2:
+                if exon1['loc_checksum'] == exon2['loc_checksum'] and exon1['seq_checksum'] == exon2['seq_checksum']:
+                    compare_results.append([exon1['exon_order'], exon2['exon_order']])
+                    match_exists = True
+                    break
+
+            if not match_exists:
+                compare_results.append([exon1['exon_order'], 0])
+
+        if(len(exonset2) > len(exonset1)):
+            index = 0
+            for exon2 in exonset2:
+                if index >= len(exonset1):
+                    compare_results.append([0, exon2['exon_order']])
+                index = index + 1
+
+        print("==================compare_results============")
+        print(compare_results)
+        print("==================compare_results============")
+        return compare_results
+
+    # not used anymore will deprecate
+    @classmethod
+    def exon_set_compare(cls, exonset1, exonset2):
 
         compare_result = {}
 
@@ -39,8 +62,6 @@ class ExonUtils(object):
                         exon1["loc_end"] >= exon2["loc_start"] and exon1["loc_end"] <= exon2["loc_end"]:
                     compare_result[exon1["exon_order"]] = exon2["exon_order"]
                     break
-
-        print(compare_result)
 
         # check compare_result and add the missing match
         list_set1 = []

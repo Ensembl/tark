@@ -67,9 +67,10 @@
 
 
 <div class="row">
+<div class="col-md-9">
 
-<div class="col-md-8">
-<table id="compare_result" class="table table-bordered table-striped table-condensed">
+<!-- Transcript -->
+<table id="compare_result_transcript" class="table table-bordered table-striped table-condensed">
 {% with diff_result.diff_me_transcript as diff_me_tr %}
 {% with diff_result.diff_with_transcript as diff_with_tr %}
 {% with diff_result.results as diff_result %}
@@ -115,10 +116,14 @@
 </table>
 
 
-<!--Translations-->
+<!-- exonset -->
+ {% include "exonset_accordion.html" %}
 
+
+
+<!--Translations-->
 {% if diff_result.diff_me_transcript.translations %}
-<table id="compare_result" class="table table-bordered table-striped table-condensed">
+<table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
 {% with diff_result.diff_me_transcript.translations as diff_me_tl %}
 {% with diff_result.diff_with_transcript.translations as diff_with_tl %}
 {% with diff_result.results as diff_result %}
@@ -163,34 +168,21 @@
 </table>
 {% endif %}
 
+
 <!-- gene accordion -->
  {% include "gene_accordion.html" %}
 
 
+</div><!--close col-md-9 -->
+
+<div class="col-md-3">
+<div class="row">
 <!-- summary -->
  {% include "summary_diff.html" %}
-
-
-<!--comment out this section for now
-<div class="col-md-4">
-<div class="row">
-
-<div class="panel panel-info ">
-  <div class="panel-heading">
-  <i class="glyphicon glyphicon-info-sign"></i> <strong>Transcript History</strong>
-  </div>
-
-  <div class="panel-body" style="padding:20px;">
-  More Info
-  </div>
- </div>
-
 </div>
 </div>
--->
 
-
-
+</div> <!--close row-->
 </div> <!--close container -->
  
 

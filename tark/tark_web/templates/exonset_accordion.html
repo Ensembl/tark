@@ -1,0 +1,190 @@
+{% block extra_scripts %}
+ <script>
+ jQuery(function($) {
+ 
+ $("a[id^=show_diff_me_]").click(function(event) {
+    console.log('diff me clicked ' + $(this).attr('id'));
+    $("#extra_diff_me_" + $(this).attr('id').substr(13)).slideToggle();
+    event.preventDefault();
+ });
+ 
+ $("a[id^=show_diff_with_]").click(function(event) {
+    console.log('diff with clicked ' + $(this).attr('id'));
+    $("#extra_diff_with_" + $(this).attr('id').substr(15)).slideToggle();
+    event.preventDefault();
+ });
+ 
+ 
+   });
+  </script>
+{% endblock %}
+
+
+
+
+
+{% load staticfiles %}
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+{% load lookups %}
+
+<div class="panel-group" id="exonsetaccordion">
+	<div class="panel panel-default">
+    	<div class="panel-heading" data-target="#collapseexonset" data-toggle="collapse" data-parent="#exonsetaccordion">
+        	<h4 class="panel-title">
+            	<a href="#.">
+                	<span class="glyphicon glyphicon-plus"></span>
+                    ExonSet
+                </a>
+            </h4>
+        </div>
+        <div class="panel-collapse collapse" id="collapseexonset">
+        	<div class="panel-body">
+                           <!--Exons-->
+
+<!--diffme2diffwith -->
+<table class="table">
+ <thead>
+<tr>
+<th scope="col" bgcolor="#C1CDC1" width="50%">
+DIFF ME ({{ diff_result.diff_me_transcript.exons|length }} exons)
+</th>
+<th scope="col" bgcolor="#E0EEEE" width="50%">
+DIFF WITH ({{ diff_result.diff_with_transcript.exons |length }} exons)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+{% if diff_result.exonsets_diffme2diffwith %}
+{% with diff_result.exonsets_diffme2diffwith as exonsets_match_diffme2diffwith %}
+{% with diff_result.diff_me_transcript.exons as diff_me_exons %}
+
+
+<table id="compare_result_exonset" class="table table-bordered table-striped ">
+{% for exon_pair in exonsets_match_diffme2diffwith %}
+<tr>
+<td>
+	<table class="table table-bordered table-condensed" style="margin-bottom:0px;" >
+
+	{% if exon_pair.0 != 0 %}
+	<tr>
+	{% with diff_me_exons|look_up_exon_by_order:exon_pair.0 as diff_me_current_exon %}
+	<td width="10%" bgcolor="#C1CDC1">E{{diff_me_current_exon.exon_order}}</td>
+	
+	<td><a href="#"  id="show_diff_me_{{ diff_me_current_exon.stable_id }}">{{diff_me_current_exon.stable_id}}.{{diff_me_current_exon.stable_id_version}}</a></td>
+	
+	{% if exon_pair.1 != 0 %}
+	<td  width="10%" bgcolor="#E0EEEE">E{{exon_pair.1}}</td>
+	{% else %}
+	<td  width="10%" bgcolor="#A9A9A9">N/A</td>
+	 {% endif %}
+	</tr>
+	<!--hidden -->
+	<tr id="extra_diff_me_{{ diff_me_current_exon.stable_id }}" style="display: none;">
+        <td colspan="3">
+                <strong>StableID:</strong> <br/>{{diff_me_current_exon.stable_id}}<br/>
+                <strong>Location:</strong> <br/>{{diff_me_current_exon|get_location_string}}<br/>
+                <strong>Location Checksum:</strong><br/>{{diff_me_current_exon.loc_checksum}}<br/>
+                <strong>Sequence Checksum:</strong><br/>{{diff_me_current_exon.seq_checksum}}<br/>
+        </td>
+    </tr>
+	<!--hidden end-->
+
+	
+	{% endwith %}
+	{% else %}
+	<tr>
+	<td width="10%" bgcolor="#C1CDC1">E{{exon_pair.0}}</td>
+	<td>N/A</td>
+	<td  width="10%" bgcolor="#E0EEEE">E{{exon_pair.1}}</td>
+	</tr>
+	{% endif %}
+	
+	</tr>
+   </table>
+ </td>
+</tr>
+ 
+{% endfor %}
+
+</table>
+{% endwith %}
+{% endwith %}
+{% endif %}
+</td>
+
+<td>
+<!--diffme2diffwith -->
+
+{% if diff_result.exonsets_diffwith2diffme %}
+{% with diff_result.exonsets_diffwith2diffme as exonsets_match_diffwith2diffme %}
+{% with diff_result.diff_with_transcript.exons as diff_with_exons %}
+<!--diffwith2diffme -->
+<table id="compare_result_exonset" class="table table-bordered table-striped ">
+
+{% for exon_pair in exonsets_match_diffwith2diffme %}
+<tr>
+<td>
+	<table class="table table-bordered table-condensed" style="margin-bottom:0px;">
+	
+	{% if exon_pair.0 != 0 %}
+	<tr>
+	{% with diff_with_exons|look_up_exon_by_order:exon_pair.0 as diff_with_current_exon %}
+	<td width="10%" bgcolor="#E0EEEE">E{{diff_with_current_exon.exon_order}}</td>
+	
+	<td><a href="#"  id="show_diff_with_{{ diff_with_current_exon.stable_id }}">{{diff_with_current_exon.stable_id}}.{{diff_with_current_exon.stable_id_version}}</a></td>
+	
+	{% if exon_pair.1 != 0 %}
+	<td  width="10%" bgcolor="#C1CDC1">E{{exon_pair.1}}</td>
+	{% else %}
+	<td  width="10%" bgcolor="#A9A9A9">N/A</td>
+	{% endif %}
+	</tr>
+	<!--hidden -->
+	<tr id="extra_diff_with_{{ diff_with_current_exon.stable_id }}" style="display: none;">
+        <td colspan="3">
+                <strong>StableID:</strong> <br/>{{diff_with_current_exon.stable_id}}<br/>
+                <strong>Location:</strong> <br/>{{diff_with_current_exon|get_location_string}}<br/>
+                <strong>Location Checksum:</strong><br/>{{diff_with_current_exon.loc_checksum}}<br/>
+                <strong>Sequence Checksum:</strong><br/>{{diff_with_current_exon.seq_checksum}}<br/>
+        </td>
+    </tr>
+	<!--hidden end-->
+	
+	
+	
+	
+	{% endwith %}
+	{% else %}
+	<tr>
+	<td width="10%" bgcolor="#A9A9A9">N/A</td>
+	<td>N/A</td>
+	<td  width="10%" bgcolor="#C1CDC1">E{{exon_pair.1}}</td>
+	</tr>
+	
+	{% endif %}
+	
+   </table>
+ </td>
+</tr>
+{% endfor %}
+</table>
+<!--diffme2diffwith -->
+
+{% endwith %}
+{% endwith %}
+{% endif %}
+
+</td>
+</tr>
+</tbody>
+</table>
+            </div>
+        </div>
+
+   </div>
+ </div>
+

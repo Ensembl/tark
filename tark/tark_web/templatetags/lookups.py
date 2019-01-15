@@ -21,19 +21,23 @@ register = template.Library()
 
 @register.filter
 def column_mappings(col_name):
-        col_names = {}
-        col_names["stable_id"] = "StableID"
-        col_names["stable_id_version"] = "Version"
-        col_names["loc_start"] = "Start"
-        col_names["loc_end"] = "End"
-        col_names["loc_strand"] = "Strand"
-        col_names["loc_region"] = "Region"
-#         col_names["loc_checksum"] = "LocationChecksum"
-#         col_names["exon_set_checksum"] = "ExonSetChecksum"
-#         col_names["transcript_checksum"] = "TranscriptChecksum"
-        col_names["genes"] = "Gene"
+    col_names = {}
+    col_names["stable_id"] = "StableID"
+    col_names["stable_id_version"] = "Version"
+    col_names["loc_start"] = "Start"
+    col_names["loc_end"] = "End"
+    col_names["loc_strand"] = "Strand"
+    col_names["loc_region"] = "Region"
+    col_names["genes"] = "Gene"
 
-        if col_name in col_names:
-            return col_names[col_name]
+    if col_name in col_names:
+        return col_names[col_name]
 
-        return col_name
+    return col_name
+
+
+@register.filter
+def look_up_exon_by_order(exon_sets, exon_order):
+    for exon in exon_sets:
+        if exon_order == exon['exon_order']:
+            return exon
