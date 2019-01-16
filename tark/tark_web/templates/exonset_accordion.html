@@ -85,7 +85,7 @@ DIFF WITH ({{ diff_result.diff_with_transcript.exons |length }} exons)
 	<!--hidden -->
 	<tr id="extra_diff_me_{{ diff_me_current_exon.stable_id }}" style="display: none;">
         <td colspan="3">
-                <strong>StableID:</strong> <br/>{{diff_me_current_exon.stable_id}}<br/>
+                <strong>StableID.Version:</strong> <br/>{{diff_me_current_exon.stable_id}}.{{diff_me_current_exon.stable_id_version}}<br/>
                 <strong>Location:</strong> <br/>{{diff_me_current_exon|get_location_string}}<br/>
                 <strong>Location Checksum:</strong><br/>{{diff_me_current_exon.loc_checksum}}<br/>
                 <strong>Sequence Checksum:</strong><br/>{{diff_me_current_exon.seq_checksum}}<br/>
@@ -146,7 +146,7 @@ DIFF WITH ({{ diff_result.diff_with_transcript.exons |length }} exons)
 	<!--hidden -->
 	<tr id="extra_diff_with_{{ diff_with_current_exon.stable_id }}" style="display: none;">
         <td colspan="3">
-                <strong>StableID:</strong> <br/>{{diff_with_current_exon.stable_id}}<br/>
+                <strong>StableID.Version:</strong> <br/>{{diff_with_current_exon.stable_id}}.{{diff_with_current_exon.stable_id_version}}<br/>
                 <strong>Location:</strong> <br/>{{diff_with_current_exon|get_location_string}}<br/>
                 <strong>Location Checksum:</strong><br/>{{diff_with_current_exon.loc_checksum}}<br/>
                 <strong>Sequence Checksum:</strong><br/>{{diff_with_current_exon.seq_checksum}}<br/>

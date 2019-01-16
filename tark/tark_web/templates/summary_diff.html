@@ -13,46 +13,96 @@
 
   <div class="panel-body" style="padding:20px;">
   
-  <div class="row">
-  <h5 style="float:left"><strong>Transcript</strong></h5>
+
+  <table class="table table-bordered table-condensed ">
+ <thead>
+  <th bgcolor="#B0C4DE">Feature</th>
+  <th bgcolor="#B0C4DE">Result</th>
+  <th bgcolor="#B0C4DE">Loc</th>
+  <th bgcolor="#B0C4DE">Seq</th>
+ </thead>
+ <tbody>
+  <tr>
+    <td><strong>Transcript</strong></td>
   {% if diff_result.results.has_transcript_changed == True %}
-  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% else %}
-  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
   {% endif %}
-  </div>
   
-   <div class="row">
-  <h5 style="float:left"><strong>Translation</strong></h5>
+  {% if diff_result.results.has_location_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+  {% else %}
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+  {% endif %}
+  
+  {% if diff_result.results.has_seq_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+  {% else %}
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+  {% endif %}
+  
+  </tr>
+  
+  <tr>
+  <td><strong>Translation</strong> </td>
   {% if diff_result.results.has_translation_changed == True %}
-  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% elif diff_result.results.has_translation_changed == False %}
-  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
   {% else %}
-  <h5 style="float:right">N/A</h5>
+  <td>N/A</td>
   {% endif %}
-  </div>
   
-   <div class="row">
-  <h5 style="float:left"><strong>Gene</strong></h5>
-  {% if diff_result.results.has_gene_changed == True %}
-  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
-  {% elif diff_result.results.has_gene_changed == False %}
-  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
+  {% if diff_result.results.has_translation_location_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% else %}
-  <h5 style="float:right">N/A</h5>
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
   {% endif %}
-  </div>
+  
+  {% if diff_result.results.has_translation_seq_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+  {% else %}
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+  {% endif %}
+  
+  </tr>
+  
+  <tr>
+  <td><strong>Gene</strong></td>
+  {% if diff_result.results.has_gene_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+  {% elif diff_result.results.has_gene_changed == False %}
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+  {% else %}
+  <td>N/As</td>
+  {% endif %}
+  
+  {% if diff_result.results.has_gene_location_changed == True %}
+  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+  {% else %}
+  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+  {% endif %}
+  
+
+  <td><strong>N/A</strong></td>
+  
+  
+  </tr>
+  </tbody>
+  
+  
+  </table>
   
   <div class="row">
-  <h5 style="float:left"><strong>ExonSet</strong></h5>
-  {% if diff_result.results.has_exon_set_changed == True %}
-  <h5 style="float:right"><kbd style="background-color:red">CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:red"></i></h5>
-  {% elif diff_result.results.has_exon_set_changed == False %}
-  <h5 style="float:right"><kbd style="background-color:green">NOT CHANGED</kbd>  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></h5>
-  {% else %}
-  <h5 style="float:right">N/A</h5>
-  {% endif %}
+  
+  <span style="float:left">
+  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i> = <kbd style="background-color:green">NOT CHANGED</kbd>
+  </span>
+  <span style="float:right">
+  <i class="glyphicon glyphicon-remove text-center"  style="color:red"></i> = <kbd style="background-color:red">CHANGED</kbd> </br>
+  </span>
+  
   </div>
   
   </div>
