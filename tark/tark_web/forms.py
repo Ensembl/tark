@@ -50,7 +50,7 @@ class FormUtils(object):
     @classmethod
     def get_all_sources_tuples(cls):
         source_list = []
-
+        source_list.append(("", ""))
         for source in ReleaseUtils.get_all_release_sources():
             source_list.append((source, source))
 

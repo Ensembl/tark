@@ -7,23 +7,24 @@
 
 <div class="panel panel-primary ">
   <div class="panel-heading">
-  <i class="glyphicon glyphicon-info-sign"></i> <strong>Summary</strong>
-  <a href="/web/diff" class="btn btn-info btn-xs pull-right">New Diff</a> 
+  <i class="glyphicon glyphicon-info-sign"></i> <strong>Result Summary</strong>
   </div>
 
   <div class="panel-body" style="padding:20px;">
   
 
-  <table class="table table-bordered table-condensed ">
+  <table class="table table-bordered table-condensed" style="font-size:12px;font-weight: bold">
  <thead>
-  <th bgcolor="#B0C4DE">Feature</th>
-  <th bgcolor="#B0C4DE">Result</th>
-  <th bgcolor="#B0C4DE">Loc</th>
-  <th bgcolor="#B0C4DE">Seq</th>
+  <tr style="background-color:#B0C4DE;">
+  <th>Feature</th>
+  <th>Result</th>
+  <th>Loc</th>
+  <th>Seq</th>
+  </tr>
  </thead>
  <tbody>
   <tr>
-    <td><strong>Transcript</strong></td>
+    <td>Transcript</td>
   {% if diff_result.results.has_transcript_changed == True %}
   <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% else %}
@@ -45,7 +46,7 @@
   </tr>
   
   <tr>
-  <td><strong>Translation</strong> </td>
+  <td>Translation</td>
   {% if diff_result.results.has_translation_changed == True %}
   <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% elif diff_result.results.has_translation_changed == False %}
@@ -69,7 +70,7 @@
   </tr>
   
   <tr>
-  <td><strong>Gene</strong></td>
+  <td>Gene</td>
   {% if diff_result.results.has_gene_changed == True %}
   <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
   {% elif diff_result.results.has_gene_changed == False %}
@@ -95,7 +96,6 @@
   </table>
   
   <div class="row">
-  
   <span style="float:left">
   <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i> = <kbd style="background-color:green">NOT CHANGED</kbd>
   </span>
@@ -105,5 +105,6 @@
   
   </div>
   
+    
   </div>
 </div>

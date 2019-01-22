@@ -65,7 +65,8 @@ def diff_home(request):
             print("==================")
             return render(request, 'diff_compare_result.html',
                           context={'form': form,
-                                   'diff_result': diff_result})
+                                   'diff_result': diff_result,
+                                   'form_data_dict': form_data_dict })
 #             return render(request, 'diff_result.html', context={'form': form,
 #                                                                 'diff_result': diff_result})
         else:

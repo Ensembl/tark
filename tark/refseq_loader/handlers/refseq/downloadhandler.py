@@ -53,15 +53,22 @@ class DownloadHandler():
             downladed_files[file_key] = downloaded_file_url_unzipped
 
             if not os.path.exists(downloaded_file_url):
-                print('File doesnt exists ' + downloaded_file_url + "\n About to download file "  + file_url  + '\n')
-                wget.download(file_url, download_dir)
+                print('File doesnt exists ' + downloaded_file_url + "\n About to download file " + file_url + '\n')
+                sucess_file_name = wget.download(file_url, download_dir)
+                print(" Success file name " + sucess_file_name)
+                cls.unzip_file(downloaded_file_url)
             else:
                 print("File already exists at " + downloaded_file_url)
-                if not os.path.exists(downloaded_file_url_unzipped):
-                    gff_status = os.system('gunzip ' + downloaded_file_url)
-                    if not gff_status == 0:
-                        raise ValueError("Unzipped GFF file not found ")
+                cls.unzip_file(downloaded_file_url)
 
-        print('\nSuccessfully Downloaded refseq gff file to ' + download_dir + '\n')
+        print('\nSuccessfully Downloaded refseq gff files to ' + download_dir + '\n')
 
         return downladed_files
+
+    @classmethod
+    def unzip_file(cls, file_path):
+        print("calling unzip file " + file_path)
+        if os.path.exists(file_path):
+                    gff_status = os.system('gunzip ' + file_path)
+                    if not gff_status == 0:
+                        raise ValueError("Unzipped GFF file not found ")

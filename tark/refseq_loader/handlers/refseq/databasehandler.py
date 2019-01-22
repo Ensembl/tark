@@ -44,8 +44,7 @@ class DatabaseHandler(object):
             "user": "prem",
             "password": "prem",
             "host": "localhost",
-            #"database": "tark_refseq_new4"
-            "database": "tark_refseq_dryrun"
+            "database": "tark_refseq_2019"
         }
         self.cnxpool = pooling_connector.MySQLConnectionPool(pool_name="mypool",
                                                              **dbconfig)

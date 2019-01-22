@@ -65,6 +65,11 @@
 
  <div id="current_well" class="well well-sm text-center" style="background-color: #d9edf7 !important;"><strong>TRANSCRIPT DIFF SUMMARY REPORT</strong> </div>
 
+{% if diff_result|length_is:"0" %}
+
+<strong> No results for the given query. Please check your query parameters again.</strong>
+
+{% else %}
 
 <div class="row">
 <div class="col-md-9">
@@ -186,12 +191,18 @@
 <div class="row">
 <!-- summary -->
  {% include "summary_diff.html" %}
+ 
+ {% include "query_summary_diff.html" %}
+ 
+ <a href="/web/diff" class="btn btn-info btn-block"><< New Diff</a> 
+ 
 </div>
 </div>
 
 </div> <!--close row-->
 </div> <!--close container -->
- 
+
+{% endif %}
 
 
 {% endblock %}
