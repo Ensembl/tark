@@ -9,6 +9,9 @@ from tark.fields import ChecksumField
 
 
 class ReleaseSource(models.Model):
+
+    ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
+
     source_id = models.AutoField(primary_key=True)
     shortname = models.CharField(unique=True, max_length=24, blank=True, null=True)
     description = models.CharField(max_length=256, blank=True, null=True)
@@ -19,6 +22,9 @@ class ReleaseSource(models.Model):
 
 
 class ReleaseSet(models.Model):
+
+    MANY2ONE_RELATED = {'RELEASE_SOURCE': 'release_source'}
+    ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
 
     release_id = models.AutoField(primary_key=True)
     shortname = models.CharField(max_length=24, blank=True, null=True)

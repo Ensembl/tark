@@ -131,6 +131,16 @@ def load_releases(request):
     return render(request, 'populate_release.html', {'releases': rleases})
 
 
+def datatable_view_release_set(request):
+    return render(request, 'datatable_view_release_set.html')
+    #return render(request, 'datatable_view_release_set.html', {'release_set_data': json.dumps(release_set_json)})
+
+def release_set_stats_view(request):
+    diff_dict = {}
+    diff_dict['release_set_1'] = {"source":"ensembl", "assembly":"grch38", "version": 93}
+    diff_dict['release_set_2'] = {"source":"ensembl", "assembly":"grch38", "version": 94}
+
+    ReleaseUtils.get_release_diff(diff_dict)
 
 
 

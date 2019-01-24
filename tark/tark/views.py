@@ -136,6 +136,7 @@ class DataTableListApi(generics.ListAPIView):
         return result
 
 
+
 def datatable_view(request, table_name, assembly_name, release_name, source_name, assembly_name_compare, release_name_compare, source_name_compare):  # @IgnorePep8
     print("DataTable view called " + table_name + " assembly_name" + assembly_name + " release_name " +
           release_name + " assembly_name_compare " +

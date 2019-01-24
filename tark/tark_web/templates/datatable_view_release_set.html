@@ -1,0 +1,69 @@
+{% extends "web_home.html" %}
+
+
+{% block title %}DataTable{% endblock %}
+
+{% load staticfiles %}
+
+{% block extra_scripts %}
+<script> 
+$(document).ready(function() {
+
+        release_set_datatable =  $('#release_set_datatable').DataTable( {
+         ajax: {
+        url: "/api/release/nopagination",
+        dataSrc: '' 
+    },
+     aoColumns: [
+ //           { "mData": "", sDefaultContent: "" },
+  			{ "mData": "source", sDefaultContent: "" },
+  			{ "mData": "assembly", sDefaultContent: "" },
+  			{ "mData": "shortname", sDefaultContent: "" },
+  			{ "mData": "description", sDefaultContent: "" },
+		],
+//		columnDefs: [ { orderable: false, className: 'select-checkbox',  width: 20, targets:   0 },
+//                   ],
+//        select: {
+//             style: 'multi',
+//            selector: 'td:first-child'
+//        },
+         
+       } );
+       
+    var source = "";
+    var stable_id_version_current = "";
+    release_set_datatable.on( 'select', function ( e, dt, type, indexes ) {
+       $.map(release_set_datatable.rows( { selected: true } ).data(), function (item) {
+        console.log(item);
+      });
+       });
+       
+       
+       
+     } );
+</script>      
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:20px;">
+   <div class="row">
+   
+   <div class="well well-sm"><strong>Available ReleaseSets</strong></div>
+    <table id="release_set_datatable" class="table table-striped table-bordered" cellspacing="0" width="95%">
+      <thead>
+            <tr>
+            <!--th>Select</th-->
+             <th>Source</th>
+             <th>Assembly</th>
+             <th>Version</th>
+             <th>Description</th>
+            </tr>
+      </thead>
+     </table>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+

@@ -17,4 +17,24 @@ limitations under the License.
 
 
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.compat import coreapi
+from tark_drf.utils.drf_fields import CommonFields
+from release.models import ReleaseSet
+from tark_drf.utils.drf_filters import CommonFilterBackend
+
+
+class ReleaseSetFilterBackend(BaseFilterBackend):
+    """
+    Filter to filter by source_name
+    """
+    def filter_queryset(self, request, queryset, view):
+        queryset = CommonFilterBackend.get_common_related_querysets(request, queryset, view)
+
+        source_name = request.query_params.get('source_name', None)
+        if source_name is not None:
+            queryset = queryset.filter(source__shortname__icontains=source_name)
+
+        return queryset
+
+    def get_schema_fields(self, view):
+        return CommonFields.COMMON_RELATED_QUERY_SET + \
+                CommonFields.get_expand_query_set(ReleaseSet)

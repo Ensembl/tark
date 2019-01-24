@@ -14,11 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-from release.models import ReleaseSet, ReleaseSource
+from release.models import ReleaseSet, ReleaseSource, TranscriptReleaseTag
 from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
 from numpy import source
+from django.db.models import Q
 
 
 class ReleaseUtils(object):
@@ -96,3 +97,45 @@ class ReleaseUtils(object):
         all_sources = ReleaseSource.objects.all().values('shortname')
         all_source_names = [source["shortname"] for source in all_sources]
         return all_source_names
+
+    @classmethod
+    def get_release_diff(cls, diff_dict):
+        print("get release diff called")
+        set1_params = diff_dict['release_set_1']
+        set2_params = diff_dict['release_set_2']
+
+        # param_keys = ["source", "assembly", "version"]
+
+        queryset_all = TranscriptReleaseTag.objects.all()
+        queryset1 = queryset_all.filter(Q(release__source__shortname__iexact=str(set1_params["source"]))
+                                     & Q(release__shortname__iexact=set1_params["version"])
+                                     & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))
+                                     )
+        print(queryset1.query)
+        queryset1_count = queryset1.count()
+        print("Transcript count for set1 " + str(queryset1_count) )
+
+        queryset_all = TranscriptReleaseTag.objects.all()
+        queryset2 = queryset_all.filter(Q(release__source__shortname__iexact=str(set2_params["source"]))
+                                     & Q(release__shortname__iexact=set2_params["version"])
+                                     & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))
+                                     )
+
+        print(queryset2.query)
+        queryset2_count = queryset2.count()
+        print("Transcript count for set2 " + str(queryset2_count))
+
+        # intersection
+        qs_intersection = queryset1 & queryset2
+        qs_intersection_count = qs_intersection.count()
+        print("Intersection of set1 and set2 count " + str(qs_intersection.count()))
+
+        # difference set1-set2
+        qs1_qs2_difference_count = queryset1_count - qs_intersection_count
+        print("Difference of set1 - set2 count " + str(qs1_qs2_difference_count))
+
+
+        # difference set2-set2
+        qs2_qs1_difference_count = queryset2_count - qs_intersection_count
+        print("Difference of set2 - set1 count " + str(qs2_qs1_difference_count))
+

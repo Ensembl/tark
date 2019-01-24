@@ -20,10 +20,12 @@ from django.test.testcases import TestCase
 from release.utils.release_utils import ReleaseUtils
 from django.conf import settings
 
+# ./manage.py test release.tests.test_release_utils --settings=tark.settings.test
+
 
 class ReleaseUtilsTest(TestCase):
     fixtures = ['assembly', 'release_set']
-    #multi_db = True
+    # multi_db = True
 
     def test_get_latest_release(self):
         latest_release = ReleaseUtils.get_latest_release()
@@ -66,10 +68,17 @@ class ReleaseUtilsTest(TestCase):
         self.assertDictEqual(all_assembly_releases, expected_result, "Got the right assembly_releases")
 
         all_assembly_releases_refseq = ReleaseUtils.get_all_assembly_releases(source_name="RefSeq")
-        expected_result_refseq = {'GRCh37': [], 'GRCh38': ['92']}
+        expected_result_refseq = {'GRCh38': ['92']}
         self.assertDictEqual(all_assembly_releases_refseq, expected_result_refseq, "Got the expected result for RefSeq")
 
     def test_get_all_release_sources(self):
         all_release_sources = ReleaseUtils.get_all_release_sources()
         expected_result = ['Ensembl', 'RefSeq']
         self.assertListEqual(expected_result, all_release_sources, "Got the right sources")
+
+    def test_get_release_diff(self):
+        diff_dict = {}
+        diff_dict['release_set_1'] = {"source":"ensembl", "assembly":"grch38", "version": 93}
+        diff_dict['release_set_2'] = {"source":"ensembl", "assembly":"grch38", "version": 94}
+
+        diff_stats = ReleaseUtils.get_release_diff(diff_dict)

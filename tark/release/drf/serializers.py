@@ -17,7 +17,8 @@ limitations under the License.
 
 from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
-from release.models import ReleaseSet, ExonReleaseTag
+from release.models import ReleaseSet, ExonReleaseTag, ReleaseSource
+from tark_drf.utils.drf_fields import AssemblyField, ReleaseSourceField
 
 
 class ExonReleaseTagSerializer(serializers.ModelSerializer):
@@ -27,7 +28,18 @@ class ExonReleaseTagSerializer(serializers.ModelSerializer):
 
 
 class ReleaseSetSerializer(SerializerMixin, serializers.ModelSerializer):
+    assembly = AssemblyField(read_only=True)
+    source = ReleaseSourceField(read_only=True)
 
     class Meta:
         model = ReleaseSet
+        fields = ('assembly', 'shortname', 'description', 'release_date', 'source')
+
+
+class ReleaseSourceSerializer(SerializerMixin, serializers.ModelSerializer):
+
+    ONE2MANY_SERIALIZER = {ReleaseSource.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
+
+    class Meta:
+        model = ReleaseSource
         fields = '__all__'

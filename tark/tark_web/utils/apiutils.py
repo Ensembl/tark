@@ -59,3 +59,10 @@ class ApiUtils(object):
         query_diff_url = host_url + query_url + query_param
         print(query_diff_url)
         return host_url + query_url + query_param
+
+    @classmethod
+    def get_release_set_url(cls, request):
+
+        host_url = cls.get_host_url(request)
+        query_url = "/api/release/nopagination"
+        return host_url + query_url

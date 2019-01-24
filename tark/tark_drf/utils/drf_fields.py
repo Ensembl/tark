@@ -317,6 +317,13 @@ class AssemblyField(serializers.RelatedField):
         return None
 
 
+class ReleaseSourceField(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            return value.shortname
+        return None
+
+
 class CommonFields(object):
 
     COMMON_FIELD_SET = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand',
