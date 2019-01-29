@@ -142,13 +142,13 @@
     <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
 </tr>
 <tr>
-<td>StableID</td><td>{{ diff_me_tl.stable_id }} </td><td>{{ diff_with_tl.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
+<td>StableID</td><td>{{ diff_me_tl.stable_id }} </td><td>{{ diff_with_tl.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_changed %}</td>
 </tr>
 <tr>
-<td>StableID Version</td><td>{{ diff_me_tl.stable_id_version }} </td><td>{{ diff_with_tl.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
+<td>StableID Version</td><td>{{ diff_me_tl.stable_id_version }} </td><td>{{ diff_with_tl.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
 </tr>
 <tr>
-<td>Location</td><td>{{diff_me_tl|get_location_string}}</td><td>{{diff_with_tl|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+<td>Location</td><td>{{diff_me_tl|get_location_string}}</td><td>{{diff_with_tl|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
 </tr>
 
 <tr>
