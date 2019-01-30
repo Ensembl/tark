@@ -67,7 +67,7 @@ class TranscriptDataTableSerializer(TranscriptSerializer):
         gene_names = ""
         for gene in obj.genes.all():
             if gene.hgnc:
-                gene_names = gene_names + gene.hgnc.name
+                return gene.hgnc.name
 
         return gene_names
 
