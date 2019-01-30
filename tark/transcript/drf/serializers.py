@@ -64,10 +64,10 @@ class TranscriptDataTableSerializer(TranscriptSerializer):
     genes = serializers.SerializerMethodField(read_only=True)
 
     def get_genes(self, obj):
-        print("From get_genes====================")
         gene_names = ""
         for gene in obj.genes.all():
-            gene_names = gene_names + gene.hgnc.name
+            if gene.hgnc:
+                gene_names = gene_names + gene.hgnc.name
 
         return gene_names
 

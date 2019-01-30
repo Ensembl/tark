@@ -7,40 +7,88 @@
 
 {% block extra_scripts %}
 <script> 
-$(document).ready(function() {
 
-        release_set_datatable =  $('#release_set_datatable').DataTable( {
+
+function create_current_release_table(id_data_table, table_name_, assembly_name_, release_name_, source_name_){
+    console.log(id_data_table + "  " + table_name_ + "  " + assembly_name_ + "  " + release_name_ + "  " + source_name_);
+    
+    
+ //datatable
+    var tark_table = $('#'+id_data_table).DataTable( {
+
+        "initComplete": function(settings, json) {
+         $('#loadingSpinner').hide();
+         $('#release_details').html("<strong>Assembly: "+ assembly_name_ + " Release:  " + release_name_ + " Source:  " + source_name_ + "</strong>");
+         },
+        "serverSide": true,
+       // "pageLength": 10,
+      //  "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
+        
+        "processing": true,
+        //"language": {
+        //    processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+        // },
+        "ajax": "/web/datatable_serverside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
+        
+        
+       "data":{'serverSide':true },
+       // fixedColumns: true,
+        aoColumns: [
+            { "mData": "stable_id", sDefaultContent: "" },
+  			{ "mData": "stable_id_version", sDefaultContent: "" },
+  			{ "mData": "loc_start", sDefaultContent: "" },
+  			{ "mData": "loc_end", sDefaultContent: "" },
+  			{ "mData": "loc_strand", sDefaultContent: "" },
+  			{ "mData": "loc_region", sDefaultContent: "" },
+  			{ "mData": "genes", sDefaultContent: "" },
+		],
+    } );
+    
+    return tark_table;
+ 
+}//end function
+
+$(document).ready(function() {
+     $('#transcript_datatable').hide();
+	 $('#loadingSpinner').hide();
+     $release_set_datatable =  $('#release_set_datatable').DataTable( {
          ajax: {
         url: "/api/release/nopagination",
         dataSrc: '' 
     },
-     aoColumns: [
- //           { "mData": "", sDefaultContent: "" },
+      aoColumns: [
   			{ "mData": "source", sDefaultContent: "" },
   			{ "mData": "assembly", sDefaultContent: "" },
   			{ "mData": "shortname", sDefaultContent: "" },
   			{ "mData": "description", sDefaultContent: "" },
-		],
-//		columnDefs: [ { orderable: false, className: 'select-checkbox',  width: 20, targets:   0 },
-//                   ],
-//        select: {
-//             style: 'multi',
-//            selector: 'td:first-child'
-//        },
-         
+  			{ "mData": "", sDefaultContent: '<a href="/web/search" role="button" class="btn btn-warning btn-sm">Search</a>&nbsp;<a href="/web/diff" role="button" class="btn btn-info btn-sm">Diff-Transcript</a>&nbsp;<a href="#" role="button" id="load_release_set" class="btn btn-primary btn-sm">ListTranscripts</a>' },
+		]
        } );
        
-    var source = "";
-    var stable_id_version_current = "";
-    release_set_datatable.on( 'select', function ( e, dt, type, indexes ) {
-       $.map(release_set_datatable.rows( { selected: true } ).data(), function (item) {
-        console.log(item);
-      });
-       });
+        console.log("reached here");
+
+        $release_set_datatable.on('click', '#load_release_set', function (e) {
+       if (typeof $tark_table !== 'undefined') {
+        $tark_table.destroy();
+        }
+        e.preventDefault();
+        var closestRow = $(this).closest('tr');
+        var data = $release_set_datatable.row(closestRow).data();
        
-       
-       
-     } );
+        current_assembly = data['assembly'];
+        current_source = data['source'].toLowerCase();
+        current_release = data['shortname'];
+        
+        console.log('assembly ' + current_assembly + ' current_source ' + current_source  + ' current_release ' + current_release );
+        
+        $('#loadingSpinner').show();
+        $('#transcript_datatable').show();
+        $tark_table = create_current_release_table("tark_datatable","transcript",current_assembly, current_release, current_source);
+        
+    });
+    
+ 
+     } );//document ready
 </script>      
 {% endblock %}
 
@@ -48,22 +96,42 @@ $(document).ready(function() {
 <div class="container" style="padding-top:20px;">
    <div class="row">
    
-   <div class="well well-sm"><strong>Available ReleaseSets</strong></div>
+   <div class="well well-sm" style="background-color:#227098;color:#fff"><strong>Available ReleaseSets</strong></div>
     <table id="release_set_datatable" class="table table-striped table-bordered" cellspacing="0">
       <thead>
             <tr>
-            <!--th>Select</th-->
              <th>Source</th>
              <th>Assembly</th>
              <th>Version</th>
              <th>Description</th>
+             <th>Tools</th>
             </tr>
       </thead>
      </table>
     </div>
+
+ <hr/>
+<!--data table transcript-->
+<div class="row" id="transcript_datatable">
+ <div id="loadingSpinner"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
+  <div class="well well-sm" style="background-color:#227098;color:#fff"><strong>Current ReleaseSet</strong>&nbsp;&nbsp;&nbsp;<span id="release_details">Loading...</span></div>
+    <table id="tark_datatable" class="table table-striped table-bordered" cellspacing="0">
+      <thead>
+         <tr>
+           <th>StableID</th>
+           <th>Version</th>
+           <th>Start</th>
+           <th>End</th>
+           <th>Strand</th>
+           <th>Region</th>
+           <th>Gene</th>
+        </tr>
+      </thead>
+     
+    </table>
+</div>
+
   </div>
-
-
 {% endblock %}
 
 
