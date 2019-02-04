@@ -20,10 +20,7 @@ from tark_drf.utils.drf_fields import CommonFields, DrfFields
 from tark_drf.utils.drf_filters import CommonFilterBackend
 from transcript.models import Transcript
 from release.utils.release_utils import ReleaseUtils
-from django.db.models import Q
-import re
 from tark_web.utils.sequtils import TarkSeqUtils
-from Bio.SubsMat.MatrixInfo import ident
 
 
 class TranscriptFilterBackend(BaseFilterBackend):
@@ -110,8 +107,6 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
                 DrfFields.diff_with_release_field(),
                 DrfFields.diff_with_assembly_field()]
 
-                # DrfFields.get_expand_transcript_release_set_field()]
-
 
 class TranscriptSearchFilterBackend(BaseFilterBackend):
     """
@@ -121,7 +116,7 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
         identifier = request.query_params.get('identifier_field', None)
         print("=====Identifier from filter_queryset " + identifier)
         if identifier is not None:
-            if "ENST" in identifier or "LRG" in identifier or "NM_" in identifier:
+            if "ENST" in identifier or "LRG" in identifier or "_" in identifier:
                 queryset = queryset.filter(stable_id=identifier)
             elif "ENSG" in identifier:
                 queryset = queryset.filter(genes__stable_id=identifier)
@@ -133,15 +128,10 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 if loc_start is not None:
                     queryset = queryset.filter(loc_start__lte=loc_start).filter(loc_end__gte=loc_start)
 
-                # loc_end = request.query_params.get('loc_end', None)
                 if loc_end is not None:
                     queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
             else:
                 queryset = queryset.filter(genes__hgnc__name__iexact=identifier)
-
-#         print("==========Queryset==============")
-#         print(queryset.distinct().query)
-#         print("==========Queryset==============")
 
         return queryset.distinct()
 
@@ -171,12 +161,7 @@ class TranscriptSetFilterBackent(BaseFilterBackend):
         if diff_me_release is not None and diff_me_assembly is not None:
             queryset_me = queryset.filter(assembly__assembly_name__icontains=diff_me_assembly). \
                 filter(transcript_release_set__shortname=diff_me_release)
-            print("=======queryset_me============")
 
-            # get the exontranscript object so you have access to the order of exons
-            # ringos_membership = ringo.membership_set.get(group=beatles)
-
-            print("===================")
             queryset_with = queryset.filter(assembly__assembly_name__icontains=diff_with_assembly). \
                 filter(transcript_release_set__shortname=diff_with_release)
 
