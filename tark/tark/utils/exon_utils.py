@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-import sys
 
 
 class ExonUtils(object):
@@ -46,51 +45,6 @@ class ExonUtils(object):
         print(compare_results)
         print("==================compare_results============")
         return compare_results
-
-    # not used anymore will deprecate
-    @classmethod
-    def exon_set_compare(cls, exonset1, exonset2):
-
-        compare_result = {}
-
-        if exonset1 is None or exonset2 is None:
-            return compare_result
-
-        for exon1 in exonset1:
-            for exon2 in exonset2:
-                if exon1["loc_start"] >= exon2["loc_start"] and exon1["loc_start"] <= exon2["loc_end"] or \
-                        exon1["loc_end"] >= exon2["loc_start"] and exon1["loc_end"] <= exon2["loc_end"]:
-                    compare_result[exon1["exon_order"]] = exon2["exon_order"]
-                    break
-
-        # check compare_result and add the missing match
-        list_set1 = []
-        list_set2 = []
-        if len(exonset1) >= len(exonset2):
-            for exon1 in exonset1:
-                if exon1["exon_order"] in compare_result.keys():
-                    list_set1.append(exon1["exon_order"])
-                    list_set2.append(compare_result[exon1["exon_order"]])
-                else:
-                    list_set1.append(exon1["exon_order"])
-                    list_set2.append(0)
-        else:
-            for exon2 in exonset2:
-                if exon2["exon_order"] in compare_result.values():
-                    if exon2["exon_order"] in compare_result:
-                        list_set1.append(exon2["exon_order"])
-                        list_set2.append(compare_result[exon2["exon_order"]])
-                else:
-                    list_set1.append(0)
-                    list_set2.append(exon2["exon_order"])
-
-        compare_result_list = [list_set1, list_set2]
-
-        print(list_set1)
-        print(list_set2)
-        print(compare_result_list)
-
-        return compare_result_list
 
     @classmethod
     def compute_overlap(cls, start1, end1, start2, end2):

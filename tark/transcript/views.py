@@ -25,18 +25,15 @@ from transcript.drf.serializers import TranscriptSerializer,\
 from transcript.drf.filters import TranscriptFilterBackend,\
     TranscriptDiffFilterBackend, TranscriptSearchFilterBackend
 from tark.utils.diff_utils import DiffUtils
-from release.utils.release_utils import ReleaseUtils
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
 from rest_framework.pagination import PageNumberPagination
 from tark_web.utils.apiutils import ApiUtils
 import requests
-from tark_web.templatetags import search_result_formatter
 from translation.models import Translation
-import json
 from rest_framework.response import Response
 from tark.utils.request_utils import RequestUtils
-from lib2to3.tests.pytree_idempotency import diff
+from exon.models import Exon
 
 
 class TranscriptList(generics.ListAPIView):
@@ -77,44 +74,38 @@ class TranscriptDiff(generics.ListAPIView):
 
         # get diff me transcript
         params_diff_me = RequestUtils.get_query_params(request, "diff_me")
-        diff_me_transcript = self.get_search_results(request, params_diff_me, True)
+        diff_me_transcript = self.get_search_results(request, params_diff_me, attach_translation_seq=True,
+                                                     attach_exon_seq=True)
         print("diff_me_transcript==========")
         print(diff_me_transcript)
 
         # get diff with trancscript
         params_diff_with = RequestUtils.get_query_params(request, "diff_with")
-        diff_with_transcript = self.get_search_results(request, params_diff_with, True)
+        diff_with_transcript = self.get_search_results(request, params_diff_with, attach_translation_seq=True,
+                                                       attach_exon_seq=True)
         print("diff_with_transcript=========")
         print(diff_with_transcript)
 
         # compare the two transcripts
         compare_results = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
 
-        # for tark rest, add count, previous, next
-        #compare_result_response_body = DiffUtils.get_results_as_response_body(compare_results)
-
         print("===========compare_results===============")
         print(compare_results)
         return Response(compare_results)
 
-    def get_search_results(self, request, diff_query_params, attach_translation_seq=True, attach_gene=True):
+    def get_search_results(self, request, diff_query_params, attach_translation_seq=True, attach_exon_seq=True,
+                           attach_gene=True):
 
         host_url = ApiUtils.get_host_url(request)
         query_url = "/api/transcript/?"
 
         query_param_string = RequestUtils.get_query_param_string(diff_query_params)
         query_url = query_url + query_param_string
-        print("==========query url==============")
-        print(query_url)
 
         response = requests.get(host_url + query_url)
         if response.status_code == 200:
             search_result = response.json()
-            
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        print(search_result)
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        
+
         if search_result is not None and "count" in search_result and search_result["count"] == 1 and "results" in search_result:  # @IgnorePep8
             search_result = search_result["results"][0]
 
@@ -130,15 +121,29 @@ class TranscriptDiff(generics.ListAPIView):
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
                         tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')  # @IgnorePep8
-                        print("===========tl_query_et========")
-                        print(tl_query_set)
                         if tl_query_set is not None and len(tl_query_set) == 1:
                             tl_obj = tl_query_set[0]
-                            print("Entering tl_query_set================")
-                            print(tl_obj.sequence.sequence)
                             translation["sequence"] = tl_obj.sequence.sequence
                             translation["seq_checksum"] = tl_obj.sequence.seq_checksum
                             search_result["translations"] = translation
+
+            if attach_exon_seq is True:
+                if "exons" in search_result:
+                    all_exons = search_result["exons"]
+                    new_exons = []
+                    for exon in all_exons:
+                        if "exon_id" in exon:
+                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+
+                            if current_exon_query_set is not None and len(current_exon_query_set) == 1:
+                                current_exon_with_sequence = current_exon_query_set[0]
+                                exon["sequence"] = current_exon_with_sequence.sequence.sequence
+                                exon["seq_checksum"] = current_exon_with_sequence.sequence.seq_checksum
+                                new_exons.append(exon)
+
+                    if len(new_exons) > 0:
+                        search_result["exons"] = new_exons
+
             if attach_gene is True:
                 if "genes" in search_result:
                     gene = search_result["genes"][0]

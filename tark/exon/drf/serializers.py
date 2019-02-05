@@ -26,7 +26,7 @@ from tark_drf.utils.drf_mixin import SerializerMixin
 
 
 class ExonTranscriptSerializer(serializers.ModelSerializer):
-
+    exon_id = serializers.ReadOnlyField(source='exon.exon_id')
     stable_id = serializers.ReadOnlyField(source='exon.stable_id')
     stable_id_version = serializers.ReadOnlyField(source='exon.stable_id_version')
     assembly = serializers.ReadOnlyField(source='exon.assembly.assembly_name')
@@ -40,8 +40,8 @@ class ExonTranscriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExonTranscript
-        fields = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand', 'loc_region',
-                   'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order', )
+        fields = ('exon_id', 'stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand',
+                  'loc_region', 'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order', )
 
 
 class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
@@ -56,11 +56,10 @@ class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Exon
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'seq_checksum')
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', 'sequence')
         # fields = CommonFields.COMMON_FIELD_SET + ('exon_checksum', )
 
     def __init__(self, *args, **kwargs):
         super(ExonSerializer, self).__init__(*args, **kwargs)
         self.set_related_fields(ExonSerializer, **kwargs)
-
 
