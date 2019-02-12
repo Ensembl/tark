@@ -31,8 +31,7 @@ def init_assembly_releases(request):
     current_release = ReleaseUtils.get_latest_release()
     current_assembly = ReleaseUtils.get_latest_assembly()
     source_name = ReleaseUtils.get_default_source()
-    logger.debug("********************from context processor=========")
-    logger.debug(all_assembly_releases)
+
     init_hash = {"all_assembly_releases": all_assembly_releases,
                  "all_assembly_releases_ensembl": all_assembly_releases_ensembl,
                  "all_assembly_releases_refseq": all_assembly_releases_refseq,
@@ -44,5 +43,5 @@ def init_assembly_releases(request):
                  'assembly_name_compare': current_assembly,
                  'source_name': source_name
                  }
-    print(init_hash)
+
     return init_hash

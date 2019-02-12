@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^$', views.web_home, name='web_home'),
     # diff
     url(r'^diff/$', views.diff_home, name='diff_home'),
+    url(r'^diff/release/$', views.diff_release_home, name='diff_home_release'),
 
     # search
     url(r'^search/$', views.search_home, name='search_home'),

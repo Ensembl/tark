@@ -20,10 +20,11 @@ from django.shortcuts import render
 from release.utils.release_utils import ReleaseUtils
 from .forms import DiffForm
 import requests
-from tark_web.forms import SearchForm, FormUtils
+from tark_web.forms import SearchForm, FormUtils, DiffFormRelease
 import json
 import logging
 from tark_web.utils.apiutils import ApiUtils
+from django.urls.base import resolve
 # Get an instance of a logger
 logger = logging.getLogger("tark")
 
@@ -45,6 +46,8 @@ def diff_home(request):
     """
     # Render the HTML template index.html with data in the context variable
     diff_result = {}
+    diff_release = False
+
     if request.method == 'POST':
         print("reached if")
         form = DiffForm(request.POST)
@@ -65,10 +68,8 @@ def diff_home(request):
             print("==================")
             return render(request, 'diff_compare_result.html',
                           context={'form': form,
-                                   'diff_result': diff_result,
+                                   'diff_result': diff_result,'diff_release' : diff_release,
                                    'form_data_dict': form_data_dict })
-#             return render(request, 'diff_result.html', context={'form': form,
-#                                                                 'diff_result': diff_result})
         else:
             print("Reached else1")
             print(form.errors)
@@ -76,9 +77,56 @@ def diff_home(request):
         print("Reached else2")
 
         form = DiffForm()
-    return render(request, 'tark_diff.html', context={'form': form,
+    return render(request, 'tark_diff.html', context={'form': form, 'diff_release' : diff_release,
                                                       })
 
+def diff_release_home(request):
+    """
+    View function for diff query page
+    """
+    # Render the HTML template index.html with data in the context variable
+    diff_result = {}
+    current_url = resolve(request.path_info).url_name
+    print("current url " + str(current_url))
+
+    if "diff_home_release" in current_url:
+        diff_release = True
+
+    if request.method == 'POST':
+        print("reached if")
+        form = DiffFormRelease(request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            form_data_dict = form.get_cleaned_data()
+            print("=======form_data_dict============")
+            print(form_data_dict)
+
+            diff_dict = {}
+            diff_dict['release_set_1'] = {"source": form_data_dict["diff_me_source"].lower(),
+                                          "assembly": form_data_dict["diff_me_assembly"].lower(),
+                                          "version": form_data_dict["diff_me_release"]}
+
+            diff_dict['release_set_2'] = {"source":  form_data_dict["diff_with_source"].lower(),
+                                          "assembly": form_data_dict["diff_with_assembly"].lower(),
+                                          "version": form_data_dict["diff_with_release"]}
+
+            print(diff_dict)
+
+            diff_result_release = ReleaseUtils.get_release_diff(diff_dict)
+
+            return render(request, 'diff_compare_release_set_result.html',
+                          context={'form': form, 'diff_release' : diff_release,
+                                   'diff_result_release': json.dumps(diff_result_release),
+                                   'form_data_dict': json.dumps(form_data_dict) })
+        else:
+            print("Reached else1")
+            print(form.errors)
+    else:
+        print("Reached else2")
+
+        form = DiffForm()
+    return render(request, 'tark_diff.html', context={'form': form, 'diff_release' : diff_release
+                                                      })
 
 def search_home(request):
     """
@@ -133,7 +181,7 @@ def load_releases(request):
 
 def datatable_view_release_set(request):
     return render(request, 'datatable_view_release_set.html')
-    #return render(request, 'datatable_view_release_set.html', {'release_set_data': json.dumps(release_set_json)})
+
 
 def release_set_stats_view(request):
     diff_dict = {}

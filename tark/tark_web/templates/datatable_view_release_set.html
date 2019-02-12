@@ -21,26 +21,45 @@ function create_current_release_table(id_data_table, table_name_, assembly_name_
          $('#release_details').html("<strong>Assembly: "+ assembly_name_ + " Release:  " + release_name_ + " Source:  " + source_name_ + "</strong>");
          },
         "serverSide": true,
-       // "pageLength": 10,
-      //  "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],	
-        
-        "processing": true,
-        //"language": {
-        //    processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
-        // },
+          "processing": true,
+        "language": {
+            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+         },
         "ajax": "/web/datatable_serverside/" + table_name_ + "/" + assembly_name_ + "/" + release_name_ + "/" + source_name_ + "/",
         
         
        "data":{'serverSide':true },
        // fixedColumns: true,
         aoColumns: [
-            { "mData": "stable_id", sDefaultContent: "" },
+            { "mData": "stable_id", 
+            "mRender": function ( data, type, row ) {
+  			    if(source_name_ == "ensembl"){
+               return  '<a target="_blank" href="http://e'+ release_name_ + '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t='+ data + '">' + data + '</a>';
+               }else{
+               return  '<a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/'+ data + '">' + data + '</a>';
+               
+               }
+                return data;
+            }
+             },
   			{ "mData": "stable_id_version", sDefaultContent: "" },
   			{ "mData": "loc_start", sDefaultContent: "" },
   			{ "mData": "loc_end", sDefaultContent: "" },
   			{ "mData": "loc_strand", sDefaultContent: "" },
   			{ "mData": "loc_region", sDefaultContent: "" },
-  			{ "mData": "genes", sDefaultContent: "" },
+  			{ "mData": "genes", 
+  			"mRender": function ( data, type, row ) {
+  			    if(source_name_ == "ensembl"){
+               return  '<a target="_blank" href="http://e'+ release_name_ + '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;g='+ data + '">' + data + '</a>';
+               }else{
+               //return  '<a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/'+ data + '">' + data + '</a>' ;
+               return data;
+               }
+                return data;
+            }
+  			
+  			
+  			 },
 		],
     } );
     
@@ -52,7 +71,7 @@ $(document).ready(function() {
      $('#transcript_datatable').hide();
 	 $('#loadingSpinner').hide();
      $release_set_datatable =  $('#release_set_datatable').DataTable( {
-         ajax: {
+        ajax: {
         url: "/api/release/nopagination",
         dataSrc: '' 
     },
@@ -78,9 +97,9 @@ $(document).ready(function() {
         console.log("reached here");
 
         $release_set_datatable.on('click', '#load_release_set', function (e) {
-       if (typeof $tark_table !== 'undefined') {
-        $tark_table.destroy();
-        }
+       		if (typeof $tark_table !== 'undefined') {
+        		$tark_table.destroy();
+        	}
         e.preventDefault();
         var closestRow = $(this).closest('tr');
         var data = $release_set_datatable.row(closestRow).data();
@@ -95,7 +114,7 @@ $(document).ready(function() {
         $('#transcript_datatable').show();
         $tark_table = create_current_release_table("tark_datatable","transcript",current_assembly, current_release, current_source);
         
-    });
+        });
     
  
      } );//document ready

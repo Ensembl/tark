@@ -88,9 +88,11 @@ class DiffForm(forms.Form):
         current_assembly = ReleaseUtils.get_latest_assembly()
         default_source = ReleaseUtils.get_default_source()
 
-        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()), required=False)
+        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()),
+                                                 required=False)
         self.fields['diff_me_stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
-        self.fields['diff_with_stable_id'] = forms.CharField(max_length=30, help_text='Please enter Transcript Stable ID')
+        self.fields['diff_with_stable_id'] = forms.CharField(max_length=30,
+                                                             help_text='Please enter Transcript Stable ID')
         self.fields['diff_me_assembly'] = forms.CharField(initial=current_assembly,
                                                           widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
         self.fields['diff_me_release'] = forms.CharField(initial=current_release,
@@ -141,12 +143,46 @@ class DiffForm(forms.Form):
         return diff_form_data_dict
 
 
+class DiffFormRelease(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(DiffFormRelease, self).__init__(*args, **kwargs)
+        current_release = ReleaseUtils.get_latest_release()
+        current_assembly = ReleaseUtils.get_latest_assembly()
+        default_source = ReleaseUtils.get_default_source()
+
+        self.fields['species'] = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()),
+                                                 required=False)
+        self.fields['diff_me_assembly'] = forms.CharField(initial=current_assembly,
+                                                          widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_me_release'] = forms.CharField(initial=current_release,
+                                                         widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+        self.fields['diff_with_assembly'] = forms.CharField(initial=current_assembly,
+                                                            widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()))  # @IgnorePep8
+        self.fields['diff_with_release'] = forms.CharField(initial=int(current_release)-1,
+                                                           widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()))  # @IgnorePep8
+
+        self.fields['diff_with_source'] = forms.CharField(initial=default_source,
+                                                           widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
+        self.fields['diff_me_source'] = forms.CharField(initial=default_source,
+                                                           widget=forms.Select(choices=FormUtils.get_all_sources_tuples()))  # @IgnorePep8
+
+    def get_cleaned_data(self):
+        diff_me_source = self.cleaned_data['diff_me_source']
+        diff_with_source = self.cleaned_data['diff_with_source']
+
+        diff_form_data_dict = {}
+
+        diff_form_data_dict['diff_me_assembly'] = self.cleaned_data['diff_me_assembly']
+        diff_form_data_dict['diff_me_release'] = self.cleaned_data['diff_me_release']
+        diff_form_data_dict['diff_me_source'] = diff_me_source
+
+        diff_form_data_dict['diff_with_assembly'] = self.cleaned_data['diff_with_assembly']
+        diff_form_data_dict['diff_with_release'] = self.cleaned_data['diff_with_release']
+        diff_form_data_dict['diff_with_source'] = diff_with_source
+
+        return diff_form_data_dict
+
+
 class SearchForm(forms.Form):
-
-#     current_release = ReleaseUtils.get_latest_release()
-#     current_assembly = ReleaseUtils.get_latest_assembly()
-
-#     species = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_species_name_tuples()))
     search_identifier = forms.CharField(max_length=200, help_text='Please enter valid identifiers')
-#     search_assembly = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_assembly_name_tuples()), required=False)
-#     search_release = forms.CharField(widget=forms.Select(choices=FormUtils.get_all_release_name_tuples()), required=False)
