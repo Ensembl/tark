@@ -127,11 +127,24 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
         print("=====Identifier from filter_queryset " + identifier)
+
+        # to support version search
+        identifier_version = None
+        if '.' in identifier:
+            (identifier, identifier_version) = identifier.split('.')
+            print("Has got version in query  identifier " + str(identifier) +
+                  "  version " + identifier_version)
+
         if identifier is not None:
             if "ENST" in identifier or "LRG" in identifier or "_" in identifier:
                 queryset = queryset.filter(stable_id=identifier)
+                if identifier_version is not None:
+                    print("Reached here1*****")
+                    queryset.filter(stable_id_version=identifier_version)
             elif "ENSG" in identifier:
                 queryset = queryset.filter(genes__stable_id=identifier)
+                if identifier_version is not None:
+                    queryset.filter(stable_id_version=identifier_version)
             elif ":" in identifier and "-" in identifier:
                 (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(identifier)
                 if loc_region is not None:
@@ -148,8 +161,6 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
         return queryset.distinct()
 
     def get_schema_fields(self, view):
-        #return [DrfFields.identifier_field(), DrfFields.search_release_field(),
-         #       DrfFields.search_assembly_field(), DrfFields.get_expand_all_field()]
         return [DrfFields.identifier_field(), DrfFields.get_expand_transcript_release_set_genes_field()]
 
 

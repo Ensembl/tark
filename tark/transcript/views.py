@@ -72,7 +72,7 @@ class TranscriptDiff(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
 
-        render_as_string = request.query_params.get("render_as_string", False)
+        render_as_string = request.query_params.get("render_as_string", "False")
         print("==========render_as_string========== " + str(render_as_string) + "========")
         # get diff me transcript
         params_diff_me = RequestUtils.get_query_params(request, "diff_me")

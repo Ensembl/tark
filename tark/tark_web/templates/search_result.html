@@ -64,7 +64,9 @@ function get_diff_result_summary(payload_data){
         
         var get_url = root_url + diff_me_url + '&' + diff_with_url;
         get_url = get_url + "&render_as_string=True";
-        var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>TRANSCRIPT DIFF SUMMARY REPORT</strong> </div>';
+        var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;">' + 
+        				 '<strong>TRANSCRIPT DIFF SUMMARY REPORT</strong>' +
+         				'<button type="button" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button></div>';
         $.get(get_url, function(diff_data, status){
     		gene_table = diff_data["gene"];
     		transcript_table = diff_data["transcript"];
@@ -100,8 +102,7 @@ $(document).ready(function() {
     var transcript1_assembly = null;
     var transcript1_source = null;
     var transcript1_release = null;
-    $("input[name*='transcript1']") // select the radio by its id
-    .change(function(){ // bind a function to the change event
+    $('#search_result_table tbody').on('click', 'input[name*="transcript1"]', function(e){
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();
             
@@ -122,8 +123,8 @@ $(document).ready(function() {
      var transcript2_assembly = null;
      var transcript2_source = null;
      var transcript2_release = null;
-    $("input[name*='transcript2']") // select the radio by its id
-    .change(function(){ // bind a function to the change event
+
+     $('#search_result_table tbody').on('click', 'input[name*="transcript2"]', function(e){
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();   
             [transcript2_stable_id, transcript2_assembly, transcript2_source, transcript2_release] = get_query_params(row);
