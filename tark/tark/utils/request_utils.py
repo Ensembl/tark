@@ -22,7 +22,14 @@ class RequestUtils(object):
     @classmethod
     def get_query_params(cls, request, diff_type=None):
         params_diff = {}
-        params_diff['stable_id'] = request.query_params.get(diff_type + '_stable_id', None)
+        stable_id_cur = request.query_params.get(diff_type + '_stable_id', None)
+        if '.' in stable_id_cur:
+            stable_id, stable_id_version = stable_id_cur.split('.')
+            params_diff['stable_id'] = stable_id
+            params_diff['stable_id_version'] = stable_id_version
+        else:
+            params_diff['stable_id'] = request.query_params.get(diff_type + '_stable_id', None)
+
         params_diff['release_short_name'] = request.query_params.get(diff_type + '_release',
                                                                      ReleaseUtils.get_latest_release())
         params_diff['assembly_name'] = request.query_params.get(diff_type + '_assembly',

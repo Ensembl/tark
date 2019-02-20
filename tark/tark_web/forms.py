@@ -31,6 +31,17 @@ class FormUtils(object):
         return assembly_list
 
     @classmethod
+    def get_all_assembly_release_name_tuples(cls, assembly_name=None, source_name=None):
+        assembly_release_list = []
+        for assembly_name in ReleaseUtils.get_all_assembly_names():
+            for release in ReleaseUtils.get_all_release_short_names(assembly_name, source_name):
+                assembly_release_list.append((str(assembly_name) + ":" + str(release),
+                                              str(assembly_name) + ":" + str(release)))
+
+        print(assembly_release_list)
+        return assembly_release_list
+
+    @classmethod
     def get_all_release_name_tuples(cls, assembly_name=None, source_name=None):
         release_list = []
 

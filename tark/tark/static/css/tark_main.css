@@ -200,3 +200,8 @@ tr.shown td.details-control {
     display: block;
     padding: 5px;
 }
+
+
+.panel-heading-sm{
+    padding: 4px 5px;
+}

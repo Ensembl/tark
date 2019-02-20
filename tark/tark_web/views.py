@@ -58,6 +58,7 @@ def diff_home(request):
             print(form_data_dict)
 
             transcript_diff_url = ApiUtils.get_feature_diff_url(request, "transcript", form_data_dict)
+            print(transcript_diff_url)
             response = requests.get(transcript_diff_url)
             print(response.status_code)
             if response.status_code == 200:
@@ -153,7 +154,7 @@ def search_home(request):
 #                         "&expand_all=true&search_release=" + search_release + \
 #                 "&search_assembly=" + search_assembly
             query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-                        "&expand_all=true"
+                        "&expand=transcript_release_set,genes"
             response = requests.get(host_url + query_url)
             print(response.status_code)
             if response.status_code == 200:
@@ -161,7 +162,7 @@ def search_home(request):
                 search_result = response.json()
                 #print(search_result)
                 return render(request, 'search_result.html', context={'form': search_form,
-                                                                      'search_result': search_result})
+                                                                      'search_result': search_result, 'search_identifier': search_identifier })
             else:
                 print("Error")
         else:

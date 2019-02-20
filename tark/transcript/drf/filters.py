@@ -59,8 +59,14 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
 
         # handle diff me
         diff_me_stable_id = request.query_params.get('diff_me_stable_id',  None)
-        print("Inside if diff_me_stable_id " + diff_me_stable_id)
-        if diff_me_stable_id is not None:
+        diff_me_stable_id_version = request.query_params.get('diff_me_stable_id_version',  1)
+
+        if diff_me_stable_id is not None and diff_me_stable_id_version is not None:
+            print("diff me stable id " + str(diff_me_stable_id) + "  diff me stable id version  " +
+                  str(diff_me_stable_id_version))
+            queryset_me = queryset.filter(stable_id=diff_me_stable_id).\
+                filter(stable_id_version=diff_me_stable_id_version)
+        else:
             queryset_me = queryset.filter(stable_id=diff_me_stable_id)
 
         diff_me_release = request.query_params.get('diff_me_release', ReleaseUtils.get_latest_release())
@@ -79,8 +85,14 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
 
         # handle diff with
         diff_with_stable_id = request.query_params.get('diff_with_stable_id',  None)
-        if diff_with_stable_id is not None:
-            print("Inside if diff_with_stable_id " + diff_with_stable_id)
+        diff_with_stable_id_version = request.query_params.get('diff_with_stable_id_version',  1)
+
+        if diff_with_stable_id is not None and diff_with_stable_id_version is not None:
+            print("====diff_with_stable_id " + str(diff_with_stable_id) + "  diff_with_stable_id_version  " +
+                  str(diff_with_stable_id_version))
+            queryset_with = queryset.filter(stable_id=diff_with_stable_id).\
+                filter(stable_id_version=diff_with_stable_id_version)
+        else:
             queryset_with = queryset.filter(stable_id=diff_with_stable_id)
 
         diff_with_release = request.query_params.get('diff_with_release', ReleaseUtils.get_latest_release())
@@ -136,8 +148,9 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
         return queryset.distinct()
 
     def get_schema_fields(self, view):
-        return [DrfFields.identifier_field(), DrfFields.search_release_field(),
-                DrfFields.search_assembly_field(), DrfFields.get_expand_all_field()]
+        #return [DrfFields.identifier_field(), DrfFields.search_release_field(),
+         #       DrfFields.search_assembly_field(), DrfFields.get_expand_all_field()]
+        return [DrfFields.identifier_field(), DrfFields.get_expand_transcript_release_set_genes_field()]
 
 
 class TranscriptSetFilterBackent(BaseFilterBackend):

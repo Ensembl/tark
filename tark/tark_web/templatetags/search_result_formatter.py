@@ -20,6 +20,17 @@ register = template.Library()
 
 
 @register.filter
+def get_release_as_list(search_result, search_attr):
+    search_list = set()
+
+    for result in search_result:
+        if "shortname" in search_attr:
+            search_list.add(result[search_attr])
+
+    return list(search_list)
+
+
+@register.filter
 def get_values_as_list(search_result, search_attr):
     search_list = set()
     index = 1
@@ -28,8 +39,8 @@ def get_values_as_list(search_result, search_attr):
         if "stable_id" in search_attr:
             if "stable_id_exon" in search_attr:
                 search_list.add(str(result['stable_id']) + "." +
-                                   str(result['stable_id_version']) +
-                                   "(" + str(index) + ") ")
+                                str(result['stable_id_version']) +
+                                "(" + str(index) + ") ")
                 index = index + 1
             else:
                 search_list.add(str(result['stable_id']) + "." + str(result['stable_id_version']))
@@ -39,7 +50,6 @@ def get_values_as_list(search_result, search_attr):
     search_string_list = ",\n".join(search_list)
 
     if "stable_id_exon" in search_attr:
-        # search_string_list = str(len(search_list)) + " Exons\n" + search_string_list
         search_string_list = str(len(search_list))
 
     return search_string_list

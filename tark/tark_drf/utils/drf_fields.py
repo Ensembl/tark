@@ -81,6 +81,17 @@ class DrfFields(object):
         return expand_transcript_release_set_field
 
     @classmethod
+    def get_expand_transcript_release_set_genes_field(cls):
+        expand_transcript_release_set_field = coreapi.Field(
+            name='expand',
+            location='query',
+            required=True,
+            type='string',
+            example="transcript_release_set,genes",
+            description='We need the release set and genes, please enter "transcript_release_set,genes"')
+        return expand_transcript_release_set_field
+
+    @classmethod
     def source_name_field(cls):
         source_name_field = coreapi.Field(
             name='source_name',

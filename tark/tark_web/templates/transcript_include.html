@@ -1,0 +1,42 @@
+{% load staticfiles %}
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+
+<!-- Transcript include -->
+
+<table id="compare_result_transcript" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript as diff_me_tr %}
+{% with diff_result.diff_with_transcript as diff_with_tr %}
+{% with diff_result.results as diff_result %}
+
+<tr style="background-color: #4b6584;color:#ffffff">
+    <th style="width:20%">Transcript</th>
+    <th style="width:35%">DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
+    <th style="width:35%">DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th>
+    <th style="text-align:center;width:10%">MATCH</th>
+</tr>
+<tr>
+<td>StableID</td>
+<td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_me_tr.stable_id }}">{{ diff_me_tr.stable_id }}</a> </td>
+<td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_with_tr.stable_id }}">{{ diff_with_tr.stable_id }}</a></td>
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
+</tr>
+<tr>
+<td>StableID Version</td><td>{{ diff_me_tr.stable_id_version }} </td><td>{{ diff_with_tr.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
+</tr>
+<tr>
+<td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+</tr>
+<tr>
+<td>ExonSet</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
+</tr>
+<tr>
+<td>Sequence</td><td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }} </td><td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }} </td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
+</tr>
+
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+</table>

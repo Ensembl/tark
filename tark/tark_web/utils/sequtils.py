@@ -29,7 +29,6 @@ class TarkSeqUtils(object):
 
     @classmethod
     def format_fasta(cls, sequence, id_="ID_", name_="", description_=""):
-
         record = SeqRecord(Seq(sequence, generic_dna),
                            id=id_, name=name_, description=description_)
 

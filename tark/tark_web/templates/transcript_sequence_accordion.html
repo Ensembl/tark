@@ -35,7 +35,7 @@
  	{% with diff_result.diff_me_transcript as diff_me_tr %}
     {% if diff_me_tr %}
     {% with diff_me_tr.sequence.sequence|format_fasta:diff_me_tr.stable_id as fasta_seq_diff_me %}
-    <p class="text-justify" style="font-family:monospace;font-size:80%;">
+    <p class="text-justify" style="font-family:monospace;font-size:90%;">
   	{{ fasta_seq_diff_me }}
   	</p>
     {% endwith %}
@@ -48,7 +48,7 @@
  	{% with diff_result.diff_with_transcript as diff_with_tr %}
     {% if diff_with_tr %}
     {% with diff_with_tr.sequence.sequence|format_fasta:diff_with_tr.stable_id as fasta_seq_diff_with %}
-    <p class="text-justify" style="font-family:monospace;font-size:80%;">
+    <p class="text-justify" style="font-family:monospace;font-size:90%;">
   	{{ fasta_seq_diff_with }}
   	</p>
     {% endwith %}

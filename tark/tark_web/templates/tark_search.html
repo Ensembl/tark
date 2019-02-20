@@ -28,15 +28,15 @@
 
 <div class="container" style="padding-top:20px;">
 
-<div class="panel panel-warning ">
+<div class="panel panel-info">
   <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Tark Transcript Search</strong></div>
   <div class="panel-body">
-  Use this tool to search for Transcripts using any identifiers (eg:<strong> BRCA2, ENSG00000139618, ENST00000225573</strong>)<br/>
+  Search for Transcripts using any identifiers (eg:<strong> BRCA2, ENSG00000139618, ENST00000225573, NM_000059, LRG_293t1</strong>)<br/>
   For location search, please use the following format <strong>13: 32315474-32400260</strong><br/>
-  If start and end are same, then try <strong>13: 32315474-32315474 OR LRG_763: 5001-10000 OR MT:577-640</strong>
   </div>
 </div>
 
+<!--
 <form class="form-horizontal" method="POST" action="">
 {% csrf_token %}
 
@@ -65,6 +65,19 @@
   </div>
 
 </form>
+-->
+
+<div class="row" id="search_big">
+    <div class="col-md-12">
+    <form action="/web/search/" method="POST">
+    <div class="form-group" style="text-align: center;">
+    {% csrf_token %}
+      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search..eg: BRCA2, ENST00000470094, NM_000059" class="form-control input-lg" style="display:inline;width:60%;">
+      <button type="submit"><i class="fa fa-search fa-2x"></i></button>
+    </div>
+    </form>
+  </div>  
+  </div>
 
 </div>
 

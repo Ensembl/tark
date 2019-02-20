@@ -9,48 +9,6 @@
 {% endblock %}
 
 
-{% block extra_styles %}
-<style>
-
-.tab-pane {
-
-   // border-left: 1px solid #ddd;
-   // border-right: 1px solid #ddd;
-   // border-bottom: 1px solid #ddd;
-    //border-radius: 0px 0px 5px 5px;
-    padding: 10px;
-}
-
-.nav-tabs{
-  background-color:#C8D3DB;
-  margin-bottom: 0;
-}
-
-.nav-diff-li-a {
-    padding: 5px;
-}
-
-.nav-tabs > li > a{
-  border-radius: 5px;
-}
-.nav-tabs > li > a:hover{
-  background-color: #3D515F !important;
-    border-radius: 5px;
-    color:#fff;
-    border:1px solid black;
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:focus,
-.nav-tabs > li.active > a:hover{
-    background-color: #227093 !important;
-    color:#fff;
-    border:2px solid #3F515F;
-}
-</style>
-
-
-
-{% endblock %}
 
 {% load staticfiles %}
 {% load add_class %}
@@ -63,7 +21,7 @@
 
 <div class="container" style="padding-top:20px;">
 
- <div id="current_well" class="well well-sm text-center" style="background-color: #d9edf7 !important;"><strong>TRANSCRIPT DIFF SUMMARY REPORT</strong> </div>
+<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>TRANSCRIPT DIFF SUMMARY REPORT</strong> </div>
 
 {% if diff_result|length_is:"0" %}
 
@@ -72,122 +30,22 @@
 {% else %}
 
 <div class="row">
-<div class="col-md-9">
+<div id="diff_result" class="col-md-8">
+
 
 <!-- Transcript -->
-<table id="compare_result_transcript" class="table table-bordered table-striped table-condensed">
-{% with diff_result.diff_me_transcript as diff_me_tr %}
-{% with diff_result.diff_with_transcript as diff_with_tr %}
-{% with diff_result.results as diff_result %}
-
-<tr style="background-color: #4b6584;color:#ffffff">
-    <th>Transcript</th>
-    <th>DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
-    <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
-</tr>
-<tr>
-<td>StableID</td><td>{{ diff_me_tr.stable_id }} </td><td>{{ diff_with_tr.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
-</tr>
-<tr>
-<td>StableID Version</td><td>{{ diff_me_tr.stable_id_version }} </td><td>{{ diff_with_tr.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
-</tr>
-<tr>
-<td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
-</tr>
-
-<tr>
-    <th>Checksum</th>
-    <th></th><th></th><th></th>
-</tr>
-<tr>
-<td>Location</td><td>{{ diff_me_tr.loc_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.loc_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
-</tr>
-<tr>
-<td>Exonset</td><td>{{ diff_me_tr.exon_set_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.exon_set_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
-</tr>
-<tr>
-<td>Sequence</td><td>{{ diff_me_tr.sequence.seq_checksum|truncatechars:25 }} </td><td>{{ diff_with_tr.sequence.seq_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
-</tr>
-<tr>
-    <td>Transcript</td>
-    <td>{{ diff_me_tr.transcript_checksum|truncatechars:25 }}</td>
-    <td>{{ diff_with_tr.transcript_checksum|truncatechars:25 }}</td>
-    <td style="text-align:center">{% include "match_include.html" with has_var_checksum=diff_result.has_transcript_changed %}</td>
-</tr>
-
-{% endwith %}
-{% endwith %}
-{% endwith %}
-</table>
-
-<!-- transcript sequence -->
- {% include "transcript_sequence_accordion.html" %}
+ {% include "transcript_include.html" %}
+ 
+ <!-- gene include -->
+ {% include "gene_include.html" %}
+  
+ <!--Translations-->
+ {% include "translation_include.html" %}
+ 
+</div><!--close col-md-8 -->
 
 
-<!-- exonset -->
- {% include "exonset_accordion.html" %}
-
-
-
-<!--Translations-->
-{% if diff_result.diff_me_transcript.translations %}
-<table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
-{% with diff_result.diff_me_transcript.translations as diff_me_tl %}
-{% with diff_result.diff_with_transcript.translations as diff_with_tl %}
-{% with diff_result.results as diff_result %}
-
-<tr style="background-color: #60a3bc;color:#000000">
-    <th>Translation</th>
-    <th>DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
-    <th>DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th><th style="text-align:center">MATCH</th>
-</tr>
-<tr>
-<td>StableID</td><td>{{ diff_me_tl.stable_id }} </td><td>{{ diff_with_tl.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_changed %}</td>
-</tr>
-<tr>
-<td>StableID Version</td><td>{{ diff_me_tl.stable_id_version }} </td><td>{{ diff_with_tl.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
-</tr>
-<tr>
-<td>Location</td><td>{{diff_me_tl|get_location_string}}</td><td>{{diff_with_tl|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
-</tr>
-
-<tr>
-    <th>Checksum</th>
-    <th></th>
-    <th></th>
-    <th></th>
-</tr>
-<tr>
-<td>Location</td><td>{{ diff_me_tl.loc_checksum|truncatechars:25 }} </td><td>{{ diff_with_tl.loc_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
-</tr>
-<tr>
-<td>Sequence</td><td>{{ diff_me_tl.seq_checksum|truncatechars:25 }} </td><td>{{ diff_with_tl.seq_checksum|truncatechars:25 }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
-</tr>
-<tr>
-    <td>Translation</td>
-    <td>{{ diff_me_tl.translation_checksum|truncatechars:25 }}</td>
-    <td>{{ diff_with_tl.translation_checksum|truncatechars:25 }}</td>
-    <td style="text-align:center">{% include "match_include.html" with has_var_checksum=diff_result.has_translation_changed %}</td>
-</tr>
-
-{% endwith %}
-{% endwith %}
-{% endwith %}
-</table>
-{% endif %}
-
-
-<!-- translation sequence -->
- {% include "translation_sequence_accordion.html" %}
-
-
-<!-- gene accordion -->
- {% include "gene_accordion.html" %}
-
-
-</div><!--close col-md-9 -->
-
-<div class="col-md-3">
+<div class="col-md-4">
 <div class="row">
 <!-- summary -->
  {% include "summary_diff.html" %}
@@ -198,8 +56,25 @@
  
 </div>
 </div>
+</div> <!--close summary row-->
 
-</div> <!--close row-->
+<div class="row">
+
+ <div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>OTHER DETAILS</strong> </div>
+
+<!-- exonset -->
+ {% include "exonset_accordion.html" %}
+
+<!-- transcript sequence -->
+ {% include "transcript_sequence_accordion.html" %}
+
+
+<!-- translation sequence -->
+ {% include "translation_sequence_accordion.html" %}
+
+
+
+</div> <!--close details row-->
 </div> <!--close container -->
 
 {% endif %}

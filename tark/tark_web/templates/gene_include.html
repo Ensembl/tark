@@ -1,0 +1,41 @@
+{% load staticfiles %}
+{% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
+
+
+
+<!--Genes-->
+
+{% if diff_result.diff_me_transcript.gene %}
+<table id="compare_result_gene" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript.gene as diff_me_gene %}
+{% with diff_result.diff_with_transcript.gene as diff_with_gene %}
+{% with diff_result.results as diff_result %}
+
+<tr style="background-color: #303952;color:#ffffff">
+    <th style="width:20%">Gene</th>
+    <th style="width:35%">DIFF ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
+    <th style="width:35%">DIFF WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th>
+    <th style="text-align:center;width:10%;">MATCH</th>
+</tr>
+<tr>
+<td>StableID</td><td>{{ diff_me_gene.stable_id }} </td><td>{{ diff_with_gene.stable_id }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_stable_id_changed %}</td>
+</tr>
+<tr>
+<td>StableID Version</td><td>{{ diff_me_gene.stable_id_version }} </td><td>{{ diff_with_gene.stable_id_version }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_stable_id_version_changed %}</td>
+</tr>
+<tr>
+<td>HGNC</td><td><strong>{{diff_me_gene.hgnc}}</strong></td><td><strong>{{diff_with_gene.hgnc}}</strong></td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_hgnc_changed %}</td>
+</tr>
+<tr>
+<td>Location</td><td>{{diff_me_gene|get_location_string}}</td><td>{{diff_with_gene|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_gene_location_changed %}</td>
+</tr>
+
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+</table>
+{% endif %}
+ 
