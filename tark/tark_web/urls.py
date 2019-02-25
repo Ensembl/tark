@@ -24,7 +24,8 @@ from transcript.views import TranscriptDatatableView
 from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
 from release.views import ReleaseSetDatatableView
-from tark_web.views import datatable_view_release_set, release_set_stats_view
+from tark_web.views import datatable_view_release_set
+#from tark_web.views import datatable_view_release_set, release_set_stats_view
 
 
 urlpatterns = [
@@ -39,7 +40,7 @@ urlpatterns = [
     #  datatables
     url(r'^datatable/release_set/', datatable_view_release_set, name="datatable_view_release_set"),
     
-    url(r'^stats/release_set/', release_set_stats_view, name="release_set_stats_view"),
+    #url(r'^stats/release_set/', release_set_stats_view, name="release_set_stats_view"),
     
     url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/', datatable_view, name="datatable_view"),
     url(r'^datatable_clientside/(?P<table_name>[\w]+)/', datatable_fetch, name="datatablefetch_clientside"),

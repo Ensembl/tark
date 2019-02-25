@@ -23,6 +23,7 @@ from django.db.models import Q
 from transcript.models import Transcript
 from django.core import serializers
 from django.http.response import HttpResponse
+from django.db import connection
 
 
 class ReleaseUtils(object):
@@ -162,4 +163,37 @@ class ReleaseUtils(object):
 
         return result_dict
 
+    @classmethod
+    def get_features_gained(cls, feature, current_release, previous_release):
+        cursor = connection.cursor()
 
+        raw_sql = "SELECT SQL_NO_CACHE\
+                    COUNT(*)\
+                    FROM\
+                      (\
+                    SELECT\
+                      feature_id\
+                    FROM " +\
+            feature + "_release_tag AS f_tag\
+                      JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)\
+                    WHERE\
+                      rs.shortname=%s\
+                  ) AS v0\
+                  RIGHT JOIN (\
+                    SELECT\
+                      feature_id\
+                    FROM " + \
+            feature + "_release_tag AS f_tag\
+                      JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)\
+                    WHERE\
+                      rs.shortname=%s\
+                  ) AS v1 ON (v0.feature_id=v1.feature_id)\
+                WHERE\
+                  v0.feature_id IS NULL;\
+                  "
+
+        cursor.execute(raw_sql, [current_release, previous_release])
+        row = cursor.fetchone()
+        print("===========Gene count=================")
+        print(row)
+        return row

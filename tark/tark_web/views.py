@@ -126,7 +126,7 @@ def diff_release_home(request):
         print("Reached else2")
 
         form = DiffForm()
-    return render(request, 'tark_diff.html', context={'form': form, 'diff_release' : diff_release
+    return render(request, 'release_diff.html', context={'form': form
                                                       })
 
 def search_home(request):
@@ -184,12 +184,13 @@ def datatable_view_release_set(request):
     return render(request, 'datatable_view_release_set.html')
 
 
-def release_set_stats_view(request):
-    diff_dict = {}
-    diff_dict['release_set_1'] = {"source":"ensembl", "assembly":"grch38", "version": 93}
-    diff_dict['release_set_2'] = {"source":"ensembl", "assembly":"grch38", "version": 94}
-
-    ReleaseUtils.get_release_diff(diff_dict)
+# # used for testing only
+# def release_set_stats_view(request):
+#     diff_dict = {}
+#     diff_dict['release_set_1'] = {"source":"ensembl", "assembly":"grch38", "version": 93}
+#     diff_dict['release_set_2'] = {"source":"ensembl", "assembly":"grch38", "version": 94}
+# 
+#     ReleaseUtils.get_release_diff(diff_dict)
 
 
 

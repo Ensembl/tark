@@ -34,7 +34,7 @@ class GFFHandler(AnnotationHandler):
         Use the filters while testing the loader
         """
         # Try to populate this hash
-        stats_counter = {}
+        # stats_counter = {}
 
         gff_file = downloaded_files["gff"]
         protein_sequence_file = downloaded_files["protein"]

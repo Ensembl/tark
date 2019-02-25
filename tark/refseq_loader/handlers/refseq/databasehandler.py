@@ -21,9 +21,9 @@ import mysql.connector.pooling as pooling_connector
 from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 import collections
+import os
 
 
-# Singleton
 class DatabaseHandler(object):
 
     # Here the instance will be stored
@@ -36,20 +36,26 @@ class DatabaseHandler(object):
             DatabaseHandler()
         return DatabaseHandler.__instance
 
-    def __init__(self, ini_file=None):
+    def __init__(self, db_config=None):
         if DatabaseHandler.__instance is not None:
             raise Exception("This class is a singleton")
 
-        dbconfig = {
-            "user": "prem",
-            "password": "prem",
-            "host": "localhost",
-            "database": "tark_refseq_2019"
+        ini_file = os.path.abspath(os.path.dirname(__file__)) + "/../../management/commands/refseq_source.ini"
+        config_handler = ConfigHandler(ini_file)
+        db_config = config_handler.get_section_config(section_name="DATABASE")
+
+        print("loading in to  " + db_config.get("database"))
+
+        mydbconfig = {
+            "user": db_config.get("user"),
+            "password": db_config.get("pass"),
+            "port": db_config.get("port"),
+            "host": db_config.get("host"),
+            "database": db_config.get("database")
         }
         self.cnxpool = pooling_connector.MySQLConnectionPool(pool_name="mypool",
-                                                             **dbconfig)
-#         self.cnx = self.cnxpool.get_connection()
-#         self.cur = self.cnx.cursor()
+                                                             **mydbconfig)
+
         DatabaseHandler.__instance = self
 
     def execute_set_statements(self, set_statement):
