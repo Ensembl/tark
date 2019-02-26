@@ -66,7 +66,7 @@ function get_diff_result_summary(payload_data){
         get_url = get_url + "&render_as_string=True";
         var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;">' + 
         				 '<strong>TRANSCRIPT DIFF SUMMARY REPORT</strong>' +
-         				'<button type="button" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button></div>';
+         				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button></div>';
         $.get(get_url, function(diff_data, status){
     		gene_table = diff_data["gene"];
     		transcript_table = diff_data["transcript"];
@@ -145,8 +145,7 @@ $(document).ready(function() {
     var payload_data;
     $("#search_diff_transcript").click(function (e) {
 
-	  $("#loadingSpinner_qs1_qs2").show();
-	  //$("#summary_diff_qs1_qs2").empty();
+	 
       console.log("diff  transcript clicked");
       console.log(" Selected transcripts ");
       console.log(" First transcript " + transcript1_stable_id);
@@ -154,35 +153,21 @@ $(document).ready(function() {
       
       if(transcript1_stable_id && transcript2_stable_id){
       console.log("Two transcripts selected");
+       $("#loadingSpinner_qs1_qs2").show();
       get_diff_result_summary(payload_data);
        }else{
        console.log("Two transcripts NOT selected");
        $('#myModal').modal('show');
       }
-       
       });
-    
-    
-    
-    
-    // Add event listener for opening and closing details
-    $('#search_result_table tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = search_table.row( tr );
- 
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child( format(row.data()) ).show();
-            tr.addClass('shown');
-        }
-    } );
-} );
 
+ 	// Add event listener for closing result table
+ 	$("#summary_diff_qs1_qs2").on("click", "#close_diff_report", function () {
+       $("#summary_diff_qs1_qs2").empty();
+     });
+         
+    
+   });
 
 	</script>
 
