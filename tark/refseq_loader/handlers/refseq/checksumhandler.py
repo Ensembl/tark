@@ -100,11 +100,11 @@ class ChecksumHandler(object):
 
     @classmethod
     def get_loc_attributes(cls):
-        return ['assembly_id', 'loc_region', 'loc_start', 'loc_end', 'loc_strand']
+        return ['assembly_name', 'loc_region', 'loc_start', 'loc_end', 'loc_strand']
 
     @classmethod
     def get_gene_attributes(cls):
-        return ['loc_checksum', 'hgnc_id', 'stable_id', 'stable_id_version']
+        return ['loc_checksum', 'name_id', 'stable_id', 'stable_id_version']
 
     @classmethod
     def get_transcript_attributes(cls):
