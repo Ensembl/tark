@@ -22,6 +22,7 @@ from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 class AnnotationHandler(object):
 
     ASSEMBLY_ID = ConfigHandler().get_section_config()["assembly_id"]
+    ASSEMBLY_NAME = ConfigHandler().get_section_config()["assembly_name"]
 
     @classmethod
     def get_annotated_gene(cls, chrom, gene_feature):
@@ -33,6 +34,7 @@ class AnnotationHandler(object):
         gene['stable_id'] = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "GeneID")
         gene['stable_id_version'] = 1
         gene['assembly_id'] = cls.ASSEMBLY_ID
+        gene['assembly_name'] = cls.ASSEMBLY_NAME
         # make it none for the moment, otherwise you will get integrity exception
         hgnc_id = cls.parse_qualifiers(gene_feature.qualifiers, "Dbxref", "HGNC:HGNC")
         if hgnc_id is not None:
@@ -73,6 +75,7 @@ class AnnotationHandler(object):
         transcript['stable_id'] = transcript_stable_id
         transcript['stable_id_version'] = transcript_stable_id_version
         transcript['assembly_id'] = cls.ASSEMBLY_ID
+        transcript['assembly_name'] = cls.ASSEMBLY_NAME
         transcript['session_id'] = None
         transcript['transcript_checksum'] = None
         transcript['exon_set_checksum'] = None
@@ -101,6 +104,7 @@ class AnnotationHandler(object):
     def get_annotated_exon(cls, seq_region, exon_feature, exon_sequence):
         exon = {}
         exon['assembly_id'] = cls.ASSEMBLY_ID
+        exon['assembly_name'] = cls.ASSEMBLY_NAME
         exon['loc_start'] = exon_feature["exon_start"]
         exon['loc_end'] = exon_feature["exon_end"]
         exon['loc_strand'] = exon_feature["exon_strand"]
@@ -139,6 +143,7 @@ class AnnotationHandler(object):
         translation['session_id'] = None
         translation['loc_checksum'] = ChecksumHandler.get_location_checksum(translation)
         translation['assembly_id'] = cls.ASSEMBLY_ID
+        translation['assembly_name'] = cls.ASSEMBLY_NAME
         translation['translation_checksum'] = ChecksumHandler.get_translation_checksum(translation)
 
         return translation

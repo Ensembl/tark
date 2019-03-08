@@ -8,6 +8,7 @@ from refseq_loader.handlers.refseq.gffhandler import GFFHandler
 from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 from refseq_loader.handlers.refseq.downloadhandler import DownloadHandler
 from cProfile import Profile
+import datetime
 
 
 # Get an instance of a logger
@@ -65,6 +66,9 @@ class Command(BaseCommand):
             self._handle(*args, **options)
 
     def _handle(self, *args, **options):
+        logger.info("************START REFSEQ LOADING********************")
+        logger.info(datetime.datetime.now())
+        logger.info("************START TIME LOADING********************")
         logger.info(args)
         logger.info(options)
 
@@ -86,6 +90,8 @@ class Command(BaseCommand):
         if len(downloaded_files) == 4:
                 try:
                     GFFHandler.parse_gff_with_genbank(downloaded_files)
+                    logger.info("************ END TIME AFTER LOAD********************")
+                    logger.info(datetime.datetime.now())
                     logger.info("************ALL DONE********************")
                 except:
                     logger.warn("Unexpected error:", sys.exc_info()[0])

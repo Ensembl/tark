@@ -20,7 +20,7 @@ class ChecksumHandlerTest(TestCase):
                                'loc_start': '6018052',
                                'exon_seq': 'TGGCCGGCTGTGTTTTCCTGCTGATCAGCGTCCTCCTCCTGAGTGGGCTCACCTGGCAGCGGAGACA'}
 
-        self.annotated_gene = {'loc_start': '6010693', 'hgnc_id': '6008',
+        self.annotated_gene = {'loc_start': '6010693', 'hgnc_id': 'HGNC:6008',
                                'gene_checksum': None,
                                'loc_checksum': '51BA025EBD0EFEC96758D44D82C0B21FD450989F',
                                'loc_end': '6062370', 'loc_region': '10', 'stable_id': '3559',
