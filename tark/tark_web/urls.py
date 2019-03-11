@@ -36,6 +36,7 @@ urlpatterns = [
 
     # search
     url(r'^search/$', views.search_home, name='search_home'),
+    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/', views.fetch_sequence, name='fetch_sequence'),
 
     #  datatables
     url(r'^datatable/release_set/', datatable_view_release_set, name="datatable_view_release_set"),

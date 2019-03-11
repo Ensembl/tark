@@ -193,10 +193,10 @@ class DiffSet(object):
             second_exon_list = self.second_object['exons']
 
         if first_exon_list is not None and second_exon_list is not None:
-            # if both exonsets are same, we expect expected_result = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
-            # if only first 3 exons match, we expect expected_result = [[1, 1], [2, 2], [3, 3], [4, 0], [5, 0]]
-            compare_results_first2second = ExonUtils.compare_exon_sets(first_exon_list, second_exon_list)
-            compare_results_second2first = ExonUtils.compare_exon_sets(second_exon_list, first_exon_list)
+            #             compare_results_first2second = ExonUtils.compare_exon_sets(first_exon_list, second_exon_list)
+            #             compare_results_second2first = ExonUtils.compare_exon_sets(second_exon_list, first_exon_list)
+            compare_results_first2second = ExonUtils.diff_exon_sets(first_exon_list, second_exon_list)
+            compare_results_second2first = ExonUtils.diff_exon_sets(second_exon_list, first_exon_list)
             return (compare_results_first2second, compare_results_second2first)
 
         return None

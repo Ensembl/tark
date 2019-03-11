@@ -32,7 +32,7 @@
 <td>ExonSet</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
 </tr>
 <tr>
-<td>Sequence</td><td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }} </td><td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }} </td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
+<td>Sequence</td><td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }}  <a target="_blank" href={% url 'fetch_sequence' "transcript" diff_me_tr.stable_id diff_me_tr.stable_id_version "json" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a></td><td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }} <a target="_blank" href={% url 'fetch_sequence' "transcript" diff_with_tr.stable_id diff_with_tr.stable_id_version "json" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a></td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
 </tr>
 
 

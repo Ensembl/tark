@@ -16,7 +16,42 @@ limitations under the License.
 '''
 
 from django import template
+import datetime
 register = template.Library()
+
+
+@register.filter
+def format_release_set(search_result, source):
+
+    release_dict = {result["shortname"]: result["release_date"] for result in search_result}
+
+    prefix = ""
+    if "ensembl" in source or "lrg" in source:
+        prefix = "e"
+    elif "refseq" in source:
+        prefix = "r"
+
+    sorted_release_dict = sorted(release_dict)
+    if len(sorted_release_dict) == 1:
+        min_release_shortname = sorted_release_dict[0]
+        min_release_date = release_dict[min_release_shortname]
+        min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
+        min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
+        return {'max_release': min_release_shortname, "date_range": min_release_value}
+    elif len(sorted_release_dict) > 1:
+        min_release_shortname = sorted_release_dict[0]
+        min_release_date = release_dict[min_release_shortname]
+        min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
+        min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
+
+        max_release_shortname = sorted_release_dict[-1]
+        max_release_date = release_dict[max_release_shortname]
+        max_dt = datetime.datetime.strptime(max_release_date, '%Y-%m-%d')
+        max_release_value = prefix + max_release_shortname + " (" + datetime.date.strftime(max_dt, "%b%Y") + ")"
+
+        return {'max_release': max_release_shortname, "date_range": min_release_value + ".." + max_release_value}
+
+    return None
 
 
 @register.filter

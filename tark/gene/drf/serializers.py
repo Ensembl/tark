@@ -45,11 +45,11 @@ class GeneSerializer(SerializerMixin, serializers.ModelSerializer):
     ONE2MANY_SERIALIZER = {Gene.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
 
     assembly = AssemblyField(read_only=True)
-    hgnc = HgncNameField(read_only=True)
+    name = HgncNameField(read_only=True)
 
     class Meta:
         model = Gene
-        fields = CommonFields.COMMON_FIELD_SET + ('hgnc', 'gene_checksum', )
+        fields = CommonFields.COMMON_FIELD_SET + ('name', 'gene_checksum', )
 
     def __init__(self, *args, **kwargs):
         super(GeneSerializer, self).__init__(*args, **kwargs)

@@ -14,9 +14,49 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
+import collections
 
 
 class ExonUtils(object):
+
+    @classmethod
+    def diff_exon_sets(cls, exonset1, exonset2):
+
+        #compare_results = collections.OrderedDict()
+        compare_results = []
+        cumulative_overlap_score = 0;
+
+        for exon1 in exonset1:
+            cur_exon = exon1
+            matched_exons = []
+            exon1_stable_id_version = str(exon1['stable_id']) + '.' + str(exon1['stable_id_version'])
+            print("++++++++++++++++++++++++++++++++++ " + exon1_stable_id_version)
+            for exon2 in exonset2:
+                exon2_stable_id_version = str(exon2['stable_id']) + '.' + str(exon2['stable_id_version'])
+                # check if exon from exonset1 overlaps with any exon in exonset2
+                current_compare_result = {}
+                overlap_score = 0
+                if exon1['loc_region'] == exon2['loc_region']:
+                    overlap_score = cls.compute_overlap(exon1['loc_start'], exon1['loc_end'], exon2['loc_start'], exon2['loc_end'])
+                    if overlap_score > 0:
+                        print("====found overlap between ==== " + str(exon1['exon_order'])  + "  and " + str(exon2['exon_order']) )
+                        print(overlap_score)
+                        cumulative_overlap_score = cumulative_overlap_score + 1
+                        current_compare_result['overlapping_exon'] = exon2
+                        #current_compare_result['overlapping_exon_order'] = exon2['exon_order']
+                        current_compare_result['loc_checksum'] = exon1['loc_checksum'] == exon2['loc_checksum']
+                        current_compare_result['seq_checksum'] = exon1['seq_checksum'] == exon2['seq_checksum']
+
+                        matched_exons.append(current_compare_result)
+
+            compare_results.append((cur_exon, matched_exons))
+
+        compare_results.insert(0, ("cumulative_overlap_score", cumulative_overlap_score))
+
+        print("==================compare_results============")
+        print(compare_results)
+        print("==================compare_results============")
+        return compare_results
 
     @classmethod
     def compare_exon_sets(cls, exonset1, exonset2):

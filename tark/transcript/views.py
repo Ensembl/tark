@@ -100,8 +100,10 @@ class TranscriptDiff(generics.ListAPIView):
             gene_include_html = render_to_string('gene_include.html', {'diff_result': compare_results})
             transcript_include_html = render_to_string('transcript_include.html', {'diff_result': compare_results})
             translation_include_html = render_to_string('translation_include.html', {'diff_result': compare_results})
+            exonset_include_html = render_to_string('exonset_include.html', {'diff_result': compare_results})
             rendered_result = {"gene": gene_include_html, "transcript": transcript_include_html,
-                               "translation": translation_include_html}
+                               "translation": translation_include_html,
+                               "exonset": exonset_include_html}
             return Response(rendered_result)
 
         return Response(compare_results)

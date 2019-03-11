@@ -25,6 +25,7 @@ import json
 import logging
 from tark_web.utils.apiutils import ApiUtils
 from django.urls.base import resolve
+from django.http.response import JsonResponse
 # Get an instance of a logger
 logger = logging.getLogger("tark")
 
@@ -126,8 +127,25 @@ def diff_release_home(request):
         print("Reached else2")
 
         form = DiffForm()
-    return render(request, 'release_diff.html', context={'form': form
-                                                      })
+    return render(request, 'release_diff.html', context={'form': form})
+
+
+def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_format="fasta"):
+    host_url = ApiUtils.get_host_url(request)
+    query_url = "/api/" + feature_type + "/?stable_id=" + stable_id + "&stable_id_version=" + str(stable_id_version) +\
+                "&expand=sequence"
+    response = requests.get(host_url + query_url)
+    sequence_data = ""
+    if response.status_code == 200 and "results" in response.json():
+        results = response.json()["results"][0]
+        print(results)
+        if "sequence" in results:
+            sequence_data = results["sequence"]["sequence"]
+            print(results["sequence"]["sequence"])
+
+    return render(request, 'sequence_fasta.html', context={'sequence_data': sequence_data,
+                                                           'stable_id': stable_id + '.' + stable_id_version,
+                                                          })
 
 def search_home(request):
     """

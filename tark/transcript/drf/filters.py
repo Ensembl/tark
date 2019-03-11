@@ -156,7 +156,7 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 if loc_end is not None:
                     queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
             else:
-                queryset = queryset.filter(genes__hgnc__name__iexact=identifier)
+                queryset = queryset.filter(genes__name__name__iexact=identifier)
 
         return queryset.distinct()
 

@@ -20,7 +20,7 @@ function get_query_params(row){
             transcript_release = row.find("td:nth-child(6)").text().trim(); 
             transcript_releases = [];
             if (typeof transcript_release != "undefined") {
-            transcript_releases = transcript_release.split(',');
+            transcript_releases = transcript_release.split('..');
             transcript_releases_trimmed = [];
             $.each(transcript_releases, function( index, value ) {
 			transcript_releases_trimmed.push(value.trim());
@@ -31,7 +31,7 @@ function get_query_params(row){
 
             //removing e and r from release
             if(transcript_release.startsWith("e") || transcript_release.startsWith("r")){
-            transcript_release = transcript_release.substring(1);
+            transcript_release = transcript_release.substring(1,3);
             }
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release];
 }
@@ -71,8 +71,9 @@ function get_diff_result_summary(payload_data){
     		gene_table = diff_data["gene"];
     		transcript_table = diff_data["transcript"];
     		translation_table = diff_data["translation"];
+    		exonset_table = diff_data["exonset"];
 
-    		$('#summary_diff_qs1_qs2').html(header_div +  transcript_table + gene_table + translation_table);
+    		$('#summary_diff_qs1_qs2').html(header_div +  transcript_table + gene_table + translation_table + exonset_table);
     		$("#loadingSpinner_qs1_qs2").hide();
  		});
 
@@ -85,7 +86,20 @@ function get_diff_result_summary(payload_data){
 $(document).ready(function() {
 
     var search_table = $('#search_result_table').DataTable(
-    { "order": [],
+    { 
+     "initComplete": function(settings){
+           // $('#search_result_table thead th').each(function () {
+            //   var $td = $(this);
+           //    $td.attr('title', $td.text());
+          //  });
+
+            /* Apply the tooltips */
+            $('#search_result_table thead th[title]').tooltip(
+            {
+               "container": 'body'
+            });          
+        },  
+    "order": [],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
@@ -190,7 +204,7 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="true">Region</th>
      <th class="text-center" data-sortable="true">Start</th>
      <th class="text-center" data-sortable="true">End</th>
-     <th class="text-center" data-sortable="true">Strand</th>
+     <th class="text-center" data-sortable="true" title="Matched Annotation by NCBI and EMBL-EBI">MANE</th>
      <th class="text-center" data-sortable="true">HGNC</th>
      <!--th class="text-center" data-sortable="true">Exons</th-->
      <!--th class="text-center" data-sortable="true">Details</th-->
@@ -200,7 +214,19 @@ $(document).ready(function() {
       <tr>
       <td><input type="radio" name="transcript1"></td>
       <td><input type="radio" name="transcript2"></td>
-      <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}">{{result.stable_id}}.{{result.stable_id_version}}</a></td>
+      <td>
+       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
+       {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
+       {% if release_date.max_release == "96"%}
+      <a target="_blank" href="http://staging.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+      {% else %}
+       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+       {% endif %}
+       {% endwith%}
+       {% else %}
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}.{{result.stable_id_version}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+        {% endif %}
+      </td>
       
        {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
         <td>{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
@@ -214,8 +240,34 @@ $(document).ready(function() {
         <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% endif %}
       
-    
       
+      <!--release_set -->
+       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
+       {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
+      <td>
+      {% if release_date.max_release == "96"%}
+      <a target="_blank" href="http://staging.ensembl.org">
+      {% else %}
+       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org">
+      {% endif %}
+      {{release_date.date_range}}
+      </a>
+      </td>
+      {% endwith %}
+      {% else %}
+       {% with result.transcript_release_set|format_release_set:"refseq" as release_date %}
+      <td>
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">	
+      {{release_date.date_range}}
+      </a>
+      </td>
+      {% endwith %}
+      {% endif %}
+      
+      
+      <!--release_set -->
+      
+      <!--
       {% with result.transcript_release_set|get_release_as_list:"shortname" as releases %}
       <td>
       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
@@ -243,11 +295,13 @@ $(document).ready(function() {
       {% endif %}
       </td>
       {% endwith %}
+      -->
+      
       <td>{{result.loc_region}}</td>
       <td>{{result.loc_start}}</td>
       <td>{{result.loc_end}}</td>
-      <td>{{result.loc_strand}}</td>
-      <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g={{result.genes|get_values_as_list:'hgnc'}}">{{result.genes|get_values_as_list:"hgnc"}}</a></td>
+      <td>{{result.mane_transcript}}</td>
+      <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g={{result.genes|get_values_as_list:'name'}}">{{result.genes|get_values_as_list:"name"}}</a></td>
       <!--
       {% with result.exons|get_values_as_list:"stable_id_exon" as exons %}
       <td>{{exons |linebreaks}}</td>
