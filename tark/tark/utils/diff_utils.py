@@ -178,7 +178,7 @@ class DiffSet(object):
                                                     feature_attribute="loc_checksum",
                                                     feature_type="gene")
         self.diff_dict['has_hgnc_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="hgnc",
+                                                    feature_attribute="name",
                                                     feature_type="gene")
 
         return self.diff_dict
