@@ -338,7 +338,7 @@ class FeatureHandler(object):
                         VALUES (\
                         %(stable_id)s, %(stable_id_version)s,  %(assembly_id)s, \
                         %(loc_region)s, %(loc_start)s,  %(loc_end)s,  %(loc_strand)s,  X%(loc_checksum)s, \
-                        %(name_id)s,  X%(gene_checksum)s,  %(session_id)s) \
+                        %(hgnc_id)s,  X%(gene_checksum)s,  %(session_id)s) \
                         ON DUPLICATE KEY UPDATE gene_id=LAST_INSERT_ID(gene_id)")
 
         gene_id = DatabaseHandler.getInstance().insert_data(insert_gene, gene_data, FOREIGN_KEY_CHECKS=0)
