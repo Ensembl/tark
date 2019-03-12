@@ -334,11 +334,11 @@ class FeatureHandler(object):
 
         insert_gene = ("INSERT INTO gene (stable_id, stable_id_version, assembly_id, \
                         loc_region, loc_start, loc_end, loc_strand, loc_checksum, \
-                        hgnc_id, gene_checksum, session_id) \
+                        name_id, gene_checksum, session_id) \
                         VALUES (\
                         %(stable_id)s, %(stable_id_version)s,  %(assembly_id)s, \
                         %(loc_region)s, %(loc_start)s,  %(loc_end)s,  %(loc_strand)s,  X%(loc_checksum)s, \
-                        %(hgnc_id)s,  X%(gene_checksum)s,  %(session_id)s) \
+                        %(name_id)s,  X%(gene_checksum)s,  %(session_id)s) \
                         ON DUPLICATE KEY UPDATE gene_id=LAST_INSERT_ID(gene_id)")
 
         gene_id = DatabaseHandler.getInstance().insert_data(insert_gene, gene_data, FOREIGN_KEY_CHECKS=0)
