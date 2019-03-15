@@ -57,7 +57,6 @@ class DataTableListApi(generics.ListAPIView):
     unfiltered_query_set = None
 
     def get_queryset(self):
-        # self.unfiltered_query_set = query_set = super(DataTableListApi, self).get_queryset()
 
         latest_release = self.kwargs['release_name']
         latest_assembly = self.kwargs['assembly_name']
@@ -71,10 +70,6 @@ class DataTableListApi(generics.ListAPIView):
 
         if latest_source is None:
             latest_source = ReleaseUtils.get_default_source()
-
-        print(" Latest assembly from TranscriptDatatableView: " + str(latest_assembly))
-        print(" Latest release TranscriptDatatableView: " + str(latest_release))
-        print(" Latest source TranscriptDatatableView: " + str(latest_source))
 
         self.unfiltered_query_set = query_set = Transcript.objects.filter(
                 Q(transcript_release_set__shortname__icontains=latest_release) &
@@ -96,7 +91,6 @@ class DataTableListApi(generics.ListAPIView):
 
         search_queries = self.request.query_params.get('search[value]', '').strip().split(' ')
 
-        # print('search parameters ' + str(self.search_parameters))
         q = Q()
         if len(search_queries) > 0 and search_queries[0] != u'':
             for params in self.search_parameters:
@@ -108,7 +102,8 @@ class DataTableListApi(generics.ListAPIView):
                         q |= Q(**temp)
                 else:
                     for query in search_queries:
-                        if not query.isdigit() and params in ["transcript_id", "stable_id_version", "loc_start", "loc_end"]:
+                        if not query.isdigit() and params in ["transcript_id", "stable_id_version", "loc_start",
+                                                              "loc_end"]:
                             continue
 
                         temp = {
@@ -138,10 +133,6 @@ class DataTableListApi(generics.ListAPIView):
 
 
 def datatable_view(request, table_name, assembly_name, release_name, source_name, assembly_name_compare, release_name_compare, source_name_compare):  # @IgnorePep8
-    print("DataTable view called " + table_name + " assembly_name" + assembly_name + " release_name " +
-          release_name + " assembly_name_compare " +
-          assembly_name_compare + " release_name_compare " + release_name_compare +
-          " source_name " + source_name + " source_name_compare " + source_name_compare)
 
     server_side_processing = "false"
     if table_name in ['gene', 'transcript', 'translation', 'exon']:
@@ -158,15 +149,13 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
                                                   exclude_fields=["loc_checksum",
                                                                   "exon_set_checksum",
                                                                   "transcript_checksum"],
-                                                  include_fields = ["genes"])
+                                                  include_fields=["genes"])
 
     print("server_side_processing " + str(server_side_processing))
 
     if request.method == 'POST':
-        print("reached if")
         compare_set_form = CompareSetForm(request.POST)
         if compare_set_form.is_valid():
-            print("Form is valid")
             assembly_name_compare = compare_set_form.cleaned_data['diff_with_assembly']
             release_name_compare = compare_set_form.cleaned_data['diff_with_release']
     else:
@@ -185,7 +174,6 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
 
 
 def datatable_fetch(request, table_name):
-    print("DataTable fetch called " + table_name)
 
     draw = request.GET.get('draw', None)
     server_side = request.GET.get('serverSide', False)

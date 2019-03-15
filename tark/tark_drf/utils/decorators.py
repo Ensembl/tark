@@ -16,6 +16,12 @@ limitations under the License.
 '''
 
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
 class setup_eager_loading(object):
     '''
     Decorator to select/prefetch related entries
@@ -32,28 +38,24 @@ class setup_eager_loading(object):
             entries = []
             many2one = getattr(self.serializer, 'MANY2ONE_SERIALIZER', None)
             one2many = getattr(self.serializer, 'ONE2MANY_SERIALIZER', None)
-            print("From wrapped")
+
             if 'expand' in query_params:
-                print("Expand in query")
                 entry = query_params['expand']
                 entries = entry.split(',') if entry else None
             elif 'expand_all' in query_params and query_params['expand_all'] == 'true':
-                print("Expand ALL in query")
                 if many2one is not None:
                     entries.extend(list(many2one.keys()))
                 if one2many is not None:
                     entries.extend(list(one2many.keys()))
 
-            print(entries)
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
-                    print('many2one entry from eager loading select_related:' + str(entry))
+                    logger.info('many2one entry from eager loading select_related:' + str(entry))
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
-                    print('one2many entry from eager loading prefetch_related: ' + str(entry))
+                    logger.info('one2many entry from eager loading prefetch_related: ' + str(entry))
                     if "translations" == entry:
-                        print("From prefetch_related translations====================")
                         queryset = queryset.prefetch_related(entry)
 
             return queryset
@@ -74,7 +76,7 @@ class expand_all_related(object):
             entries = []
             many2one = getattr(self.serializer, 'MANY2ONE_SERIALIZER', None)
             one2many = getattr(self.serializer, 'ONE2MANY_SERIALIZER', None)
-            print("From wrapped expand_all_related")
+
             if many2one is not None:
                 entries.extend(list(many2one.keys()))
             if one2many is not None:
@@ -83,10 +85,8 @@ class expand_all_related(object):
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
-                    print('many2one entry from expand_all_related:' + str(entry))
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
-                    print('one2many entry from expand_all_related: ' + str(entry))
                     queryset = queryset.prefetch_related(entry)
 
             return queryset

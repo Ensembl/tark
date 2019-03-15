@@ -35,6 +35,5 @@ class DrfUtils(object):
         elif (cardinality == 'one2many'):
             if one2many is not None:
                 entities.extend(list(one2many.values()))
-        print("======RELATED entities from get_related_entities")
-        print(entities)
+
         return entities

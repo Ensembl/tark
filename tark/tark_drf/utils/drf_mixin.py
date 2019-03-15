@@ -15,20 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 import importlib
-from Bio.motifs.meme import Instance
 
 
 class SerializerMixin(object):
 
     def set_related_fields(self, cls, **kwargs):
-        # print("Set related fields called ===================================")
         many2one = getattr(cls, 'MANY2ONE_SERIALIZER', None)
         one2many = getattr(cls, 'ONE2MANY_SERIALIZER', None)
         entries = []
-        print("====many2one from set_related_fields=======")
-        print(many2one)
-        print("====one2many from set_related_fields=======")
-        print(one2many)
 
         if 'context' in kwargs:
             request_obj = kwargs['context']['request']
@@ -43,7 +37,6 @@ class SerializerMixin(object):
                     entries.extend(list(one2many.keys()))
 
             for entry in entries:
-                print("Inside for set_related_field " + entry)
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
 
@@ -52,27 +45,15 @@ class SerializerMixin(object):
                         instance_ = getattr(importlib.import_module(module_name), class_name)
                         self.fields[entry] = instance_(read_only=True)
                     else:
-                        print("================HERE =======")
-                        print( many2one[entry])
                         self.fields[entry] = many2one[entry](read_only=True)
 
                 if one2many is not None and entry in one2many.keys():
                     if isinstance(one2many[entry], str):
-                        print("===REACHED IF ====")
                         module_name, class_name = one2many[entry].rsplit(".", 1)
-                        print("CHECK HERE " + str(module_name)  + " class_name " + class_name)
                         instance_ = getattr(importlib.import_module(module_name), class_name)
-                        print(instance_)
                         self.fields[entry] = instance_(many=True, read_only=True)
                     else:
-                        print("===REACHED ELSE ====" + entry)
                         if entry == "exons":
                             self.fields[entry] = one2many[entry](source="exontranscript_set", many=True, read_only=True)
-#                         if entry == "translations":
-#                             self.fields[entry] = one2many[entry](source="translationtranscript_set", many=True, read_only=True)
                         else:
                             self.fields[entry] = one2many[entry](many=True, read_only=True)
-
-#         print("*******FIELDS**************")
-#         print(self.fields)
-#         print("*******FIELDS**************")

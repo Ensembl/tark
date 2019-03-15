@@ -332,25 +332,24 @@ class AssemblyField(serializers.RelatedField):
 class ManeField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
-            #return value.assembly_name
             return "Test_mane"
         return None
 
-#
-# class TranscriptFieldEnsReleaseVersion(serializers.RelatedField):
-#     def to_representation(self, value):
-#         if value is not None:
-#                 transcript = Transcript.objects.get(pk=value.feature_id)
-#                 return transcript.release.shortname
-#         return None
-#
-#
-# class TranscriptFieldRefSeqReleaseVersion(serializers.RelatedField):
-#     def to_representation(self, value):
-#         if value is not None:
-#             transcript = Transcript.objects.get(pk=value.feature_id)
-#             return transcript.release.shortname
-#         return None
+
+class TranscriptFieldEnsReleaseVersion(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+                transcript = Transcript.objects.get(pk=value.feature_id)
+                return transcript.release.shortname
+        return None
+
+
+class TranscriptFieldRefSeqReleaseVersion(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            transcript = Transcript.objects.get(pk=value.feature_id)
+            return transcript.release.shortname
+        return None
 
 
 class TranscriptFieldEns(serializers.RelatedField):
