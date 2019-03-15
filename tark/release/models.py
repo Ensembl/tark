@@ -81,10 +81,10 @@ class RelationshipType(models.Model):
 
 
 class TranscriptReleaseTagRelationshipAdmin(admin.ModelAdmin):
-        search_fields = ["transcript_release_tag_relationship__transcript_release_object__transcript_release_tag", "transcript_release_tag_relationship__transcript_release_subject__transcript_release_tag"]
-        list_select_related = (
-        'transcript_release_tag', 'transcript'
-        )
+        search_fields = ["transcript_release_tag_relationship__transcript_release_object__transcript_release_tag",
+                         "transcript_release_tag_relationship__transcript_release_subject__transcript_release_tag"]
+        list_select_related = ('transcript_release_tag', 'transcript')
+
 
 class TranscriptReleaseTagRelationship(models.Model):
     transcript_transcript_id = models.AutoField(primary_key=True)

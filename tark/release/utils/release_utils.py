@@ -18,12 +18,14 @@ from release.models import ReleaseSet, ReleaseSource, TranscriptReleaseTag
 from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
-from numpy import source
 from django.db.models import Q
 from transcript.models import Transcript
-from django.core import serializers
-from django.http.response import HttpResponse
 from django.db import connection
+
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class ReleaseUtils(object):
@@ -114,48 +116,39 @@ class ReleaseUtils(object):
 
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset1 = queryset_all.filter(Q(release__source__shortname__iexact=str(set1_params["source"]))
-                                     & Q(release__shortname__iexact=set1_params["version"])
-                                     & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))
-                                     ).values("feature_id").distinct()
-        print(queryset1.query)
+                                        & Q(release__shortname__iexact=set1_params["version"])  # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))  # @IgnorePep8
+                                     ).values("feature_id").distinct()  # @IgnorePep8
+
         queryset1_count = queryset1.count()
-        print("Transcript count for set1 " + str(queryset1_count) )
 
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset2 = queryset_all.filter(Q(release__source__shortname__iexact=str(set2_params["source"]))
-                                     & Q(release__shortname__iexact=set2_params["version"])
-                                     & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))
-                                     ).values("feature_id").distinct()
+                                        & Q(release__shortname__iexact=set2_params["version"])  # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))  # @IgnorePep8
+                                     ).values("feature_id").distinct()  # @IgnorePep8
 
-        print(queryset2.query)
         queryset2_count = queryset2.count()
-        print("Transcript count for set2 " + str(queryset2_count))
+        logger.info("queryset2_count " + queryset2_count)
 
         # intersection
         qs_intersection = queryset1 & queryset2
         qs_intersection_count = qs_intersection.count()
-        print("Intersection of set1 and set2 count " + str(qs_intersection.count()))
 
         # difference set1-set2
         qs1_qs2_difference_count = queryset1_count - qs_intersection_count
-        print("Difference of set1 - set2 count " + str(qs1_qs2_difference_count))
+        logger.info("qs1_qs2_difference_count " + qs1_qs2_difference_count)
 
         # difference is not supported by mysql
         # bigger_qs.exclude(id__in=smaller_qs)
         qs1_qs2_diff = queryset1.exclude(feature_id__in=queryset2)
-        print("***qs1 - qs2 diff " + str(qs1_qs2_diff.count()))
         # get Transcripts
         qs1_qs2_transcripts = Transcript.objects.filter(pk__in=qs1_qs2_diff).values('stable_id', 'stable_id_version')
 
         result_dict = {}
         result_dict['qs1_qs2_transcripts'] = list(qs1_qs2_transcripts)
 
-        #qs1_qs2__json = serializers.serialize('json', qs1_qs2_transcripts)
-        #print(qs1_qs2__json)
-        #return HttpResponse(qs_json, content_type='application/json')
-
         qs2_qs1_diff = queryset2.exclude(feature_id__in=queryset1)
-        print("***qs2 - qs1 diff " + str(qs2_qs1_diff.count()))
 
         # get Transcripts
         qs2_qs1_transcripts = Transcript.objects.filter(pk__in=qs2_qs1_diff).values('stable_id', 'stable_id_version')
@@ -194,6 +187,4 @@ class ReleaseUtils(object):
 
         cursor.execute(raw_sql, [current_release, previous_release])
         row = cursor.fetchone()
-        print("===========Gene count=================")
-        print(row)
         return row
