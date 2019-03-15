@@ -21,6 +21,7 @@ import binascii
 from tark_drf.utils.drf_utils import DrfUtils
 import coreapi
 from release.utils.release_utils import ReleaseUtils
+from transcript.models import Transcript
 
 
 class DrfFields(object):
@@ -325,6 +326,51 @@ class AssemblyField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
             return value.assembly_name
+        return None
+
+
+class ManeField(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            #return value.assembly_name
+            return "Test_mane"
+        return None
+
+#
+# class TranscriptFieldEnsReleaseVersion(serializers.RelatedField):
+#     def to_representation(self, value):
+#         if value is not None:
+#                 transcript = Transcript.objects.get(pk=value.feature_id)
+#                 return transcript.release.shortname
+#         return None
+#
+#
+# class TranscriptFieldRefSeqReleaseVersion(serializers.RelatedField):
+#     def to_representation(self, value):
+#         if value is not None:
+#             transcript = Transcript.objects.get(pk=value.feature_id)
+#             return transcript.release.shortname
+#         return None
+
+
+class TranscriptFieldEns(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            return "{}.{}".format(value.feature.stable_id, value.feature.stable_id_version)
+        return None
+
+
+class TranscriptFieldRefSeq(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            return "{}.{}".format(value.feature.stable_id, value.feature.stable_id_version)
+        return None
+
+
+class TranscriptFieldRelationshipType(serializers.RelatedField):
+    def to_representation(self, value):
+        if value is not None:
+            return value.shortname
         return None
 
 

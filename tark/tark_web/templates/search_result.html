@@ -99,7 +99,7 @@ $(document).ready(function() {
                "container": 'body'
             });          
         },  
-    "order": [],
+    "order": [[ 10, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
@@ -205,6 +205,7 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="true">Start</th>
      <th class="text-center" data-sortable="true">End</th>
      <th class="text-center" data-sortable="true" title="Matched Annotation by NCBI and EMBL-EBI">MANE</th>
+     <th class="text-center" data-sortable="true" title="Matched Annotation by NCBI and EMBL-EBI">MANE_TYPE</th>
      <th class="text-center" data-sortable="true">HGNC</th>
      <!--th class="text-center" data-sortable="true">Exons</th-->
      <!--th class="text-center" data-sortable="true">Details</th-->
@@ -263,44 +264,12 @@ $(document).ready(function() {
       </td>
       {% endwith %}
       {% endif %}
-      
-      
-      <!--release_set -->
-      
-      <!--
-      {% with result.transcript_release_set|get_release_as_list:"shortname" as releases %}
-      <td>
-      {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
-	      {%if releases|length == 1 %}
-	      <a target="_blank" href="http://e{{releases.0}}.ensembl.org">e{{releases.0}}</a>
-	      {% else %}
-	      {% for release in releases %}
-	      <a target="_blank" href="http://e{{release}}.ensembl.org">e{{release}}</a>
-		      {% if forloop.counter <  releases|length %}
-		      ,
-		      {% endif %}
-	      {% endfor %}
-	      {% endif %}
-      {% else %}
-      	 {%if releases|length == 1 %}
-	      <a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">{{releases.0}}</a>
-	      {% else %}
-	      {% for release in releases %}
-	      <a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">{{release}}</a>
-	      	{% if forloop.counter <  releases|length %}
-		      ,
-		    {% endif %}
-	      {% endfor %}
-	      {% endif %}
-      {% endif %}
-      </td>
-      {% endwith %}
-      -->
-      
+       
       <td>{{result.loc_region}}</td>
       <td>{{result.loc_start}}</td>
       <td>{{result.loc_end}}</td>
       <td>{{result.mane_transcript}}</td>
+      <td>{{result.mane_transcript_type}}</td>
       <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g={{result.genes|get_values_as_list:'name'}}">{{result.genes|get_values_as_list:"name"}}</a></td>
       <!--
       {% with result.exons|get_values_as_list:"stable_id_exon" as exons %}

@@ -63,27 +63,38 @@
     
     <p class="text-justify" style="font-size: 1.8rem;font-weight:350;">This beta is provided to give the community an opportunity to explore Tark's functionality. Please provide feedback on possible improvements to help meet future needs. Note, this is a beta site and should not be counted upon to be stable, the API may change and this server may be unavailable at times..</p> 
   </div>
+  
+  
+  
+   <div class="row" id="search_big">
+    <div class="col-md-12">
+    <form action="/web/search/" method="POST">
+    <div class="form-group" style="text-align: center;">
+    {% csrf_token %}
+      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search..eg: BRCA2, ENST00000470094, NM_000059" class="form-control input-lg" style="display:inline;width:60%;">
+      <button type="submit"><i class="fa fa-search fa-2x"></i></button>
+    </div>
+    </form>
+  </div>  
+  </div>  
+
+<p style="padding-top:40px;"></p>
 
  <div class="row">
-   <div class="col-md-3 col-sm-3">
+   <div class="col-md-4 col-sm-4">
      <a href="/web/datatable/release_set/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
      <h3 class="text-center">List ReleaseSets</h3>
      <p>View release sets available as datatable.</p>
   </div>
 
-   <div class="col-md-3 col-sm-3">
+   <div class="col-md-4 col-sm-4">
     <a href="/web/diff/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-duplicate"></i></button></a>
  <h3 class="text-center">Diff Transcript</h3>
   <p>See the difference between the releases for a given transcript</p>
   </div>
   
-   <div class="col-md-3 col-sm-3">
-    <a href="/web/search/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-search"></i></button></a>
- <h3 class="text-center">Search Transcript</h3>
-  <p>Search for transcripts using various identifiers</p>
-  </div>
-
-   <div class="col-md-3 col-sm-3"> 
+  
+   <div class="col-md-4 col-sm-4"> 
      <a href="/api/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><span style="font-size:0.7em;">{REST}</span></button></a>
  <h3 class="text-center">REST Tark</h3>
   <p">REST version of Tark with links to browsable API to work on filters and receive JSON response.</p>

@@ -19,7 +19,8 @@ from __future__ import unicode_literals
 from rest_framework import generics
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
-from release.models import ReleaseSource, ReleaseSet
+from release.models import ReleaseSource, ReleaseSet,\
+    TranscriptReleaseTagRelationship
 from release.drf.serializers import ReleaseSourceSerializer,\
     ReleaseSetSerializer
 from release.drf.filters import ReleaseSetFilterBackend
@@ -27,6 +28,12 @@ from django.shortcuts import render
 from rest_framework.pagination import PageNumberPagination
 from tark_drf.utils.decorators import setup_eager_loading
 import requests
+from transcript.drf.serializers import TranscriptReleaseTagRelationshipSerializer
+
+
+# ============For Datatables========
+class NotPaginatedSetPagination(PageNumberPagination):
+    page_size = None
 
 
 class ReleaseSourceList(generics.ListAPIView):
@@ -57,16 +64,25 @@ class ReleaseSetDetail(generics.RetrieveAPIView):
     serializer_class = ReleaseSetSerializer
 
 
+class TranscriptReleaseTagRelationshipList(generics.ListAPIView):
+    queryset = TranscriptReleaseTagRelationship.objects.all()
+    serializer_class = TranscriptReleaseTagRelationshipSerializer
+#     search_fields = ("transcript_release_object__feature__stable_id",
+#                      "transcript_release_subject__feature__stable_id")
+
+
+class TranscriptReleaseTagRelationshipListAll(generics.ListAPIView):
+    queryset = TranscriptReleaseTagRelationship.objects.all()
+    serializer_class = TranscriptReleaseTagRelationshipSerializer
+    pagination_class = None
+
+
+
 # class ReleaseSetDatatableView(GenericDataTableListApi):
 #     serializer_class = ReleaseSetSerializer
 #     search_parameters = SchemaUtils.get_field_names(app_name='release', model_name='releaseset', exclude_pk=False)
 #     default_order_by = 1
 #     queryset = ReleaseSet.objects.all()
-
-
-# ============For Datatables========
-class NotPaginatedSetPagination(PageNumberPagination):
-    page_size = None
 
 
 class ReleaseSetDatatableView(generics.ListAPIView):

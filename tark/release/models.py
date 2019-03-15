@@ -6,6 +6,7 @@ from transcript.models import Transcript
 from exon.models import Exon
 from translation.models import Translation
 from tark.fields import ChecksumField
+from django.contrib import admin
 
 
 class ReleaseSource(models.Model):
@@ -52,6 +53,11 @@ class GeneReleaseTag(models.Model):
 
 
 class TranscriptReleaseTag(models.Model):
+
+    ONE2MANY_RELATED = {'TRANSCRIPTRELEASETAGRELATIONSHIP': "transcript_release_tag_relationship"
+                        }
+
+    transcript_release_id = models.AutoField(primary_key=True)
     feature = models.ForeignKey(Transcript, models.DO_NOTHING)
     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
 
@@ -59,7 +65,38 @@ class TranscriptReleaseTag(models.Model):
         managed = False
         db_table = 'transcript_release_tag'
         unique_together = (('feature', 'release'),)
-        #ordering = ['release']
+
+
+class RelationshipType(models.Model):
+    relationship_type_id = models.AutoField(primary_key=True)
+    shortname = models.CharField(max_length=24, blank=True, null=True)
+    description = models.CharField(max_length=256, blank=True, null=True)
+    version = models.CharField(max_length=32, blank=True, null=True)
+    release_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'relationship_type'
+        unique_together = (('shortname', 'version'),)
+
+
+class TranscriptReleaseTagRelationshipAdmin(admin.ModelAdmin):
+        search_fields = ["transcript_release_tag_relationship__transcript_release_object__transcript_release_tag", "transcript_release_tag_relationship__transcript_release_subject__transcript_release_tag"]
+        list_select_related = (
+        'transcript_release_tag', 'transcript'
+        )
+
+class TranscriptReleaseTagRelationship(models.Model):
+    transcript_transcript_id = models.AutoField(primary_key=True)
+    transcript_release_object = models.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
+                                                  related_name='ens_to_refseq')
+    transcript_release_subject = models.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
+                                                   related_name='refseq_to_ens')
+    relationship_type = models.ForeignKey(RelationshipType, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'transcript_release_tag_relationship'
 
 
 class ExonReleaseTag(models.Model):

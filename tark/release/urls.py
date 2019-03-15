@@ -21,7 +21,6 @@ from release.views import ReleaseSetList, ReleaseSetDetail,\
 
 
 urlpatterns = [
-
     url(r'^$', ReleaseSetList.as_view(), name='release_set_list'),
     url(r'^(?P<pk>[0-9]+)/$', ReleaseSetDetail.as_view(), name='release_set_detail'),
     url(r'^nopagination', ReleaseSetDatatableView.as_view(), name="release_set_nopagination_table"),

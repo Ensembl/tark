@@ -17,7 +17,8 @@ limitations under the License.
 
 from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
-from release.models import ReleaseSet, ExonReleaseTag, ReleaseSource
+from release.models import ReleaseSet, ExonReleaseTag, ReleaseSource,\
+    TranscriptReleaseTagRelationship
 from tark_drf.utils.drf_fields import AssemblyField, ReleaseSourceField
 
 

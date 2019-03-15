@@ -17,6 +17,8 @@ limitations under the License.
 
 from django.conf.urls import url
 from transcript import views
+from release import views as release_views
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -24,5 +26,6 @@ urlpatterns = [
     url(r'^diff/$', views.TranscriptDiff.as_view(), name='transcript_diff'),
     url(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
     url(r'^(?P<pk>[0-9]+)/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
+    url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
 
 ]

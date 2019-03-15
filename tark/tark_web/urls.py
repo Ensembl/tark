@@ -25,6 +25,7 @@ from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set
+from django.views.generic.base import TemplateView
 #from tark_web.views import datatable_view_release_set, release_set_stats_view
 
 
@@ -56,5 +57,6 @@ urlpatterns = [
     url(r'^datatable_serverside/release_set/', ReleaseSetDatatableView.as_view(),
         name="datatablefetch_serverside_release"),
     url(r'^ajax/load-releases/', views.load_releases, name='ajax_load_releases'),
+    url(r'^mane/$', TemplateView.as_view(template_name='mane_list.html'))
 
 ]

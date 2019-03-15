@@ -34,6 +34,7 @@ from translation.models import Translation
 from rest_framework.response import Response
 from tark.utils.request_utils import RequestUtils
 from exon.models import Exon
+from release.models import TranscriptReleaseTag
 
 
 class TranscriptList(generics.ListAPIView):
@@ -77,14 +78,14 @@ class TranscriptDiff(generics.ListAPIView):
         # get diff me transcript
         params_diff_me = RequestUtils.get_query_params(request, "diff_me")
         diff_me_transcript = self.get_search_results(request, params_diff_me, attach_translation_seq=True,
-                                                     attach_exon_seq=True)
+                                                     attach_exon_seq=True, attach_mane=True)
         print("diff_me_transcript==========")
         print(diff_me_transcript)
 
         # get diff with trancscript
         params_diff_with = RequestUtils.get_query_params(request, "diff_with")
         diff_with_transcript = self.get_search_results(request, params_diff_with, attach_translation_seq=True,
-                                                       attach_exon_seq=True)
+                                                       attach_exon_seq=True, attach_mane=True)
         print("diff_with_transcript=========")
         print(diff_with_transcript)
 
@@ -109,7 +110,7 @@ class TranscriptDiff(generics.ListAPIView):
         return Response(compare_results)
 
     def get_search_results(self, request, diff_query_params, attach_translation_seq=True, attach_exon_seq=True,
-                           attach_gene=True):
+                           attach_gene=True, attach_mane=True):
 
         host_url = ApiUtils.get_host_url(request)
         query_url = "/api/transcript/?"
@@ -129,13 +130,18 @@ class TranscriptDiff(generics.ListAPIView):
                     if "release_short_name" in diff_query_params and "shortname" in release_set:
                         if diff_query_params["release_short_name"] == release_set["shortname"]:
                             search_result["transcript_release_set"] = release_set
+                    # handle mane
+                    if attach_mane is True:
+                        pass
+                        #Transcript.objects.filter()
+                        # TranscriptReleaseTag.get(release_set[])
 
             if attach_translation_seq is True:
                 if "translations" in search_result and len(search_result["translations"]) > 0:
                     print(search_result["translations"])
                     print(len(search_result["translations"]))
                     translation = search_result["translations"][0]
-                    #translation = search_result["translations"]
+                    # translation = search_result["translations"]
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
                         tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')  # @IgnorePep8

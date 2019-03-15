@@ -31,9 +31,9 @@ class Transcript(models.Model):
     ONE2MANY_RELATED = {'RELEASE_SET': 'transcript_release_set', 'GENE': 'genes',
                         'TRANSLATION': "translations", "EXONTRANSCRIPT": "exons"
                         }
-    #                   'TRANSCRIPT_EXON': 'exons'
 
-    # You'll normally want to ensure that you've set an appropriate related_name argument on the relationship, that you can use as the field name.
+    # You'll normally want to ensure that you've set an appropriate related_name argument on the relationship,
+    # that you can use as the field name.
 
     transcript_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
