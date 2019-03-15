@@ -23,6 +23,10 @@ from refseq_loader.handlers.refseq.genbankhandler import GenBankHandler
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 import sys
 import traceback
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class GFFHandler(AnnotationHandler):
@@ -40,9 +44,9 @@ class GFFHandler(AnnotationHandler):
         protein_sequence_file = downloaded_files["protein"]
         genbank_file = downloaded_files["gbff"]
 
-        print(" GFF file from parse_gff " + gff_file)
-        print(" Protein file from parse_gff " + protein_sequence_file)
-        print(" Genbank file from parse_gff " + genbank_file)
+        logger.info(" GFF file from parse_gff " + gff_file)
+        logger.info(" Protein file from parse_gff " + protein_sequence_file)
+        logger.info(" Genbank file from parse_gff " + genbank_file)
 
         try:
             sequence_handler = GenBankHandler(genbank_file)
@@ -71,7 +75,6 @@ class GFFHandler(AnnotationHandler):
                 # Restrict only for filter_region
                 if filter_region is not None:
                     if filter_region not in chrom:
-                        # print("skipping...." + str(chrom))
                         continue
 
                 with open(gff_file) as gff_handle:
@@ -79,7 +82,6 @@ class GFFHandler(AnnotationHandler):
 
                     # Chromosome seq level
                     for rec in GFF.parse(gff_handle, limit_info=limits):
-                        # print("Processing ID " + rec.id)
 
                         for gene_feature in rec.features:
 
@@ -90,21 +92,13 @@ class GFFHandler(AnnotationHandler):
                             if filter_feature_gene is not None:
                                 if not gene_feature.qualifiers['gene'][0] == filter_feature_gene:
                                     continue
-                            # print("gene qualifiers")
-                            #print("\t Type: " + str(gene_feature.type) + " ID: " + str(gene_feature.id) +
-                            #      "  Ref: " + str(gene_feature.ref) +
-                            #      "  Location start:" + str(gene_feature.location.start) +
-                            #      "  Location end:" + str(gene_feature.location.end))
-                            # print(gene_feature)
-                            #print("\n")
+
                             annotated_gene = cls.get_annotated_gene(seq_region, gene_feature)
 
                             # gene level
                             annotated_transcripts = []
                             for mRNA_feature in gene_feature.sub_features:
-                                # print("==============mRNA_feature.qualifiers===============")
-                                # print( mRNA_feature.qualifiers)
-                                # print("==============mRNA_feature.qualifiers===============")
+
                                 if 'transcript_id' in mRNA_feature.qualifiers:
                                     transcript_id = mRNA_feature.qualifiers['transcript_id'][0]
                                     # print("Has transcript id " + str(transcript_id))
@@ -115,8 +109,6 @@ class GFFHandler(AnnotationHandler):
                                     if filter_feature_transcript not in mRNA_feature.qualifiers['transcript_id'][0]:
                                         continue
 
-                                # print("\n")
-    #                             # mRNA level
                                 refseq_exon_list = []
                                 refseq_exon_order = 1
 
@@ -138,7 +130,7 @@ class GFFHandler(AnnotationHandler):
 
                                     refseq_cds_dict = {}
                                     if 'CDS' in mRNA_sub_feature.type:
-                                        # print("Transcript Has CDS" + str(mRNA_sub_feature.id))
+
                                         refseq_cds_dict['cds_order'] = refseq_cds_order
                                         # note that we are shifting one base here
                                         refseq_cds_dict['cds_start'] = str(mRNA_sub_feature.location.start + 1)
@@ -149,17 +141,6 @@ class GFFHandler(AnnotationHandler):
                                         refseq_cds_list.append(refseq_cds_dict)
                                         refseq_cds_order += 1
 
-                                    # print("\t\t\t    Type: " + str(mRNA_sub_feature.type) +
-                                    #       " ID: " + str(mRNA_sub_feature.id) +
-                                    #      "    Ref: " + str(mRNA_sub_feature.ref) +
-                                    #      "  Location " + str(mRNA_sub_feature.location))
-
-                                    # print("\n")
-
-#                                 print("=========BEFORE ANNOTATIONS")
-#                                 print(refseq_exon_list)
-#                                 print(refseq_cds_list)
-#                                 print("==========END ==========")
                                 annotated_transcript = cls.get_annotated_transcript(sequence_handler, seq_region,
                                                                                     mRNA_feature)
 
@@ -171,7 +152,7 @@ class GFFHandler(AnnotationHandler):
                                                                               refseq_exon_list)
 
                                     if annotated_exons is not None and len(annotated_exons) > 0:
-                                        # print("=========GET exon_set_checksum=============")
+
                                         exon_set_checksum = ChecksumHandler.get_exon_set_checksum(annotated_exons)
                                         annotated_transcript['exon_set_checksum'] = exon_set_checksum
                                         annotated_transcript['exons'] = annotated_exons
@@ -188,27 +169,24 @@ class GFFHandler(AnnotationHandler):
                                 else:
                                     annotated_transcript['translation'] = []
 
-#                                 print("***************annotated transcript")
-#                                 print(annotated_transcript)
-#                                 print("***************annotated transcript")
                                 annotated_transcript['transcript_checksum'] = ChecksumHandler.get_transcript_checksum(annotated_transcript)  # @IgnorePep8
                                 annotated_transcripts.append(annotated_transcript)
 
                             annotated_gene['transcripts'] = annotated_transcripts
                             feature_object_to_save = {}
                             feature_object_to_save["gene"] = annotated_gene
-                            # print(feature_object_to_save)
+
                             if not dryrun:
                                 status = DatabaseHandler.getInstance().save_features_to_database(feature_object_to_save,
                                                                                                  parent_ids)
                                 if status is None:
                                     print("====Feature not save for " + str(parent_ids))
         except Exception as e:
-            print('Failed to parse id: ' + str(e))
-            print("Exception in user code:")
-            print("-"*60)
+            logger.error('Failed to parse id: ' + str(e))
+            logger.error("Exception in user code:")
+            logger.error("-"*60)
             traceback.print_exc(file=sys.stdout)
-            print("-"*60)
+            logger.error("-"*60)
 
             return False
 

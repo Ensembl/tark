@@ -23,7 +23,6 @@ from tark.fields import ChecksumField, HGNCField
 from genenames.models import GeneNames
 
 
-
 class Gene(models.Model):
 
     MANY2ONE_RELATED = {'SESSION': 'session', 'ASSEMBLY': 'assembly', 'HGNC': 'name'}
@@ -47,5 +46,3 @@ class Gene(models.Model):
     class Meta:
         managed = False
         db_table = 'gene'
-
-

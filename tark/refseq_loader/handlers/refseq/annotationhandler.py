@@ -18,6 +18,11 @@ import re
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 
 class AnnotationHandler(object):
 
@@ -44,26 +49,10 @@ class AnnotationHandler(object):
         gene['session_id'] = None
         gene['loc_checksum'] = ChecksumHandler.get_location_checksum(gene)
         gene['gene_checksum'] = ChecksumHandler.get_gene_checksum(gene)
-#         loc_checksum_bits = [gene['assembly_id'], gene['loc_region'],
-#                              gene['loc_start'], gene['loc_end'],
-#                              gene['loc_strand']]
-#         gene_list_bits = [gene['hgnc_id'], gene['stable_id'], gene['stable_id_version']]
-#         gene_checksum_bits = loc_checksum_bits + [str(bit) for bit in gene_list_bits if bit is not None]
-#         gene['gene_checksum'] = ChecksumHandler.checksum_list(gene_checksum_bits)
-#         gene['loc_checksum'] = ChecksumHandler.checksum_list([gene['assembly_id'], gene['loc_region'],
-#                                                               gene['loc_start'], gene['loc_end'],
-#                                                               gene['loc_strand']])
         return gene
 
     @classmethod
     def get_annotated_transcript(cls, sequence_handler, chrom, mRNA_feature):
-        # print(mRNA_feature)
-        # print("\t\t    Type: " + str(mRNA_feature.type) +
-        #      "  ID: " + str(mRNA_feature.id) +
-        #      "  Location start:" + str(mRNA_feature.location.start + 1) +
-        #      "  Location end: " + str(mRNA_feature.location.end))
-        # print(mRNA_feature.qualifiers)
-        # print(fasta_handler.get_fasta_seq_by_id(mRNA_feature.qualifiers['transcript_id'][0]))
         transcript = {}
         # Note we have shifted one base here
         transcript['loc_start'] = str(mRNA_feature.location.start + 1)
@@ -198,6 +187,4 @@ class AnnotationHandler(object):
                                                             feature[feature_type + '_end'])
             feature[feature_type + '_seq'] = feature_seq
             features_with_seq.append(feature)
-            # print(exon_seq)
-        # print(relative_exon_locations_with_seq)
         return features_with_seq

@@ -17,14 +17,17 @@ limitations under the License.
 
 
 from Bio import SeqIO, SeqFeature
-from Bio.SeqFeature import FeatureLocation
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class GenBankHandler():
 
     def __init__(self, gbff_file):
         self.gbff_file = gbff_file
-        print("Loading genbank file...please wait...")
+        logger.info("Loading genbank file...please wait...")
         self.indexed_data = SeqIO.index(gbff_file, "genbank")
 
     def get_seq_record_by_id(self, identifier):
@@ -44,13 +47,13 @@ class GenBankHandler():
                 seq = self.indexed_data[identifier].seq
                 return str(seq)
             except Exception as e:
-                print('Failed to parse id: ' + str(identifier) + " " + str(e))
+                logger.error('Failed to parse id: ' + str(identifier) + " " + str(e))
                 return None
         else:
             raise ValueError("Genbank Handler not initialized")
 
     def get_seq_record_by_id_location(self, identifier, start=None, end=None, strand_=None):
-        print("Identifier {0}  Start {1}  End {2} Strand {3} ".format(identifier, start, end, strand_))
+        logger.info("Identifier {0}  Start {1}  End {2} Strand {3} ".format(identifier, start, end, strand_))
         if self.indexed_data is not None:
             if start is not None and end is not None and strand_ is not None:
                 seq = self.get_sequence_by_id(identifier)
@@ -63,20 +66,20 @@ class GenBankHandler():
             raise ValueError("Genbank Handler not initialized")
 
     def get_exon_sequences_by_identifier(self, identifier):
-        print("get_exon_sequences_by_identifier " + str(identifier))
+        logger.info("get_exon_sequences_by_identifier " + str(identifier))
         seq_record = self.get_seq_record_by_id(identifier)
         if seq_record is None:
             return None
         exon_sequences = []
         for feature in seq_record.features:
             if feature.type == 'exon':
-                print("Start: {0}  End {1}  Strand {2}".format(str(feature.location.start), str(feature.location.end),
-                                                               str(feature.location.strand)))
+                logger.info("Start: {0}  End {1}  Strand {2}".format(str(feature.location.start),
+                                                                     str(feature.location.end),
+                                                                     str(feature.location.strand)))
                 sequence = self.get_seq_record_by_id_location(identifier,
                                                               feature.location.start,
                                                               feature.location.end,
                                                               feature.location.strand)
-                print(sequence)
                 exon_sequences.append(str(sequence))
 
         return exon_sequences

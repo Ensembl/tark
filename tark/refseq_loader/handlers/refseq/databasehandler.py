@@ -22,6 +22,10 @@ from refseq_loader.handlers.refseq.confighandler import ConfigHandler
 from refseq_loader.handlers.refseq.checksumhandler import ChecksumHandler
 import collections
 import os
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class DatabaseHandler(object):
@@ -44,7 +48,7 @@ class DatabaseHandler(object):
         config_handler = ConfigHandler(ini_file)
         db_config = config_handler.get_section_config(section_name="DATABASE")
 
-        print("loading in to  " + db_config.get("database"))
+        logger.info("loading in to  " + db_config.get("database"))
 
         mydbconfig = {
             "user": db_config.get("user"),
@@ -59,7 +63,6 @@ class DatabaseHandler(object):
         DatabaseHandler.__instance = self
 
     def execute_set_statements(self, set_statement):
-        # print(set_statement)
         try:
             self.cnx = self.cnxpool.get_connection()
             self.cur = self.cnx.cursor()
@@ -68,14 +71,11 @@ class DatabaseHandler(object):
             self.cnx.close()
             self.cur.close()
         except Exception as e:
-            print('Failed to insert: ' + str(e))
+            logger.error('Failed to insert: ' + str(e))
             exit(0)
         return status
 
     def insert_data(self, insert_sql, insert_data, FOREIGN_KEY_CHECKS=1):
-        # print(insert_sql)
-        # print(insert_data)
-
         checksum_keys = [key for key in list(insert_data.keys()) if "checksum" in key and insert_data[key] is None]
 
         for key in checksum_keys:
@@ -103,13 +103,11 @@ class DatabaseHandler(object):
         except Exception as e:
             print('Failed to insert: ' + str(e))
             exit(0)
-        # print("Returning row_id " + str(row_id))
+
         return row_id
 
     def save_features_to_database(self,  features, parent_ids):
-        # print("****************FINAL OBJECT TO SAVE******************")
-        # print(features)
-        # print("*******************************************************")
+
         session_id_ = parent_ids["session_id"]
         assembly_id_ = parent_ids["assembly_id"]
         release_id_ = parent_ids["release_id"]
@@ -133,37 +131,37 @@ class DatabaseHandler(object):
         if "session" in init_table_list:
             session_id = SessionHandler.start_session("Test Client")
             parent_ids['session_id'] = session_id
-            print(".........Popultating SESSION table.........\n")
+            logger.info(".........Popultating SESSION table.........\n")
 
         if "genome" in init_table_list:
             genome_data = {"name": "homo_sapiens", "tax_id": str(9606), "session_id": str(session_id)}
             genome_id = GenomeHandler.load_genome(genome_data)
             parent_ids['genome_id'] = genome_id
-            print(".........Popultating GENOME table.........\n")
+            logger.info(".........Popultating GENOME table.........\n")
 
         if "assembly" in init_table_list:
             assembly_data = {"genome_id": str(genome_id), "assembly_name": "GRCh38", "session_id": str(session_id)}
             assembly_id = AssemblyHandler.load_assembly(assembly_data)
             parent_ids['assembly_id'] = assembly_id
-            print(".........Popultating ASSEMBLY table.........\n")
+            logger.info(".........Popultating ASSEMBLY table.........\n")
 
         if "assembly_alias" in init_table_list:
             assembly_alias_data = {"alias": "GCA_000001405.25", "genome_id": str(genome_id),
                                    "assembly_id": str(assembly_id), "session_id": str(session_id)}
             assembly_alias_id = AssemblyHandler.load_assembly_alias(assembly_alias_data)
             parent_ids['assembly_alias_id'] = assembly_alias_id
-            print(".........Popultating ASSEMBLY ALIAS table.........\n")
+            logger.info(".........Popultating ASSEMBLY ALIAS table.........\n")
 
         if "release_source" in init_table_list:
             release_source = {"shortname": "Ensembl", "description": "Ensembl data imports from Human Core DBs"}
             release_source_ensembl = ReleaseSourceHandler.load_release_source(release_source)
             parent_ids['release_source_ensembl'] = release_source_ensembl
-            print(".........Popultating RELEASE SOURCE table.........\n")
+            logger.info(".........Popultating RELEASE SOURCE table.........\n")
 
             release_source = {"shortname": "RefSeq", "description": "RefSeq data imports from RefSeq GFF"}
             release_source_refseq = ReleaseSourceHandler.load_release_source(release_source)
             parent_ids['release_source_refseq'] = release_source_refseq
-            print(".........Popultating REFSEQ table.........\n")
+            logger.info(".........Popultating REFSEQ table.........\n")
 
         # load data_release_set
         today = datetime.now().date()
@@ -218,9 +216,7 @@ class ReleaseHandler(object):
 
         release_set_checksum = ChecksumHandler.checksum_list(list(data_release_set.values()))
         data_release_set["release_checksum"] = release_set_checksum
-        # data_release_set["release_checksum"] = None
-        # print(data_release_set)
-        # Insert release set
+
         insert_release_set = ("INSERT INTO release_set (shortname, description, assembly_id, release_date, session_id, \
                                 release_checksum, source_id) VALUES \
                                 (%(shortname)s,  %(description)s, %(assembly_id)s, %(release_date)s,  %(session_id)s, \
@@ -368,8 +364,8 @@ class FeatureHandler(object):
             sequence_data = {"sequence": transcript_data["sequence"],
                              "seq_checksum": transcript_data["seq_checksum"],
                              }
-            seq_id = self.add_sequence(sequence_data)
-            # print("Seq id " + str(seq_id))
+            seq_id = self.add_sequence(sequence_data)  # @UnusedVariable
+
             transcript_id = DatabaseHandler.getInstance().insert_data(insert_transcript, transcript_data)
 
             self.add_release_tag(feature_id=transcript_id, feature_type="transcript")
@@ -401,8 +397,8 @@ class FeatureHandler(object):
             sequence_data = {"sequence": exon["exon_seq"],
                              "seq_checksum": exon["seq_checksum"],
                              }
-            seq_id = self.add_sequence(sequence_data)
-            # print("Seq id " + str(seq_id))
+            seq_id = self.add_sequence(sequence_data)  # @UnusedVariable
+
             exon_id = DatabaseHandler.getInstance().insert_data(insert_exon, exon)
             self.add_release_tag(feature_id=exon_id, feature_type="exon")
             exon_ids.append(exon_id)
@@ -426,8 +422,8 @@ class FeatureHandler(object):
         sequence_data = {"sequence": translation["translation_seq"],
                          "seq_checksum": translation["seq_checksum"],
                          }
-        seq_id = self.add_sequence(sequence_data)
-        # print("Seq id " + str(seq_id))
+        seq_id = self.add_sequence(sequence_data)  # @UnusedVariable
+
         translation_id = DatabaseHandler.getInstance().insert_data(insert_translation, translation)
         return translation_id
 
@@ -439,7 +435,8 @@ class FeatureHandler(object):
                                 transcript_translation_id=LAST_INSERT_ID(transcript_translation_id)")
         translation_transcript_data = {"transcript_id": transcript_id, "translation_id": translation_id,
                                        "session_id": self.session_id}
-        translation_transcript_id = DatabaseHandler.getInstance().insert_data(insert_translation, translation_transcript_data)
+        translation_transcript_id = DatabaseHandler.getInstance().insert_data(insert_translation,
+                                                                              translation_transcript_data)
         return translation_transcript_id
 
     def add_transcript_gene(self, transcript_ids, gene_id):
@@ -465,7 +462,8 @@ class FeatureHandler(object):
         insert_release_tag = ("INSERT IGNORE INTO " + feature_type+"_release_tag (feature_id, release_id, session_id) \
                                 VALUES \
                                 (%(feature_id)s,  %(release_id)s, %(session_id)s )")
-        feature_release_tag_id = DatabaseHandler.getInstance().insert_data(insert_release_tag, release_tag)  # @UnusedVariable
+        feature_release_tag_id = DatabaseHandler.getInstance().insert_data(insert_release_tag,  # @UnusedVariable
+                                                                           release_tag)
 
     def add_exon_transcript(self, exon_ids, transcript_id):
         insert_exon_transcript = ("INSERT INTO exon_transcript (transcript_id, exon_id, exon_order, session_id)\
@@ -476,7 +474,7 @@ class FeatureHandler(object):
             exon_transcript_data = {"transcript_id": transcript_id, "exon_id": exon_id, "exon_order": exon_order,
                                     "session_id": self.session_id}
             exon_transcript_id = DatabaseHandler.getInstance().insert_data(insert_exon_transcript,  # @UnusedVariable
-                                                               exon_transcript_data)
+                                                                           exon_transcript_data)
             exon_order = exon_order + 1
 
     def add_sequence(self, sequence_data):
