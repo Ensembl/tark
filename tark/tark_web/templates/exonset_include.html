@@ -41,8 +41,10 @@
  <thead>
 <tr style="background-color: #4b6584;color:#ffffff">
 <th>ExonSet1 from {{ diff_result.diff_me_transcript.stable_id }}.{{ diff_result.diff_me_transcript.stable_id_version }} </th>
+<th>Location</th>
 <th>Overlaps</th>
 <th>ExonSet2 from {{ diff_result.diff_with_transcript.stable_id }}.{{ diff_result.diff_with_transcript.stable_id_version }}</th>
+<th>Location</th>
 <th>LocMatch</th>
 <th>SeqMatch</th>
 
@@ -67,9 +69,14 @@
   
    {% if diff_me_exon != "cumulative_overlap_score" %}
 <tr>
-<td>
+
 {% if diff_me_exon.stable_id %}
-{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})
+<td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})</td>
+<td>{{diff_me_exon.loc_region}}:{{diff_me_exon.loc_start}}..{{diff_me_exon.loc_end}}</td>
+{% else %}
+<td></td>
+<td></td>
+
 {% endif %}
 </td>
 <td class="text-center">
@@ -77,11 +84,17 @@
 <i class="glyphicon glyphicon-ok text-center" style="color:green"></i>
 {% endif %}
 </td>
-<td>
+
 {% if diff_with_exon.overlapping_exon.stable_id %}
+<td>
 {{diff_with_exon.overlapping_exon.stable_id}}.{{diff_with_exon.overlapping_exon.stable_id_version}} ({{diff_with_exon.overlapping_exon.exon_order}})
-{% endif %}
+<td>{{diff_with_exon.overlapping_exon.loc_region}}:{{diff_with_exon.overlapping_exon.loc_start}}..{{diff_with_exon.overlapping_exon.loc_end}}</td>
 </td>
+{% else %}
+<td></td>
+<td></td>
+{% endif %}
+
 
   <td class="text-center">
  {% if diff_with_exon.loc_checksum == False %}

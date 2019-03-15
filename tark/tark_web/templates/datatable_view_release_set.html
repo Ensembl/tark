@@ -71,6 +71,7 @@ $(document).ready(function() {
      $('#transcript_datatable').hide();
 	 $('#loadingSpinner').hide();
      $release_set_datatable =  $('#release_set_datatable').DataTable( {
+        "pageLength": 25,
         ajax: {
         url: "/api/release/nopagination",
         dataSrc: '' 
@@ -91,7 +92,7 @@ $(document).ready(function() {
   			 },
   			{ "mData": "release_date", sDefaultContent: ""  },
   			{ "mData": "description", sDefaultContent: "" },
-  			{ "mData": "", sDefaultContent: '<a href="/web/search" role="button" class="btn btn-warning btn-sm">Search</a>&nbsp;<a href="/web/diff" role="button" class="btn btn-info btn-sm">Diff-Transcript</a>&nbsp;<a href="#" role="button" id="load_release_set" class="btn btn-primary btn-sm">ListTranscripts</a>' },
+  			//{ "mData": "", sDefaultContent: '<a href="/web/search" role="button" class="btn btn-warning btn-sm">Search</a>&nbsp;<a href="/web/diff" role="button" class="btn btn-info btn-sm">Diff-Transcript</a>&nbsp;<a href="#" role="button" id="load_release_set" class="btn btn-primary btn-sm">ListTranscripts</a>' },
 		]
        } );
        
@@ -135,7 +136,7 @@ $(document).ready(function() {
              <th>Version</th>
              <th>Date</th>
              <th>Description</th>
-             <th>Tools</th>
+             <!--th>Tools</th-->
             </tr>
       </thead>
      </table>
