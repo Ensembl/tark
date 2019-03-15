@@ -21,8 +21,7 @@ from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
 
 from tark_drf.utils.drf_fields import AssemblyField, CommonFields,\
-    TranscriptFieldEns, TranscriptFieldRefSeq, TranscriptFieldRelationshipType,\
-    ManeField
+    TranscriptFieldEns, TranscriptFieldRefSeq, TranscriptFieldRelationshipType
 from release.models import TranscriptReleaseTag,\
     TranscriptReleaseTagRelationship
 from transcript.models import Transcript
@@ -41,9 +40,9 @@ class HgncNameField(serializers.RelatedField):
 
 class TranscriptReleaseTagRelationshipSerializer(SerializerMixin, serializers.ModelSerializer):
 
-#     transcript_release_object = TranscriptFieldEns(read_only=True)
-#     transcript_release_subject = TranscriptFieldRefSeq(read_only=True)
-#     relationship_type = TranscriptFieldRelationshipType(read_only=True)
+    transcript_release_object = TranscriptFieldEns(read_only=True)
+    transcript_release_subject = TranscriptFieldRefSeq(read_only=True)
+    relationship_type = TranscriptFieldRelationshipType(read_only=True)
 
     class Meta:
         model = TranscriptReleaseTagRelationship
@@ -83,20 +82,19 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                     FROM \
                     transcript t1 \
                     JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                    JOIN transcript_release_tag_relationship ON trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
-                    JOIN transcript_release_tag trt2 ON transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
+                    JOIN transcript_release_tag_relationship ON \
+                    trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
+                    JOIN transcript_release_tag trt2 ON \
+                    transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
                     JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                    JOIN relationship_type ON transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id \
+                    JOIN relationship_type ON \
+                    transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id \
                     WHERE \
                     t1.transcript_id=%s limit 1"
         mane_transcripts = Transcript.objects.raw(raw_sql, [obj.pk])
         if mane_transcripts is not None:
             manes = []
             for mane in mane_transcripts:
-                print("=======MANE=========")
-                print(mane)
-                print("=====================")
-                # mane_string = mane.refseq_stable_id + '.' + str(mane.refseq_stable_id_version) +  " ("+ mane.mane_type + ")"
                 mane_string = mane.mane_type
                 manes.append(mane_string)
 
@@ -113,34 +111,30 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                     FROM \
                     transcript t1 \
                     JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                    JOIN transcript_release_tag_relationship ON trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
-                    JOIN transcript_release_tag trt2 ON transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
+                    JOIN transcript_release_tag_relationship ON \
+                    trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
+                    JOIN transcript_release_tag trt2 ON \
+                    transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
                     JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                    JOIN relationship_type ON transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id \
+                    JOIN relationship_type ON \
+                    transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id \
                     WHERE \
                     t1.transcript_id=%s limit 1"
         mane_transcripts = Transcript.objects.raw(raw_sql, [obj.pk])
         if mane_transcripts is not None:
             manes = []
             for mane in mane_transcripts:
-                print("=======MANE=========")
-                print(mane)
-                print("=====================")
-                # mane_string = mane.refseq_stable_id + '.' + str(mane.refseq_stable_id_version) +  " ("+ mane.mane_type + ")"
                 mane_string = mane.refseq_stable_id + '.' + str(mane.refseq_stable_id_version)
                 manes.append(mane_string)
 
             return ','.join(manes)
         else:
             return "-"
-    # genes = GeneSerializer(many=True, read_only=True)
-    # exons = ExonTranscriptSerializer(source="exontranscript_set", many=True, read_only=True)
-#     translations = TranslationTranscriptSerializer(source='translationtranscript_set', many=True)
 
     class Meta:
         model = Transcript
-        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence', 'mane_transcript', 'mane_transcript_type')
-        #fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum', 'sequence')
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
+                                                  'sequence', 'mane_transcript', 'mane_transcript_type')
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)
@@ -162,11 +156,6 @@ class TranscriptDataTableSerializer(TranscriptSerializer):
     class Meta:
         model = Transcript
         fields = CommonFields.COMMON_FIELD_SET + ('genes', )
-
-#
-#     def __init__(self, *args, **kwargs):
-#         super(TranscriptDataTableSerializer, self).__init__(*args, **kwargs)
-#         self.set_related_fields(TranscriptDataTableSerializer, **kwargs)
 
 
 class TranscriptDiffSerializer(TranscriptSerializer):

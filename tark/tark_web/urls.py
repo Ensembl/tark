@@ -26,7 +26,6 @@ from exon.views import ExonDatatableView
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set
 from django.views.generic.base import TemplateView
-#from tark_web.views import datatable_view_release_set, release_set_stats_view
 
 
 urlpatterns = [
@@ -37,18 +36,19 @@ urlpatterns = [
 
     # search
     url(r'^search/$', views.search_home, name='search_home'),
-    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/', views.fetch_sequence, name='fetch_sequence'),
+    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
+        views.fetch_sequence, name='fetch_sequence'),
 
     #  datatables
     url(r'^datatable/release_set/', datatable_view_release_set, name="datatable_view_release_set"),
-    
-    #url(r'^stats/release_set/', release_set_stats_view, name="release_set_stats_view"),
-    
-    url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/', datatable_view, name="datatable_view"),
+
+    url(r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/',  # @IgnorePep8
+        datatable_view, name="datatable_view"),
     url(r'^datatable_clientside/(?P<table_name>[\w]+)/', datatable_fetch, name="datatablefetch_clientside"),
     url(r'^datatable_serverside/assembly', AssemblyDatatableView.as_view(),
         name="datatablefetch_serverside_assembly"),
-    url(r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/', TranscriptDatatableView.as_view(),
+    url(r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/',
+        TranscriptDatatableView.as_view(),
         name="datatablefetch_serverside_transcript"),
     url(r'^datatable_serverside/gene/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/', GeneDatatableView.as_view(),
         name="datatablefetch_serverside_gene"),

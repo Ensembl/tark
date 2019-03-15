@@ -25,7 +25,6 @@ from translation.models import Translation, TranslationTranscript
 from sequence.drf.serializers import SequenceSerializer
 
 
-
 class TranslationReleaseTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = TranslationReleaseTag
@@ -37,14 +36,13 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
     MANY2ONE_SERIALIZER = {Translation.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
                            Translation.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
     ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
-                           Translation.ONE2MANY_RELATED['TRANSCRIPT']: "transcript.drf.serializers.TranscriptSerializer"}
+                           Translation.ONE2MANY_RELATED['TRANSCRIPT']:
+                           "transcript.drf.serializers.TranscriptSerializer"}
 
     assembly = AssemblyField(read_only=True)
-    #tl_sequence = SequenceSerializer(source="sequence", read_only=True)
 
     class Meta:
         model = Translation
-        # fields = CommonFields.COMMON_FIELD_SET + ('translation_checksum', 'seq_checksum')
         fields = CommonFields.COMMON_FIELD_SET + ('translation_id', 'translation_checksum',)
 
     def __init__(self, *args, **kwargs):
@@ -63,16 +61,9 @@ class TranslationTranscriptSerializer(SerializerMixin, serializers.ModelSerializ
     loc_region = serializers.ReadOnlyField(source='translation.loc_region')
     loc_checksum = serializers.ReadOnlyField(source='translation.loc_checksum')
     translation_checksum = serializers.ReadOnlyField(source='translation.translation_checksum')
-    translation_sequence =  serializers.ReadOnlyField(source='translation.sequence.seq_checksum')
+    translation_sequence = serializers.ReadOnlyField(source='translation.sequence.seq_checksum')
 
     class Meta:
         model = TranslationTranscript
         fields = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand', 'loc_region',
                   'loc_checksum', 'translation_checksum', 'translation_sequence')
-
-
-
-
-
-
-

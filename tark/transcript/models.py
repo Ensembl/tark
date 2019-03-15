@@ -69,7 +69,3 @@ class TranscriptGene(models.Model):
         managed = False
         db_table = 'transcript_gene'
         unique_together = (('gene', 'transcript'),)
-
-
-
-

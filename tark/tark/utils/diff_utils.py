@@ -29,12 +29,12 @@ class DiffUtils(object):
         compare_diff_dict = diff_set.compare_objects()
         (compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme) = diff_set.compare_exons()
 
-        compare_results = cls.get_results_as_response_body(compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set)
-        print(compare_results)
+        compare_results = cls.get_results_as_response_body(compare_diff_dict, compare_exon_sets_diffme2diffwith,
+                                                           compare_exon_sets_diffwith2diffme, diff_set)
         return compare_results
 
     @classmethod
-    def get_results_as_response_body(cls, compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set):
+    def get_results_as_response_body(cls, compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set):  # @IgnorePep8
         response_body_dict = {"count": 1, "next": None, "previous": None, "results": []}
         results = {key: value for (key, value) in compare_diff_dict.items()}
         response_body_dict["results"] = results

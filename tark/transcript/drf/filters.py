@@ -22,6 +22,11 @@ from transcript.models import Transcript
 from release.utils.release_utils import ReleaseUtils
 from tark_web.utils.sequtils import TarkSeqUtils
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 
 class TranscriptFilterBackend(BaseFilterBackend):
     """
@@ -55,15 +60,11 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
     """
     def filter_queryset(self, request, queryset, view):
 
-        print("============TranscriptDiffFilterBackend START=============")
-
         # handle diff me
         diff_me_stable_id = request.query_params.get('diff_me_stable_id',  None)
         diff_me_stable_id_version = request.query_params.get('diff_me_stable_id_version',  1)
 
         if diff_me_stable_id is not None and diff_me_stable_id_version is not None:
-            print("diff me stable id " + str(diff_me_stable_id) + "  diff me stable id version  " +
-                  str(diff_me_stable_id_version))
             queryset_me = queryset.filter(stable_id=diff_me_stable_id).\
                 filter(stable_id_version=diff_me_stable_id_version)
         else:
@@ -72,11 +73,6 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         diff_me_release = request.query_params.get('diff_me_release', ReleaseUtils.get_latest_release())
         diff_me_assembly = request.query_params.get('diff_me_assembly', ReleaseUtils.get_latest_assembly())
         diff_me_source = request.query_params.get('diff_me_source', ReleaseUtils.get_default_source())
-
-        expand_all = request.query_params.get('expand_all', "true")
-
-        print("diff_me_stable_id" + str(diff_me_stable_id) + "Diff me release" + str(diff_me_release) +
-              "expand all " + expand_all)
 
         if diff_me_release is not None and diff_me_assembly is not None:
             queryset_me = queryset_me.filter(transcript_release_set__source__shortname=diff_me_source).\
@@ -88,8 +84,6 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         diff_with_stable_id_version = request.query_params.get('diff_with_stable_id_version',  1)
 
         if diff_with_stable_id is not None and diff_with_stable_id_version is not None:
-            print("====diff_with_stable_id " + str(diff_with_stable_id) + "  diff_with_stable_id_version  " +
-                  str(diff_with_stable_id_version))
             queryset_with = queryset.filter(stable_id=diff_with_stable_id).\
                 filter(stable_id_version=diff_with_stable_id_version)
         else:
@@ -99,15 +93,12 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         diff_with_assembly = request.query_params.get('diff_with_assembly', ReleaseUtils.get_latest_assembly())
         diff_with_source = request.query_params.get('diff_with_source', ReleaseUtils.get_default_source())
 
-        print("diff_with_stable_id" + str(diff_with_stable_id) + "Diff me " + str(diff_me_release) +
-              "Diff with release " + str(diff_with_release) + "expand all " + expand_all)
         if diff_with_release is not None and diff_with_assembly is not None:
             queryset_with = queryset_with.filter(transcript_release_set__source__shortname=diff_with_source).\
                 filter(assembly__assembly_name__icontains=diff_with_assembly). \
                 filter(transcript_release_set__shortname=diff_with_release)
 
         queryset = queryset_me | queryset_with   # queryset will contain all unique records of q1 + q2
-        print("============TranscriptDiffFilterBackend END =============")
 
         return queryset.distinct()
 
@@ -126,20 +117,16 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     """
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
-        print("=====Identifier from filter_queryset " + identifier)
 
         # to support version search
         identifier_version = None
         if '.' in identifier:
             (identifier, identifier_version) = identifier.split('.')
-            print("Has got version in query  identifier " + str(identifier) +
-                  "  version " + identifier_version)
 
         if identifier is not None:
             if "ENST" in identifier or "LRG" in identifier or "_" in identifier:
                 queryset = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
-                    print("Reached here1*****")
                     queryset.filter(stable_id_version=identifier_version)
             elif "ENSG" in identifier:
                 queryset = queryset.filter(genes__stable_id=identifier)
@@ -158,7 +145,6 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
             else:
                 queryset = queryset.filter(genes__name__name__exact=identifier)
 
-        print(queryset.query)
         return queryset.distinct()
 
     def get_schema_fields(self, view):
@@ -178,10 +164,7 @@ class TranscriptSetFilterBackent(BaseFilterBackend):
         diff_me_assembly = request.query_params.get('diff_me_assembly', ReleaseUtils.get_latest_assembly())
         diff_with_assembly = request.query_params.get('diff_with_assembly', ReleaseUtils.get_latest_assembly())
 
-        expand_all = request.query_params.get('expand_all', "true")
-
-        print("Stable id " + str(stable_id) + "Diff me " + str(diff_me_release) +
-              "Diff with " + str(diff_with_release) + "expand all " + expand_all)
+        expand_all = request.query_params.get('expand_all', "true")  # @UnusedVariable
 
         if diff_me_release is not None and diff_me_assembly is not None:
             queryset_me = queryset.filter(assembly__assembly_name__icontains=diff_me_assembly). \

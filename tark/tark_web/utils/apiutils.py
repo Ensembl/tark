@@ -38,12 +38,8 @@ class ApiUtils(object):
             else:
                 query_param = query_param + "&" + key + "=" + value
 
-        # query_param = query_param + "&expand=transcript_release_set,translations,sequence"
         query_param = query_param + "&expand_all=true"
-
         feature_diff_url = host_url + query_url + query_param
-        print("=========feature diff url ============")
-        print(feature_diff_url)
         return feature_diff_url
 
     @classmethod
@@ -56,8 +52,6 @@ class ApiUtils(object):
             diff_params[diff_type+'_assembly'] + "&release_short_name=" + diff_params[diff_type+'_release'] + \
             "&expand_all=true"
 
-        query_diff_url = host_url + query_url + query_param
-        print(query_diff_url)
         return host_url + query_url + query_param
 
     @classmethod

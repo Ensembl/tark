@@ -34,7 +34,12 @@ from translation.models import Translation
 from rest_framework.response import Response
 from tark.utils.request_utils import RequestUtils
 from exon.models import Exon
-from release.models import TranscriptReleaseTag
+
+
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class TranscriptList(generics.ListAPIView):
@@ -49,7 +54,6 @@ class TranscriptList(generics.ListAPIView):
 
 
 class TranscriptDatatableView(DataTableListApi):
-    # serializer_class = TranscriptSerializer
     serializer_class = TranscriptDataTableSerializer
     search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False,
                                                     include_parents_=True,
@@ -57,7 +61,6 @@ class TranscriptDatatableView(DataTableListApi):
                                                                     "exon_set_checksum",
                                                                     "transcript_checksum"],
                                                     include_fields=["genes"])
-    # search_parameters.append("genes")
     default_order_by = 1
 
 
@@ -74,29 +77,22 @@ class TranscriptDiff(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
 
         render_as_string = request.query_params.get("render_as_string", "False")
-        print("==========render_as_string========== " + str(render_as_string) + "========")
         # get diff me transcript
         params_diff_me = RequestUtils.get_query_params(request, "diff_me")
         diff_me_transcript = self.get_search_results(request, params_diff_me, attach_translation_seq=True,
                                                      attach_exon_seq=True, attach_mane=True)
-        print("diff_me_transcript==========")
-        print(diff_me_transcript)
 
         # get diff with trancscript
         params_diff_with = RequestUtils.get_query_params(request, "diff_with")
         diff_with_transcript = self.get_search_results(request, params_diff_with, attach_translation_seq=True,
                                                        attach_exon_seq=True, attach_mane=True)
-        print("diff_with_transcript=========")
-        print(diff_with_transcript)
-
         # compare the two transcripts
         compare_results = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
 
-        print("===========compare_results===============")
-        print(compare_results)
+        # print("===========compare_results===============")
+        # print(compare_results)
 
         if "True" in render_as_string:
-            print("Return render as string ..............")
             from django.template.loader import render_to_string
             gene_include_html = render_to_string('gene_include.html', {'diff_result': compare_results})
             transcript_include_html = render_to_string('transcript_include.html', {'diff_result': compare_results})
@@ -133,15 +129,11 @@ class TranscriptDiff(generics.ListAPIView):
                     # handle mane
                     if attach_mane is True:
                         pass
-                        #Transcript.objects.filter()
-                        # TranscriptReleaseTag.get(release_set[])
 
             if attach_translation_seq is True:
                 if "translations" in search_result and len(search_result["translations"]) > 0:
-                    print(search_result["translations"])
-                    print(len(search_result["translations"]))
                     translation = search_result["translations"][0]
-                    # translation = search_result["translations"]
+
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
                         tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')  # @IgnorePep8
