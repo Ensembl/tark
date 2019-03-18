@@ -71,7 +71,7 @@
 <tr>
 
 {% if diff_me_exon.stable_id %}
-<td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})</td>
+<td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})  {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version %}</td>
 <td>{{diff_me_exon.loc_region}}:{{diff_me_exon.loc_start}}..{{diff_me_exon.loc_end}}</td>
 {% else %}
 <td></td>
@@ -86,8 +86,7 @@
 </td>
 
 {% if diff_with_exon.overlapping_exon.stable_id %}
-<td>
-{{diff_with_exon.overlapping_exon.stable_id}}.{{diff_with_exon.overlapping_exon.stable_id_version}} ({{diff_with_exon.overlapping_exon.exon_order}})
+<td>{{diff_with_exon.overlapping_exon.stable_id}}.{{diff_with_exon.overlapping_exon.stable_id_version}} ({{diff_with_exon.overlapping_exon.exon_order}}){% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version %}</td>
 <td>{{diff_with_exon.overlapping_exon.loc_region}}:{{diff_with_exon.overlapping_exon.loc_start}}..{{diff_with_exon.overlapping_exon.loc_end}}</td>
 </td>
 {% else %}

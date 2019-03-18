@@ -14,11 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-import collections
 
 
 class ExonUtils(object):
 
+    # this is the current one
     @classmethod
     def diff_exon_sets(cls, exonset1, exonset2):
 
@@ -52,7 +52,7 @@ class ExonUtils(object):
             compare_results.append((cur_exon, matched_exons))
 
         compare_results.insert(0, ("cumulative_overlap_score", cumulative_overlap_score))
-
+        print(compare_results)
         return compare_results
 
     @classmethod

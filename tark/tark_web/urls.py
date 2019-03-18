@@ -57,6 +57,7 @@ urlpatterns = [
     url(r'^datatable_serverside/release_set/', ReleaseSetDatatableView.as_view(),
         name="datatablefetch_serverside_release"),
     url(r'^ajax/load-releases/', views.load_releases, name='ajax_load_releases'),
-    url(r'^mane/$', TemplateView.as_view(template_name='mane_list.html'))
+    url(r'^mane/$', TemplateView.as_view(template_name='mane_list.html')),
+    url(r'^view_alignment/$', TemplateView.as_view(template_name='alignment_viewer.html'))
 
 ]
