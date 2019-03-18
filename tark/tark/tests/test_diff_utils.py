@@ -17,7 +17,7 @@
 
 
 from django.test.testcases import TestCase
-from tark.utils.diff_utils import DiffUtils, DiffSet
+from tark.utils.diff_utils import DiffUtils
 from tark.utils.exon_utils import ExonUtils
 
 
@@ -26,27 +26,28 @@ class DiffUtilsTest(TestCase):
 
     def setUp(self):
         self.diff_me_transcript = {'sequence': {'seq_checksum': 'D2C34F223CFA61D10CD5CBD22BEA1189BAABC0A8',
-                                           'sequence': 'GGGCTTGTGGCGCGAGCTTCTGAAACT'},
-                              'transcript_checksum': '78287E1D4D9DF3AA437555886C2DDF2D03789D56',
-                              'loc_end': 32400266, 'loc_checksum': '66D0AE073CF5E8C3C55EC29AB1392AD363376D23',
-                              'stable_id_version': 7, 'loc_region': '13', 'assembly': 'GRCh38',
-                              'exon_set_checksum': '2A5C848C6EF11AB2D259B09D640603154DA2C221',
-                              'stable_id': 'ENST00000380152', 'loc_strand': 1, 'loc_start': 32315474,
-                              'translations': {'loc_region': '13', 'stable_id_version': 3,
-                                               'translation_checksum': '2DAFEEE4E4394F56F26660F8012FE2B2579E5FA9',
-                                               'assembly': 'GRCh38', 'translation_id': 115985,
-                                               'stable_id': 'ENSP00000369497', 'loc_end': 32398770, 'loc_strand': 1,
-                                               'loc_checksum': 'BF8226A4BB25F655B4545ACEB2C0E1233D21C814',
-                                               'sequence': '70543E7B80F8B964B126A5AA165F236CA9DC132F',
-                                               'loc_start': 32316461},
-                              'transcript_release_set': {'session': 3,
-                                                         'release_checksum':
-                                                         'B5D865F6D56C10E878B6D2DE5D3F997D32546D5C',
-                                                         'description': 'Ensembl release 93',
-                                                         'release_date': '2018-10-03',
-                                                         'assembly': 1, 'release_id': 2, 'source': 1,
-                                                         'shortname': '93'}}
-        
+                                                'sequence': 'GGGCTTGTGGCGCGAGCTTCTGAAACT'},
+                                   'transcript_checksum': '78287E1D4D9DF3AA437555886C2DDF2D03789D56',
+                                   'loc_end': 32400266, 'loc_checksum': '66D0AE073CF5E8C3C55EC29AB1392AD363376D23',
+                                   'stable_id_version': 7, 'loc_region': '13', 'assembly': 'GRCh38',
+                                   'exon_set_checksum': '2A5C848C6EF11AB2D259B09D640603154DA2C221',
+                                   'stable_id': 'ENST00000380152', 'loc_strand': 1, 'loc_start': 32315474,
+                                   'translations': {'loc_region': '13', 'stable_id_version': 3,
+                                                    'translation_checksum': '2DAFEEE4E4394F56F26660F8012FE2B2579E5FA9',
+                                                    'assembly': 'GRCh38', 'translation_id': 115985,
+                                                    'stable_id': 'ENSP00000369497', 'loc_end': 32398770,
+                                                    'loc_strand': 1,
+                                                    'loc_checksum': 'BF8226A4BB25F655B4545ACEB2C0E1233D21C814',
+                                                    'sequence': '70543E7B80F8B964B126A5AA165F236CA9DC132F',
+                                                    'loc_start': 32316461},
+                                   'transcript_release_set': {'session': 3,
+                                                              'release_checksum':
+                                                              'B5D865F6D56C10E878B6D2DE5D3F997D32546D5C',
+                                                              'description': 'Ensembl release 93',
+                                                              'release_date': '2018-10-03',
+                                                              'assembly': 1, 'release_id': 2, 'source': 1,
+                                                              'shortname': '93'}}
+
         diff_me_exon_set = [
             {'exon_order': 1, 'seq_checksum': 'seq_A', 'loc_checksum': 'loc_A', 'exon_checksum': 'exon_A'},
             {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B'},
@@ -160,7 +161,8 @@ class DiffUtilsTest(TestCase):
         self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results")
 
         # change diff_me_exon_list 2nd exon
-        diff_me_exon_list[1] = {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B', 'exon_checksum': 'exon_B_no_match'}
+        diff_me_exon_list[1] = {'exon_order': 2, 'seq_checksum': 'seq_B', 'loc_checksum': 'loc_B',
+                                'exon_checksum': 'exon_B_no_match'}
         compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
         expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5]]
         self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results with no match for E2")
@@ -174,21 +176,17 @@ class DiffUtilsTest(TestCase):
 
         # insert  three new exons in exonset2
         diff_with_exon_list.append({'exon_order': 6, 'seq_checksum': 'seq_F', 'loc_checksum': 'loc_F',
-                                  'exon_checksum': 'exon_F_no_match'})
+                                    'exon_checksum': 'exon_F_no_match'})
         diff_with_exon_list.append({'exon_order': 7, 'seq_checksum': 'seq_G', 'loc_checksum': 'loc_G',
-                                  'exon_checksum': 'exon_G_no_match'})
+                                    'exon_checksum': 'exon_G_no_match'})
         diff_with_exon_list.append({'exon_order': 8, 'seq_checksum': 'seq_H', 'loc_checksum': 'loc_H',
-                                  'exon_checksum': 'exon_H_no_match'})
+                                    'exon_checksum': 'exon_H_no_match'})
         compare_exon_results = ExonUtils.compare_exon_sets(diff_me_exon_list, diff_with_exon_list)
         expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5], [6, 6], [0, 7], [0, 8]]
         self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results for inserted E6")
 
         # do the compliment
-        compare_exon_results = ExonUtils.compare_exon_sets( diff_with_exon_list, diff_me_exon_list)
+        compare_exon_results = ExonUtils.compare_exon_sets(diff_with_exon_list, diff_me_exon_list)
         expected_result = [[1, 1], [2, 0], [3, 3], [4, 4], [5, 5]]
-        self.assertListEqual(expected_result, compare_exon_results, "Got expected compare results by swapping the exons")
-
-
-
-
-
+        self.assertListEqual(expected_result, compare_exon_results,
+                             "Got expected compare results by swapping the exons")

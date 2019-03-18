@@ -1,0 +1,4 @@
+
+{% if feature_type and stable_id and stable_id_version %}
+<a target="_blank" href={% url 'fetch_sequence' feature_type stable_id stable_id_version "json" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% endif %}
