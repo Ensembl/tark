@@ -72,9 +72,14 @@ Run the migrate step with --fake-initial (No need to run the migrations as the d
 ./manage.py migrate --fake-initial
 ```
 
-Run the development server
+Start the development server
+cd tark/tark
 ```
  ./manage.py runserver 0:9000
 ```
 
+Check in the browsesr
+```
+http://localhost:9000/
+```
 
