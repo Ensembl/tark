@@ -73,9 +73,3 @@ urlpatterns = [
 internal_apis = []  # hide your urls here
 
 urlpatterns = urlpatterns + tark_apis + internal_apis
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns

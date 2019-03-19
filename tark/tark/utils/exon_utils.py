@@ -52,7 +52,6 @@ class ExonUtils(object):
             compare_results.append((cur_exon, matched_exons))
 
         compare_results.insert(0, ("cumulative_overlap_score", cumulative_overlap_score))
-        print(compare_results)
         return compare_results
 
     @classmethod

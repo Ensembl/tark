@@ -26,13 +26,12 @@ SECRET_KEY = '(=tzgu^(%+h6g9q!e3t7ne-m_+w3i8=w#k$r2so0)tl56b##6y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'prem-ml']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 DATABASE_ROUTERS = ['tark.routers.TarkRouter']
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -55,7 +54,6 @@ INSTALLED_APPS = [
     'tark_drf',
     'tark_web',
     'refseq_loader',
-    'fixture_magic',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +103,7 @@ if 'TRAVIS' in os.environ:
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_refseq_new4',
+            'NAME': secrets.DATABASE_NAME,
             'USER': 'root',
             'PASSWORD': '',
             'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
@@ -117,26 +115,17 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'tark_django_manager',
-            'USER': secrets.DATABASE_USER,
-            'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': secrets.DATABASE_HOST,
-            'PORT': secrets.DATABASE_PORT,
+            'USER': 'xxxx',
+            'PASSWORD': 'xxxx',
+            'HOST': 'localhost',
+            'PORT': '3306',
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
-            #'NAME': 'tark_refseq_new4',
-            'NAME': 'tark_refseq_dryrun',
-            'USER': secrets.DATABASE_USER,
-            'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': secrets.DATABASE_HOST,
-            'PORT': secrets.DATABASE_PORT,
-        },
-        'tark_loader': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_refseq_dryrun',
+            'NAME': secrets.DATABASE_NAME,
             'USER': secrets.DATABASE_USER,
             'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
@@ -216,7 +205,8 @@ SWAGGER_SETTINGS = {
     'VALIDATOR_URL': None,
 }
 
-LOG_FILE = os.path.join(BASE_DIR, 'logs/tark.log')
+# point this to somewhere writable
+LOG_FILE = os.path.join(BASE_DIR, '../../logs/tark.log')
 print(LOG_FILE)
 LOGGING = {
     'version': 1,
@@ -240,6 +230,6 @@ LOGGING = {
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
-CURRENT_RELEASE = "93"
+CURRENT_RELEASE = "95"
 DEFAULT_SOURCE = "ensembl"
 INI_FILE = os.path.join(BASE_DIR, '../refseq_loader/management/commands/refseq_source.ini')

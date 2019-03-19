@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 .. See the NOTICE file distributed with this work for additional information
    regarding copyright ownership.
@@ -19,7 +20,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tark.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tark.settings.local")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

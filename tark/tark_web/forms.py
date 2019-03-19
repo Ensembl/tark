@@ -38,7 +38,6 @@ class FormUtils(object):
                 assembly_release_list.append((str(assembly_name) + ":" + str(release),
                                               str(assembly_name) + ":" + str(release)))
 
-        print(assembly_release_list)
         return assembly_release_list
 
     @classmethod
@@ -48,7 +47,6 @@ class FormUtils(object):
         for release in ReleaseUtils.get_all_release_short_names(assembly_name, source_name):
                 release_list.append((release, release))
 
-        print(release_list)
         return release_list
 
     @classmethod
