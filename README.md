@@ -10,12 +10,12 @@ An archive of all transcripts and its sequences from Ensembl, RefSeq and other s
 # Requirements
 - pyenv and pyenv-virtualenv or virtualenvwrapper
 - Python 3.6+
-- MySQL 5.6+:
+- MySQL 5.6+
 
 
 Installation
 ------------
-Clone the project from git repor
+Clone the project from git
 
 ```
 
@@ -27,7 +27,9 @@ git clone https://github.com/Ensembl/tark.git
 Create the Python environment
 
 ```
-mkvirtualenv tark 
+mkvirtualenv tarkenv
+workon tarkenv
+
 cd tark
 pip install -r requirements.txt 
 
