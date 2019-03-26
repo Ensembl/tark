@@ -115,10 +115,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'tark_django_manager',
-            'USER': 'xxxx',
-            'PASSWORD': 'xxxx',
-            'HOST': 'localhost',
-            'PORT': '3306',
+            'USER': secrets.DATABASE_USER,
+            'PASSWORD': '',
+            'HOST': secrets.DATABASE_HOST,
+            'PORT': secrets.DATABASE_PORT,
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }
@@ -127,7 +127,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': secrets.DATABASE_NAME,
             'USER': secrets.DATABASE_USER,
-            'PASSWORD': secrets.DATABASE_PASSWORD,
+            'PASSWORD': '',
             'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
         }

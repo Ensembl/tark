@@ -1,0 +1,65 @@
+{% extends "web_home.html" %}
+
+
+{% block title %}DataTable{% endblock %}
+
+{% load staticfiles %}
+
+{% block extra_scripts %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:20px;">
+   <div class="row">
+
+   <div class="well well-sm" style="background-color:#227098;color:#fff"><strong>Statistics</strong></div>
+    <table id="release_set_datatable" class="table table-striped table-bordered" cellspacing="0">
+      <thead>
+            <tr>
+              <th>Release</th>
+              <th>Gene Count</th>
+              <th>Transcript Count</th>
+              <th>Exon Count</th>
+              <th>Translation Count</th>
+              <!--th>Tools</th-->
+            </tr>
+      </thead>
+
+      {% for report in reports %}
+        <tr>
+          <td>{{report.release.current}}</td>
+
+          {% if report.gene.core == report.gene.tark_release%}
+          <td class='text-success'>
+          {% else %}
+          <td class='text-danger'>
+          {% endif %}
+            {{report.gene.tark_release}}
+          </td>
+
+          {% if report.transcript.core == report.transcript.tark_release%}
+          <td class='text-success'>
+          {% else %}
+          <td class='text-danger'>
+          {% endif %}
+            {{report.transcript.tark_release}}
+            {% if report.transcript.gained or report.transcript.removed%}
+            (&nearr; {{report.transcript.gained}}, &searr; {{report.transcript.removed}})
+            {% endif %}
+          </td>
+
+          <td>{{report.exon.tark_release}}</td>
+          <td>{{report.translation.tark_release}}</td>
+        </tr>
+      {% endfor %}
+     </table>
+    </div>
+
+ <hr/>
+
+
+  </div>
+{% endblock %}
+
+
