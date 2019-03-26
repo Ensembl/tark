@@ -7,6 +7,72 @@
 
 {% block extra_scripts %}
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+
+    var reports = {{ reports|safe }};
+
+    // Create the data table.
+    var dataTable = generateDataTable('gene', reports)
+
+    var chart = new google.visualization.LineChart(
+      document.getElementById('gene_chart_div')
+    );
+    chart.draw(dataTable["data"], dataTable["options"]);
+
+
+    // Create the data table.
+    var dataTable = generateDataTable('transcript', reports)
+
+    chart = new google.visualization.LineChart(
+      document.getElementById('transcript_chart_div')
+    );
+    chart.draw(dataTable["data"], dataTable["options"]);
+  }
+
+  function generateDataTable(feature, reports) {
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Release');
+    data.addColumn('number', 'Total');
+    data.addColumn('number', 'Gained');
+    data.addColumn('number', 'Removed');
+
+    var i;
+    for (i = 0; i < reports.length; i++) {
+      // console.log(reports[i]["release"]["current"]);
+      data.addRow([
+        parseInt(reports[i]["release"]["current"]),
+        parseInt(reports[i][feature]["tark_release"]),
+        parseInt(reports[i][feature]["gained"]),
+        parseInt(reports[i][feature]["removed"])
+      ]);
+    }
+
+    // Set chart options
+    var featureForTitle = feature.charAt(0).toUpperCase() + feature.slice(1)
+    var options = {'title': featureForTitle + 's Per Release',
+                   'width':900,
+                   'height':300};
+
+    return {
+      data: data,
+      options: options
+    };
+  }
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -37,6 +103,9 @@
           <td class='text-danger'>
           {% endif %}
             {{report.gene.tark_release}}
+            {% if report.gene.gained or report.gene.removed%}
+            (&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}})
+            {% endif %}
           </td>
 
           {% if report.transcript.core == report.transcript.tark_release%}
@@ -54,8 +123,11 @@
           <td>{{report.translation.tark_release}}</td>
         </tr>
       {% endfor %}
-     </table>
-    </div>
+    </table>
+
+    <div id="gene_chart_div"></div>
+    <div id="transcript_chart_div"></div>
+  </div>
 
  <hr/>
 
