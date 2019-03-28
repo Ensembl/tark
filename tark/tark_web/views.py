@@ -131,6 +131,21 @@ def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_fo
                                                            })
 
 
+def search_link(request, search_identifier):
+
+    search_form = SearchForm(request.POST)
+    host_url = ApiUtils.get_host_url(request)
+
+    query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
+        "&expand=transcript_release_set,genes"
+    response = requests.get(host_url + query_url)
+    if response.status_code == 200:
+        search_result = response.json()
+        return render(request, 'search_result.html', context={'form': search_form,
+                                                              'search_result': search_result,
+                                                              'search_identifier': search_identifier})
+
+
 def search_home(request):
     """
     View function for search query page
@@ -173,3 +188,38 @@ def load_releases(request):
 
 def datatable_view_release_set(request):
     return render(request, 'datatable_view_release_set.html')
+
+
+def transcript_details(request, stable_id_with_version, search_identifier):
+    host_url = ApiUtils.get_host_url(request)
+
+    # get transcript details
+    query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
+        "&expand=transcript_release_set,genes"
+    response = requests.get(host_url + query_url_details)
+    transcript_details = {}
+    if response.status_code == 200:
+        search_result = response.json()
+        if "results" in search_result and len(search_result["results"]) > 0:
+            transcript_details = search_result["results"][0]
+    else:
+        logger.error("Error")
+
+    # get transcript history
+    transcript_history = {}
+    if '.' in stable_id_with_version:
+        (identifier, identifier_version) = stable_id_with_version.split('.')  # @UnusedVariable
+
+        query_url_history = "/api/transcript/?stable_id=" + identifier + \
+            "&expand=transcript_release_set"
+        response = requests.get(host_url + query_url_history)
+
+        if response.status_code == 200:
+            search_result = response.json()
+            if "results" in search_result:
+                transcript_history = search_result["results"]
+
+    return render(request, 'transcript_details.html', context={'transcript_details': transcript_details,
+                                                               'transcript_history': transcript_history,
+                                                               'search_identifier': search_identifier,
+                                                               'stable_id_with_version': stable_id_with_version})

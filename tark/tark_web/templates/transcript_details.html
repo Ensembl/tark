@@ -2,7 +2,10 @@
 
 {% load staticfiles %}
 {% load add_class %}
+{% load compare_features %}
+{% load sequence_format %}
 {% load search_result_formatter %}
+
 
 {% block content %}
 
@@ -27,15 +30,13 @@ function get_query_params(row){
             }
             console.log(transcript_releases_trimmed);
             transcript_release = transcript_releases_trimmed.sort().pop();
-            
-			console.log(transcript_release);
+
             //removing e and r from release
             if(transcript_release.startsWith("e") || transcript_release.startsWith("r")){
             transcript_release = transcript_release.substring(1,3);
             }else{
             transcript_release = transcript_release.substring(0,2);
             }
-            console.log(transcript_release);
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release];
 }
 
@@ -109,8 +110,8 @@ $(document).ready(function() {
                "container": 'body'
             });          
         },
-     "pageLength": 25,
-    "order": [[ 10, "desc" ]],
+        "pageLength": 25,
+   // "order": [[ 3, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
@@ -167,99 +168,90 @@ $(document).ready(function() {
 
 	</script>
 
+
+
 <div class="container" style="padding-top:20px;">
 
-<!-- Info -->
-<div class="panel panel-info ">
-  <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Search Results: </strong> 
- To see the difference between two transcripts, select the two transcripts (T1 and T2) and click on "Diff Transcripts" button below.
-  </div>
-  <div class="panel-body">
+<div id="current_well" class="well well-sm" style="background-color: #303952;color:#ffffff"><strong>TRANSCRIPT DETAILS</strong></div>
 
-  <table id="search_result_table" class="table table-striped table-bordered table-responsive table-condensed text-center">
- <thead>
-  <tr>
-     <th class="text-center" data-sortable="false">T1</th>
-     <th class="text-center" data-sortable="false">T2</th>
-     <th class="text-center" data-sortable="true">Transcript StableID</th>
-     <th class="text-center" data-sortable="true">Assembly</th>
-     <th class="text-center" data-sortable="true">Source</th>
-     <th class="text-center" data-sortable="true">ReleaseSet</th>
-     <th class="text-center" data-sortable="true">Region</th>
-     <th class="text-center" data-sortable="true">Start</th>
-     <th class="text-center" data-sortable="true">End</th>
-     <th class="text-center" data-sortable="true" title="Matched Annotation by NCBI and EMBL-EBI">MANE</th>
-     <th class="text-center" data-sortable="true" title="Matched Annotation by NCBI and EMBL-EBI">MANE_TYPE</th>
-     <th class="text-center" data-sortable="true">Symbol</th>
+<div class="row">
+<div class="col-md-12">
+<table class="table table-condensed">
+<tr><td style="border-top: 0px;">StableID.version</td><td style="border-top: 0px;"><strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong></td></tr>
+<tr><td>Assembly</td><td>{{transcript_details.assembly}}</td></tr>
 
-  </tr>
- </thead>
-    {% for result in search_result %}
-      <tr>
-      <td><input type="radio" name="transcript1"></td>
-      <td><input type="radio" name="transcript2"></td>
-      <td>
-       <a target="_blank" href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
-      </td>
-      
-       {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
-        <td>{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
-       {% else %}
-        <td class="text-danger">{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
-       {% endif %}
-       
-        {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
-         <td>{{result.transcript_release_set|get_values_as_list:"source"}}</td>
-       {% else %}
-        <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
-       {% endif %}
-      
-      
-      <!--release_set -->
-       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
-       {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
-      <td>
-      {% if release_date.max_release == "96"%}
-      <a target="_blank" href="http://staging.ensembl.org">
-      {% else %}
-       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org">
-      {% endif %}
-      {{release_date.date_range}}
-      </a>
-      </td>
-      {% endwith %}
-      {% else %}
-       {% with result.transcript_release_set|format_release_set:"refseq" as release_date %}
-      <td>
-       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">	
-      {{release_date.date_range}}
-      </a>
-      </td>
-      {% endwith %}
-      {% endif %}
-       
-      <td>{{result.loc_region}}</td>
-      <td>{{result.loc_start}}</td>
-      <td>{{result.loc_end}}</td>
-      <td>{{result.mane_transcript}}</td>
-      <td>{{result.mane_transcript_type}}</td>
-      <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g={{result.genes|get_values_as_list:'name'}}">{{result.genes|get_values_as_list:"name"}}</a></td>
-      <!--
-      {% with result.exons|get_values_as_list:"stable_id_exon" as exons %}
-      <td>{{exons |linebreaks}}</td>
-      {% endwith %}
-      <td class="details-control"></td>
-      -->
-      </tr>
-    {% endfor %}
+{% with transcript_details.transcript_release_set.0 as release_info %}
+<tr><td>Release</td><td>{{release_info.source}} {{release_info.shortname}} ({{ release_info.release_date }})</td></tr>
+{% endwith %}
 
-  
-  </table>
-  <button type="submit" id="search_diff_transcript" class="btn btn-info">Diff Transcripts</button>
-  <a id="search_button" class="btn btn-primary" href="/web/search/">New Search</a>
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+<tr><td>Transcript Location</td><td>Chromosome {{transcript_details.loc_region}}:{{transcript_details.loc_start}}..{{transcript_details.loc_end}} {% if transcript_details.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
+{% with transcript_details.genes.0 as gene %}
+<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} (<strong> {{ gene.name }} </strong>)</td></tr>
+<tr><td>Gene Location</td><td>Chromosome {{gene.loc_region}}:{{gene.loc_start}}..{{gene.loc_end}} {% if gene.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
+{% endwith %}
+
+{% if transcript_details.mane_transcript %}
+<tr><td>MANE Transcript</td><td>{{transcript_details.mane_transcript}} ({{ transcript_details.mane_transcript_type }})</td></tr>
+{% endif %}
+
+</table>
+</div>
+</div>
+
+<div id="current_well" class="well well-sm" style="background-color: #303952;color:#ffffff"><strong>TRANSCRIPT HISTORY</strong></div>
+
+<div class="row">
+<div class="col-md-12">
+<table id="search_result_table" class="table table-striped table-bordered table-responsive table-condensed">
+<thead>
+<tr style="background-color: #4b6584;color:#ffffff">
+<th class="text-center" data-sortable="false">T1</th>
+<th class="text-center" data-sortable="false">T2</th>
+<th class="text-center" data-sortable="false">StableID.version</th>
+<th class="text-center" data-sortable="false">Assembly</th>
+<th class="text-center" data-sortable="false">Source</th>
+<th class="text-center" data-sortable="false">Release</th>
+<th class="text-center" data-sortable="false">Location</th>
+<th class="text-center" data-sortable="true">MANE</th>
+<th class="text-center" data-sortable="true">MANE_TYPE</th>
+</tr>
+</thead>
+<tbody>
+{% for transcript in transcript_history %}
+<tr>
+<td class="text-center"><input type="radio" name="transcript1"></td>
+<td class="text-center"><input type="radio" name="transcript2"></td>
+<td>{{ transcript.stable_id }}.{{ transcript.stable_id_version }}</td>
+<td>{{transcript.assembly}}</td>
+{% with transcript_details.transcript_release_set.0 as release_info %}
+<td>{{release_info.source}}</td>
+<td>
+ {% with transcript.transcript_release_set|format_release_set:"{{release_info.source|lower}}" as release_date %}
+ {{ release_date.date_range }}
+ {% endwith %}
+</td>
+ {% endwith %}
+<td>{{transcript.loc_region}}:{{transcript.loc_start}}..{{transcript.loc_end}}</td>
+<td>{{transcript.mane_transcript}}</td>
+<td>{{transcript.mane_transcript_type}}</td>
+
+
+</tr>
+
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+</div>
+
+<button type="submit" id="search_diff_transcript" class="btn btn-info">Diff Transcripts</button>
+<a id="search_button" class="btn btn-primary" href="/web/search_link/{{ search_identifier }}"> Back to Search Results</a>
+
+<!--modal-->
+ <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-sm">
+    
       <div class="modal-content">
         <div class="modal-header" style="background-color:#dc3545;color:#fff">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -272,20 +264,17 @@ $(document).ready(function() {
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
+      
     </div>
   </div>
+
+<!--modal-->
+
+
+<!--summary-->
+ <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
+ <div id="summary_diff_qs1_qs2" style="padding-top:20px;">  </div>
+
 </div>
   
- </div>
- 
- <!--summary-->
- <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
- <div id="summary_diff_qs1_qs2">  </div>
- 
-</div>
-
-
- 
- 
-
 {% endblock %}

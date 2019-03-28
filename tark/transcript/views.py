@@ -24,7 +24,7 @@ from transcript.drf.serializers import TranscriptSerializer,\
     TranscriptDiffSerializer, TranscriptSearchSerializer,\
     TranscriptDataTableSerializer
 from transcript.drf.filters import TranscriptFilterBackend,\
-    TranscriptDiffFilterBackend, TranscriptSearchFilterBackend
+    TranscriptDiffFilterBackend, TranscriptSearchFilterBackend, TranscriptDetailFilterBackend
 from tark.utils.diff_utils import DiffUtils
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
@@ -65,9 +65,15 @@ class TranscriptDatatableView(DataTableListApi):
     default_order_by = 1
 
 
-class TranscriptDetail(generics.RetrieveAPIView):
+class TranscriptDetail(generics.ListAPIView):
     queryset = Transcript.objects.all()
-    serializer_class = TranscriptSerializer(queryset, many=True)
+    serializer_class = TranscriptSerializer
+    filter_backends = (TranscriptDetailFilterBackend, )
+
+    @setup_eager_loading(TranscriptSerializer)
+    def get_queryset(self):
+        queryset = Transcript.objects.order_by('pk')
+        return queryset
 
 
 class TranscriptDiff(generics.ListAPIView):
@@ -119,7 +125,7 @@ class TranscriptDiff(generics.ListAPIView):
         if response.status_code == 200:
             search_result = response.json()
 
-        if search_result is not None and "count" in search_result and search_result["count"] == 1 and "results" in search_result:  # @IgnorePep8
+        if search_result is not None and "count" in search_result and search_result["count"] == 1 and "results" in search_result:
             search_result = search_result["results"][0]
 
             if "transcript_release_set" in search_result:
@@ -137,7 +143,7 @@ class TranscriptDiff(generics.ListAPIView):
 
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
-                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')  # @IgnorePep8
+                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')
                         if tl_query_set is not None and len(tl_query_set) == 1:
                             tl_obj = tl_query_set[0]
                             translation["sequence"] = tl_obj.sequence.sequence
@@ -150,7 +156,7 @@ class TranscriptDiff(generics.ListAPIView):
                     new_exons = []
                     for exon in all_exons:
                         if "exon_id" in exon:
-                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')
 
                             if current_exon_query_set is not None and len(current_exon_query_set) == 1:
                                 current_exon_with_sequence = current_exon_query_set[0]

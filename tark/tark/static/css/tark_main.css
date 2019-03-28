@@ -205,3 +205,7 @@ tr.shown td.details-control {
 .panel-heading-sm{
     padding: 4px 5px;
 }
+
+.noborder{
+border-top: none;
+}

@@ -133,13 +133,23 @@ class DrfFields(object):
         return identifier_field
 
     @classmethod
+    def stable_id_with_version_field(cls, model_name):
+        stable_id_with_version_field = coreapi.Field(
+            name='stable_id_with_version',
+            location='query',
+            required=True,
+            type='string',
+            description='stable id with version (eg:  ' + cls.get_stable_id_with_version_example(model_name) + ')')
+        return stable_id_with_version_field
+
+    @classmethod
     def stable_id_field(cls, model_name):
         stable_id_field = coreapi.Field(
             name='stable_id',
             location='query',
             required=False,
             type='string',
-            description='stable id (eg:  ' + cls.get_stable_id_example(model_name) + ')')
+            description='stable id with version (eg:  ' + cls.get_stable_id_example(model_name) + ')')
         return stable_id_field
 
     @classmethod
@@ -297,6 +307,15 @@ class DrfFields(object):
     def get_stable_id_example(cls, model_name):
         example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000380152', 'Exon': 'ENSE00001184784',
                         'Translation': 'ENSP00000369497'}
+        print ("Model anme  " + str(model_name))
+        if model_name in example_dict:
+            return example_dict[model_name]
+        return ""
+
+
+    @classmethod
+    def get_stable_id_with_version_example(cls, model_name):
+        example_dict = {'Transcript': 'ENST00000252934.10'}
         print ("Model anme  " + str(model_name))
         if model_name in example_dict:
             return example_dict[model_name]

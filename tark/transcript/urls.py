@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^$', views.TranscriptList.as_view(), name='transcript_list'),
     url(r'^diff/$', views.TranscriptDiff.as_view(), name='transcript_diff'),
     url(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
-    url(r'^(?P<pk>[0-9]+)/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
+    url(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
     url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
 
 ]
