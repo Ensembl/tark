@@ -62,7 +62,7 @@ urlpatterns = [
     url(r'^ajax/load-releases/', views.load_releases, name='ajax_load_releases'),
     url(r'^mane/$', TemplateView.as_view(template_name='mane_list.html')),
     url(r'^view_alignment/$', TemplateView.as_view(template_name='alignment_viewer.html')),
-    url(r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.]+))?/$',
+    url(r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.]+))?/$',
         views.transcript_details, name='transcript_details')
 
 
