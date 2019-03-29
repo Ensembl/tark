@@ -110,7 +110,7 @@ $(document).ready(function() {
             });          
         },
      "pageLength": 25,
-    "order": [[ 10, "desc" ]],
+    "order": [[ 10, "desc" ], [ 3, "desc" ], [ 5, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
@@ -199,7 +199,7 @@ $(document).ready(function() {
       <td><input type="radio" name="transcript1"></td>
       <td><input type="radio" name="transcript2"></td>
       <td>
-       <a target="_blank" href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+       <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
       </td>
       
        {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
