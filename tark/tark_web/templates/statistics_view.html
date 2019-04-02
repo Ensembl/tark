@@ -48,6 +48,7 @@
     data.addColumn('number', 'Total');
     data.addColumn('number', 'Gained');
     data.addColumn('number', 'Removed');
+    data.addColumn('number', 'Changed');
 
     var i;
     for (i = 0; i < reports.length; i++) {
@@ -56,7 +57,8 @@
         parseInt(reports[i]["release"]["current"]),
         parseInt(reports[i][feature]["tark_release"]),
         parseInt(reports[i][feature]["gained"]),
-        parseInt(reports[i][feature]["removed"])
+        parseInt(reports[i][feature]["removed"]),
+        parseInt(reports[i][feature]["changed"])
       ]);
     }
 
@@ -103,8 +105,8 @@
           <td class='text-danger'>
           {% endif %}
             {{report.gene.tark_release}}
-            {% if report.gene.gained or report.gene.removed%}
-            (&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}})
+            {% if report.gene.gained or report.gene.removed or report.gene.changed%}
+            (&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}}, &harr; {{report.gene.changed}})
             {% endif %}
           </td>
 
@@ -114,8 +116,8 @@
           <td class='text-danger'>
           {% endif %}
             {{report.transcript.tark_release}}
-            {% if report.transcript.gained or report.transcript.removed%}
-            (&nearr; {{report.transcript.gained}}, &searr; {{report.transcript.removed}})
+            {% if report.transcript.gained or report.transcript.removed or report.transcript.changed%}
+            (&nearr; {{report.transcript.gained}}, &searr; {{report.transcript.removed}}, &harr; {{report.transcript.changed}})
             {% endif %}
           </td>
 

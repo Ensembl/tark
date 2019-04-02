@@ -1,741 +1,746 @@
 [
   {
-    "exon": {
-      "core": 745593,
-      "tark_total": 615423,
-      "tark_release": 615423
-    },
     "release": {
-      "current": "75"
+      "previous": 74,
+      "current": 75
+    },
+    "gene": {
+      "tark_release": 63677,
+      "removed": 0,
+      "gained": 63677,
+      "changed": 0,
+      "core": 63677
     },
     "transcript": {
-      "core": 215170,
-      "tark_total": 215170,
-      "tark_release": 215170
+      "tark_release": 215170,
+      "removed": 0,
+      "gained": 215170,
+      "changed": 0,
+      "core": 215170
+    },
+    "exon": {
+      "tark_release": 615423,
+      "removed": 0,
+      "gained": 615423,
+      "changed": 0,
+      "core": 738009
     },
     "translation": {
       "tark_release": 104763,
-      "tark_total": 104763,
-      "core": 105238
-    },
-    "gene": {
-      "core": 63677,
-      "tark_total": 63677,
-      "tark_release": 63677
+      "removed": 0,
+      "gained": 104763,
+      "changed": 0,
+      "core": 104763
     }
   },
   {
-    "translation": {
-      "core": 99459,
-      "gained": 99459,
-      "tark_release": 99459,
-      "removed": 104763,
-      "tark_total": 204222
-    },
-    "transcript": {
-      "tark_total": 421353,
-      "gained": 206183,
-      "tark_release": 206183,
-      "removed": 215170,
-      "core": 206183
+    "release": {
+      "previous": 75,
+      "current": 76
     },
     "gene": {
-      "tark_total": 126434,
-      "gained": 62757,
       "tark_release": 62757,
-      "removed": 63677,
+      "removed": 6285,
+      "gained": 5365,
+      "changed": 22464,
       "core": 62757
     },
-    "release": {
-      "previous": "75",
-      "current": "76"
-    },
-    "exon": {
-      "tark_total": 1212918,
-      "gained": 597495,
-      "tark_release": 597495,
-      "removed": 615423,
-      "core": 709903
-    }
-  },
-  {
-    "release": {
-      "current": "77",
-      "previous": "76"
-    },
     "transcript": {
-      "tark_total": 517238,
-      "tark_release": 208244,
-      "gained": 95885,
-      "core": 208244,
-      "removed": 93824
+      "tark_release": 206183,
+      "removed": 21616,
+      "gained": 12629,
+      "changed": 93172,
+      "core": 206183
     },
     "exon": {
-      "core": 714124,
-      "removed": 748,
-      "tark_release": 600761,
-      "gained": 4014,
-      "tark_total": 1216932
+      "tark_release": 597495,
+      "removed": 59774,
+      "gained": 41846,
+      "changed": 7818,
+      "core": 709903
     },
     "translation": {
-      "tark_total": 205031,
-      "gained": 809,
-      "tark_release": 99436,
-      "removed": 832,
-      "core": 99436
-    },
-    "gene": {
-      "tark_total": 147843,
-      "gained": 21409,
-      "tark_release": 64253,
-      "removed": 19913,
-      "core": 64253
+      "tark_release": 99459,
+      "removed": 12833,
+      "gained": 7529,
+      "changed": 2418,
+      "core": 99459
     }
   },
   {
+    "release": {
+      "previous": 76,
+      "current": 77
+    },
+    "gene": {
+      "tark_release": 64253,
+      "removed": 100,
+      "gained": 1596,
+      "changed": 19222,
+      "core": 64253
+    },
+    "transcript": {
+      "tark_release": 208244,
+      "removed": 234,
+      "gained": 2295,
+      "changed": 93590,
+      "core": 208244
+    },
     "exon": {
       "tark_release": 600761,
-      "removed": 0,
-      "tark_total": 1216932,
-      "gained": 0,
+      "removed": 371,
+      "gained": 3629,
+      "changed": 383,
       "core": 714124
     },
-    "gene": {
-      "core": 64253,
-      "gained": 170,
-      "tark_total": 148007,
-      "removed": 170,
-      "tark_release": 64253
-    },
-    "transcript": {
-      "removed": 0,
-      "tark_release": 208244,
-      "core": 208244,
-      "gained": 0,
-      "tark_total": 517238
-    },
     "translation": {
-      "removed": 0,
       "tark_release": 99436,
-      "core": 99436,
-      "gained": 0,
-      "tark_total": 205031
-    },
-    "release": {
-      "current": "78",
-      "previous": "77"
+      "removed": 671,
+      "gained": 648,
+      "changed": 157,
+      "core": 99436
     }
   },
   {
+    "release": {
+      "previous": 77,
+      "current": 78
+    },
     "gene": {
-      "tark_total": 169297,
-      "gained": 21403,
-      "removed": 20439,
+      "tark_release": 64253,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 64253
+    },
+    "transcript": {
+      "tark_release": 208244,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 208244
+    },
+    "exon": {
+      "tark_release": 600761,
+      "removed": 0,
+      "gained": 0,
+      "changed": 16,
+      "core": 714124
+    },
+    "translation": {
+      "tark_release": 99436,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 99436
+    }
+  },
+  {
+    "release": {
+      "previous": 78,
+      "current": 79
+    },
+    "gene": {
       "tark_release": 65217,
+      "removed": 504,
+      "gained": 1468,
+      "changed": 19453,
       "core": 65217
     },
     "transcript": {
-      "gained": 100328,
-      "tark_total": 617566,
-      "core": 213622,
-      "removed": 94950,
-      "tark_release": 213622
+      "tark_release": 213622,
+      "removed": 791,
+      "gained": 6169,
+      "changed": 94159,
+      "core": 213622
     },
     "exon": {
-      "core": 726284,
-      "removed": 2621,
       "tark_release": 611814,
-      "gained": 13674,
-      "tark_total": 1230513
-    },
-    "release": {
-      "current": "79",
-      "previous": "78"
+      "removed": 1442,
+      "gained": 12477,
+      "changed": 1203,
+      "core": 726284
     },
     "translation": {
-      "tark_total": 207292,
-      "gained": 2261,
-      "removed": 919,
       "tark_release": 100778,
+      "removed": 572,
+      "gained": 1914,
+      "changed": 336,
       "core": 100778
     }
   },
   {
-    "exon": {
+    "release": {
+      "previous": 79,
+      "current": 80
+    },
+    "gene": {
+      "tark_release": 65217,
       "removed": 0,
-      "tark_total": 1230513,
       "gained": 0,
-      "core": 726284,
-      "tark_release": 611814
+      "changed": 0,
+      "core": 65217
     },
     "transcript": {
-      "removed": 0,
-      "tark_total": 617566,
-      "gained": 0,
       "tark_release": 213622,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
       "core": 213622
     },
-    "release": {
-      "previous": "79",
-      "current": "80"
+    "exon": {
+      "tark_release": 611814,
+      "removed": 0,
+      "gained": 0,
+      "changed": 50,
+      "core": 726284
     },
     "translation": {
-      "tark_total": 207292,
-      "removed": 0,
-      "core": 100778,
       "tark_release": 100778,
-      "gained": 0
-    },
-    "gene": {
-      "core": 65217,
-      "tark_release": 65217,
-      "gained": 861,
-      "tark_total": 169950,
-      "removed": 861
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 100778
     }
   },
   {
     "release": {
-      "previous": "80",
-      "current": "81"
-    },
-    "gene": {
-      "gained": 20699,
-      "tark_total": 190523,
-      "core": 65988,
-      "removed": 19928,
-      "tark_release": 65988
-    },
-    "exon": {
-      "gained": 6992,
-      "tark_total": 1237393,
-      "tark_release": 617575,
-      "removed": 1231,
-      "core": 733504
-    },
-    "transcript": {
-      "removed": 97320,
-      "tark_release": 216133,
-      "core": 216133,
-      "tark_total": 717397,
-      "gained": 99831
-    },
-    "translation": {
-      "gained": 1447,
-      "removed": 292,
-      "tark_release": 101933,
-      "core": 101933,
-      "tark_total": 208739
-    }
-  },
-  {
-    "exon": {
-      "tark_release": 617575,
-      "gained": 0,
-      "removed": 0,
-      "core": 733504,
-      "tark_total": 1237393
-    },
-    "transcript": {
-      "tark_release": 216133,
-      "gained": 0,
-      "core": 216133,
-      "removed": 0,
-      "tark_total": 717397
-    },
-    "translation": {
-      "tark_total": 208739,
-      "tark_release": 101933,
-      "gained": 0,
-      "core": 101933,
-      "removed": 0
+      "previous": 80,
+      "current": 81
     },
     "gene": {
       "tark_release": 65988,
-      "gained": 295,
-      "removed": 295,
-      "core": 65988,
-      "tark_total": 190691
+      "removed": 129,
+      "gained": 900,
+      "changed": 19489,
+      "core": 65988
     },
-    "release": {
-      "current": "82",
-      "previous": "81"
+    "transcript": {
+      "tark_release": 216133,
+      "removed": 338,
+      "gained": 2849,
+      "changed": 96981,
+      "core": 216133
+    },
+    "exon": {
+      "tark_release": 617575,
+      "removed": 713,
+      "gained": 6447,
+      "changed": 592,
+      "core": 733504
+    },
+    "translation": {
+      "tark_release": 101933,
+      "removed": 163,
+      "gained": 1318,
+      "changed": 123,
+      "core": 101933
     }
   },
   {
-    "translation": {
-      "tark_release": 102450,
-      "tark_total": 209563,
-      "gained": 824,
-      "removed": 307,
-      "core": 102450
+    "release": {
+      "previous": 81,
+      "current": 82
     },
     "gene": {
-      "gained": 1361,
-      "tark_total": 191972,
-      "tark_release": 66203,
-      "core": 66203,
-      "removed": 1146
+      "tark_release": 65988,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 65988
+    },
+    "transcript": {
+      "tark_release": 216133,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 216133
     },
     "exon": {
-      "removed": 941,
-      "core": 735779,
-      "tark_release": 621321,
-      "tark_total": 1241706,
-      "gained": 4687
+      "tark_release": 617575,
+      "removed": 0,
+      "gained": 0,
+      "changed": 104,
+      "core": 733504
+    },
+    "translation": {
+      "tark_release": 101933,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 101933
+    }
+  },
+  {
+    "release": {
+      "previous": 82,
+      "current": 83
+    },
+    "gene": {
+      "tark_release": 66203,
+      "removed": 88,
+      "gained": 303,
+      "changed": 584,
+      "core": 66203
     },
     "transcript": {
       "tark_release": 217425,
-      "tark_total": 719493,
-      "gained": 2096,
-      "removed": 804,
+      "removed": 207,
+      "gained": 1499,
+      "changed": 597,
       "core": 217425
     },
-    "release": {
-      "previous": "82",
-      "current": "83"
-    }
-  },
-  {
-    "release": {
-      "current": "84",
-      "previous": "83"
-    },
-    "gene": {
-      "core": 66203,
-      "tark_total": 192142,
-      "tark_release": 66203,
-      "gained": 244,
-      "removed": 244
-    },
     "exon": {
-      "removed": 0,
-      "gained": 0,
       "tark_release": 621321,
-      "tark_total": 1241706,
+      "removed": 591,
+      "gained": 4324,
+      "changed": 465,
       "core": 735779
     },
-    "transcript": {
-      "core": 217425,
-      "removed": 0,
-      "gained": 0,
-      "tark_total": 719493,
-      "tark_release": 217425
-    },
     "translation": {
-      "removed": 0,
-      "gained": 0,
       "tark_release": 102450,
-      "tark_total": 209563,
+      "removed": 189,
+      "gained": 706,
+      "changed": 117,
       "core": 102450
     }
   },
   {
     "release": {
-      "current": "85",
-      "previous": "84"
-    },
-    "translation": {
-      "tark_release": 102915,
-      "tark_total": 211057,
-      "core": 102915,
-      "removed": 1029,
-      "gained": 1494
-    },
-    "transcript": {
-      "removed": 4771,
-      "core": 215929,
-      "gained": 3275,
-      "tark_total": 722768,
-      "tark_release": 215929
+      "previous": 83,
+      "current": 84
     },
     "gene": {
-      "gained": 2527,
-      "core": 63305,
-      "removed": 5425,
-      "tark_total": 194630,
-      "tark_release": 63305
+      "tark_release": 66203,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 66203
+    },
+    "transcript": {
+      "tark_release": 217425,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 217425
     },
     "exon": {
-      "gained": 6894,
-      "core": 737982,
-      "removed": 6479,
-      "tark_total": 1248477,
-      "tark_release": 621736
+      "tark_release": 621321,
+      "removed": 0,
+      "gained": 0,
+      "changed": 130,
+      "core": 735779
+    },
+    "translation": {
+      "tark_release": 102450,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 102450
     }
   },
   {
-    "gene": {
-      "core": 63305,
-      "tark_release": 63305,
-      "removed": 93,
-      "gained": 93,
-      "tark_total": 194717
-    },
-    "transcript": {
-      "tark_release": 215929,
-      "core": 215929,
-      "removed": 0,
-      "gained": 0,
-      "tark_total": 722768
-    },
     "release": {
-      "previous": "85",
-      "current": "86"
+      "previous": 84,
+      "current": 85
     },
-    "exon": {
-      "gained": 0,
-      "tark_total": 1248477,
-      "tark_release": 621736,
-      "core": 737982,
-      "removed": 0
-    },
-    "translation": {
-      "tark_release": 102915,
-      "core": 102915,
-      "removed": 0,
-      "gained": 0,
-      "tark_total": 211057
-    }
-  },
-  {
     "gene": {
       "tark_release": 63305,
-      "gained": 203,
-      "removed": 203,
-      "tark_total": 194911,
+      "removed": 3467,
+      "gained": 569,
+      "changed": 1815,
       "core": 63305
     },
-    "translation": {
-      "gained": 0,
-      "tark_release": 102915,
-      "removed": 0,
-      "core": 102915,
-      "tark_total": 211057
-    },
     "transcript": {
-      "gained": 0,
-      "removed": 0,
       "tark_release": 215929,
-      "tark_total": 722768,
+      "removed": 3940,
+      "gained": 2444,
+      "changed": 831,
       "core": 215929
     },
-    "release": {
-      "previous": "86",
-      "current": "87"
-    },
     "exon": {
-      "core": 737982,
-      "tark_total": 1248477,
-      "gained": 0,
-      "removed": 0,
-      "tark_release": 621736
+      "tark_release": 621736,
+      "removed": 5620,
+      "gained": 6015,
+      "changed": 997,
+      "core": 737982
+    },
+    "translation": {
+      "tark_release": 102915,
+      "removed": 879,
+      "gained": 1344,
+      "changed": 149,
+      "core": 102915
     }
   },
   {
+    "release": {
+      "previous": 85,
+      "current": 86
+    },
+    "gene": {
+      "tark_release": 63305,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 63305
+    },
+    "transcript": {
+      "tark_release": 215929,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 215929
+    },
     "exon": {
-      "core": 744360,
+      "tark_release": 621736,
+      "removed": 0,
+      "gained": 0,
+      "changed": 170,
+      "core": 737982
+    },
+    "translation": {
+      "tark_release": 102915,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 102915
+    }
+  },
+  {
+    "release": {
+      "previous": 86,
+      "current": 87
+    },
+    "gene": {
+      "tark_release": 63305,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 63305
+    },
+    "transcript": {
+      "tark_release": 215929,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 215929
+    },
+    "exon": {
+      "tark_release": 621736,
+      "removed": 0,
+      "gained": 0,
+      "changed": 170,
+      "core": 737982
+    },
+    "translation": {
+      "tark_release": 102915,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 102915
+    }
+  },
+  {
+    "release": {
+      "previous": 87,
+      "current": 88
+    },
+    "gene": {
+      "tark_release": 63898,
+      "removed": 307,
+      "gained": 900,
+      "changed": 1279,
+      "core": 63898
+    },
+    "transcript": {
+      "tark_release": 218207,
+      "removed": 557,
+      "gained": 2835,
+      "changed": 715,
+      "core": 218207
+    },
+    "exon": {
       "tark_release": 627898,
-      "tark_total": 1256583,
-      "removed": 2236,
-      "gained": 8398
-    },
-    "transcript": {
-      "gained": 3550,
-      "removed": 1272,
-      "tark_release": 218207,
-      "core": 218207,
-      "tark_total": 726318
-    },
-    "release": {
-      "current": "88",
-      "previous": "87"
+      "removed": 1502,
+      "gained": 7637,
+      "changed": 914,
+      "core": 744360
     },
     "translation": {
       "tark_release": 104295,
-      "core": 104295,
-      "tark_total": 213219,
-      "removed": 783,
-      "gained": 2163
-    },
-    "gene": {
-      "tark_total": 197860,
-      "core": 63898,
-      "tark_release": 63898,
-      "removed": 2381,
-      "gained": 2974
+      "removed": 544,
+      "gained": 1924,
+      "changed": 228,
+      "core": 104295
     }
   },
   {
+    "release": {
+      "previous": 88,
+      "current": 89
+    },
     "gene": {
       "tark_release": 63898,
-      "core": 63898,
-      "gained": 1166,
-      "tark_total": 198992,
-      "removed": 1166
-    },
-    "release": {
-      "previous": "88",
-      "current": "89"
+      "removed": 0,
+      "gained": 0,
+      "changed": 0
     },
     "transcript": {
       "tark_release": 218207,
+      "removed": 0,
       "gained": 0,
-      "core": 218207,
-      "tark_total": 726318,
-      "removed": 0
+      "changed": 0
     },
     "exon": {
-      "core": 744360,
-      "gained": 0,
-      "tark_total": 1256583,
+      "tark_release": 627898,
       "removed": 0,
-      "tark_release": 627898
+      "gained": 0,
+      "changed": 218
     },
     "translation": {
       "tark_release": 104295,
-      "gained": 0,
-      "core": 104295,
       "removed": 0,
-      "tark_total": 213219
+      "gained": 0,
+      "changed": 0
     }
   },
   {
-    "translation": {
-      "core": 104817,
-      "gained": 640,
-      "tark_release": 104817,
-      "tark_total": 213859,
-      "removed": 118
-    },
-    "transcript": {
-      "core": 219288,
-      "gained": 1469,
-      "tark_release": 219288,
-      "removed": 388,
-      "tark_total": 727787
-    },
-    "exon": {
-      "removed": 497,
-      "tark_total": 1259238,
-      "tark_release": 630178,
-      "gained": 2777,
-      "core": 746822
+    "release": {
+      "previous": 89,
+      "current": 90
     },
     "gene": {
-      "removed": 794,
-      "tark_total": 199832,
       "tark_release": 63967,
-      "gained": 863,
+      "removed": 79,
+      "gained": 148,
+      "changed": 536,
       "core": 63967
     },
-    "release": {
-      "current": "90",
-      "previous": "89"
+    "transcript": {
+      "tark_release": 219288,
+      "removed": 62,
+      "gained": 1143,
+      "changed": 326,
+      "core": 219288
+    },
+    "exon": {
+      "tark_release": 630178,
+      "removed": 180,
+      "gained": 2448,
+      "changed": 546,
+      "core": 746822
+    },
+    "translation": {
+      "tark_release": 104817,
+      "removed": 57,
+      "gained": 579,
+      "changed": 60,
+      "core": 104817
     }
   },
   {
+    "release": {
+      "previous": 90,
+      "current": 91
+    },
+    "gene": {
+      "tark_release": 63967,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 63967
+    },
     "transcript": {
-      "core": 219288,
       "tark_release": 219288,
       "removed": 0,
-      "tark_total": 727787,
-      "gained": 0
+      "gained": 0,
+      "changed": 0,
+      "core": 219288
     },
     "exon": {
-      "tark_total": 1259238,
-      "gained": 0,
-      "core": 746822,
       "tark_release": 630178,
-      "removed": 0
+      "removed": 0,
+      "gained": 0,
+      "changed": 242,
+      "core": 746822
     },
     "translation": {
-      "tark_total": 213859,
-      "gained": 0,
       "tark_release": 104817,
-      "core": 104817,
-      "removed": 0
-    },
-    "release": {
-      "current": "91",
-      "previous": "90"
-    },
-    "gene": {
-      "core": 63967,
-      "tark_release": 63967,
-      "removed": 858,
-      "gained": 858,
-      "tark_total": 200018
-    }
-  },
-  {
-    "translation": {
-      "gained": 3826,
-      "tark_total": 217683,
-      "core": 107844,
-      "removed": 799,
-      "tark_release": 107844
-    },
-    "release": {
-      "current": "92",
-      "previous": "91"
-    },
-    "gene": {
-      "tark_release": 64561,
-      "removed": 1686,
-      "core": 64561,
-      "tark_total": 202225,
-      "gained": 2280
-    },
-    "exon": {
-      "tark_release": 641979,
-      "gained": 13935,
-      "tark_total": 1273097,
-      "core": 762222,
-      "removed": 2134
-    },
-    "transcript": {
-      "tark_release": 224501,
-      "gained": 7140,
-      "tark_total": 734927,
-      "core": 224501,
-      "removed": 1927
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 104817
     }
   },
   {
     "release": {
-      "current": "93",
-      "previous": "92"
+      "previous": 91,
+      "current": 92
     },
     "gene": {
-      "tark_total": 202342,
-      "core": 64561,
-      "gained": 264,
       "tark_release": 64561,
-      "removed": 264
+      "removed": 174,
+      "gained": 768,
+      "changed": 1309,
+      "core": 64561
+    },
+    "transcript": {
+      "tark_release": 224501,
+      "removed": 196,
+      "gained": 5409,
+      "changed": 1731,
+      "core": 224501
     },
     "exon": {
       "tark_release": 641979,
-      "gained": 0,
-      "core": 762222,
-      "tark_total": 1273097,
-      "removed": 0
-    },
-    "transcript": {
-      "tark_total": 734927,
-      "core": 224501,
-      "gained": 0,
-      "tark_release": 224501,
-      "removed": 0
+      "removed": 845,
+      "gained": 12619,
+      "changed": 1552,
+      "core": 762222
     },
     "translation": {
-      "tark_total": 217683,
-      "core": 107844,
-      "gained": 0,
       "tark_release": 107844,
-      "removed": 0
+      "removed": 289,
+      "gained": 3316,
+      "changed": 494,
+      "core": 107844
     }
   },
   {
     "release": {
-      "previous": "93",
-      "current": "94"
+      "previous": 92,
+      "current": 93
     },
     "gene": {
-      "gained": 2003,
-      "core": 64914,
-      "tark_release": 64914,
-      "removed": 1650,
-      "tark_total": 204306
+      "tark_release": 64561,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 64561
     },
-    "translation": {
-      "tark_release": 109095,
-      "tark_total": 219322,
-      "removed": 388,
-      "gained": 1639,
-      "core": 109095
+    "transcript": {
+      "tark_release": 224501,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 224501
     },
     "exon": {
-      "gained": 8420,
-      "core": 771727,
+      "tark_release": 641979,
+      "removed": 0,
+      "gained": 0,
+      "changed": 302,
+      "core": 762222
+    },
+    "translation": {
+      "tark_release": 107844,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 107844
+    }
+  },
+  {
+    "release": {
+      "previous": 93,
+      "current": 94
+    },
+    "gene": {
+      "tark_release": 64914,
+      "removed": 126,
+      "gained": 479,
+      "changed": 1346,
+      "core": 64914
+    },
+    "transcript": {
+      "tark_release": 227492,
+      "removed": 94,
+      "gained": 3085,
+      "changed": 875,
+      "core": 227492
+    },
+    "exon": {
       "tark_release": 649375,
-      "removed": 1024,
-      "tark_total": 1281473
+      "removed": 337,
+      "gained": 7709,
+      "changed": 1011,
+      "core": 771727
     },
-    "transcript": {
-      "removed": 969,
-      "tark_total": 738887,
-      "tark_release": 227492,
-      "core": 227492,
-      "gained": 3960
+    "translation": {
+      "tark_release": 109095,
+      "removed": 180,
+      "gained": 1431,
+      "changed": 205,
+      "core": 109095
     }
   },
   {
-    "translation": {
-      "core": 109095,
-      "removed": 0,
-      "tark_total": 219322,
-      "tark_release": 109095,
-      "gained": 0
+    "release": {
+      "previous": 94,
+      "current": 95
     },
     "gene": {
-      "gained": 172,
       "tark_release": 64914,
-      "removed": 172,
-      "core": 64914,
-      "tark_total": 204423
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 64914
     },
     "transcript": {
-      "gained": 0,
       "tark_release": 227492,
       "removed": 0,
-      "core": 227492,
-      "tark_total": 738887
-    },
-    "release": {
-      "current": "95",
-      "previous": "94"
+      "gained": 0,
+      "changed": 0,
+      "core": 227492
     },
     "exon": {
-      "tark_total": 1281473,
+      "tark_release": 649375,
       "removed": 0,
-      "core": 771727,
       "gained": 0,
-      "tark_release": 649375
+      "changed": 350,
+      "core": 771727
+    },
+    "translation": {
+      "tark_release": 109095,
+      "removed": 0,
+      "gained": 0,
+      "changed": 0,
+      "core": 109095
     }
   },
   {
-    "translation": {
-      "removed": 1515,
-      "gained": 1370,
-      "tark_total": 335270,
-      "core": 109914,
-      "tark_release": 109914
+    "release": {
+      "previous": 95,
+      "current": 96
     },
     "gene": {
-      "removed": 12476,
-      "core": 65065,
-      "gained": 11829,
-      "tark_total": 255781,
-      "tark_release": 65065
-    },
-    "release": {
-      "current": "96",
-      "previous": "95"
+      "tark_release": 65065,
+      "removed": 126,
+      "gained": 277,
+      "changed": 11348,
+      "core": 65065
     },
     "transcript": {
-      "removed": 12510,
-      "tark_total": 911703,
-      "gained": 13480,
-      "core": 229428,
-      "tark_release": 229428
+      "tark_release": 229428,
+      "removed": 198,
+      "gained": 2134,
+      "changed": 11346,
+      "core": 229428
     },
     "exon": {
       "tark_release": 653988,
-      "core": 779169,
-      "tark_total": 1577673,
-      "gained": 19279,
-      "removed": 27264
+      "removed": 2802,
+      "gained": 7158,
+      "changed": 12464,
+      "core": 779169
+    },
+    "translation": {
+      "tark_release": 109914,
+      "removed": 190,
+      "gained": 1009,
+      "changed": 360,
+      "core": 109914
     }
   }
 ]
