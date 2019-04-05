@@ -24,6 +24,7 @@ from assembly.views import AssemblyDatatableView
 from transcript.views import TranscriptDatatableView
 from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
+from sequence.views import align_sequence, check_service_status
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set
 from django.views.generic.base import TemplateView
@@ -41,6 +42,9 @@ urlpatterns = [
 
     url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
         views.fetch_sequence, name='fetch_sequence'),
+
+    url(r'^alignsequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
+        align_sequence, name='align_sequence'),
 
     #  datatables
     url(r'^datatable/release_set/', datatable_view_release_set, name="datatable_view_release_set"),
@@ -63,7 +67,8 @@ urlpatterns = [
     url(r'^mane/$', TemplateView.as_view(template_name='mane_list.html')),
     url(r'^view_alignment/$', TemplateView.as_view(template_name='alignment_viewer.html')),
     url(r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.]+))?/$',
-        views.transcript_details, name='transcript_details')
+        views.transcript_details, name='transcript_details'),
+     url(r'^check_service_status/(?P<job_id>[a-zA-Z0-9\.\_\-]+)$', check_service_status, name='check_service_status')
 
 
 ]

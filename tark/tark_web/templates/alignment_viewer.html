@@ -4,71 +4,55 @@
 	<!-- Ref: https://github.com/AndrewCRMartin/JSAV -->
 	
 	{% block extra_scripts %}
+	 <script>
+	 
+	 var myVar;
+	 $(document).ready(function() {
+    
+    var refreshId = setInterval( function() 
+    {
+	 $.ajax({
+  		url: '/web/check_service_status/{{jobId}}',
+  		type: 'get',
+  		success: function(data){
+  		console.log(data);
+   	    // Perform operation on return value
+  		if(data["status"] === 'FINISHED'){
+
+    		clearInterval(refreshId);
+    		$("#loadingSpinner").hide();
+
+  			$( "#sequenceDisplay" ).load("https://www.ebi.ac.uk/Tools/services/rest/emboss_needle/result/{{ jobId }}/aln");
 	
-	
-	
-	<link href="{% static "JSAV/external/jquery.css" %}" rel="stylesheet" />
-	<script type='text/javascript' src="{% static  'JSAV/external/jquery-1.10.2.min.js' %}"></script>
-	<script type='text/javascript' src="{% static 'JSAV/external/jquery-ui-1.10.4.custom.min.js' %}"></script>
-	
-	<link href="{% static "JSAV/JSAV.css" %}" rel="stylesheet" />
-	<script type='text/javascript' src="{% static 'JSAV/JSAV.js' %}"></script>
-	
-	<link href=="{% static "JSAV/external/tooltipster-master/css/tooltipster.css" %}" rel="stylesheet" />
-	<script type='text/javascript' src="{% static 'JSAV/external/tooltipster-master/js/jquery.tooltipster.min.js' %}"></script>
-	<script>
-	function enableTooltipster()
-	{
-	   $(document).ready(function() {
-	        $('.tooltip').tooltipster();
-	    });
-	}
-	enableTooltipster();
-	</script>
-	
-	
-	<style type='text/css'>
-	#sequenceDisplay {font: 14px Verdana,Helvetica,sans-serif;
-	                  border: 1pt solid black;
-	                  background: #EEEEEE;
-	                  margin: 1em 0pt 0pt 0pt;
-	                  padding: 1em;}
-	</style>
-	
-	   
-	 {% endblock %}
+  		}
+  		}, error: function (xhr, ajaxOptions, thrownError) {
+  		clearInterval(refreshId);
+  		}
+ 		});
+        
+    }, 5000);
+    
+    });
+  
+</script>
+ {% endblock %}
 	  
 	{% block content %}
 	<div class="container" style="padding-top:20px;">
 	
 	<div id='subpage'>
-	
-	<h1>JSAV Alignment Display</h1>
-	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment Display</strong> </div>
-	
-	<script type='text/javascript'>
-	var seqs = [];
-	seqs.push({id :'>id1b1.L', sequence :'AAAAAAAAAAAAAAAAAAAAAAAAAAAA'});
-	seqs.push({id :'>id1a.L', sequence :'AAAAAAAAAAAAAATAAAAAAAAAAAAA'});
-	
-	var opts = Array();
-	opts.sortable = false;
-	opts.selectable = false;
-	opts.deletable = false;
-	opts.border = true;
-	opts.toggleDotify = false;
-	opts.toggleNocolour = false;
-	opts.fasta = true;
-	opts.consensus = true;
-	opts.colourScheme = "zappo";
-	opts.selectColour = true;
-	opts.callback = "enableTooltipster";
-	
-	printJSAV('sequenceDisplay', seqs, opts);
 
-
-	</script>
-
+	{% if jobId %}
+	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job "{{ jobId }}" submitted successfully.</strong> </div>
+	{% else %}
+	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job failed..Please try again</strong> </div>
+	{% endif %}
+	
+	
+	<div id="loadingSpinner"><strong>Processing...Please wait for the page to reload </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
+	
+	<pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;"></pre>
+	
 	
 	</div>  <!-- subpage -->
 	
