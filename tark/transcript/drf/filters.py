@@ -151,6 +151,29 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
         return [DrfFields.identifier_field(), DrfFields.get_expand_transcript_release_set_genes_field()]
 
 
+class TranscriptDetailFilterBackend(BaseFilterBackend):
+    """
+    Detail Filter
+    """
+    def filter_queryset(self, request, queryset, view):
+        identifier = request.query_params.get('stable_id_with_version', None)
+
+        # to support version search
+        identifier_version = None
+        if '.' in identifier:
+            (identifier, identifier_version) = identifier.split('.')
+
+        if identifier is not None and identifier_version is not None:
+            queryset = queryset.filter(stable_id=identifier).filter(stable_id_version=str(identifier_version))
+            return queryset.distinct()
+
+        return Transcript.objects.none()
+
+    def get_schema_fields(self, view):
+        return [DrfFields.stable_id_with_version_field("Transcript"),
+                DrfFields.get_expand_transcript_release_set_genes_field()]
+
+
 class TranscriptSetFilterBackent(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
