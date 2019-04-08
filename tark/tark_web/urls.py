@@ -41,7 +41,7 @@ urlpatterns = [
     # search
     url(r'^search/$', views.search_home, name='search_home'),
     url(r'^search_link/(?P<search_identifier>[a-zA-Z0-9\.]+)$', views.search_link, name='search_link'),
-  
+
     url(
         r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
         views.fetch_sequence,
@@ -126,13 +126,13 @@ urlpatterns = [
         TemplateView.as_view(
             template_name='alignment_viewer.html'
         )
-    )
+    ),
 
     url(
         r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.]+))?/$',  # pylint:disable=line-too-long
         views.transcript_details,
         name='transcript_details'
-    )
-    
+    ),
+
     url(r'^check_service_status/(?P<job_id>[a-zA-Z0-9\.\_\-]+)$', check_service_status, name='check_service_status')
 ]
