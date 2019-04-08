@@ -17,6 +17,9 @@
 
 
 from __future__ import unicode_literals
+
+import os
+
 from django.shortcuts import render
 from release.utils.release_utils import ReleaseUtils
 from .forms import DiffForm
@@ -167,9 +170,15 @@ def search_home(request):
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
                 search_result = response.json()
-                return render(request, 'search_result.html', context={'form': search_form,
-                                                                      'search_result': search_result,
-                                                                      'search_identifier': search_identifier})
+                return render(
+                    request,
+                    'search_result.html',
+                    context={
+                        'form': search_form,
+                        'search_result': search_result,
+                        'search_identifier': search_identifier
+                    }
+                )
             else:
                 logger.error("Error")
         else:
@@ -188,6 +197,22 @@ def load_releases(request):
 
 def datatable_view_release_set(request):
     return render(request, 'datatable_view_release_set.html')
+
+
+def statistics(request):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    json_file = os.path.join(dir_path, '../tark/static/load_reports.json')
+
+    with open(json_file, 'r') as jfh:
+        reports = json.loads(jfh.read())
+
+    return render(
+        request,
+        'statistics_view.html',
+        context={
+            'reports': reports
+        }
+    )
 
 
 def transcript_details(request, stable_id_with_version, search_identifier):
