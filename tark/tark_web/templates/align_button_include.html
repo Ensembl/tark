@@ -1,0 +1,4 @@
+
+{% if feature_type and stable_id_a and stable_id_version_a and stable_id_b and stable_id_version_b %}
+<a target="_blank" href={% url 'align_sequence' feature_type stable_id_a stable_id_version_a stable_id_b stable_id_version_b input_type outut_format %} type="button" class="btn btn-success btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">ALIGN</a>
+{% endif %}

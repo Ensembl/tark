@@ -24,6 +24,7 @@ from assembly.views import AssemblyDatatableView
 from transcript.views import TranscriptDatatableView
 from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
+from sequence.views import align_sequence, check_service_status
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set
 from tark_web.views import statistics
@@ -47,7 +48,12 @@ urlpatterns = [
         name='fetch_sequence'
     ),
 
-  
+    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
+        views.fetch_sequence, name='fetch_sequence'),
+
+    url(r'^alignsequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
+        align_sequence, name='align_sequence'),
+
     #  datatables
     url(
         r'^datatable/release_set/',
@@ -127,4 +133,6 @@ urlpatterns = [
         views.transcript_details,
         name='transcript_details'
     )
+    
+    url(r'^check_service_status/(?P<job_id>[a-zA-Z0-9\.\_\-]+)$', check_service_status, name='check_service_status')
 ]

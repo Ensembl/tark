@@ -34,7 +34,7 @@
 <td>ExonSet</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
 </tr>
 <tr>
-<td>Sequence</td>
+<td>Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
 <td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }} {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version %}</td>
 <td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }}    {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version %}</td>
 <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
