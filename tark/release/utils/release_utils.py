@@ -23,6 +23,7 @@ from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
 from django.db.models import Q
+from django.db.models import Prefetch
 from transcript.models import Transcript
 from django.db import connection
 
@@ -165,6 +166,12 @@ class ReleaseUtils(object):
         """
         """
 
+        # release_stats_objects = ReleaseStats.objects.select_related(
+        #     'release'
+        # )
+        # print(release_stats_objects)
+
+
         cursor = connection.cursor()
 
         sql = """
@@ -187,7 +194,6 @@ class ReleaseUtils(object):
                 source_loading_stats[row.shortname] = [row.json]
 
         return source_loading_stats
-
 
     @classmethod
     def get_features_gained(cls, feature, current_release, previous_release):

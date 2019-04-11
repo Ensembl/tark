@@ -62,13 +62,19 @@ class ReleaseSet(models.Model):
 class ReleaseStats(models.Model):
 
     release_stats_id = models.AutoField(primary_key=True)
-    release_id = models.ForeignKey(ReleaseSet, models.DO_NOTHING, blank=True, null=True)
+    release_id = models.ForeignKey(
+        ReleaseSet,
+        models.DO_NOTHING,
+        related_name='release',
+        blank=True,
+        null=True
+    )
     json = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'release_stats'
-        unique_together = (('release_id'),)
+        # unique_together = (('release'),)
 
 
 class GeneReleaseTag(models.Model):
