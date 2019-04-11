@@ -59,6 +59,18 @@ class ReleaseSet(models.Model):
         unique_together = (('shortname', 'assembly', 'source'),)
 
 
+class ReleaseStats(models.Model):
+
+    release_stats_id = models.AutoField(primary_key=True)
+    release_id = models.ForeignKey(ReleaseSet, models.DO_NOTHING, blank=True, null=True)
+    json = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'release_stats'
+        unique_together = (('release_id'),)
+
+
 class GeneReleaseTag(models.Model):
     feature = models.ForeignKey(Gene, models.DO_NOTHING)
     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)

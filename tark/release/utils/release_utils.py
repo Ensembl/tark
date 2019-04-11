@@ -15,7 +15,10 @@
    limitations under the License.
 """
 
-from release.models import ReleaseSet, ReleaseSource, TranscriptReleaseTag
+from release.models import ReleaseSet
+from release.models import ReleaseSource
+from release.models import ReleaseStats
+from release.models import TranscriptReleaseTag
 from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
@@ -156,6 +159,35 @@ class ReleaseUtils(object):
         result_dict['qs2_qs1_transcripts'] = list(qs2_qs1_transcripts)
 
         return result_dict
+
+    @classmethod
+    def get_release_loading_stats(cls):
+        """
+        """
+
+        cursor = connection.cursor()
+
+        sql = """
+            SELECT
+                rsrc.shortname,
+                rstat.json
+            FROM
+                release_set AS rset
+                JOIN release_source AS rsrc ON rset.source_id=rsrc.source_id
+                JOIN release_stats AS rstat ON rset.release_id=rstat.release_id;
+        """
+
+        cursor.execute(sql)
+
+        source_loading_stats = {}
+        for row in cursor.fetchall():
+            if source_loading_stats[row.shortname]:
+                source_loading_stats[row.shortname].append(row.json)
+            else:
+                source_loading_stats[row.shortname] = [row.json]
+
+        return source_loading_stats
+
 
     @classmethod
     def get_features_gained(cls, feature, current_release, previous_release):
