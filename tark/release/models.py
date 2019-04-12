@@ -62,10 +62,9 @@ class ReleaseSet(models.Model):
 class ReleaseStats(models.Model):
 
     release_stats_id = models.AutoField(primary_key=True)
-    release_id = models.ForeignKey(
+    release = models.ForeignKey(
         ReleaseSet,
         models.DO_NOTHING,
-        related_name='release',
         blank=True,
         null=True
     )

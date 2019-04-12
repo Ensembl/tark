@@ -15,6 +15,8 @@
    limitations under the License.
 """
 
+import json
+
 from release.models import ReleaseSet
 from release.models import ReleaseSource
 from release.models import ReleaseStats
@@ -165,33 +167,19 @@ class ReleaseUtils(object):
     def get_release_loading_stats(cls):
         """
         """
-
-        # release_stats_objects = ReleaseStats.objects.select_related(
-        #     'release'
-        # )
-        # print(release_stats_objects)
-
-
-        cursor = connection.cursor()
-
-        sql = """
-            SELECT
-                rsrc.shortname,
-                rstat.json
-            FROM
-                release_set AS rset
-                JOIN release_source AS rsrc ON rset.source_id=rsrc.source_id
-                JOIN release_stats AS rstat ON rset.release_id=rstat.release_id;
-        """
-
-        cursor.execute(sql)
-
         source_loading_stats = {}
-        for row in cursor.fetchall():
-            if source_loading_stats[row.shortname]:
-                source_loading_stats[row.shortname].append(row.json)
+
+        release_stats_objects = ReleaseStats.objects.select_related(
+            'release'
+        )
+        # print(release_stats_objects)
+        for rso in release_stats_objects:
+            source_name = rso.release.source.shortname
+
+            if source_name in source_loading_stats:
+                source_loading_stats[source_name].append(json.loads(rso.json))
             else:
-                source_loading_stats[row.shortname] = [row.json]
+                source_loading_stats[source_name] = [json.loads(rso.json)]
 
         return source_loading_stats
 
