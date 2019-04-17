@@ -4,6 +4,7 @@
 {% block title %}DataTable{% endblock %}
 
 {% load staticfiles %}
+{% load utils %}
 
 {% block extra_scripts %}
 
@@ -23,22 +24,27 @@
 
     var reports = {{ reports|safe }};
 
-    // Create the data table.
-    var dataTable = generateDataTable('gene', reports)
+    var keys = (Object.keys(reports));
 
-    var chart = new google.visualization.LineChart(
-      document.getElementById('gene_chart_div')
-    );
-    chart.draw(dataTable["data"], dataTable["options"]);
+    for (i = 0; i <keys.length; i++) {
+
+      // Create the data table.
+      var dataTable = generateDataTable('gene', reports[keys[i]])
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById('gene_chart_div_' + keys[i])
+      );
+      chart.draw(dataTable["data"], dataTable["options"]);
 
 
-    // Create the data table.
-    var dataTable = generateDataTable('transcript', reports)
+      // Create the data table.
+      var dataTable = generateDataTable('transcript', reports[keys[i]])
 
-    chart = new google.visualization.LineChart(
-      document.getElementById('transcript_chart_div')
-    );
-    chart.draw(dataTable["data"], dataTable["options"]);
+      chart = new google.visualization.LineChart(
+        document.getElementById('transcript_chart_div_' + keys[i])
+      );
+      chart.draw(dataTable["data"], dataTable["options"]);
+    }
   }
 
   function generateDataTable(feature, reports) {
@@ -81,8 +87,12 @@
 <div class="container" style="padding-top:20px;">
   <div class="row">
 
-  <div class="well well-sm" style="background-color:#227098;color:#fff"><strong>Statistics</strong></div>
-    <p>The table shows the number of genes, transcript, exons and translations that are present for each release of ensembl. The numbers in brackets highlight the number of new (&nearr;) or lost (&searr;) features compared to the previous release. Where there are no brackets then there has been no changes between the releases.</p>
+  {% for source in reports %}
+  <div class="well well-sm" style="background-color:#227098;color:#fff">
+    <strong>Statistics - {{ source }}</strong>
+  </div>
+    <p>The table shows the number of genes, transcript, exons and translations that are present for each release of {{ source }}. The numbers in brackets highlight the number of changed (&harr;), new (&nearr;) or lost (&searr;) features compared to the previous release. Where there are no brackets then there has been no changes between the releases.</p>
+
     <table id="release_set_datatable" class="table table-striped table-bordered" cellspacing="0">
       <thead>
             <tr>
@@ -95,7 +105,7 @@
             </tr>
       </thead>
 
-      {% for report in reports %}
+      {% for report in reports|get_item:source %}
         <tr>
           <td>{{report.release.current}}</td>
 
@@ -127,9 +137,11 @@
       {% endfor %}
     </table>
 
-    <div id="gene_chart_div"></div>
-    <div id="transcript_chart_div"></div>
+    <div id="gene_chart_div_{{source}}"></div>
+    <div id="transcript_chart_div_{{source}}"></div>
   </div>
+
+  {% endfor %}
 
  <hr/>
 

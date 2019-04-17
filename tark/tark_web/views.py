@@ -201,10 +201,12 @@ def datatable_view_release_set(request):
 
 def statistics(request):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    json_file = os.path.join(dir_path, '../tark/static/load_reports.json')
+    # json_file = os.path.join(dir_path, '../tark/static/load_reports.json')
 
-    with open(json_file, 'r') as jfh:
-        reports = json.loads(jfh.read())
+    # with open(json_file, 'r') as jfh:
+    #     reports = json.loads(jfh.read())
+
+    reports = ReleaseUtils.get_release_loading_stats()
 
     return render(
         request,
