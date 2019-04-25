@@ -129,7 +129,7 @@ urlpatterns = [
     ),
 
     url(
-        r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.]+))?/$',  # pylint:disable=line-too-long
+        r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.\_]+))?/$',  # pylint:disable=line-too-long
         views.transcript_details,
         name='transcript_details'
     ),
