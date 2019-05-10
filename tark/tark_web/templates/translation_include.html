@@ -7,6 +7,8 @@
 
 {% if diff_result.diff_me_transcript.translations %}
 <table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
+{% with diff_result.diff_me_transcript as diff_me_tr %}
+{% with diff_result.diff_with_transcript as diff_with_tr %}
 {% with diff_result.diff_me_transcript.translations as diff_me_tl %}
 {% with diff_result.diff_with_transcript.translations as diff_with_tl %}
 {% with diff_result.results as diff_result %}
@@ -24,13 +26,22 @@
 <td>StableID Version</td><td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td><td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
 </tr>
 <tr>
-<td>Location</td><td>{{diff_me_tl|get_location_string|default:"Non-coding"}}</td><td>{{diff_with_tl|get_location_string|default:"Non-coding"}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
+<td>CDS Location</td><td>{{diff_me_tl|get_location_string|default:"Non-coding"}}</td><td>{{diff_with_tl|get_location_string|default:"Non-coding"}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
+</tr>
+<tr>
+<td>CDS Length</td><td>{{diff_me_tl|get_sequence_length}}</td><td>{{diff_with_tl|get_sequence_length}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
 </tr>
 {% if diff_me_tl.sequence %}
 <tr>
-<td>Sequence</td><td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }} </td><td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }} </td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
+<td>Protein Sequence {% include "align_button_include.html" with feature_type="translation" stable_id_a=diff_me_tl.stable_id stable_id_version_a=diff_me_tl.stable_id_version stable_id_b=diff_with_tl.stable_id stable_id_version_b=diff_with_tl.stable_id_version input_type="protein" outut_format="pair" %}</td><td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }} {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_me_tl.stable_id stable_id_version=diff_me_tl.stable_id_version %}</td>
+<td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }} {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_with_tl.stable_id stable_id_version=diff_with_tl.stable_id_version %}</td>
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
 </tr>
+
+
 {% endif %}
+{% endwith %}
+{% endwith %}
 {% endwith %}
 {% endwith %}
 {% endwith %}

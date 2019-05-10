@@ -235,6 +235,14 @@ def get_location_string(transcript):
 
 
 @register.filter
+def get_sequence_length(feature):
+    if 'loc_start' in feature and 'loc_end' in feature:
+        return str(feature['loc_end'] - feature['loc_start'])
+
+    return ""
+
+
+@register.filter
 def compare_sequence(diff_result, compare_attr):
     is_equal = False
 

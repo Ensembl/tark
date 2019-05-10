@@ -32,3 +32,47 @@ def format_fasta(sequence, seq_id):
 def align_sequence(query_seq, target_seq):
     seq_alignment = TarkSeqUtils.align_sequences(query_seq, target_seq)
     return seq_alignment
+
+
+@register.filter
+def get_cds_sequence(transcript):
+
+
+
+    transcript_seq = None
+    if 'sequence' in transcript and 'sequence' in transcript['sequence']:
+        transcript_seq = transcript['sequence']['sequence']
+        transcript_start = transcript['loc_start']
+        transcript_end = transcript['loc_end']
+        print("================START====")
+        print(transcript_seq)
+        if 'translations' in transcript:
+            translations = transcript['translations']
+            print(translations)
+            cds_start = int(translations['loc_start'])
+            cds_end = int(translations['loc_end'])
+            
+            five_prime_utr_length =  transcript_start + cds_start
+            three_prime_utr_length =  transcript_end - cds_end
+            print("===========cds_start=====")
+            print(cds_start)
+            print(cds_end)
+            
+            print("===========cds_start=====")
+            print(cds_start)
+            print(cds_end)
+            transcript_seq_5_3_chopped = transcript_seq[five_prime_utr_length:-three_prime_utr_length] #chop 5' and 3'
+            print("======transcript_seq_5_3_chopped====================")
+            print(transcript_seq_5_3_chopped)
+            
+            transcript_seq = transcript_seq_5_3_chopped
+    
+    #seq_id = str(transcript['stable_id']) + '.' + str(transcript['stable_id_version'])
+    
+    cds_sequence =  transcript_seq
+    print(cds_sequence)
+#     fasta_seq = TarkSeqUtils.format_fasta(cds_sequence, id_=seq_id)
+#     sequence = fasta_seq
+    return cds_sequence
+
+
