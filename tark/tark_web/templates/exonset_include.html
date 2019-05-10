@@ -47,6 +47,7 @@
 <th>Location</th>
 <th>LocMatch</th>
 <th>SeqMatch</th>
+<th>Align</th>
 
 </tr>
 </thead>
@@ -71,7 +72,9 @@
 <tr>
 
 {% if diff_me_exon.stable_id %}
-<td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})  {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version %}</td>
+<td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})  
+{% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version %}
+</td>
 <td>{{diff_me_exon.loc_region}}:{{diff_me_exon.loc_start}}..{{diff_me_exon.loc_end}}</td>
 {% else %}
 <td></td>
@@ -110,6 +113,15 @@
 <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i>
 {% endif %}
 </td>
+
+{% if diff_with_exon.overlapping_exon.stable_id %}
+ <td class="text-center">
+{% include "align_button_include.html" with feature_type="exon" stable_id_a=diff_me_exon.stable_id stable_id_version_a=diff_me_exon.stable_id_version stable_id_b=diff_with_exon.overlapping_exon.stable_id stable_id_version_b=diff_with_exon.overlapping_exon.stable_id_version input_type="dna" outut_format="pair" %}
+</td>
+{% else %}
+<td></td>
+{% endif %}
+
 
 </tr>
 
