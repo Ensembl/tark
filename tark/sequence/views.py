@@ -45,6 +45,32 @@ def align_sequence(request, feature_type, stable_id_a, stable_id_version_a, stab
                                                              })
 
 
+def align_cds_sequence(request, sequence_a, sequence_b, stable_id_a,
+                       stable_id_version_a, stable_id_b, stable_id_version_b,
+                       input_type, outut_format='pair'):
+
+    # sequence_a = TarkSeqUtils.fetch_fasta_sequence(request, feature_type, stable_id_a, stable_id_version_a)
+    # sequence_b = TarkSeqUtils.fetch_fasta_sequence(request, feature_type, stable_id_b, stable_id_version_b)
+    sequence_a = TarkSeqUtils.format_fasta(sequence_a, id_=stable_id_a + '.' + str(stable_id_version_a))
+    sequence_b = TarkSeqUtils.format_fasta(sequence_b, id_=stable_id_b + '.' + str(stable_id_version_b))
+
+    pay_load = {'asequence': sequence_a, 'bsequence': sequence_b,
+                'format': outut_format, 'stype': input_type, 'email': 'prem@ebi.ac.uk'}
+    encoded_pay_load = urllib.parse.urlencode(pay_load).encode("utf-8")
+#     print(encoded_pay_load)
+#
+    jobId = TarkSeqUtils.serviceRun(encoded_pay_load)
+    # jobId = "emboss_needle-I20190401-145945-0054-27249118-p2m"
+
+    if jobId:
+        status = TarkSeqUtils.serviceGetStatus(jobId)
+
+    return render(request, 'alignment_viewer.html', context={'status': status,
+                                                             'jobId': jobId,
+                                                             })
+
+
+
 def check_service_status(request, job_id):
 
     if job_id:

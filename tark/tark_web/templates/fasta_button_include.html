@@ -1,4 +1,6 @@
 
 {% if feature_type and stable_id and stable_id_version %}
-<a target="_blank" href={% url 'fetch_sequence' feature_type stable_id stable_id_version "json" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+<a target="_blank" href={% url 'fetch_sequence' feature_type stable_id stable_id_version "fasta" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% elif sequence_data  and stable_id and stable_id_version %}
+<a target="_blank" href={% url 'show_fasta' sequence_data stable_id stable_id_version %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
 {% endif %}

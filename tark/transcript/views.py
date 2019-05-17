@@ -38,6 +38,8 @@ from exon.models import Exon
 
 
 import logging
+from tark.utils.exon_utils import ExonUtils
+from re import search
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -87,12 +89,12 @@ class TranscriptDiff(generics.ListAPIView):
         # get diff me transcript
         params_diff_me = RequestUtils.get_query_params(request, "diff_me")
         diff_me_transcript = self.get_search_results(request, params_diff_me, attach_translation_seq=True,
-                                                     attach_exon_seq=True, attach_mane=True)
+                                                     attach_exon_seq=True, attach_mane=True, attach_cds=True)
 
         # get diff with trancscript
         params_diff_with = RequestUtils.get_query_params(request, "diff_with")
         diff_with_transcript = self.get_search_results(request, params_diff_with, attach_translation_seq=True,
-                                                       attach_exon_seq=True, attach_mane=True)
+                                                       attach_exon_seq=True, attach_mane=True, attach_cds=True)
         # compare the two transcripts
         compare_results = DiffUtils.compare_transcripts(diff_me_transcript, diff_with_transcript)
 
@@ -113,7 +115,7 @@ class TranscriptDiff(generics.ListAPIView):
         return Response(compare_results)
 
     def get_search_results(self, request, diff_query_params, attach_translation_seq=True, attach_exon_seq=True,
-                           attach_gene=True, attach_mane=True):
+                           attach_gene=True, attach_mane=True, attach_cds=True):
 
         host_url = ApiUtils.get_host_url(request)
         query_url = "/api/transcript/?"
@@ -171,6 +173,11 @@ class TranscriptDiff(generics.ListAPIView):
                 if "genes" in search_result:
                     gene = search_result["genes"][0]
                     search_result["gene"] = gene
+
+            if attach_cds is True:
+                cds_info = ExonUtils.fetch_cds_info(search_result)
+                if cds_info:
+                    search_result["cds_info"] = cds_info
 
         return search_result
 

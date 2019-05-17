@@ -25,21 +25,100 @@
 <tr>
 <td>StableID Version</td><td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td><td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
 </tr>
-<tr>
-<td>CDS Location</td><td>{{diff_me_tl|get_location_string|default:"Non-coding"}}</td><td>{{diff_with_tl|get_location_string|default:"Non-coding"}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
-</tr>
-<tr>
-<td>CDS Length</td><td>{{diff_me_tl|get_sequence_length}}</td><td>{{diff_with_tl|get_sequence_length}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_location_changed %}</td>
-</tr>
-{% if diff_me_tl.sequence %}
-<tr>
-<td>Protein Sequence {% include "align_button_include.html" with feature_type="translation" stable_id_a=diff_me_tl.stable_id stable_id_version_a=diff_me_tl.stable_id_version stable_id_b=diff_with_tl.stable_id stable_id_version_b=diff_with_tl.stable_id_version input_type="protein" outut_format="pair" %}</td><td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }} {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_me_tl.stable_id stable_id_version=diff_me_tl.stable_id_version %}</td>
-<td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }} {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_with_tl.stable_id stable_id_version=diff_with_tl.stable_id_version %}</td>
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
-</tr>
 
 
+
+{% with diff_me_tr.cds_info.cds_seq as diff_me_tr_cds_sequence %}
+{% with diff_with_tr.cds_info.cds_seq as diff_with_tr_cds_sequence %}
+
+<tr>
+<td>5prime Location</td>
+<td>{{ diff_me_tr.cds_info|get_cds_location_string:"five" }}</td>
+<td>{{ diff_with_tr.cds_info|get_cds_location_string:"five" }}</td>
+
+{% if diff_me_tr.cds_info|get_cds_location_string:"five" == diff_with_tr.cds_info|get_cds_location_string:"five" %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
 {% endif %}
+</tr>
+
+<tr>
+<td>5prime Sequence {% include "align_button_include.html" with sequence_a=diff_me_tr.cds_info.five_prime_utr_seq  sequence_b=diff_with_tr.cds_info.five_prime_utr_seq stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
+<td>{{ diff_me_tr.cds_info.five_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.five_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with sequence_data=diff_me_tr.cds_info.five_prime_utr_seq stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version %}</td>
+<td>{{ diff_with_tr.cds_info.five_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.five_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with sequence_data=diff_with_tr.cds_info.five_prime_utr_seq stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version %}</td>
+
+{% if diff_me_tr.cds_info.five_prime_utr_seq == diff_with_tr.cds_info.five_prime_utr_seq %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+</tr>
+
+
+
+<tr>
+<td>CDS Location</td><td>{{diff_me_tl|get_location_string|default:"Non-coding"}}</td>
+<td>{{diff_with_tl|get_location_string|default:"Non-coding"}}</td>
+
+{% if diff_me_tl|get_location_string == diff_with_tl|get_location_string %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+</tr>
+
+
+<tr>
+<td>CDS Sequence {% include "align_button_include.html" with sequence_a=diff_me_tr_cds_sequence  sequence_b=diff_with_tr_cds_sequence stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
+<td>{{ diff_me_tr_cds_sequence|truncatechars:15 }} ({{ diff_me_tr_cds_sequence|length }} bp)  {% include "fasta_button_include.html" with sequence_data=diff_me_tr_cds_sequence stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version %}</td>
+<td>{{ diff_with_tr_cds_sequence|truncatechars:15 }}  ({{ diff_with_tr_cds_sequence|length }} bp)   {% include "fasta_button_include.html" with sequence_data=diff_with_tr_cds_sequence stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version %}</td>
+{% if diff_me_tr_cds_sequence == diff_with_tr_cds_sequence %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+</tr>
+
+<tr>
+<td>3prime Location</td>
+<td>{{ diff_me_tr.cds_info|get_cds_location_string:"three" }}</td>
+<td>{{ diff_with_tr.cds_info|get_cds_location_string:"three" }}</td>
+
+{% if diff_me_tr.cds_info|get_cds_location_string:"three" == diff_with_tr.cds_info|get_cds_location_string:"three" %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+
+</tr>
+
+
+<tr>
+<td>3prime Sequence {% include "align_button_include.html" with sequence_a=diff_me_tr.cds_info.three_prime_utr_seq  sequence_b=diff_with_tr.cds_info.three_prime_utr_seq stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
+<td>{{ diff_me_tr.cds_info.three_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.three_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with sequence_data=diff_me_tr.cds_info.three_prime_utr_seq stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version %}</td>
+<td>{{ diff_with_tr.cds_info.three_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.three_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with sequence_data=diff_with_tr.cds_info.three_prime_utr_seq stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version %}</td>
+
+{% if diff_me_tr.cds_info.three_prime_utr_seq == diff_with_tr.cds_info.three_prime_utr_seq %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+</tr>
+
+
+<tr>
+<td>Protein Sequence {% include "align_button_include.html" with feature_type="translation" stable_id_a=diff_me_tl.stable_id stable_id_version_a=diff_me_tl.stable_id_version stable_id_b=diff_with_tl.stable_id stable_id_version_b=diff_with_tl.stable_id_version input_type="protein" outut_format="pair" %}</td>
+<td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }} ({{ diff_me_tl.sequence|length|default:"Non-coding" }} aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_me_tl.stable_id stable_id_version=diff_me_tl.stable_id_version %}</td>
+<td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }} ({{ diff_with_tl.sequence|length|default:"Non-coding" }} aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_with_tl.stable_id stable_id_version=diff_with_tl.stable_id_version %}</td>
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
+
+</tr>
+{% endwith %}
+{% endwith %}
+
+
+
 {% endwith %}
 {% endwith %}
 {% endwith %}

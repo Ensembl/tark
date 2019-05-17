@@ -233,6 +233,15 @@ def get_location_string(transcript):
 
     return ""
 
+@register.filter
+def get_cds_location_string(cds_info, utr):
+    utr_start = utr+'_prime_utr_start'
+    utr_end =  utr+'_prime_utr_end'
+    if 'loc_region' in cds_info and utr_start in cds_info and utr_end in cds_info:
+        return str(cds_info['loc_region']) + " : " + str(cds_info[utr_start]) + " - " + str(cds_info[utr_end])
+
+    return ""
+
 
 @register.filter
 def get_sequence_length(feature):

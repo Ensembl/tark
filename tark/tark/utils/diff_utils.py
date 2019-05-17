@@ -147,7 +147,7 @@ class DiffSet(object):
                                                     feature_attribute="seq_checksum",
                                                     feature_type="sequence")
 
-        # For translation/cds
+        # For translation
         self.diff_dict['has_translation_stable_id_changed'] = self.has_feature_attribute_changed(
                                                     feature_attribute="stable_id",
                                                     feature_type="translations")
@@ -164,6 +164,8 @@ class DiffSet(object):
         self.diff_dict['has_translation_seq_changed'] = self.has_feature_attribute_changed(
                                                     feature_attribute="sequence",
                                                     feature_type="translations")
+        # For cds
+        # todo include for cds here, currently calculated in template
 
         # For genes
         self.diff_dict['has_gene_stable_id_changed'] = self.has_feature_attribute_changed(

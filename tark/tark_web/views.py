@@ -29,6 +29,7 @@ import json
 import logging
 from tark_web.utils.apiutils import ApiUtils
 from django.urls.base import resolve
+from tark.utils.exon_utils import ExonUtils
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
@@ -118,7 +119,15 @@ def diff_release_home(request):
     return render(request, 'release_diff.html', context={'form': form})
 
 
-def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_format="fasta"):
+def show_fasta(request, sequence_data, stable_id, stable_id_version, outut_format="fasta"):
+
+    return render(request, 'sequence_fasta.html', context={'sequence_data': sequence_data,
+                                                           'stable_id': stable_id + '.' + stable_id_version,
+                                                           })
+
+
+def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_format="fasta", sub_feature_type=''):
+
     host_url = ApiUtils.get_host_url(request)
     query_url = "/api/" + feature_type + "/?stable_id=" + stable_id + "&stable_id_version=" + str(stable_id_version) +\
                 "&expand=sequence"
