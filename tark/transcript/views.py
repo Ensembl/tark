@@ -175,9 +175,10 @@ class TranscriptDiff(generics.ListAPIView):
                     search_result["gene"] = gene
 
             if attach_cds is True:
-                cds_info = ExonUtils.fetch_cds_info(search_result)
-                if cds_info:
-                    search_result["cds_info"] = cds_info
+                if "translations" in search_result and len(search_result['translations']) > 0:
+                    cds_info = ExonUtils.fetch_cds_info(search_result)
+                    if cds_info:
+                        search_result["cds_info"] = cds_info
 
         return search_result
 
