@@ -109,14 +109,24 @@ class ExonUtils(object):
 
             cds_info['translation_start'] = translation_start
             cds_info['translation_end'] = translation_end
-            cds_info['five_prime_utr_end'] = translation_start - 1
-            cds_info['three_prime_utr_start'] = translation_end + 1
+            cds_info['loc_strand'] = transcript['loc_strand']
+
+            if transcript['loc_strand'] == -1:
+                cds_info['three_prime_utr_start'] = translation_start - 1
+                cds_info['five_prime_utr_end'] = translation_end + 1
+            else:
+                cds_info['five_prime_utr_end'] = translation_start - 1
+                cds_info['three_prime_utr_start'] = translation_end + 1
 
             if 'exons' in transcript:
                 exons = transcript['exons']
 
                 first_exon = exons[0]
-                cds_info['five_prime_utr_start'] = first_exon['loc_start']
+                if transcript['loc_strand'] == -1:
+                    cds_info['five_prime_utr_start'] = first_exon['loc_end']
+                else:
+                    cds_info['five_prime_utr_start'] = first_exon['loc_start']
+
                 cds_info['loc_region'] = first_exon['loc_region']
 
                 start_exon = None
@@ -143,10 +153,12 @@ class ExonUtils(object):
                     current_exon = next(five_prime_exon_iterator)
 
                 # Now add the overlapping bit
-                start_exon_utr_len = translation_start - start_exon['loc_start']
-#                 print(" start_exon_utr_len " + str(start_exon_utr_len))
-#                 print("  start exon sequence " + start_exon['sequence'][:start_exon_utr_len])
-                five_prime_utr_seq = five_prime_utr_seq + start_exon['sequence'][:start_exon_utr_len]
+                if transcript['loc_strand'] == -1:
+                    start_exon_utr_len = start_exon['loc_end'] - translation_end
+                    five_prime_utr_seq = five_prime_utr_seq + start_exon['sequence'][:start_exon_utr_len]
+                else:
+                    start_exon_utr_len = translation_start - start_exon['loc_start']
+                    five_prime_utr_seq = five_prime_utr_seq + start_exon['sequence'][:start_exon_utr_len]
 
                 # Find end exon
                 exons_copy = exons.copy()
@@ -172,10 +184,12 @@ class ExonUtils(object):
                     current_exon = next(three_prime_exon_iterator)
 
                 # Now add the overlapping bit for the 3 prime
-                end_exon_utr_len = end_exon['loc_end'] - translation_end
-#                 print(" end_exon_utr_len " + str(end_exon_utr_len))
-#                 print("  end exon sequence " + end_exon['sequence'][-end_exon_utr_len:])
-                three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
+                if transcript['loc_strand'] == -1:
+                    end_exon_utr_len = translation_start - end_exon['loc_start']
+                    three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
+                else:
+                    end_exon_utr_len = end_exon['loc_end'] - translation_end
+                    three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
 
             cds_start_len = translation_start - start_exon['loc_start']
 
@@ -188,7 +202,11 @@ class ExonUtils(object):
                 cur_exon = next(exon_iterator)
 
             last_exon = exons[-1]
-            cds_info['three_prime_utr_end'] = last_exon['loc_end']
+
+            if transcript['loc_strand'] == -1:
+                cds_info['three_prime_utr_end'] = last_exon['loc_start']
+            else:
+                cds_info['three_prime_utr_end'] = last_exon['loc_end']
 
             cds_end_len = (translation_end - end_exon['loc_start']) + 1
             cds_seq = cds_seq + end_exon['sequence'][:cds_end_len]

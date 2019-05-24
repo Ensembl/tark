@@ -227,20 +227,44 @@ def compare_location(diff_result):
 
 
 @register.filter
-def get_location_string(transcript):
-    if 'loc_region' in transcript and 'loc_start' in transcript and 'loc_end' in transcript:
-        return str(transcript['loc_region']) + " : " + str(transcript['loc_start']) + " - " + str(transcript['loc_end'])
+def get_location_string(transcript, reverse=False):
 
-    return ""
+    location_string = ""
+    if 'loc_region' in transcript and 'loc_start' in transcript and 'loc_end' in transcript:
+        if reverse and transcript['loc_strand'] == -1:
+            location_string = "{} : {} - {}".format(transcript['loc_region'],
+                                                    transcript['loc_end'],
+                                                    transcript['loc_start'])
+            return location_string
+
+        location_string = "{} : {} - {}".format(transcript['loc_region'],
+                                                transcript['loc_start'],
+                                                transcript['loc_end'])
+
+        if transcript['loc_strand'] == 1:
+            location_string = location_string + " (forward) "
+        elif transcript['loc_strand'] == -1:
+            location_string = location_string + " (reverse) "
+
+    return location_string
+
 
 @register.filter
 def get_cds_location_string(cds_info, utr):
-    utr_start = utr+'_prime_utr_start'
-    utr_end =  utr+'_prime_utr_end'
+    utr_start = utr + '_prime_utr_start'
+    utr_end = utr +'_prime_utr_end'
+    location_string = ""
     if 'loc_region' in cds_info and utr_start in cds_info and utr_end in cds_info:
-        return str(cds_info['loc_region']) + " : " + str(cds_info[utr_start]) + " - " + str(cds_info[utr_end])
+        if cds_info['loc_strand'] == -1:
+            location_string = "{} : {} - {}".format(cds_info['loc_region'],
+                                                    cds_info[utr_end],
+                                                    cds_info[utr_start])
+        else:
+            location_string = "{} : {} - {}".format(cds_info['loc_region'],
+                                                cds_info[utr_start],
+                                                cds_info[utr_end])
 
-    return ""
+    return location_string
 
 
 @register.filter

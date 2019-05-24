@@ -32,6 +32,7 @@ class DiffUtils(object):
 
         compare_results = cls.get_results_as_response_body(compare_diff_dict, compare_exon_sets_diffme2diffwith,
                                                            compare_exon_sets_diffwith2diffme, diff_set)
+
         return compare_results
 
     @classmethod
@@ -45,6 +46,7 @@ class DiffUtils(object):
         response_body_dict["exonsets_diffwith2diffme"] = compare_exon_sets_diffwith2diffme
         return response_body_dict
 
+    # to be deprecated
     @classmethod
     def get_coding_exons(cls, diff_result):
         if "results" in diff_result:
@@ -74,6 +76,7 @@ class DiffUtils(object):
                 else:
                     result['translations'] = None
 
+    # to be deprecated
     @classmethod
     def update_coding_exons(cls, exon_set, translation):
         tl_start = translation["loc_start"]
