@@ -43,22 +43,17 @@ urlpatterns = [
     url(r'^search/$', views.search_home, name='search_home'),
     url(r'^search_link/(?P<search_identifier>[a-zA-Z0-9\.]+)$', views.search_link, name='search_link'),
 
-    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/(?P<sub_feature_type>[\w]+)/',
+    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/(?P<five_prime_utr_len>[\d]+)/(?P<three_prime_utr_len>[\d]+)/',
+        views.fetch_sequence,
+        name='fetch_utr_sequence'),
+
+    url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
         views.fetch_sequence,
         name='fetch_sequence'),
-
-     url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/(?P<outut_format>[\w]+)/',
-        views.fetch_sequence,
-        name='fetch_sequence'),
-               
-    url(r'^sequence/(?P<sequence_data>[\w]+)/(?P<stable_id>[\w]+)/(?P<stable_id_version>[\w]+)/',
-        views.show_fasta, 
-        name='show_fasta'),
-
 
     url(r'^alignsequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
         align_sequence, name='align_sequence'),
-    
+
     url(r'^aligncdssequence/(?P<sequence_a>[\w]+)/(?P<sequence_b>[\w]+)/(?P<stable_id_a>[\w]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
         align_cds_sequence, name='align_cds_sequence'),
 

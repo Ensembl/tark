@@ -1,6 +1,9 @@
-
-{% if feature_type and stable_id and stable_id_version %}
+{% if feature_type and stable_id and stable_id_version and five_prime_utr_len and three_prime_utr_len %}
+<a target="_blank" href={% url 'fetch_utr_sequence' feature_type stable_id stable_id_version "fasta" five_prime_utr_len three_prime_utr_len %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% elif feature_type and stable_id and stable_id_version and five_prime_utr_len %}
+<a target="_blank" href={% url 'fetch_utr_sequence' feature_type stable_id stable_id_version "fasta" five_prime_utr_len  0%} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% elif feature_type and stable_id and stable_id_version and three_prime_utr_len %}
+<a target="_blank" href={% url 'fetch_utr_sequence' feature_type stable_id stable_id_version "fasta" 0 three_prime_utr_len %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% elif feature_type and stable_id and stable_id_version %}
 <a target="_blank" href={% url 'fetch_sequence' feature_type stable_id stable_id_version "fasta" %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
-{% elif sequence_data  and stable_id and stable_id_version %}
-<a target="_blank" href={% url 'show_fasta' sequence_data stable_id stable_id_version %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
 {% endif %}

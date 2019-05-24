@@ -126,7 +126,11 @@ def show_fasta(request, sequence_data, stable_id, stable_id_version, outut_forma
                                                            })
 
 
-def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_format="fasta", sub_feature_type=''):
+def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_format="fasta", five_prime_utr_len=0, three_prime_utr_len=0):
+
+    print("====called fetch sequence===")
+    print("five_prime_utr_len {}".format(five_prime_utr_len))
+    print("three_prime_utr_len {}".format(three_prime_utr_len))
 
     host_url = ApiUtils.get_host_url(request)
     query_url = "/api/" + feature_type + "/?stable_id=" + stable_id + "&stable_id_version=" + str(stable_id_version) +\
@@ -137,6 +141,15 @@ def fetch_sequence(request, feature_type, stable_id, stable_id_version, outut_fo
         results = response.json()["results"][0]
         if "sequence" in results:
             sequence_data = results["sequence"]["sequence"]
+            print('Length of sequence data ' + str(len(sequence_data)))
+
+            if int(five_prime_utr_len) > 0 and int(three_prime_utr_len) > 0:
+                sequence_data = sequence_data[int(five_prime_utr_len):]
+                sequence_data = sequence_data[:-int(three_prime_utr_len)]
+            elif int(five_prime_utr_len) > 0:
+                sequence_data = sequence_data[:int(five_prime_utr_len)]
+            elif int(three_prime_utr_len) > 0:
+                sequence_data = sequence_data[-(int(three_prime_utr_len)):]
 
     return render(request, 'sequence_fasta.html', context={'sequence_data': sequence_data,
                                                            'stable_id': stable_id + '.' + stable_id_version,
