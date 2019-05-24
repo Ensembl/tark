@@ -241,10 +241,11 @@ def get_location_string(transcript, reverse=False):
                                                 transcript['loc_start'],
                                                 transcript['loc_end'])
 
-        if transcript['loc_strand'] == 1:
-            location_string = location_string + " (forward) "
-        elif transcript['loc_strand'] == -1:
-            location_string = location_string + " (reverse) "
+        if not reverse:
+            if transcript['loc_strand'] == 1:
+                location_string = location_string + " (forward) "
+            elif transcript['loc_strand'] == -1:
+                location_string = location_string + " (reverse) "
 
     return location_string
 
