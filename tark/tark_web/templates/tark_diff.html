@@ -16,8 +16,6 @@
      var assembly_releases_refseq = {{ all_assembly_releases_refseq|safe|escape }};
      assembly_options = build_options_assembly(assembly_releases_refseq);
       }
-     console.log("=====assembly_options======== " );
-     console.log(assembly_options);
      
      $("#id_"+ diff_type + "_assembly").html(assembly_options);
  }
@@ -163,7 +161,7 @@
     </div>
   {% else %}
    <div class="panel panel-info ">
-   <div class="panel-heading panel-heading-sm"><i class="glyphicon glyphicon-info-sign"></i> <strong>Tark Transcript Diff</strong></div>
+   <div class="panel-heading panel-heading-sm"><i class="glyphicon glyphicon-info-sign"></i> <strong>Tark Transcript Comparison</strong></div>
   <div class="panel-body">
   Use this tool to find differences between the releases for the given Transcript (eg: ENST00000380152)
   </div>
@@ -183,7 +181,7 @@
 
 	<div class="col-md-6">
 		<div class="panel panel-primary">
-			<div class="panel-heading panel-heading-sm"><strong>Diff Me</strong></div>
+			<div class="panel-heading panel-heading-sm"><strong>Compare Me</strong></div>
 				<div class="panel-body">
 				
 				<!--
@@ -233,7 +231,7 @@
 	
 	<div class="col-md-6">
 		<div class="panel panel-success">
-			<div class="panel-heading panel-heading-sm"><strong>Diff With</strong></div>
+			<div class="panel-heading panel-heading-sm"><strong>Compare With</strong></div>
 				<div class="panel-body">
 				
 				<!--

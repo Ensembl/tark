@@ -68,7 +68,7 @@ function get_diff_result_summary(payload_data){
         var get_url = root_url + diff_me_url + '&' + diff_with_url;
         get_url = get_url + "&render_as_string=True";
         var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;">' + 
-        				 '<strong>TRANSCRIPT DIFF SUMMARY REPORT</strong>' +
+        				 '<strong>TRANSCRIPT COMPARISON SUMMARY REPORT</strong>' +
          				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button></div>';
         $.get(get_url, function(diff_data, status){
     		gene_table = diff_data["gene"];
@@ -172,7 +172,7 @@ $(document).ready(function() {
 <!-- Info -->
 <div class="panel panel-info ">
   <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Search Results: </strong> 
- To see the difference between two transcripts, select the two transcripts (T1 and T2) and click on "Diff Transcripts" button below.
+ To see the difference between two transcripts, select the two transcripts (T1 and T2) and click on "Compare Transcripts" button below.
   </div>
   <div class="panel-body">
 
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
   
   </table>
-  <button type="submit" id="search_diff_transcript" class="btn btn-info">Diff Transcripts</button>
+  <button type="submit" id="search_diff_transcript" class="btn btn-info">Compare Transcripts</button>
   <a id="search_button" class="btn btn-primary" href="/web/search/">New Search</a>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
