@@ -79,12 +79,13 @@
 {% else %}
 <td></td>
 <td></td>
-
 {% endif %}
 </td>
 <td class="text-center">
-{% if diff_with_exon.overlapping_exon.stable_id %}
+{% if diff_with_exon.overlapping_exon.stable_id and diff_me_exon.assembly == diff_with_exon.overlapping_exon.assembly %}
 <i class="glyphicon glyphicon-ok text-center" style="color:green"></i>
+{% else %}
+<i class="glyphicon glyphicon-remove text-center" style="color:red"></i>
 {% endif %}
 </td>
 

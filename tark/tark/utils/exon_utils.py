@@ -36,7 +36,7 @@ class ExonUtils(object):
                 # check if exon from exonset1 overlaps with any exon in exonset2
                 current_compare_result = {}
                 overlap_score = 0
-                if exon1['loc_region'] == exon2['loc_region']:
+                if exon1['assembly'] == exon2['assembly'] and exon1['loc_region'] == exon2['loc_region']:
                     overlap_score = cls.compute_overlap(exon1['loc_start'], exon1['loc_end'], exon2['loc_start'],
                                                         exon2['loc_end'])
                     if overlap_score > 0:
@@ -48,8 +48,20 @@ class ExonUtils(object):
                         current_compare_result['seq_checksum'] = exon1['seq_checksum'] == exon2['seq_checksum']
 
                         matched_exons.append(current_compare_result)
+                else:
+                    # different assembly won't overlap, so check seq_checksum
+                    if exon1['seq_checksum'] == exon2['seq_checksum']:
+
+                        cumulative_overlap_score = cumulative_overlap_score + 1
+                        current_compare_result['overlapping_exon'] = exon2
+
+                        current_compare_result['loc_checksum'] = exon1['loc_checksum'] == exon2['loc_checksum']
+                        current_compare_result['seq_checksum'] = exon1['seq_checksum'] == exon2['seq_checksum']
+
+                        matched_exons.append(current_compare_result)
 
             compare_results.append((cur_exon, matched_exons))
+
 
         compare_results.insert(0, ("cumulative_overlap_score", cumulative_overlap_score))
         return compare_results
@@ -213,7 +225,6 @@ class ExonUtils(object):
                                                cds_info['three_prime_utr_length'])
                 cds_info['cds_seq'] = cds_seq
 
-        print(cds_info)
         return cds_info
 
     @classmethod
