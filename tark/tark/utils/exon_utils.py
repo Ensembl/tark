@@ -192,14 +192,7 @@ class ExonUtils(object):
                     three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
 
             cds_start_len = translation_start - start_exon['loc_start']
-
             cds_seq = start_exon['sequence'][cds_start_len:]
-            exon_iterator = iter(exons)
-            cur_exon = next(exon_iterator)
-            while(end_exon['exon_order'] != cur_exon['exon_order']):
-                if(cur_exon['exon_order'] > start_exon['exon_order']):
-                    cds_seq = cds_seq + cur_exon['sequence']
-                cur_exon = next(exon_iterator)
 
             last_exon = exons[-1]
 
@@ -208,14 +201,30 @@ class ExonUtils(object):
             else:
                 cds_info['three_prime_utr_end'] = last_exon['loc_end']
 
-            cds_end_len = (translation_end - end_exon['loc_start']) + 1
-            cds_seq = cds_seq + end_exon['sequence'][:cds_end_len]
-            cds_info['cds_seq'] = cds_seq
-
             cds_info['five_prime_utr_seq'] = five_prime_utr_seq
             cds_info['five_prime_utr_length'] = len(five_prime_utr_seq)
             cds_info['three_prime_utr_seq'] = three_prime_utr_seq
             cds_info['three_prime_utr_length'] = len(three_prime_utr_seq)
 
-        # print(cds_info)
+            cds_info['cds_seq'] = None
+            if 'sequence' in transcript:
+                cds_seq = cls.get_cds_sequence(transcript['sequence']['sequence'],
+                                               cds_info['five_prime_utr_length'],
+                                               cds_info['three_prime_utr_length'])
+                cds_info['cds_seq'] = cds_seq
+
+        print(cds_info)
         return cds_info
+
+    @classmethod
+    def get_cds_sequence(cls, sequence_data, five_prime_utr_len=0, three_prime_utr_len=0):
+
+        if int(five_prime_utr_len) > 0 and int(three_prime_utr_len) > 0:
+            sequence_data = sequence_data[int(five_prime_utr_len):]
+            sequence_data = sequence_data[:-int(three_prime_utr_len)]
+        elif int(five_prime_utr_len) > 0:
+            sequence_data = sequence_data[:int(five_prime_utr_len)]
+        elif int(three_prime_utr_len) > 0:
+            sequence_data = sequence_data[-(int(three_prime_utr_len)):]
+
+        return sequence_data
