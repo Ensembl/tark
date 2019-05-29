@@ -219,7 +219,7 @@ $(document).ready(function() {
        {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
        {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
       <td>
-       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org">
+       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}.{{result.stable_id_version}}">
       {{release_date.date_range}}
       </a>
       </td>
@@ -227,7 +227,7 @@ $(document).ready(function() {
       {% else %}
        {% with result.transcript_release_set|format_release_set:"refseq" as release_date %}
       <td>
-       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">	
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}">	
       {{release_date.date_range}}
       </a>
       </td>

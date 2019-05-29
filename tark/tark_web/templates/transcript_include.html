@@ -31,7 +31,13 @@
 <td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
 </tr>
 <tr>
-<td>ExonSet</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_exon_set_changed %}</td>
+
+{% if diff_me_tr.exons|length == diff_with_tr.exons|length %}
+<td>Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+{% else %}
+<td>Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+{% endif %}
+
 </tr>
 <tr>
 <td>CDNA Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
