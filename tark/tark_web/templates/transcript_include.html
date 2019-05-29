@@ -33,7 +33,7 @@
 <tr>
 
 {% if diff_me_tr.exons|length == diff_with_tr.exons|length %}
-<td>Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+<td>Number of Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
 {% else %}
 <td>Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
 {% endif %}
