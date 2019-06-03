@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'tagset',
     'tark_drf',
     'tark_web',
-    'refseq_loader',
 ]
 
 MIDDLEWARE = [
