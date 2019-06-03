@@ -16,6 +16,8 @@ before_script:
   - mysql -e 'create database tark_django_manager;' -u root
   - mysql -e 'create database tark;' -u root
   - cp tark/tark/settings/secrets_template.py tark/tark/settings/secrets.py
+  - mkdir logs
+  - touch logs/tark.log
 
 script: 
   - python3 tark/manage.py test tark.tests --settings=tark.settings.test
