@@ -1,0 +1,21 @@
+language: python
+
+python: 
+   - "3.6.4"
+
+services: 
+  - mysql
+
+env: 
+  - DJANGO=2.1.7 DB=mysql DJANGO_ENVIRONMENT=travis
+
+install: 
+  - pip install -r requirements.txt
+
+before_script: 
+  - mysql -e 'create database tark_django_manager;' -u root
+  - mysql -e 'create database tark;' -u root
+
+script: 
+  - python3 tark/manage.py test tark.tests --settings=tark.settings.test
+
