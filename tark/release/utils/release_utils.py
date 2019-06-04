@@ -174,12 +174,13 @@ class ReleaseUtils(object):
         )
         # print(release_stats_objects)
         for rso in release_stats_objects:
-            source_name = rso.release.source.shortname
+            if rso.release is not None:
+                source_name = rso.release.source.shortname
 
-            if source_name in source_loading_stats:
-                source_loading_stats[source_name].append(json.loads(rso.json))
-            else:
-                source_loading_stats[source_name] = [json.loads(rso.json)]
+                if source_name in source_loading_stats:
+                    source_loading_stats[source_name].append(json.loads(rso.json))
+                else:
+                    source_loading_stats[source_name] = [json.loads(rso.json)]
 
         return source_loading_stats
 
