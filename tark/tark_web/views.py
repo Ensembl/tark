@@ -30,6 +30,8 @@ import logging
 from tark_web.utils.apiutils import ApiUtils
 from django.urls.base import resolve
 from tark.utils.exon_utils import ExonUtils
+from tark_web.utils.sequtils import TarkSeqUtils
+from setuptools.dist import sequence
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
@@ -127,25 +129,17 @@ def show_fasta(request, sequence_data, stable_id, stable_id_version, outut_forma
 
 
 def fetch_sequence(request, feature_type, stable_id, stable_id_version,
-                   outut_format="fasta", five_prime_utr_len=0, three_prime_utr_len=0):
+                   release_short_name=None, assembly_name=None, source_name=None,
+                   seq_type=None, output_format="fasta"):
 
-    host_url = ApiUtils.get_host_url(request)
-    query_url = "/api/" + feature_type + "/?stable_id=" + stable_id + "&stable_id_version=" + str(stable_id_version) +\
-                "&expand=sequence"
-    response = requests.get(host_url + query_url)
-    sequence_data = ""
-    if response.status_code == 200 and "results" in response.json():
-        results = response.json()["results"][0]
-        if "sequence" in results:
-            sequence_data = results["sequence"]["sequence"]
-
-            if int(five_prime_utr_len) > 0 and int(three_prime_utr_len) > 0:
-                sequence_data = sequence_data[int(five_prime_utr_len):]
-                sequence_data = sequence_data[:-int(three_prime_utr_len)]
-            elif int(five_prime_utr_len) > 0:
-                sequence_data = sequence_data[:int(five_prime_utr_len)]
-            elif int(three_prime_utr_len) > 0:
-                sequence_data = sequence_data[-(int(three_prime_utr_len)):]
+    if seq_type is not None and seq_type in ["cds", "five_prime", "three_prime"]:
+        sequence_data = TarkSeqUtils.fetch_cds_sequence(request, feature_type, stable_id, stable_id_version,
+                                                        release_short_name, assembly_name, source_name,
+                                                        seq_type, output_format)
+    else:
+        sequence_data = TarkSeqUtils.fetch_fasta_sequence(request, feature_type, stable_id, stable_id_version,
+                                                          release_short_name, assembly_name, source_name,
+                                                          output_format)
 
     return render(request, 'sequence_fasta.html', context={'sequence_data': sequence_data,
                                                            'stable_id': stable_id + '.' + stable_id_version,

@@ -109,7 +109,6 @@ class ExonUtils(object):
 
     @classmethod
     def fetch_cds_info(cls, transcript):
-
         cds_info = {}
 
         five_prime_utr_seq = ""

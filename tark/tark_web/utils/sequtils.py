@@ -28,6 +28,9 @@ import platform
 import time
 from tark_web.utils.apiutils import ApiUtils
 import requests
+from translation.models import Translation
+from tark.utils.exon_utils import ExonUtils
+from exon.models import Exon
 try:
     from urllib.parse import urlparse, urlencode
     from urllib.request import urlopen, Request
@@ -55,12 +58,27 @@ pollFreq = 3
 class TarkSeqUtils(object):
 
     @classmethod
-    def fetch_fasta_sequence(cls, request, feature_type, stable_id, stable_id_version):
+    def fetch_fasta_sequence(cls, request, feature_type, stable_id, stable_id_version,
+                             release_short_name=None, assembly_name=None, source_name=None, output_format="fasta"):
+
+        if source_name is not None:
+            source_name = source_name.lower()
 
         host_url = ApiUtils.get_host_url(request)
-        query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + "&stable_id_version=" + \
-                    stable_id_version + "&expand=sequence"
+        query_url = ""
+        if release_short_name is not None and assembly_name is not None and source_name is not None:
+            query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + \
+                        "&stable_id_version=" + stable_id_version + \
+                        "&release_short_name=" + release_short_name + \
+                        "&assembly_name=" + assembly_name + \
+                        "&source_name=" + source_name + \
+                        "&expand=sequence"
+        else:
+            query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + \
+                        "&stable_id_version=" + stable_id_version + \
+                        "&expand=sequence"
 
+        sequence = None
         response = requests.get(host_url + query_url)
         if response.status_code == 200:
             response_result = response.json()
@@ -68,12 +86,91 @@ class TarkSeqUtils(object):
                 sequence_result = response_result["results"][0]
                 sequence = sequence_result["sequence"]["sequence"]
 
-            if sequence:
+            if sequence and "fasta" in output_format:
                 id_a = stable_id + '.' + stable_id_version
                 formatted_seq = cls.format_fasta(sequence, id_=id_a)
                 return formatted_seq
+            elif sequence and "raw" in output_format:
+                return sequence
 
-        return None
+        return sequence
+
+    @classmethod
+    def fetch_cds_sequence(cls, request, feature_type, stable_id, stable_id_version,
+                           release_short_name=None, assembly_name=None, source_name=None,
+                           seq_type="cds", output_format="raw"):
+
+        if source_name is not None:
+            source_name = source_name.lower()
+
+        host_url = ApiUtils.get_host_url(request)
+        query_url = ""
+        if release_short_name is not None and assembly_name is not None and source_name is not None:
+            query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + \
+                        "&stable_id_version=" + stable_id_version + \
+                        "&release_short_name=" + release_short_name + \
+                        "&assembly_name=" + assembly_name + \
+                        "&source_name=" + source_name + "&expand_all=true"
+        else:
+            query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + \
+            "&stable_id_version=" + stable_id_version + \
+            "&expand_all=true"
+
+        sequence = None
+        response = requests.get(host_url + query_url)
+        if response.status_code == 200:
+            response_result = response.json()
+            if "results" in response_result and len(response_result["results"]) > 0:
+                transcript_result = response_result["results"][0]
+                if "translations" in transcript_result and len(transcript_result["translations"]) > 0:
+                    translation = transcript_result["translations"][0]
+
+                    if "translation_id" in translation:
+                        tl_translation_id = translation["translation_id"]
+                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')
+                        if tl_query_set is not None and len(tl_query_set) == 1:
+                            tl_obj = tl_query_set[0]
+                            translation["sequence"] = tl_obj.sequence.sequence
+                            translation["seq_checksum"] = tl_obj.sequence.seq_checksum
+                            transcript_result["translations"] = translation
+
+                            if "exons" in transcript_result:
+                                all_exons = transcript_result["exons"]
+                                new_exons = []
+                                for exon in all_exons:
+                                    if "exon_id" in exon:
+                                        current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+
+                                        if current_exon_query_set is not None and len(current_exon_query_set) == 1:
+                                            current_exon_with_sequence = current_exon_query_set[0]
+                                            exon["sequence"] = current_exon_with_sequence.sequence.sequence
+                                            exon["seq_checksum"] = current_exon_with_sequence.sequence.seq_checksum
+                                            new_exons.append(exon)
+
+                                if len(new_exons) > 0:
+                                    transcript_result["exons"] = new_exons
+
+                            cds_info = ExonUtils.fetch_cds_info(transcript_result)
+
+                            if cds_info:
+                                if seq_type == "cds":
+                                    if "cds_seq" in cds_info:
+                                        sequence = cds_info['cds_seq']
+                                elif seq_type == "five_prime":
+                                    if "five_prime_utr_seq" in cds_info:
+                                        sequence = cds_info['five_prime_utr_seq']
+                                elif seq_type == "three_prime":
+                                    if "three_prime_utr_seq" in cds_info:
+                                        sequence = cds_info['three_prime_utr_seq']
+
+        if output_format == "raw":
+            return sequence
+        elif output_format == "fasta":
+            id_version = stable_id + '.' + stable_id_version
+            formatted_seq = cls.format_fasta(sequence, id_=id_version)
+            return formatted_seq
+
+        return sequence
 
     # Submit job
     @classmethod

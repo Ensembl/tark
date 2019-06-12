@@ -21,8 +21,6 @@
 
 
 
-
-
 {% load staticfiles %}
 {% load add_class %}
 {% load compare_features %}
@@ -32,6 +30,8 @@
 <!--diffme2diffwith -->
 <div>
 
+{% with diff_result.diff_me_transcript as diff_me_tr %}
+{% with diff_result.diff_with_transcript as diff_with_tr %}
 
 {% if diff_result.exonsets_diffme2diffwith %}
 {% with diff_result.exonsets_diffme2diffwith as exonsets_match_diffme2diffwith %}
@@ -73,7 +73,7 @@
 
 {% if diff_me_exon.stable_id %}
 <td>{{diff_me_exon.stable_id}}.{{diff_me_exon.stable_id_version}} ({{ diff_me_exon.exon_order }})  
-{% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version %}
+{% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source output_format="raw"%}
 </td>
 <td> {{diff_me_exon|get_location_string:'True'}}</td>
 {% else %}
@@ -90,7 +90,8 @@
 </td>
 
 {% if diff_with_exon.overlapping_exon.stable_id %}
-<td>{{diff_with_exon.overlapping_exon.stable_id}}.{{diff_with_exon.overlapping_exon.stable_id_version}} ({{diff_with_exon.overlapping_exon.exon_order}}){% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version %}</td>
+<td>{{diff_with_exon.overlapping_exon.stable_id}}.{{diff_with_exon.overlapping_exon.stable_id_version}} ({{diff_with_exon.overlapping_exon.exon_order}})
+{% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source output_format="raw" %}</td>
 <td>{{diff_with_exon.overlapping_exon|get_location_string:'True'}}</td>
 </td>
 {% else %}
@@ -137,5 +138,7 @@
 {% endif %}
 	</tbody>
    </table>
+{% endwith %}
+{% endwith %}
 </div>
  

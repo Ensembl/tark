@@ -158,7 +158,7 @@ class TranscriptDiff(generics.ListAPIView):
                     new_exons = []
                     for exon in all_exons:
                         if "exon_id" in exon:
-                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')
+                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
 
                             if current_exon_query_set is not None and len(current_exon_query_set) == 1:
                                 current_exon_with_sequence = current_exon_query_set[0]

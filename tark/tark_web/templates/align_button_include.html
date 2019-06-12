@@ -1,6 +1,6 @@
 
-{% if feature_type and stable_id_a and stable_id_version_a and stable_id_b and stable_id_version_b %}
+{% if feature_type and stable_id_a and stable_id_version_a and release_short_name_a and assembly_name_a and source_name_a and stable_id_b and stable_id_version_b and release_short_name_b and assembly_name_b and source_name_b %}
+<a target="_blank" href={% url 'align_cds_sequence' feature_type stable_id_a stable_id_version_a release_short_name_a assembly_name_a source_name_a stable_id_b stable_id_version_b release_short_name_b assembly_name_b source_name_b cds_type "raw" %} type="button" class="btn btn-success btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">ALIGN</a>
+{% elif feature_type and stable_id_a and stable_id_version_a and stable_id_b and stable_id_version_b %}
 <a target="_blank" href={% url 'align_sequence' feature_type stable_id_a stable_id_version_a stable_id_b stable_id_version_b input_type outut_format %} type="button" class="btn btn-success btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">ALIGN</a>
-{% elif sequence_a and sequence_b and stable_id_a and stable_id_version_a and stable_id_b and stable_id_version_b %}
-<a target="_blank" href={% url 'align_cds_sequence' sequence_a sequence_b stable_id_a stable_id_version_a stable_id_b stable_id_version_b input_type outut_format %} type="button" class="btn btn-success btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">ALIGN</a>
 {% endif %}
