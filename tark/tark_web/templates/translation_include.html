@@ -32,7 +32,7 @@
 {% with diff_with_tr.cds_info.cds_seq as diff_with_tr_cds_sequence %}
 
 <tr style="color:#cd6839">
-<td>5prime Location</td>
+<td>5'UTR Location</td>
 <td>{{ diff_me_tr.cds_info|get_cds_location_string:"five" }}</td>
 <td>{{ diff_with_tr.cds_info|get_cds_location_string:"five" }}</td>
 
@@ -44,7 +44,7 @@
 </tr>
 
 <tr style="color:#cd6839">
-<td>5prime Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="five_prime" %}</td>
+<td>5'UTR Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="five_prime" %}</td>
 <td>{{ diff_me_tr.cds_info.five_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.five_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source  seq_type="five_prime" output_format="raw" %}</td>
 <td>{{ diff_with_tr.cds_info.five_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.five_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="five_prime" output_format="raw" %}</td>
 
@@ -81,7 +81,7 @@
 </tr>
 
 <tr style="color:#cd6839">
-<td>3prime Location</td>
+<td>3'UTR Location</td>
 <td>{{ diff_me_tr.cds_info|get_cds_location_string:"three" }}</td>
 <td>{{ diff_with_tr.cds_info|get_cds_location_string:"three" }}</td>
 
@@ -95,7 +95,7 @@
 
 
 <tr style="color:#cd6839">
-<td>3prime Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" three_prime_utr_len=diff_me_tr.cds_info.three_prime_utr_length %}</td>
+<td>3'UTR Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" three_prime_utr_len=diff_me_tr.cds_info.three_prime_utr_length %}</td>
 <td>{{ diff_me_tr.cds_info.three_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.three_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version  release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
 <td>{{ diff_with_tr.cds_info.three_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.three_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
 

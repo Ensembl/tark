@@ -16,7 +16,7 @@ function get_query_params(row){
             transcript_source = row.find("td:nth-child(5)").text().trim();
             
             
-            transcript_release = row.find("td:nth-child(6)").text().trim(); 
+            transcript_release = row.find("td:nth-child(7)").text().trim(); 
             transcript_releases = [];
             if (typeof transcript_release != "undefined") {
             transcript_releases = transcript_release.split('..');
@@ -184,7 +184,8 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="true">Transcript StableID</th>
      <th class="text-center" data-sortable="true">Assembly</th>
      <th class="text-center" data-sortable="true">Source</th>
-     <th class="text-center" data-sortable="true">ReleaseSet</th>
+     <th class="text-center" data-sortable="true">From Release</th>
+     <th class="text-center" data-sortable="true">To Release</th>
      <th class="text-center" data-sortable="true">Region</th>
      <th class="text-center" data-sortable="true">Start</th>
      <th class="text-center" data-sortable="true">End</th>
@@ -202,25 +203,31 @@ $(document).ready(function() {
        <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
       </td>
       
+       <!--assembly -->
        {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
         <td>{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
        {% else %}
         <td class="text-danger">{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
        {% endif %}
        
+        <!--source -->
         {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
          <td>{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% else %}
         <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% endif %}
       
-      
       <!--release_set -->
        {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
        {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
       <td>
+       <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}.{{result.stable_id_version}}">
+      {{release_date.min_release_datename_value}}
+      </a>
+      </td>
+      <td>
        <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}.{{result.stable_id_version}}">
-      {{release_date.date_range}}
+      {{release_date.max_release_datename_value}}
       </a>
       </td>
       {% endwith %}
@@ -228,7 +235,12 @@ $(document).ready(function() {
        {% with result.transcript_release_set|format_release_set:"refseq" as release_date %}
       <td>
        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}">	
-      {{release_date.date_range}}
+      {{release_date.min_release_datename_value}}
+      </a>
+      </td>
+      <td>
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}">	
+      {{release_date.max_release_datename_value}}
       </a>
       </td>
       {% endwith %}

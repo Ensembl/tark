@@ -21,14 +21,12 @@
       <li class="navbar-item"><a href="/web/datatable/release_set/">ReleaseSets</a></li>
       <li class="navbar-separator">|</li>
       <li class="navbar-item"><a href="/web/statistics/">ReleaseStats</a></li>
+
+     <!-- <li class="navbar-separator">|</li>
+     <li class="navbar-item"><a href="/web/diff/"> Compare-Transcripts </a></li> -->
+
       <li class="navbar-separator">|</li>
-     <li class="navbar-item"><a href="/web/diff/"> Compare-Transcripts </a></li>
-      <li class="navbar-separator">|</li>
-      <!--
-       <li class="navbar-item"><a href="/web/diff/release/"> Diff-ReleaseSets </a></li>
-      <li class="navbar-separator">|</li>
-      -->
-     <li class="navbar-item"><a href="/web/search/"> Search </a></li>
+     <li class="navbar-item"><a href="/web/search/"> Search & Compare </a></li>
      <li class="navbar-separator">|</li>
       <li class="navbar-item"><a href="/api/"> REST-Tark</a></li>
        <li class="navbar-separator">|</li>
@@ -59,16 +57,7 @@
 
 {% block content %}
 <div class="container">
-  <div class="jumbotron" style="background-color:#fff; !important;">
-    <h2 class="text-center">Tark - Transcript Archive</h2> 
-    <p class="text-justify" style="font-size: 1.8rem;font-weight:350;">The goal of Tark is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, checksums are included at a fine grained level. </p>
-    
-    <p class="text-justify" style="font-size: 1.8rem;font-weight:350;">The data is accessible via an API to explore and determine the exact changes between sequences from one release to the next. In the longterm, Tark will become the primary repository for all sequences in all Ensembl releases.</p>
-    
-    <p class="text-justify" style="font-size: 1.8rem;font-weight:350;">This beta is provided to give the community an opportunity to explore Tark's functionality. Please provide feedback on possible improvements to help meet future needs. Note, this is a beta site and should not be counted upon to be stable, the API may change and this server may be unavailable at times..</p> 
-  </div>
-  
-  
+  {% include "jumbotron_include.html" %}
   
    <div class="row" id="search_big">
     <div class="col-md-12">
@@ -87,8 +76,8 @@
  <div class="row">
    <div class="col-md-4 col-sm-4">
      <a href="/web/datatable/release_set/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-list"></i></button></a>
-     <h3 class="text-center">List ReleaseSets</h3>
-     <p>View release sets available as datatable.</p>
+     <h3 class="text-center">Release Sets</h3>
+     <p>View available Ensembl and RefSeq release sets</p>
   </div>
 
    <div class="col-md-4 col-sm-4">

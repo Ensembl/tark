@@ -36,20 +36,29 @@ def format_release_set(search_result, source):
         min_release_shortname = sorted_release_dict[0]
         min_release_date = release_dict[min_release_shortname]
         min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
-        min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
-        return {'max_release': min_release_shortname, "date_range": min_release_value}
+        #min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
+        min_release_value = prefix + min_release_shortname + "-" + datetime.date.strftime(min_dt, "%b%Y")
+        return {'min_release': min_release_shortname,
+                'max_release': min_release_shortname,
+                "min_release_datename_value": min_release_value,
+                "max_release_datename_value": min_release_value,
+                "date_range": min_release_value}
     elif len(sorted_release_dict) > 1:
         min_release_shortname = sorted_release_dict[0]
         min_release_date = release_dict[min_release_shortname]
         min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
-        min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
+        min_release_value = prefix + min_release_shortname + "-" + datetime.date.strftime(min_dt, "%b%Y")
 
         max_release_shortname = sorted_release_dict[-1]
         max_release_date = release_dict[max_release_shortname]
         max_dt = datetime.datetime.strptime(max_release_date, '%Y-%m-%d')
-        max_release_value = prefix + max_release_shortname + " (" + datetime.date.strftime(max_dt, "%b%Y") + ")"
+        max_release_value = prefix + max_release_shortname + "-" + datetime.date.strftime(max_dt, "%b%Y")
 
-        return {'max_release': max_release_shortname, "date_range": min_release_value + ".." + max_release_value}
+        return {'max_release': max_release_shortname,
+                'min_release': min_release_shortname,
+                "min_release_datename_value": min_release_value,
+                "max_release_datename_value": max_release_value,
+                "date_range": min_release_value + ".." + max_release_value}
 
     return None
 
