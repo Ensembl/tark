@@ -19,7 +19,7 @@ function get_query_params(row){
             transcript_release = row.find("td:nth-child(7)").text().trim(); 
             transcript_releases = [];
             if (typeof transcript_release != "undefined") {
-            transcript_releases = transcript_release.split('..');
+            transcript_releases = transcript_release.split('-');
             transcript_releases_trimmed = [];
             $.each(transcript_releases, function( index, value ) {
 			transcript_releases_trimmed.push(value.trim());
@@ -30,9 +30,14 @@ function get_query_params(row){
             
 			console.log(transcript_release);
             //removing e and r from release
-            if(transcript_release.startsWith("e") || transcript_release.startsWith("r")){
+            if(transcript_release.startsWith("e")){
             transcript_release = transcript_release.substring(1,3);
-            }else{
+            console.log(' From e ' + transcript_release);
+            }else if (transcript_release.startsWith("r")){
+            transcript_release = transcript_release.substring(1,4);
+            console.log('From r ' + transcript_release)
+            }
+            else{
             transcript_release = transcript_release.substring(0,2);
             }
             console.log(transcript_release);
