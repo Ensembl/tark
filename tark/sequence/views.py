@@ -20,6 +20,7 @@ from django.shortcuts import render  # @UnusedImport
 from tark_web.utils.sequtils import TarkSeqUtils
 import urllib
 from django.http.response import JsonResponse
+from setuptools.dist import sequence
 
 
 # Create your views here.
@@ -53,12 +54,14 @@ def align_cds_sequence(request, feature_type,
     sequence_a = TarkSeqUtils.fetch_cds_sequence(request, feature_type, stable_id_a, stable_id_version_a,
                                                  release_short_name_a, assembly_name_a, source_name_a,
                                                  cds_type, output_format)
-    print(sequence_a)
+
     sequence_b = TarkSeqUtils.fetch_cds_sequence(request, feature_type, stable_id_b, stable_id_version_b,
                                                  release_short_name_b, assembly_name_b, source_name_b,
                                                  cds_type, output_format)
-    print(sequence_b)
 
+    if len(sequence_a) == 0 or len(sequence_b) == 0:
+        return render(request, 'alignment_viewer.html', context={'error_msg': "Alignment Error...One of the sequence is not available, please check!",
+                                                             })
     pay_load = {'asequence': sequence_a, 'bsequence': sequence_b,
                 'format': "pair", 'stype': "dna", 'email': 'prem@ebi.ac.uk'}
     encoded_pay_load = urllib.parse.urlencode(pay_load).encode("utf-8")

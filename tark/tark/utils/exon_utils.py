@@ -197,10 +197,12 @@ class ExonUtils(object):
                 # Now add the overlapping bit for the 3 prime
                 if transcript['loc_strand'] == -1:
                     end_exon_utr_len = translation_start - end_exon['loc_start']
-                    three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
+                    if end_exon_utr_len > 0:
+                        three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
                 else:
                     end_exon_utr_len = end_exon['loc_end'] - translation_end
-                    three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
+                    if end_exon_utr_len > 0:
+                        three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
 
             cds_start_len = translation_start - start_exon['loc_start']
             cds_seq = start_exon['sequence'][cds_start_len:]
@@ -208,9 +210,17 @@ class ExonUtils(object):
             last_exon = exons[-1]
 
             if transcript['loc_strand'] == -1:
-                cds_info['three_prime_utr_end'] = last_exon['loc_start']
+                if len(three_prime_utr_seq) > 0:
+                    cds_info['three_prime_utr_end'] = last_exon['loc_start']
+                else:
+                    cds_info['three_prime_utr_start'] = 0
+                    cds_info['three_prime_utr_end'] = 0
             else:
-                cds_info['three_prime_utr_end'] = last_exon['loc_end']
+                if len(three_prime_utr_seq) > 0:
+                    cds_info['three_prime_utr_end'] = last_exon['loc_end']
+                else:
+                    cds_info['three_prime_utr_start'] = 0
+                    cds_info['three_prime_utr_end'] = 0
 
             cds_info['five_prime_utr_seq'] = five_prime_utr_seq
             cds_info['five_prime_utr_length'] = len(five_prime_utr_seq)
@@ -228,13 +238,14 @@ class ExonUtils(object):
 
     @classmethod
     def get_cds_sequence(cls, sequence_data, five_prime_utr_len=0, three_prime_utr_len=0):
-
         if int(five_prime_utr_len) > 0 and int(three_prime_utr_len) > 0:
             sequence_data = sequence_data[int(five_prime_utr_len):]
             sequence_data = sequence_data[:-int(three_prime_utr_len)]
         elif int(five_prime_utr_len) > 0:
-            sequence_data = sequence_data[:int(five_prime_utr_len)]
+            sequence_data = sequence_data[int(five_prime_utr_len):]
+            # sequence_data = sequence_data[:int(five_prime_utr_len)]
         elif int(three_prime_utr_len) > 0:
-            sequence_data = sequence_data[-(int(three_prime_utr_len)):]
+            # sequence_data = sequence_data[-(int(three_prime_utr_len)):]
+            sequence_data = sequence_data[:-int(three_prime_utr_len)]
 
         return sequence_data

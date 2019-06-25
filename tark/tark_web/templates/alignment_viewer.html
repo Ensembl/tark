@@ -1,6 +1,8 @@
 	{% extends "web_home.html" %}
 	{% load staticfiles %}
 	
+	{% if error_msg is None %}
+
 	{% block extra_scripts %}
 	 <script>
 	 
@@ -34,6 +36,7 @@
   
 </script>
  {% endblock %}
+  {% endif %}
 	  
 	{% block content %}
 	<div class="container" style="padding-top:20px;">
@@ -45,11 +48,13 @@
 	{% else %}
 	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job failed..Please try again</strong> </div>
 	{% endif %}
-	
-	
+
+	{% if error_msg is None %}
 	<div id="loadingSpinner"><strong>Processing...Please wait for the page to reload </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
-	
 	<pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;"></pre>
+	{% else %}
+	<pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;">{{error_msg}}</pre>
+	{% endif %}
 	
 	
 	</div>  <!-- subpage -->
@@ -58,3 +63,4 @@
 	</div>
 	
 	{% endblock %}
+

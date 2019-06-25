@@ -256,6 +256,8 @@ def get_cds_location_string(cds_info, utr):
     utr_end = utr +'_prime_utr_end'
     location_string = ""
     if 'loc_region' in cds_info and utr_start in cds_info and utr_end in cds_info:
+        if cds_info[utr_start] == 0 and cds_info[utr_end] == 0:
+            return "-"
         if cds_info['loc_strand'] == -1:
             location_string = "{} : {} - {}".format(cds_info['loc_region'],
                                                     cds_info[utr_end],
