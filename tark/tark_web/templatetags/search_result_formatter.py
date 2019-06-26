@@ -22,8 +22,13 @@ register = template.Library()
 
 @register.filter
 def format_release_set(search_result, source):
-
-    release_dict = {result["shortname"]: result["release_date"] for result in search_result}
+    print(search_result)
+    release_dict = {}
+    if isinstance(search_result, list):
+        release_dict = {result["shortname"]: result["release_date"] for result in search_result}
+    else:
+        if "shortname" in search_result and "release_date" in search_result:
+            release_dict[search_result["shortname"]] = search_result["release_date"]
 
     prefix = ""
     if "ensembl" in source or "lrg" in source:

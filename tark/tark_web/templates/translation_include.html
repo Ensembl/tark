@@ -2,6 +2,7 @@
 {% load add_class %}
 {% load compare_features %}
 {% load sequence_format %}
+{% load search_result_formatter %}
 
 <!-- Translation include -->
 
@@ -20,7 +21,24 @@
     <th style="text-align:center;width:10%;">MATCH</th>
 </tr>
 <tr>
-<td>StableID</td><td>{{ diff_me_tl.stable_id|default:"Non-coding" }} </td><td>{{ diff_with_tl.stable_id|default:"Non-coding" }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_changed %}</td>
+<td>StableID</td>
+{% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
+{% with diff_me_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+<td><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/protview?db=core;peptide={{ diff_me_tl.stable_id|default:"Non-coding" }}">{{ diff_me_tl.stable_id|default:"Non-coding" }}</a> </td>
+{% endwith %}
+{% else %}
+<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_me_tl.stable_id}}"> {{diff_me_tl.stable_id}} </a> </td>
+{% endif %}
+
+{% if diff_with_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
+{% with diff_with_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+<td><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/protview?db=core;peptide={{ diff_with_tl.stable_id|default:"Non-coding" }}">{{ diff_with_tl.stable_id|default:"Non-coding" }}</a></td>
+{% endwith %}
+{% else %}
+<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_with_tl.stable_id}}"> {{diff_with_tl.stable_id}} </a> </td>
+{% endif %}
+
+<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_changed %}</td>
 </tr>
 <tr>
 <td>StableID Version</td><td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td><td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
