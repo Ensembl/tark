@@ -20,7 +20,6 @@ from django.shortcuts import render  # @UnusedImport
 from tark_web.utils.sequtils import TarkSeqUtils
 import urllib
 from django.http.response import JsonResponse
-from setuptools.dist import sequence
 
 
 # Create your views here.
@@ -32,6 +31,7 @@ def align_sequence(request, feature_type, stable_id_a, stable_id_version_a, stab
 
     pay_load = {'asequence': sequence_a, 'bsequence': sequence_b,
                 'format': outut_format, 'stype': input_type, 'email': 'prem@ebi.ac.uk'}
+
     encoded_pay_load = urllib.parse.urlencode(pay_load).encode("utf-8")
 #     print(encoded_pay_load)
 #
@@ -64,6 +64,7 @@ def align_cds_sequence(request, feature_type,
                                                              })
     pay_load = {'asequence': sequence_a, 'bsequence': sequence_b,
                 'format': "pair", 'stype': "dna", 'email': 'prem@ebi.ac.uk'}
+
     encoded_pay_load = urllib.parse.urlencode(pay_load).encode("utf-8")
 #     print(encoded_pay_load)
 # # #

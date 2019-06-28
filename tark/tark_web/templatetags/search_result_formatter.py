@@ -22,7 +22,6 @@ register = template.Library()
 
 @register.filter
 def format_release_set(search_result, source):
-    print(search_result)
     release_dict = {}
     if isinstance(search_result, list):
         release_dict = {result["shortname"]: result["release_date"] for result in search_result}
@@ -41,7 +40,7 @@ def format_release_set(search_result, source):
         min_release_shortname = sorted_release_dict[0]
         min_release_date = release_dict[min_release_shortname]
         min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
-        #min_release_value = prefix + min_release_shortname + " (" + datetime.date.strftime(min_dt, "%b%Y") + ")"
+
         min_release_value = prefix + min_release_shortname + "-" + datetime.date.strftime(min_dt, "%b%Y")
         return {'min_release': min_release_shortname,
                 'max_release': min_release_shortname,
