@@ -20,6 +20,6 @@ before_script:
   - touch logs/tark.log
 
 script: 
-  - coverage run --source=. manage.py test tark.tests --settings=tark.settings.test
+  - coverage run --source=. tark/manage.py test tark.tests --settings=tark.settings.test
   #- python3 tark/manage.py test tark.tests --settings=tark.settings.test
 
