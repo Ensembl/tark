@@ -1,6 +1,6 @@
 # Tark (Transcript Archive)
 
-[![Documentation Status](https://readthedocs.org/projects/tark/badge/?version=latest)](http://tark.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/Ensembl/tark.svg?branch=master)](https://travis-ci.org/Ensembl/tark)
+[![Documentation Status](https://readthedocs.org/projects/tark/badge/?version=latest)](http://tark.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/Ensembl/tark.svg?branch=master)](https://travis-ci.org/Ensembl/tark) [![Coverage Status](https://coveralls.io/repos/github/Ensembl/tark/badge.svg)](https://coveralls.io/github/Ensembl/tark)
 
 Tark (Transcript Archive)
 
