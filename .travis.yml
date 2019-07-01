@@ -23,3 +23,6 @@ script:
   - coverage run --source=. tark/manage.py test tark.tests --settings=tark.settings.test
   #- python3 tark/manage.py test tark.tests --settings=tark.settings.test
 
+# send coverage report to coveralls
+after_success:
+  coveralls
