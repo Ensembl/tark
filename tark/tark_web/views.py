@@ -165,20 +165,19 @@ def search_home(request):
     """
     View function for search query page
     """
+    host_url = ApiUtils.get_host_url(request)
+    search_identifier = ""
+    query_url = "/api/transcript/search/?expand=transcript_release_set,genes&identifier_field="
 
     # Render the HTML template index.html with data in the context variable
     search_result = {}
-    if request.method == 'POST':
+    if request.method == 'GET' and "identifier" in request.GET:
 
-        search_form = SearchForm(request.POST)
-        if search_form.is_valid():
+        search_identifier = request.GET['identifier']
+        if search_identifier is not None:
 
-            search_identifier = search_form.cleaned_data['search_identifier']
-
-            host_url = ApiUtils.get_host_url(request)
-
-            query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-                        "&expand=transcript_release_set,genes"
+            search_form = SearchForm(request.GET)
+            query_url = query_url+search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
                 search_result = response.json()
@@ -192,7 +191,30 @@ def search_home(request):
                     }
                 )
             else:
-                logger.error("Error")
+                logger.error("Error from search")
+
+        else:
+            search_form = SearchForm()
+    elif request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+
+            search_identifier = search_form.cleaned_data['search_identifier']
+            query_url = query_url+search_identifier
+            response = requests.get(host_url + query_url)
+            if response.status_code == 200:
+                search_result = response.json()
+                return render(
+                    request,
+                    'search_result.html',
+                    context={
+                        'form': search_form,
+                        'search_result': search_result,
+                        'search_identifier': search_identifier
+                    }
+                )
+            else:
+                logger.error("Error from search")
         else:
             logger.error(search_form.errors)
     else:

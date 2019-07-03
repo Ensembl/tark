@@ -38,15 +38,7 @@
        <li class="navbar-separator">|</li>
     </ul>
     
-     <div id="search">
-    <form action="/web/search/" method="POST">
-    <div class="form-group" style="text-align: right;">
-    {% csrf_token %}
-      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search.." class="form-control" style="display:inline;width:20%;">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </div>
-    </form>
-  </div>    
+    {% include "search_box.html" %}
     
   </div>
 </nav>
@@ -59,17 +51,7 @@
 <div class="container">
   {% include "jumbotron_include.html" %}
   
-   <div class="row" id="search_big">
-    <div class="col-md-12">
-    <form action="/web/search/" method="POST">
-    <div class="form-group" style="text-align: center;">
-    {% csrf_token %}
-      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search..eg: BRCA2, ENST00000470094, NM_000059" class="form-control input-lg" style="display:inline;width:60%;">
-      <button type="submit"><i class="fa fa-search fa-2x"></i></button>
-    </div>
-    </form>
-  </div>  
-  </div>  
+    {% include "search_big_box.html" %}
 
 <p style="padding-top:40px;"></p>
 
@@ -81,9 +63,9 @@
   </div>
 
    <div class="col-md-4 col-sm-4">
-    <a href="/web/diff/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-duplicate"></i></button></a>
- <h3 class="text-center">Compare Transcripts</h3>
-  <p>See the difference between the releases for a given transcript</p>
+    <a href="/web/statistics/"><button type="button" class="btn btn-default btn-circle btn-xl center-block"><i class="glyphicon glyphicon-stats"></i></button></a>
+ <h3 class="text-center">Release Statistics</h3>
+  <p>View some statistics about the data loaded</p>
   </div>
   
   
