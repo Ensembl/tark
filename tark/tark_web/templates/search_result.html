@@ -256,14 +256,8 @@ $(document).ready(function() {
       <td>{{result.loc_end}}</td>
       <td>{{result.mane_transcript}}</td>
       <td>{{result.mane_transcript_type}}</td>
-      <td><a target="_blank" href="http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g={{result.genes|get_values_as_list:'name'}}">{{result.genes|get_values_as_list:"name"}}</a></td>
-      <!--
-      {% with result.exons|get_values_as_list:"stable_id_exon" as exons %}
-      <td>{{exons |linebreaks}}</td>
-      {% endwith %}
-      <td class="details-control"></td>
-      -->
-      </tr>
+      <td><a href="/web/search/?identifier={{result.genes|get_values_as_list:"name"}}">{{result.genes|get_values_as_list:"name"}}</a></td>
+       </tr>
     {% endfor %}
 
   
