@@ -307,16 +307,13 @@ class DrfFields(object):
     def get_stable_id_example(cls, model_name):
         example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000380152', 'Exon': 'ENSE00001184784',
                         'Translation': 'ENSP00000369497'}
-        print ("Model anme  " + str(model_name))
         if model_name in example_dict:
             return example_dict[model_name]
         return ""
 
-
     @classmethod
     def get_stable_id_with_version_example(cls, model_name):
         example_dict = {'Transcript': 'ENST00000252934.10'}
-        print ("Model anme  " + str(model_name))
         if model_name in example_dict:
             return example_dict[model_name]
         return ""

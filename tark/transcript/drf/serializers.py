@@ -70,124 +70,27 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                            }
 
     assembly = AssemblyField(read_only=True)
-    mane_transcript = serializers.SerializerMethodField()
-    mane_transcript_type = serializers.SerializerMethodField()
 
-    def get_mane_transcript_type(self, obj):
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        mane_transcript = obj.fetch_mane_transcript_and_type()
+        if mane_transcript is not None:
+            if "mane_transcript_stableid" in mane_transcript:
+                data['mane_transcript'] = mane_transcript["mane_transcript_stableid"]
+            else:
+                data['mane_transcript'] = '-'
 
-        transcript = Transcript.objects.get(pk=obj.pk)
-        source = "Ensembl"
-        if transcript is not None:
-            try:
-                source = transcript.transcript_release_set.all()[:1].get().source.shortname
-            except Exception as e:
-                print("Exception from  get_mane_transcript " + e)
+            if "mane_transcript_type" in mane_transcript:
+                data['mane_transcript_type'] = mane_transcript["mane_transcript_type"]
+            else:
+                data['mane_transcript_type'] = '-'
 
-        if "Ensembl" in source:
-            raw_sql = "SELECT \
-                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
-                        relationship_type.shortname as mane_type,\
-                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
-                        FROM \
-                        transcript t1 \
-                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                        JOIN transcript_release_tag_relationship ON \
-                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
-                        JOIN transcript_release_tag trt2 ON \
-                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
-                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                        JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
-        else:
-            raw_sql = "SELECT \
-                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
-                        relationship_type.shortname as mane_type,\
-                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
-                        FROM \
-                        transcript t1 \
-                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                        JOIN transcript_release_tag_relationship ON \
-                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_subject_id \
-                        JOIN transcript_release_tag trt2 ON \
-                        transcript_release_tag_relationship.transcript_release_object_id=trt2.transcript_release_id \
-                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                        JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
-
-        mane_transcripts = Transcript.objects.raw(raw_sql, [obj.pk])
-        if mane_transcripts is not None:
-            manes = []
-            for mane in mane_transcripts:
-                mane_string = mane.mane_type
-                manes.append(mane_string)
-
-            return ','.join(manes)
-        else:
-            return "-"
-
-    def get_mane_transcript(self, obj):
-
-        transcript = Transcript.objects.get(pk=obj.pk)
-        source = "Ensembl"
-        if transcript is not None:
-            try:
-                source = transcript.transcript_release_set.all()[:1].get().source.shortname
-            except Exception as e:
-                print("Exception from  get_mane_transcript " + e)
-
-        if "Ensembl" in source:
-            raw_sql = "SELECT \
-                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
-                        relationship_type.shortname as mane_type,\
-                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
-                        FROM \
-                        transcript t1 \
-                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                        JOIN transcript_release_tag_relationship ON \
-                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
-                        JOIN transcript_release_tag trt2 ON \
-                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
-                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                        JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
-        else:
-            raw_sql = "SELECT \
-                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
-                        relationship_type.shortname as mane_type,\
-                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
-                        FROM \
-                        transcript t1 \
-                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
-                        JOIN transcript_release_tag_relationship ON \
-                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_subject_id \
-                        JOIN transcript_release_tag trt2 ON \
-                        transcript_release_tag_relationship.transcript_release_object_id=trt2.transcript_release_id \
-                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
-                        JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
-        mane_transcripts = Transcript.objects.raw(raw_sql, [obj.pk])
-        if mane_transcripts is not None:
-            manes = []
-            for mane in mane_transcripts:
-                mane_string = mane.refseq_stable_id + '.' + str(mane.refseq_stable_id_version)
-                manes.append(mane_string)
-
-            return ','.join(manes)
-        else:
-            return "-"
+        return data
 
     class Meta:
         model = Transcript
         fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
-                                                  'sequence', 'mane_transcript', 'mane_transcript_type')
+                                                  'sequence')
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)
