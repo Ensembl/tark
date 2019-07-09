@@ -58,10 +58,14 @@ class Transcript(models.Model):
         managed = False
         db_table = 'transcript'
 
-    def fetch_mane_transcript_and_type(self):
+    @classmethod
+    def fetch_mane_transcript_and_type(cls, transcript_id=None):
 
-        transcript = Transcript.objects.get(pk=self.pk)
+        transcript = None
         source = "Ensembl"
+        if transcript_id is not None:
+            transcript = Transcript.objects.get(pk=transcript_id)
+
         if transcript is not None:
             try:
                 source = transcript.transcript_release_set.all()[:1].get().source.shortname
@@ -82,9 +86,7 @@ class Transcript(models.Model):
                         transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
                         JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
                         JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
+                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id"
         else:
             raw_sql = "SELECT \
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
@@ -99,19 +101,23 @@ class Transcript(models.Model):
                         transcript_release_tag_relationship.transcript_release_object_id=trt2.transcript_release_id \
                         JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
                         JOIN relationship_type ON \
-                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
-                        WHERE \
-                        t1.transcript_id=%s limit 1"
-        mane_transcripts = Transcript.objects.raw(raw_sql, [self.pk])
-        mane_transcript_dict = {}
-        if mane_transcripts is not None and len(mane_transcripts) > 0:
-            mane_transcript = mane_transcripts[0]
-            mane_transcript_dict = {"mane_transcript_stableid":
-                                    "{}.{}".format(mane_transcript.refseq_stable_id,
-                                                   mane_transcript.refseq_stable_id_version),
-                                    "mane_transcript_type": mane_transcript.mane_type}
+                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id"
 
-        return mane_transcript_dict
+        if transcript_id is not None:
+            raw_sql = raw_sql + " WHERE t1.transcript_id=%s limit 1"
+            mane_transcripts = Transcript.objects.raw(raw_sql, [transcript_id])
+            mane_transcript_dict = {}
+            if mane_transcripts is not None and len(mane_transcripts) > 0:
+                mane_transcript = mane_transcripts[0]
+                mane_transcript_dict = {"mane_transcript_stableid":
+                                        "{}.{}".format(mane_transcript.refseq_stable_id,
+                                                       mane_transcript.refseq_stable_id_version),
+                                        "mane_transcript_type": mane_transcript.mane_type}
+
+                return mane_transcript_dict
+        else:
+            mane_transcripts = Transcript.objects.raw(raw_sql)
+            return mane_transcripts
 
 
 class TranscriptGene(models.Model):

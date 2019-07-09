@@ -125,7 +125,7 @@ urlpatterns = [
     ),
 
     url(
-        r'^mane/$',
+        r'^manelist/$',
         TemplateView.as_view(
             template_name='mane_list.html'
         )

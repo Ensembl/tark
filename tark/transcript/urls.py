@@ -18,7 +18,6 @@
 
 from django.conf.urls import url
 from transcript import views
-from release import views as release_views
 
 
 urlpatterns = [
@@ -26,6 +25,8 @@ urlpatterns = [
     url(r'^diff/$', views.TranscriptDiff.as_view(), name='transcript_diff'),
     url(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
     url(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
-    url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
+    url(r'^manelist/$', views.TranscriptManeList.as_view(), name='transcript_mane_list'),
+    # url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
+
 
 ]

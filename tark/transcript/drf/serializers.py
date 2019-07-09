@@ -59,6 +59,14 @@ class TranscriptReleaseTagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TranscriptManeSerializer(serializers.Serializer):
+    ens_stable_id = serializers.CharField()
+    ens_stable_id_version = serializers.CharField()
+    refseq_stable_id = serializers.CharField()
+    refseq_stable_id_version = serializers.CharField()
+    mane_type = serializers.CharField()
+
+
 class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
     MANY2ONE_SERIALIZER = {Transcript.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
@@ -73,7 +81,7 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
     def to_representation(self, obj):
         data = super().to_representation(obj)
-        mane_transcript = obj.fetch_mane_transcript_and_type()
+        mane_transcript = Transcript.fetch_mane_transcript_and_type(transcript_id=obj.pk)
         if mane_transcript is not None:
             if "mane_transcript_stableid" in mane_transcript:
                 data['mane_transcript'] = mane_transcript["mane_transcript_stableid"]

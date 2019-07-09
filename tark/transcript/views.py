@@ -22,7 +22,7 @@ from tark_drf.utils.decorators import setup_eager_loading, expand_all_related
 from transcript.models import Transcript
 from transcript.drf.serializers import TranscriptSerializer,\
     TranscriptDiffSerializer, TranscriptSearchSerializer,\
-    TranscriptDataTableSerializer
+    TranscriptDataTableSerializer, TranscriptManeSerializer
 from transcript.drf.filters import TranscriptFilterBackend,\
     TranscriptDiffFilterBackend, TranscriptSearchFilterBackend, TranscriptDetailFilterBackend
 from tark.utils.diff_utils import DiffUtils
@@ -39,10 +39,23 @@ from exon.models import Exon
 
 import logging
 from tark.utils.exon_utils import ExonUtils
-from re import search
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+
+class NotPaginatedSetPagination(PageNumberPagination):
+    page_size = None
+
+
+class TranscriptManeList(generics.ListAPIView):
+    serializer_class = TranscriptManeSerializer
+    pagination_class = NotPaginatedSetPagination
+
+    def get_queryset(self):
+        queryset = Transcript.fetch_mane_transcript_and_type()
+        return queryset
 
 
 class TranscriptList(generics.ListAPIView):
@@ -181,10 +194,6 @@ class TranscriptDiff(generics.ListAPIView):
                         search_result["cds_info"] = cds_info
 
         return search_result
-
-
-class NotPaginatedSetPagination(PageNumberPagination):
-    page_size = None
 
 
 class TranscriptSearch(generics.ListAPIView):
