@@ -116,6 +116,28 @@ class Transcript(models.Model):
 
                 return mane_transcript_dict
         else:
+            raw_sql = "SELECT \
+                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
+                        relationship_type.shortname as mane_type,\
+                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version,\
+                        gn1.name as ens_gene_name \
+                        FROM \
+                        transcript t1 \
+                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id \
+                        JOIN transcript_release_tag_relationship ON \
+                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id \
+                        JOIN transcript_release_tag trt2 ON \
+                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id \
+                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id \
+                        JOIN relationship_type ON \
+                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id\
+                         JOIN transcript_gene tg1 ON \
+                        t1.transcript_id=tg1.transcript_id \
+                        JOIN gene gene1 ON \
+                        tg1.gene_id=gene1.gene_id \
+                        JOIN gene_names gn1 ON \
+                        gene1.name_id=gn1.external_id \
+                        where gn1.primary_id=1"
             mane_transcripts = Transcript.objects.raw(raw_sql)
             return mane_transcripts
 

@@ -65,6 +65,7 @@ class TranscriptManeSerializer(serializers.Serializer):
     refseq_stable_id = serializers.CharField()
     refseq_stable_id_version = serializers.CharField()
     mane_type = serializers.CharField()
+    ens_gene_name = serializers.CharField()
 
 
 class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):

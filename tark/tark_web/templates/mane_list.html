@@ -20,6 +20,7 @@
      <th>Ensembl StableID</th>
      <th>RefSeq StableID</th>
      <th>MANE TYPE</th>
+     <th>Gene (Click to Search)</th>
 
   </tr>
  </thead>
@@ -36,8 +37,10 @@
 
 <script>
       $(document).ready(function() {
+      $('[data-toggle="tooltip"]').tooltip(); 
           var table = $('#mane_table').DataTable({
               "pageLength": 25,
+              "order": [[ 3, "asc" ]],
               "processing": true,
               "ajax": {
                  "processing": true,
@@ -46,17 +49,35 @@
              },
               "columns": [
                   { "mData": "ens_stable_id",
+                     "className": "text-left",
   			   "mRender": function ( data, type, row ) {
-  			     return row["ens_stable_id"] + '.' + row["ens_stable_id_version"]
+  			     ens_id = row["ens_stable_id"] + '.' + row["ens_stable_id_version"];
+  			     ens_link = "<a href='http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=" + ens_id + "' target='_blank'>" + ens_id + "</a>";
+  			     return ens_link;
            		 }
   			 	},
                  { "mData": "refseq_stable_id",
+                   "className": "text-left",
   			   "mRender": function ( data, type, row ) {
-  			     return row["refseq_stable_id"] + '.' + row["refseq_stable_id_version"]
+  			     refseq_id = row["refseq_stable_id"] + '.' + row["refseq_stable_id_version"];
+  			     refseq_link = "<a href=' https://www.ncbi.nlm.nih.gov/nuccore/" + refseq_id + "' target='_blank'>" + refseq_id + "</a>";
+  			     return refseq_link;
            		 }
-  			
   			 	},
-                  {"data": "mane_type"}
+                { "mData": "mane_type",
+                   "className": "text-left",
+  			   "mRender": function ( data, type, row ) {
+  			     mane_link = "<a href='#' data-toggle='tooltip' title='Representative transcripts that are matched between RefSeq and Ensembl'>" + row['mane_type'] + "</a>";
+  			     return mane_link;
+           		 }
+  			 	},
+                 { "mData": "ens_gene_name",
+                   "className": "text-left",
+  			   "mRender": function ( data, type, row ) {
+  			     return "<a href='/web/search/?identifier=" + row['ens_gene_name'] + "' target='_blank'>" + row['ens_gene_name'] + "</a>";
+           		 }
+  			 	}
+                  
 
               ]
           });

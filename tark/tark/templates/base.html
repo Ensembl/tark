@@ -54,28 +54,7 @@
 <body>
 {% block header %}
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid" id="header" style="background-color:#40407a">
-      
-    <ul class="nav navbar-nav">
-      <li><a class="navbar-brand" id="logo" href="/"><span class="title"><img alt="ensembl" height="30" width="30" src="{% static '/images/ebang.png' %}" /> Transcript Archive <span class="beta_text"> Beta</span></span></a></li>
-      <li class="navbar-separator">|</li>
-      <li class="navbar-item"><a href="/web/"> Web-Tark</a></li>
-      <li class="navbar-separator">|</li>
-      <li class="navbar-item"><a href="/api/"> REST-Tark</a></li>
-       <li class="navbar-separator">|</li>
-      <li class="navbar-item"><a href="/documentation"><span class="glyphicon glyphicon-file"></span> Help</a></li>
-       <li class="navbar-separator">|</li>
-      <li class="navbar-item"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      <li class="navbar-separator">|</li>
-     <li class="navbar-item"><a href="https://www.ebi.ac.uk/data-protection/privacy-notice/transcript-archive-tark-" target="_blank"> Privacy Notice</a></li>
-      <li class="navbar-separator">|</li>
-    </ul>
-
-   {% include "search_box.html" %}
-
-  </div>
-</nav>
+{% include "navbar_include.html" with show_rest="true" %}
 
 {% endblock %}
 
