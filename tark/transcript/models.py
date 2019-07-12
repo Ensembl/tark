@@ -107,7 +107,7 @@ class Transcript(models.Model):
             raw_sql = raw_sql + " WHERE t1.transcript_id=%s limit 1"
             mane_transcripts = Transcript.objects.raw(raw_sql, [transcript_id])
             mane_transcript_dict = {}
-            if mane_transcripts is not None and len(mane_transcripts) > 0:
+            if mane_transcripts is not None and len(list(mane_transcripts)) > 0:
                 mane_transcript = mane_transcripts[0]
                 mane_transcript_dict = {"mane_transcript_stableid":
                                         "{}.{}".format(mane_transcript.refseq_stable_id,
