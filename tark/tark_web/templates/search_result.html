@@ -27,20 +27,20 @@ function get_query_params(row){
             }
             console.log(transcript_releases_trimmed);
             transcript_release = transcript_releases_trimmed.sort().pop();
-            
 			console.log(transcript_release);
+
             //removing e and r from release
             if(transcript_release.startsWith("e")){
-            transcript_release = transcript_release.substring(1,3);
-            console.log(' From e ' + transcript_release);
+            transcript_release = transcript_release.substring(1,4);
+            //console.log(' From e ' + transcript_release);
             }else if (transcript_release.startsWith("r")){
             transcript_release = transcript_release.substring(1,4);
-            console.log('From r ' + transcript_release)
+            //console.log('From r ' + transcript_release)
             }
             else{
             transcript_release = transcript_release.substring(0,2);
             }
-            console.log(transcript_release);
+            //console.log(transcript_release);
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release];
 }
 

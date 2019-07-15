@@ -22,19 +22,25 @@ function get_query_params(row){
             transcript_release = row.find("td:nth-child(6)").text().trim(); 
             transcript_releases = [];
             if (typeof transcript_release != "undefined") {
-            transcript_releases = transcript_release.split('..');
+            transcript_releases = transcript_release.split('-');
             transcript_releases_trimmed = [];
             $.each(transcript_releases, function( index, value ) {
 			transcript_releases_trimmed.push(value.trim());
 			});
             }
-            console.log(transcript_releases_trimmed);
-            transcript_release = transcript_releases_trimmed.sort().pop();
+            //console.log(transcript_releases_trimmed);
+            transcript_release = transcript_releases_trimmed[0]
 
-            //removing e and r from release
-            if(transcript_release.startsWith("e") || transcript_release.startsWith("r")){
-            transcript_release = transcript_release.substring(1,3);
-            }else{
+            //console.log(transcript_release);
+
+            if(transcript_release.startsWith("e")){
+            transcript_release = transcript_release.substring(1,4);
+            //console.log(' From e ' + transcript_release);
+            }else if (transcript_release.startsWith("r")){
+            transcript_release = transcript_release.substring(1,4);
+            //console.log('From r ' + transcript_release)
+            }
+            else{
             transcript_release = transcript_release.substring(0,2);
             }
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release];
@@ -42,7 +48,6 @@ function get_query_params(row){
 
 function get_diff_result_summary(payload_data){
 
-       
 		//initialize diff_me
         diff_me_stable_id = payload_data['transcript1_stable_id'];
         diff_me_assembly = payload_data['transcript1_assembly'];
@@ -186,7 +191,7 @@ $(document).ready(function() {
 
 <tr><td>Transcript Location</td><td>Chromosome {{transcript_details.loc_region}}:{{transcript_details.loc_start}}..{{transcript_details.loc_end}} {% if transcript_details.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
 {% with transcript_details.genes.0 as gene %}
-<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} (<strong> {{ gene.name }} </strong>)</td></tr>
+<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} (<strong>  <a href="/web/search/?identifier={{ gene.name }}">{{ gene.name }}</a> </strong>)</td></tr>
 <tr><td>Gene Location</td><td>Chromosome {{gene.loc_region}}:{{gene.loc_start}}..{{gene.loc_end}} {% if gene.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
 {% endwith %}
 
@@ -230,11 +235,21 @@ $(document).ready(function() {
 <td>{{transcript.assembly}}</td>
 {% with transcript_details.transcript_release_set.0 as release_info %}
 <td>{{release_info.source}}</td>
+
 <td>
- {% with transcript.transcript_release_set|format_release_set:"{{release_info.source|lower}}" as release_date %}
- {{ release_date.date_range }}
+ {% if transcript.transcript_release_set|get_values_as_list:"source" == "Ensembl" or transcript.transcript_release_set|get_values_as_list:"source" == "LRG"%}
+ {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
+ {{release_date.max_release_datename_value}}
  {% endwith %}
+ {% else %}
+ {% with transcript.transcript_release_set|format_release_set:"refseq" as release_date %}
+ {{release_date.max_release_datename_value}}
+ {% endwith %}
+ 
+ {% endif %}
 </td>
+
+
  {% endwith %}
 <td>{{transcript.loc_region}}:{{transcript.loc_start}}..{{transcript.loc_end}}</td>
 <td>{{transcript.mane_transcript}}</td>
