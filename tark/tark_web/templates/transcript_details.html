@@ -182,7 +182,23 @@ $(document).ready(function() {
 <div class="row">
 <div class="col-md-12">
 <table class="table table-condensed">
-<tr><td style="border-top: 0px;">StableID.version</td><td style="border-top: 0px;"><strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong></td></tr>
+<tr><td style="border-top: 0px;">StableID.version</td>
+<td style="border-top: 0px;">
+{% with transcript_details.transcript_release_set|get_values_as_list:"source" as tr_source %}
+{% if tr_source == "Ensembl" or tr_source == "LRG"%}
+  {% with transcript_details.transcript_release_set|format_release_set:"ensembl" as release_date %}
+ <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}">
+<strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong>
+ {% endwith %}
+{% else %}
+ <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{transcript_details.stable_id}}">	
+<strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong>
+</a>
+{% endif %}
+{% endwith %}
+</td>
+
+</tr>
 <tr><td>Assembly</td><td>{{transcript_details.assembly}}</td></tr>
 
 {% with transcript_details.transcript_release_set.0 as release_info %}
@@ -228,16 +244,32 @@ $(document).ready(function() {
 </thead>
 <tbody>
 {% for transcript in transcript_history %}
+{% with transcript.transcript_release_set|get_values_as_list:"source" as tr_source %}
 <tr>
 <td class="text-center"><input type="radio" name="transcript1"></td>
 <td class="text-center"><input type="radio" name="transcript2"></td>
-<td>{{ transcript.stable_id }}.{{ transcript.stable_id_version }}</td>
+
+<td>
+ {% if tr_source == "Ensembl" or tr_source == "LRG"%}
+  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
+ <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript.stable_id}}.{{transcript.stable_id_version}}">
+{{ transcript.stable_id }}.{{ transcript.stable_id_version }}
+ {% endwith %}
+{% else %}
+ <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{transcript.stable_id}}">	
+{{ transcript.stable_id }}.{{ transcript.stable_id_version }}
+</a>
+{% endif %}
+
+</td>
+
+
 <td>{{transcript.assembly}}</td>
 {% with transcript_details.transcript_release_set.0 as release_info %}
 <td>{{release_info.source}}</td>
 
 <td>
- {% if transcript.transcript_release_set|get_values_as_list:"source" == "Ensembl" or transcript.transcript_release_set|get_values_as_list:"source" == "LRG"%}
+ {% if tr_source == "Ensembl" or tr_source == "LRG"%}
  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
  {{release_date.max_release_datename_value}}
  {% endwith %}
@@ -257,7 +289,7 @@ $(document).ready(function() {
 
 
 </tr>
-
+ {% endwith %}
 {% endfor %}
 </tbody>
 

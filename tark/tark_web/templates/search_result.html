@@ -106,6 +106,16 @@ $(document).ready(function() {
   
     var search_table = $('#search_result_table').DataTable(
     { 
+      dom: 'lBfrtip',
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "pageLength": 10,
+      "buttons": [ 
+       { extend: 'copy', text: 'COPY', exportOptions: { columns: ':visible', rows: ':visible'}}, 
+       { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+       { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+       { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }}, 
+        'colvis'
+       ],
      "initComplete": function(settings){
   
             /* Apply the tooltips */
@@ -114,14 +124,15 @@ $(document).ready(function() {
                "container": 'body'
             });          
         },
-     "pageLength": 25,
+     
     "order": [[ 10, "desc" ], [ 3, "desc" ], [ 5, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
     	}],
     	"language": {
-        "emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version."
+        "emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version.",
+        "search": "<strong>Filter results:</strong> "
         }
     });
     
@@ -172,7 +183,7 @@ $(document).ready(function() {
 
 	</script>
 
-<div class="container" style="padding-top:20px;">
+<div class="container-fluid" style="padding-top:20px;">
 
 <!-- Info -->
 <div class="panel panel-info ">

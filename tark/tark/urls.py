@@ -19,9 +19,9 @@ from django.urls.conf import include
 from rest_framework_swagger.views import get_swagger_view
 
 from django.conf.urls import url
-from django.conf import settings
 from tark import views
 from django.views.generic.base import TemplateView
+import socket
 
 
 """tark URL Configuration
@@ -52,8 +52,13 @@ tark_apis = [
     ]
 
 
-schema_view = get_swagger_view(title='TaRK REST API Endpoints', patterns=tark_apis)
+schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
 
+
+try:
+    HOSTNAME = socket.gethostname()
+except:
+    HOSTNAME = 'localhost'
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -63,7 +68,7 @@ urlpatterns = [
     url(r'^web/', include('tark_web.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'),
-        {"hostname": "http://prem-ml:9000"}, name="tark_help"),
+        {"hostname": "http://" + HOSTNAME}, name="tark_help"),
     url(r'^privacy_notice_tark', TemplateView.as_view(template_name='privacy_notice_tark.html'),
         name="privacy_notice_tark"),
 

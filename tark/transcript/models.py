@@ -70,7 +70,7 @@ class Transcript(models.Model):
             try:
                 source = transcript.transcript_release_set.all()[:1].get().source.shortname
             except Exception as e:
-                print("Exception from  get_mane_transcript " + e)
+                print("Exception from  get_mane_transcript " + str(e))
 
         if "Ensembl" in source:
             raw_sql = "SELECT \

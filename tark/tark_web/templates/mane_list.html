@@ -40,6 +40,19 @@
       $(document).ready(function() {
       $('[data-toggle="tooltip"]').tooltip(); 
           var table = $('#mane_table').DataTable({
+		       dom: 'lBfrtip',
+		      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+		      "pageLength": 10,
+		      "buttons": [ 
+		       { extend: 'copy', text: 'COPY', exportOptions: { columns: ':visible', rows: ':visible'}}, 
+		       { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+		       { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+		       { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }}, 
+		        'colvis'
+		       ],
+              "language": {
+              "search": "<strong>Filter results:</strong> "
+               },
               "pageLength": 25,
               "order": [[ 3, "asc" ]],
               "processing": true,
