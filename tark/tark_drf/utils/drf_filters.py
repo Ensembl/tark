@@ -17,6 +17,7 @@
 
 from rest_framework.filters import BaseFilterBackend
 from tark_web.utils.sequtils import TarkSeqUtils
+from transcript.utils.search_utils import SearchUtils
 
 
 class CommonFilterBackend(BaseFilterBackend):
@@ -66,7 +67,7 @@ class CommonFilterBackend(BaseFilterBackend):
         loc_string = request.query_params.get('location', None)
 
         # 5: 62797383-63627669
-        (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(loc_string)
+        (loc_region, loc_start, loc_end) = SearchUtils.parse_location_string(loc_string)
 
         # loc_region = request.query_params.get('loc_region', None)
         if loc_region is not None:

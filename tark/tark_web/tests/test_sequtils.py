@@ -22,6 +22,7 @@ import os
 
 class SeqUtilsTest(TestCase):
 
+# ./manage.py test tark_web.tests.test_sequtils --settings=tark.settings.test
     def test_format_fasta(self):
         sequence = "GATTGCGCCACTGCACTCCAGCCTGGGCGTGCAGATCAGAGCGAGACCTTGTCTCTAAAGGAAAAAAAAAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAACCTAGCGAGGTAGATAATTTT"  # @IgnorePep8
         formatted_seq = TarkSeqUtils.format_fasta(sequence)
@@ -37,13 +38,3 @@ class SeqUtilsTest(TestCase):
         target_seq = current_dir + "/data/target.fasta"
         align_result = TarkSeqUtils.align_sequences(query_seq, target_seq)
         self.assertIsNotNone(align_result, "Got alignt result")
-#         print("======================ALIGNMENT RESULT=================")
-        print(align_result)
-#         print("======================ALIGNMENT RESULT=================")
-
-    def test_parse_location_string(self):
-        loc_string = "5: 62797383 - 63627669 "
-        (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(loc_string)
-        self.assertEqual(loc_region, "5", "Loc region is ok")
-        self.assertEqual(loc_start, "62797383", "Loc start is ok")
-        self.assertEqual(loc_end, "63627669", "Loc end is ok")

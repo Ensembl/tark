@@ -93,7 +93,8 @@ def get_values_as_list(search_result, search_attr):
             else:
                 search_list.add(str(result['stable_id']) + "." + str(result['stable_id_version']))
         else:
-            search_list.add(str(result[search_attr]))
+            if result[search_attr] is not None:
+                search_list.add(str(result[search_attr]))
 
     search_string_list = ",\n".join(search_list)
 

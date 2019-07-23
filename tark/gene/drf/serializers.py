@@ -35,7 +35,7 @@ class HgncNameField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
             return value.name
-        return None
+        return ""
 
 
 class GeneSerializer(SerializerMixin, serializers.ModelSerializer):

@@ -23,6 +23,7 @@ from release.utils.release_utils import ReleaseUtils
 from tark_web.utils.sequtils import TarkSeqUtils
 
 import logging
+from transcript.utils.search_utils import SearchUtils
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -118,31 +119,42 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
 
-        # to support version search
+        identifier_type = SearchUtils.get_identifier_type(identifier)
+
         identifier_version = None
-        if '.' in identifier:
+        if '.' in identifier and identifier_type != SearchUtils.HGVS_GENOMIC_REF:
             (identifier, identifier_version) = identifier.split('.')
 
         if identifier is not None:
-            if "ENST" in identifier or "LRG" in identifier or "_" in identifier:
+            if identifier_type == SearchUtils.ENSEMBL_TRANSCRIPT or identifier_type == SearchUtils.REFSEQ_TRANSCRIPT:
                 queryset = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
-                    queryset.filter(stable_id_version=identifier_version)
-            elif "ENSG" in identifier:
+                    queryset = queryset.filter(stable_id_version=identifier_version)
+            elif identifier_type == SearchUtils.ENSEMBL_GENE:
                 queryset = queryset.filter(genes__stable_id=identifier)
                 if identifier_version is not None:
-                    queryset.filter(stable_id_version=identifier_version)
-            elif ":" in identifier and "-" in identifier:
-                (loc_region, loc_start, loc_end) = TarkSeqUtils.parse_location_string(identifier)
-                if loc_region is not None:
-                    queryset = queryset.filter(loc_region=loc_region)
+                    queryset = queryset.filter(stable_id_version=identifier_version)
+            elif identifier_type == SearchUtils.GENOMIC_LOCATION:
+                (loc_region_, loc_start_, loc_end_) = SearchUtils.parse_location_string(identifier)
 
-                if loc_start is not None:
-                    queryset = queryset.filter(loc_start__lte=loc_start).filter(loc_end__gte=loc_start)
+                if loc_region_ is not None:
+                    queryset = queryset.filter(loc_region=loc_region_)
 
-                if loc_end is not None:
-                    queryset = queryset.filter(loc_start__lte=loc_end).filter(loc_end__gte=loc_end)
-            else:
+                if loc_start_ is not None and loc_end_ is not None:
+                    queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
+                               queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
+                               queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
+            elif identifier_type == SearchUtils.HGVS_GENOMIC_REF:
+                (loc_region_, loc_start_, loc_end_, assembly_) = SearchUtils.parse_hgvs_genomic_location_string(identifier)  # @IgnorePep8
+                if loc_region_ is not None and assembly_:
+                    queryset = queryset.filter(assembly__assembly_name__icontains=assembly_).filter(loc_region=loc_region_)  # @IgnorePep8
+
+                if loc_start_ is not None and loc_end_ is not None:
+                    queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
+                               queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
+                               queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
+
+            elif identifier_type == SearchUtils.HGNC_SYMBOL:
                 queryset = queryset.filter(genes__name__name__exact=identifier)
 
         return queryset.distinct()

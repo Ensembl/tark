@@ -274,14 +274,5 @@ class TarkSeqUtils(object):
             return output
 
     @classmethod
-    def parse_location_string(cls, loc_string):
-        loc_string = loc_string.replace(" ", "")
-        matchloc = re.search(r'(\w+):(\d+)-(\d+)', loc_string)
-        loc_region = matchloc.group(1)
-        loc_start = matchloc.group(2)
-        loc_end = matchloc.group(3)
-        return (loc_region, loc_start, loc_end)
-
-    @classmethod
     def difference_transcript_set(cls, release1, release2):
         pass
