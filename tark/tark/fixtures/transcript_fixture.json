@@ -1,0 +1,63 @@
+[
+{
+    "model": "session.session",
+    "pk": 1,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "genome.genome",
+    "pk": 1,
+    "fields": {
+        "name": "homo_sapiens",
+        "tax_id": 9606,
+        "session": 1
+    }
+},
+{
+    "model": "assembly.assembly",
+    "pk": 1001,
+    "fields": {
+        "genome": 1,
+        "assembly_name": "GRCh38",
+        "session": 1
+    }
+},
+{"model": "transcript.transcript", 
+"pk": 4606534, 
+"fields": {
+	"stable_id": "ENST00000293217",
+	"stable_id_version": 10,
+	"assembly": 1001,
+	"loc_start": 75941507,
+	"loc_end": 75979166,
+	"loc_strand": -1,
+	"loc_region": "17",
+	"loc_checksum": "3955565B2EAA237D3D9C3A5DD42F76C1F427699E",
+	"exon_set_checksum": "3544A9D62C65B3E08F9681E9D57582249B8DB38A",
+	"transcript_checksum": "DC9C23CA5EBE25EBADB7B2795D8078467BA0DB36",
+	"sequence": "4D4D31564C94294958B5803295CE321E19B30EF0",
+	"session": 21224
+	}
+	}, 
+{"model": "transcript.transcript",
+"pk": 5027388,
+"fields": {
+	"stable_id": "NM_004035",
+	"stable_id_version": 7,
+	"assembly": 1001,
+	"loc_start": 75941507,
+	"loc_end": 75979166,
+	"loc_strand": -1,
+	"loc_region": "17", 
+	"loc_checksum": "3955565B2EAA237D3D9C3A5DD42F76C1F427699E",
+	"exon_set_checksum": "FA78309CFDFCC9DE7D36C619D49BB9204165CD23",
+	"transcript_checksum": "544E31E20885F9B56F6FBF827C0FFDF98AA43C2A",
+	"sequence": "4D4D31564C94294958B5803295CE321E19B30EF0",
+	"session": 22009}},
+	
+	
+]

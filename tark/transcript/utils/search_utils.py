@@ -30,7 +30,7 @@ class SearchUtils(object):
     HGVS_GENOMIC_REF = "HGVS_GENOMIC_REF"
 
     HGNC_SYMBOL = "HGNC_SYMBOL"
-    
+
     GENOMIC_LOCATION = "GENOMIC_LOCATION"
 
     @classmethod

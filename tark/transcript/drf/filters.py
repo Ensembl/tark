@@ -126,7 +126,9 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
             (identifier, identifier_version) = identifier.split('.')
 
         if identifier is not None:
-            if identifier_type == SearchUtils.ENSEMBL_TRANSCRIPT or identifier_type == SearchUtils.REFSEQ_TRANSCRIPT:
+            if identifier_type == SearchUtils.ENSEMBL_TRANSCRIPT or \
+                                    identifier_type == SearchUtils.REFSEQ_TRANSCRIPT or \
+                                    identifier_type == SearchUtils.LRG_TRANSCRIPT:
                 queryset = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
                     queryset = queryset.filter(stable_id_version=identifier_version)
@@ -154,6 +156,8 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                                queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
                                queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
 
+            elif identifier_type == SearchUtils.LRG_GENE:
+                queryset = queryset.filter(genes__stable_id__exact=identifier)
             elif identifier_type == SearchUtils.HGNC_SYMBOL:
                 queryset = queryset.filter(genes__name__name__exact=identifier)
 
