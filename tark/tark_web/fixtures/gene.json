@@ -76,7 +76,7 @@
         "loc_strand": -1,
         "loc_region": "4",
         "loc_checksum": null,
-        "hgnc": 6872,
+        "name": 6872,
         "gene_checksum": null,
         "session": 6
     }
@@ -93,7 +93,7 @@
         "loc_strand": -1,
         "loc_region": "4",
         "loc_checksum": null,
-        "hgnc": 6872,
+        "name": 6872,
         "gene_checksum": null,
         "session": 3
     }
@@ -110,7 +110,7 @@
         "loc_strand": -1,
         "loc_region": "4",
         "loc_checksum": null,
-        "hgnc": 6872,
+        "name": 6872,
         "gene_checksum": null,
         "session": 1
     }

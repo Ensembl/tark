@@ -1,4 +1,32 @@
 [
+
+{
+    "model": "session.session",
+    "pk": 1,
+    "fields": {
+        "client_id": "Test client",
+        "start_date": null,
+        "status": "2"
+    }
+},
+{
+    "model": "genome.genome",
+    "pk": 1,
+    "fields": {
+        "name": "homo_sapiens",
+        "tax_id": 9606,
+        "session": 1
+    }
+},
+{
+    "model": "assembly.assembly",
+    "pk": 1,
+    "fields": {
+        "genome": 1,
+        "assembly_name": "GRCh38",
+        "session": 1
+    }
+},
 {
     "model": "transcript.transcript",
     "pk": 1,
@@ -13,7 +41,7 @@
         "loc_checksum": "1",
         "exon_set_checksum": "1",
         "transcript_checksum": "1",
-        "sequence": "1",
+        "sequence": null,
         "session": 1
     }
 },
@@ -31,7 +59,7 @@
         "loc_checksum": "2",
         "exon_set_checksum": "2",
         "transcript_checksum": "2",
-        "sequence": "2",
+        "sequence": null,
         "session": 1
     }
 },
@@ -49,7 +77,7 @@
         "loc_checksum": "3",
         "exon_set_checksum": "3",
         "transcript_checksum": "3",
-        "sequence": "3",
+        "sequence": null,
         "session": 1
     }
 },
@@ -67,7 +95,7 @@
         "loc_checksum": "4",
         "exon_set_checksum": "4",
         "transcript_checksum": "4",
-        "sequence": "4",
+        "sequence": null,
         "session": 1
     }
 },
@@ -85,8 +113,41 @@
         "loc_checksum": "5",
         "exon_set_checksum": "5",
         "transcript_checksum": "5",
-        "sequence": "5",
+        "sequence":null,
         "session": 1
     }
-}
+},
+
+{"model": "transcript.transcript", 
+"pk": 4606534, 
+"fields": {
+	"stable_id": "ENST00000293217",
+	"stable_id_version": 10,
+	"assembly": 1,
+	"loc_start": 75941507,
+	"loc_end": 75979166,
+	"loc_strand": -1,
+	"loc_region": "17",
+	"loc_checksum": "6",
+	"exon_set_checksum": "8",
+	"transcript_checksum": "6",
+	"sequence": null,
+	"session": 1
+	}
+	}, 
+{"model": "transcript.transcript",
+"pk": 5027388,
+"fields": {
+	"stable_id": "NM_004035",
+	"stable_id_version": 7,
+	"assembly": 1,
+	"loc_start": 75941507,
+	"loc_end": 75979166,
+	"loc_strand": -1,
+	"loc_region": "17", 
+	"loc_checksum": "7",
+	"exon_set_checksum": "9",
+	"transcript_checksum": "7",
+	"sequence": null,
+	"session": 1}}
 ]
