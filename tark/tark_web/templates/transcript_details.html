@@ -207,7 +207,11 @@ $(document).ready(function() {
 
 <tr><td>Transcript Location</td><td>Chromosome {{transcript_details.loc_region}}:{{transcript_details.loc_start}}..{{transcript_details.loc_end}} {% if transcript_details.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
 {% with transcript_details.genes.0 as gene %}
-<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} (<strong>  <a href="/web/search/?identifier={{ gene.name }}">{{ gene.name }}</a> </strong>)</td></tr>
+<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} 
+{% if gene.name %}
+(<strong>  <a href="/web/search/?identifier={{ gene.name }}">{{ gene.name }}</a> </strong>)
+{% endif %}
+</td></tr>
 <tr><td>Gene Location</td><td>Chromosome {{gene.loc_region}}:{{gene.loc_start}}..{{gene.loc_end}} {% if gene.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
 {% endwith %}
 
