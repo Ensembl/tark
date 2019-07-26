@@ -28,13 +28,3 @@ class SeqUtilsTest(TestCase):
         formatted_seq = TarkSeqUtils.format_fasta(sequence)
         expected_seq = ">ID_\nGATTGCGCCACTGCACTCCAGCCTGGGCGTGCAGATCAGAGCGAGACCTTGTCTCTAAAG\nGAAAAAAAAAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAACCTAGCGAGGTAGATA\nATTTT\n"  # @IgnorePep8
         self.assertEqual(formatted_seq, expected_seq, "Sequences are equal")
-
-    def test_align_sequences(self):
-        path = os.path.abspath(__file__)
-        current_dir = os.path.dirname(path)
-
-        # print("current dir " + current_dir + "\n")
-        query_seq = current_dir + "/data/query.fasta"
-        target_seq = current_dir + "/data/target.fasta"
-        align_result = TarkSeqUtils.align_sequences(query_seq, target_seq)
-        self.assertIsNotNone(align_result, "Got alignt result")
