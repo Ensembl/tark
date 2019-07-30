@@ -1,5 +1,9 @@
+{% if stable_id and stable_id_version %}
+
 {% if seq_type %}
 <a target="_blank" href={% url 'fetch_cds_sequence' feature_type stable_id stable_id_version release_short_name assembly_name source_name seq_type output_format %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
 {% else %}
 <a target="_blank" href={% url 'fetch_sequence' feature_type stable_id stable_id_version release_short_name assembly_name source_name output_format %} type="button" class="btn btn-warning btn-sm" style="float:right;padding: 5px;font-size: 10px;line-height: 1.0;">FASTA</a>
+{% endif %}
+
 {% endif %}
