@@ -175,7 +175,8 @@ def search_home(request):
 
         search_identifier = request.GET['identifier']
         if search_identifier is not None:
-
+            # replace white space
+            search_identifier = search_identifier.replace(" ", "")
             search_form = SearchForm(request.GET)
             query_url = query_url+search_identifier
             response = requests.get(host_url + query_url)
@@ -200,6 +201,8 @@ def search_home(request):
         if search_form.is_valid():
 
             search_identifier = search_form.cleaned_data['search_identifier']
+            # replace white space
+            search_identifier = search_identifier.replace(" ", "")
             query_url = query_url+search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:

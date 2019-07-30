@@ -122,6 +122,7 @@ class SearchUtils(object):
     @classmethod
     def get_identifier_type(cls, identifier):
 
+        # replace white space
         identifier = identifier.replace(" ", "")
 
         # ensembl transcript
@@ -144,10 +145,11 @@ class SearchUtils(object):
         if re.compile('^LRG_\d+').match(identifier):
             return cls.LRG_GENE
 
-        # hgvs genomic
-        if re.compile(r'NC_\d+\.\d+:g.\d+\w\>\w').match(identifier):
+        # hgvs genomic eg:  NC_000023.11:g.32389644G>A
+        if re.compile(r'NC_\d+\.\d+:g\.\d+\w\>\w').match(identifier):
             return cls.HGVS_GENOMIC_REF
 
+        # genomic location eg:  13:32315474-32400266 )
         if re.compile(r'(\w+):(\d+)-(\d+)').match(identifier):
             return cls.GENOMIC_LOCATION
 

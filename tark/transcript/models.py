@@ -24,6 +24,11 @@ from sequence.models import Sequence
 from gene.models import Gene
 from session.models import Session
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 
 class Transcript(models.Model):
 
@@ -70,7 +75,7 @@ class Transcript(models.Model):
             try:
                 source = transcript.transcript_release_set.all()[:1].get().source.shortname
             except Exception as e:
-                print("Exception from  get_mane_transcript " + str(e))
+                logger.error("Exception from  get_mane_transcript " + str(e))
 
         if "Ensembl" in source:
             raw_sql = "SELECT \
