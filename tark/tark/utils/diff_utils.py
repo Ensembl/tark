@@ -209,10 +209,11 @@ class DiffSet(object):
 
     def has_feature_attribute_changed(self, feature_attribute=None, feature_type=None):
         if feature_type is not None and feature_type in self.first_object and feature_type in self.second_object:
-            if feature_attribute in self.first_object[feature_type] and \
-                    feature_attribute in self.second_object[feature_type]:
-                return not(self.first_object[feature_type][feature_attribute] == self.second_object[
-                                            feature_type][feature_attribute])
+            if self.first_object[feature_type] is not None and self.second_object[feature_type] is not None:
+                if feature_attribute in self.first_object[feature_type] and \
+                        feature_attribute in self.second_object[feature_type]:
+                    return not(self.first_object[feature_type][feature_attribute] == self.second_object[
+                                                feature_type][feature_attribute])
         else:
             if feature_attribute in self.first_object and feature_attribute in self.second_object:
                 return not(self.first_object[feature_attribute] == self.second_object[feature_attribute])
