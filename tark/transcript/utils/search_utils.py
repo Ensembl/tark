@@ -29,6 +29,8 @@ class SearchUtils(object):
 
     HGVS_GENOMIC_REF = "HGVS_GENOMIC_REF"
 
+    HGVS_REFSEQ_REF = "HGVS_REFSEQ_REF"
+
     HGNC_SYMBOL = "HGNC_SYMBOL"
 
     GENOMIC_LOCATION = "GENOMIC_LOCATION"
@@ -109,15 +111,19 @@ class SearchUtils(object):
         return (loc_region, loc_start, loc_end)
 
     @classmethod
-    def parse_hgvs_genomic_location_string(cls, loc_string):
-        loc_string = loc_string.replace(" ", "")
-        loc_string = loc_string.replace(",", "")
-        matchloc = re.search(r'(NC_\d+\.\d+):g.(\d+)(\w\>\w)', loc_string)
+    def parse_hgvs_genomic_location_string(cls, hgvs_string):
+        matchloc = re.search(r'(NC_\d+\.\d+):g\.(\d+)(\w\>\w)', hgvs_string)
         refseq_accession = matchloc.group(1)
         (loc_region, loc_assemby) = cls.get_seq_region_from_refseq_accession(refseq_accession)
         loc_start = matchloc.group(2)
         loc_end = loc_start
         return (loc_region, loc_start, loc_end, loc_assemby)
+
+    @classmethod
+    def parse_hgvs_refseq_string(cls, hgvs_string):
+        matchloc = re.search(r'(NM_\d+\.\d+):c\.(\d+)(\w\>\w)', hgvs_string)
+        refseq_accession = matchloc.group(1)
+        return (refseq_accession)
 
     @classmethod
     def get_identifier_type(cls, identifier):
@@ -133,6 +139,14 @@ class SearchUtils(object):
         if re.compile('^ENSG\d+').match(identifier):
             return cls.ENSEMBL_GENE
 
+        # hgvs genomic eg:  NC_000023.11:g.32389644G>A
+        if re.compile(r'NC_\d+\.\d+:g\.\d+\w\>\w').match(identifier):
+            return cls.HGVS_GENOMIC_REF
+
+        # hgvs refesq eg:  NM_004006.2:c.4375C>T
+        if re.compile(r'NM_\d+\.\d+:c\.\d+\w\>\w').match(identifier):
+            return cls.HGVS_REFSEQ_REF
+
         # refseq trasncript
         if re.compile('(^NM_|NR_|XM_|XR_).*').match(identifier):
             return cls.REFSEQ_TRANSCRIPT
@@ -144,10 +158,6 @@ class SearchUtils(object):
         # lrg gene
         if re.compile('^LRG_\d+').match(identifier):
             return cls.LRG_GENE
-
-        # hgvs genomic eg:  NC_000023.11:g.32389644G>A
-        if re.compile(r'NC_\d+\.\d+:g\.\d+\w\>\w').match(identifier):
-            return cls.HGVS_GENOMIC_REF
 
         # genomic location eg:  13:32315474-32400266 )
         if re.compile(r'(\w+):(\d+)-(\d+)').match(identifier):
