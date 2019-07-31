@@ -118,11 +118,14 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     """
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
+        # replace space and comma
+        identifier = identifier.replace(" ", "")
+        identifier = identifier.replace(",", "")
 
         identifier_type = SearchUtils.get_identifier_type(identifier)
 
         identifier_version = None
-        if '.' in identifier and identifier_type != SearchUtils.HGVS_GENOMIC_REF:
+        if '.' in identifier and identifier_type != SearchUtils.HGVS_GENOMIC_REF and identifier_type != SearchUtils.HGVS_REFSEQ_REF:  # @IgnorePep8
             (identifier, identifier_version) = identifier.split('.')
 
         if identifier is not None:
@@ -155,7 +158,12 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                     queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
                                queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
                                queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
-
+            elif identifier_type == SearchUtils.HGVS_REFSEQ_REF:
+                (refseq_identifier) = SearchUtils.parse_hgvs_refseq_string(identifier)  # @IgnorePep8
+                (identifier, identifier_version) = refseq_identifier.split('.')
+                queryset = queryset.filter(stable_id=identifier)
+                if identifier_version is not None:
+                    queryset = queryset.filter(stable_id_version=identifier_version)
             elif identifier_type == SearchUtils.LRG_GENE:
                 queryset = queryset.filter(genes__stable_id__exact=identifier)
             elif identifier_type == SearchUtils.HGNC_SYMBOL:
