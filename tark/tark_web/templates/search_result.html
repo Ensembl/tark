@@ -74,7 +74,9 @@ function get_diff_result_summary(payload_data){
         get_url = get_url + "&render_as_string=True";
         var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;">' + 
         				 '<strong>TRANSCRIPT COMPARISON SUMMARY REPORT</strong>' +
-         				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button></div>';
+         				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button>' + 
+         				'<button type="submit" id="print_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-print"></span> Print</button></div>';
+         				
         $.get(get_url, function(diff_data, status){
     		gene_table = diff_data["gene"];
     		transcript_table = diff_data["transcript"];
@@ -100,6 +102,17 @@ function get_payload_data(row, transcript){
       		console.log("===end get_payload_data ==");
       		
 			return payload_data;
+}
+
+function printData()
+{
+   console.log("print data called");
+   $('#summary_diff_qs1_qs2').printThis({
+  	importCSS: false,
+  	importStyle: true,
+  	removeScripts: true
+
+});
 }
 
 $(document).ready(function() {
@@ -177,7 +190,13 @@ $(document).ready(function() {
  	$("#summary_diff_qs1_qs2").on("click", "#close_diff_report", function () {
        $("#summary_diff_qs1_qs2").empty();
      });
-         
+    
+    //
+    $("#summary_diff_qs1_qs2").on("click", "#print_diff_report", function () {
+	printData();
+	 });
+    
+    
     
    });
 
@@ -287,7 +306,7 @@ $(document).ready(function() {
           <p>Please select two transcripts to compare.</p>
         </div>
          <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
