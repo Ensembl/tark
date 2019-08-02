@@ -20,7 +20,7 @@ before_script:
   - touch logs/tark.log
 
 script: 
-  - coverage run --source=. tark/manage.py test tark.tests tark_web.tests transcript.tests release.tests --settings=tark.settings.test
+  - coverage run --source=. tark/manage.py test assembly.tests tark.tests tark_web.tests transcript.tests release.tests --settings=tark.settings.test
 
 # send coverage report to coveralls
 after_success:
