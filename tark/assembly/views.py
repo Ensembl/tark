@@ -26,7 +26,7 @@ from tark.utils.schema_utils import SchemaUtils
 
 
 class AssemblyList(generics.ListAPIView):
-    queryset = Assembly.objects.all()
+    queryset = Assembly.objects.all().order_by('-assembly_name')
     serializer_class = AssemblySerializer
     filter_backends = (AssemblyExpandFilterBackend, AssemblyFilterBackend,)
 
