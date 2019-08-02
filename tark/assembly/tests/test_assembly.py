@@ -25,11 +25,10 @@ import json
 
 class AssemblyTest(APITestCase):
     fixtures = ['assembly']
-    # multi_db = True
 
     def test_assembly(self):
         """
-        Ensure we get all the fields we need
+        Test the list endpoint and filters
         """
         url = reverse('assembly_list')
         data = {}
