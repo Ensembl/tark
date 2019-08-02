@@ -46,18 +46,3 @@ class AssemblyFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return [assembly_name_field]
-
-
-class AssemblySequenceFilterBackend(BaseFilterBackend):
-    """
-    Filter to filter by assembly_name
-    """
-    def filter_queryset(self, request, queryset, view):
-
-        assembly_name = request.query_params.get('assembly_name', None)
-        if assembly_name is not None:
-            queryset = queryset.filter(assembly__assembly_name__icontains=assembly_name)
-        return queryset
-
-    def get_schema_fields(self, view):
-        return [assembly_name_field]
