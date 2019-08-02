@@ -173,6 +173,21 @@
 	"fields": {"shortname": "110", "description": "Refseq Homo sapiens Annotation Release 110", 
 	"assembly": 1, "release_date": "2019-06-17", "session": 1, "release_checksum": "DFD23", "source": 2
 	}},
+{ "model": "release.releasesource",
+    "pk": 1,
+    "fields": {
+        "shortname": "Ensembl",
+        "description": "Ensembl data imports from Human Core DBs"
+    }
+},
+{
+    "model": "release.releasesource",
+    "pk": 2,
+    "fields": {
+        "shortname": "RefSeq",
+        "description": "RefSeq data imports from Human otherfeatures DBs"
+    }
+},
 {"model": "transcript.transcriptgene", "pk": 4606533, "fields": {"gene": 1367893, "transcript": 4606534, "session": 1}},
 {"model": "gene.gene", "pk": 1367893,
 "fields": {"stable_id": "ENSG00000161533", "stable_id_version": 12, 
