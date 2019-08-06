@@ -62,32 +62,7 @@ class ExonUtils(object):
 
             compare_results.append((cur_exon, matched_exons))
 
-
         compare_results.insert(0, ("cumulative_overlap_score", cumulative_overlap_score))
-        return compare_results
-
-    @classmethod
-    def compare_exon_sets(cls, exonset1, exonset2):
-
-        compare_results = []
-
-        for exon1 in exonset1:
-            match_exists = False
-            for exon2 in exonset2:
-                if exon1['loc_checksum'] == exon2['loc_checksum'] and exon1['seq_checksum'] == exon2['seq_checksum']:
-                    compare_results.append([exon1['exon_order'], exon2['exon_order']])
-                    match_exists = True
-                    break
-
-            if not match_exists:
-                compare_results.append([exon1['exon_order'], 0])
-
-        if(len(exonset2) > len(exonset1)):
-            index = 0
-            for exon2 in exonset2:
-                if index >= len(exonset1):
-                    compare_results.append([0, exon2['exon_order']])
-                index = index + 1
         return compare_results
 
     @classmethod
