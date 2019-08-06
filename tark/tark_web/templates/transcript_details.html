@@ -185,10 +185,17 @@ $(document).ready(function() {
 <tr><td style="border-top: 0px;">StableID.version</td>
 <td style="border-top: 0px;">
 {% with transcript_details.transcript_release_set|get_values_as_list:"source" as tr_source %}
-{% if tr_source == "Ensembl" or tr_source == "LRG"%}
+{% if tr_source == "Ensembl" %}
   {% with transcript_details.transcript_release_set|format_release_set:"ensembl" as release_date %}
  <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}">
 <strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong>
+</a>
+ {% endwith %}
+ {% elif "LRG" in tr_source %}
+ {% with transcript_details.genes.0 as gene %}
+ <a target="_blank" href="http://ftp.ebi.ac.uk/pub/databases/lrgex/{{gene.stable_id}}.xml"> 
+ <strong>{{transcript_details.stable_id}}</strong>
+ </a>
  {% endwith %}
 {% else %}
  <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{transcript_details.stable_id}}">	
@@ -207,7 +214,16 @@ $(document).ready(function() {
 
 <tr><td>Transcript Location</td><td>Chromosome {{transcript_details.loc_region}}:{{transcript_details.loc_start}}..{{transcript_details.loc_end}} {% if transcript_details.loc_strand == 1 %} Forward {% else %} Reverse {% endif %} strand </td></tr>
 {% with transcript_details.genes.0 as gene %}
-<tr><td>Gene</td><td>{{gene.stable_id}}.{{gene.stable_id_version}} 
+<tr><td>Gene</td>
+<td>
+{% if "LRG" in gene.stable_id %}
+<a target="_blank" href="http://ftp.ebi.ac.uk/pub/databases/lrgex/{{gene.stable_id}}.xml"> 
+ <strong>{{ gene.stable_id }}</strong>
+ </a>
+
+{% else %}
+{{ gene.stable_id }}.{{gene.stable_id_version}}
+{% endif %}
 {% if gene.name %}
 (<strong>  <a href="/web/search/?identifier={{ gene.name }}">{{ gene.name }}</a> </strong>)
 {% endif %}
@@ -254,11 +270,19 @@ $(document).ready(function() {
 <td class="text-center"><input type="radio" name="transcript2"></td>
 
 <td>
- {% if tr_source == "Ensembl" or tr_source == "LRG"%}
+ {% if tr_source == "Ensembl"%}
   {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
  <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript.stable_id}}.{{transcript.stable_id_version}}">
 {{ transcript.stable_id }}.{{ transcript.stable_id_version }}
  {% endwith %}
+ {% elif "LRG" in tr_source %}
+ 
+ {% with transcript_details.genes.0 as gene %}
+ <a target="_blank" href="http://ftp.ebi.ac.uk/pub/databases/lrgex/{{gene.stable_id}}.xml"> 
+ <strong>{{transcript.stable_id}}</strong>
+ </a>
+ {% endwith %}
+ 
 {% else %}
  <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{transcript.stable_id}}">	
 {{ transcript.stable_id }}.{{ transcript.stable_id_version }}
@@ -273,12 +297,12 @@ $(document).ready(function() {
 <td>{{release_info.source}}</td>
 
 <td>
- {% if tr_source == "Ensembl" or tr_source == "LRG"%}
+ {% if tr_source == "Ensembl"%}
  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
  {{release_date.max_release_datename_value}}
  {% endwith %}
- {% else %}
- {% with transcript.transcript_release_set|format_release_set:"refseq" as release_date %}
+  {% else %}
+  {% with transcript.transcript_release_set|format_release_set:"refseq" as release_date %}
  {{release_date.max_release_datename_value}}
  {% endwith %}
  
