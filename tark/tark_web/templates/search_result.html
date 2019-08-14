@@ -55,8 +55,8 @@ function get_multi_diff_result_summary(multi_payload_data){
 		
 		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
 		
-		var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-left" style="padding:5px;background-color: #6a89cc !important;">' + 
-        				 '<strong>TRANSCRIPT COMPARISON INPUT QUERY</strong>' + '</div>';
+		var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-left" style="padding:5px;background-color: #e67e22 !important;">' + 
+        				 '<strong>SELECTED TRANSCRIPTS</strong>' + '</div>';
         				 
         var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
         
@@ -70,7 +70,7 @@ function get_multi_diff_result_summary(multi_payload_data){
   			console.log(payload_data_tr);
   			key_t2 = "T2." + parseInt(index+1); 
   		table_div += "<tr><td>" + key_t2 + "</td><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
-  		table_div += "<td><button type='submit' id='search_diff_transcript' class='btn btn-info btn-sm' style='font-size: 10px;'>Compare with T1</button></td>";
+  		table_div += "<td><button type='submit' id='dummy_button' class='btn btn-info btn-sm' style='padding: 5px;font-size: 10px;line-height: 0.6;'><strong>Compare with T1</strong></button></td>";
   		table_div += "</tr>";
           
 		});
@@ -101,12 +101,15 @@ function get_multi_diff_result_summary(multi_payload_data){
 		console.log(all_trancripts_details);
 		console.log("***** all_trancripts_details ****");
 		get_multi_transcript_table(all_trancripts_details);
+		get_multi_gene_table(all_trancripts_details);
+		get_multi_translation_table(all_trancripts_details);
 }
 
+//get multi transcript table
 function get_multi_transcript_table(all_trancripts_details){
 
-    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-left" style="padding:5px;background-color: #82ccdd !important;">' + 
-        				 '<strong>TRANSCRIPT COMPARISON DETAILS</strong>' + '</div>';
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-left" style="padding:5px;background-color: #4b6584;color:#ffffff" !important;">' + 
+        				 '<strong>TRANSCRIPT DETAILS</strong>' + '</div>';
         				 
         var table_div = "<table id='multi_tr_details' class='table table-bordered table-striped table-condensed'>";
         
@@ -119,16 +122,79 @@ function get_multi_transcript_table(all_trancripts_details){
    			var key = "T1";
    			table_div += "<tr style='background-color:#f8c291'><td>T1</td>";
   			}else{
-  			table_div += "<tr><td>T2." + parseInt(index+1) + "</td>";
+  			table_div += "<tr><td>T2." + parseInt(index) + "</td>";
   			}
     		table_div += "<td>" + current_transcript['loc_region'] + " : " + current_transcript['loc_start']  + ' - ' + current_transcript['loc_end'] + "</td><td>" + current_transcript['exons'].length + "</td></tr>";
           
 		});
 		
 		 table_div += "</table>";
-		$('#multi_summary_diff_details').html(header_div + table_div);
-		
+		$('#multi_summary_diff_transcript_details').html(header_div + table_div);
+}
 
+//get multi gene table
+function get_multi_gene_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-left" style="padding:5px;background-color: #303952;color:#ffffff !important;">' + 
+        				 '<strong>GENE DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_gene_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>Key</th><th>StableID</th><th>Location</th><th>Symbol</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+			console.log("========= current_gene =======");
+  			
+  			if (index == 0){
+   			var key = "T1";
+   			table_div += "<tr style='background-color:#f8c291'><td>T1</td>";
+  			}else{
+  			table_div += "<tr><td>T2." + parseInt(index) + "</td>";
+  			}
+  			current_gene = current_transcript['genes'][0];
+  			console.log(current_gene);
+  			table_div += "<td>" + current_gene['stable_id']  + '.' +  current_gene['stable_id_version']  + "</td>";
+    		table_div += "<td>" + current_gene['loc_region'] + " : " + current_gene['loc_start']  + ' - ' + current_gene['loc_end'] + "</td><td>" +current_gene['name'] + "</td></tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_gene_details').html(header_div + table_div);
+}
+
+
+//get multi translation table
+function get_multi_translation_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-left" style="padding:5px;background-color: #60a3bc;color:#ffffff !important;">' + 
+        				 '<strong>Translation DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_gene_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>Key</th><th>StableID</th><th>Location</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+			console.log("========= current_gene =======");
+  			
+  			if (index == 0){
+   			var key = "T1";
+   			table_div += "<tr style='background-color:#f8c291'><td>T1</td>";
+  			}else{
+  			table_div += "<tr><td>T2." + parseInt(index) + "</td>";
+  			}
+  			current_translations = current_transcript['translations'];
+  			if(current_translations.length > 0){
+  			current_translation = current_translations[0];
+  			console.log(current_translation);
+  			table_div += "<td>" + current_translation['stable_id']  + '.' +  current_translation['stable_id_version']  + "</td>";
+    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] + "</td></tr>";
+            }else{
+            table_div += "<td colspan='2'>No translations for this transcript</td>";
+            }
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_translation_details').html(header_div + table_div);
 }
 
 function get_tr_details(stable_id, stable_id_version, release,assembly, source ){
@@ -481,8 +547,10 @@ $(document).ready(function() {
  <!--summary-->
  <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
  <div class="row">
-  <div id="multi_summary_diff_query" class="col-md-4">  </div>
- <div id="multi_summary_diff_details" class="col-md-8"> </div>
+  <div id="multi_summary_diff_query" class="col-md-3">  </div>
+  <div id="multi_summary_diff_transcript_details" class="col-md-2"> </div>
+  <div id="multi_summary_diff_gene_details" class="col-md-3"> </div>
+  <div id="multi_summary_diff_translation_details" class="col-md-4"> </div>
  </div>
  <div id="summary_diff_qs1_qs2">  </div>
  
