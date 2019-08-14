@@ -3,6 +3,9 @@
 {% load staticfiles %}
 {% load add_class %}
 {% load search_result_formatter %}
+{% load compare_features %}
+{% load sequence_format %}
+
 
 {% block content %}
 
@@ -44,9 +47,133 @@ function get_query_params(row){
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release];
 }
 
+//for multi transcript comparison
+function get_multi_diff_result_summary(multi_payload_data){
+		console.log("=========multi diff summary called =======");
+		console.log(multi_payload_data);
+		payload_data_tr1 = multi_payload_data['payload_data_tr1'];
+		
+		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
+		
+		var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-left" style="padding:5px;background-color: #6a89cc !important;">' + 
+        				 '<strong>TRANSCRIPT COMPARISON INPUT QUERY</strong>' + '</div>';
+        				 
+        var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>Key</th><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Compare</th></tr>";
+        table_div += "<tr style='background-color:#f8c291'><td>T1</td><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        
+        table_div += "<td></td></tr>";
+       
+		$.each(payload_data_tr2_list, function( index, payload_data_tr ) {
+			console.log("========= payload_data_tr =======");
+  			console.log(payload_data_tr);
+  			key_t2 = "T2." + parseInt(index+1); 
+  		table_div += "<tr><td>" + key_t2 + "</td><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
+  		table_div += "<td><button type='submit' id='search_diff_transcript' class='btn btn-info btn-sm' style='font-size: 10px;'>Compare with T1</button></td>";
+  		table_div += "</tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_query').html(header_div + table_div);
+		
+		
+		all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
+		
+		
+	  //get details for the first transcript
+	  var stable_id = payload_data_tr1['transcript1_stable_id'];
+      var stable_id_version = 1;
+      if (stable_id.includes('.')){
+      	var stable_id_split = stable_id.split(".");
+      	stable_id = stable_id_split[0];
+      	stable_id_version = stable_id_split[1];
+      }
+      
+      var assembly = payload_data_tr1['transcript1_assembly'];
+      var source = payload_data_tr1['transcript1_source'];
+      var release = payload_data_tr1['transcript1_release'];
+		
+		tr1_result = get_tr_details(stable_id, stable_id_version, release,assembly, source );
+		all_trancripts_details.unshift(tr1_result);
+		console.log("===== all_trancripts_details ====");
+		console.log(all_trancripts_details);
+		console.log("***** all_trancripts_details ****");
+		get_multi_transcript_table(all_trancripts_details);
+}
+
+function get_multi_transcript_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-left" style="padding:5px;background-color: #82ccdd !important;">' + 
+        				 '<strong>TRANSCRIPT COMPARISON DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_tr_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>Key</th><th>Location</th><th>Exons</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+			console.log("========= current_transcript =======");
+  			console.log(current_transcript);
+  			if (index == 0){
+   			var key = "T1";
+   			table_div += "<tr style='background-color:#f8c291'><td>T1</td>";
+  			}else{
+  			table_div += "<tr><td>T2." + parseInt(index+1) + "</td>";
+  			}
+    		table_div += "<td>" + current_transcript['loc_region'] + " : " + current_transcript['loc_start']  + ' - ' + current_transcript['loc_end'] + "</td><td>" + current_transcript['exons'].length + "</td></tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_details').html(header_div + table_div);
+		
+
+}
+
+function get_tr_details(stable_id, stable_id_version, release,assembly, source ){
+      tr_results = {};
+      tr_url = "/api/transcript/?stable_id=" + stable_id + "&stable_id_version=" + stable_id_version + "&release_short_name=" + release + "&assembly_name=" + assembly + "&source_name=" + source + "&expand_all=true";
+      $.ajax({
+      	url: tr_url, 
+        type: 'GET',
+        async: false,
+		success: function(data) {
+		console.log("====================data success===========");
+		console.log(data);
+		tr_results =  data['results'][0];
+		},
+		error: function() {
+		console.log("Error from get_all_transcript_details");
+		}
+    });
+     return tr_results;
+}
+
+//details of all the transcripts
+function get_all_transcript_details(payload_data_tr2_list){
+    var transcript_container = [];
+   
+    $.each(payload_data_tr2_list, function( index, payload_data_tr ) {
+      var stable_id = payload_data_tr['transcript2_stable_id'];
+      var stable_id_version = 1;
+      if (stable_id.includes('.')){
+      	var stable_id_split = stable_id.split(".");
+      	stable_id = stable_id_split[0];
+      	stable_id_version = stable_id_split[1];
+      }
+      
+      var assembly = payload_data_tr['transcript2_assembly'];
+      var source = payload_data_tr['transcript2_source'];
+      var release = payload_data_tr['transcript2_release'];
+     tr_result = get_tr_details(stable_id, stable_id_version, release,assembly, source);
+     transcript_container.push(tr_result);
+    });
+     return transcript_container;
+}
+
 function get_diff_result_summary(payload_data){
 
-       
 		//initialize diff_me
         diff_me_stable_id = payload_data['transcript1_stable_id'];
         diff_me_assembly = payload_data['transcript1_assembly'];
@@ -72,7 +199,7 @@ function get_diff_result_summary(payload_data){
         
         var get_url = root_url + diff_me_url + '&' + diff_with_url;
         get_url = get_url + "&render_as_string=True";
-        var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;">' + 
+        var header_div = '<div id="current_well" class="well well-sm text-left" style="padding:5px;background-color: #d9edf7 !important;">' + 
         				 '<strong>TRANSCRIPT COMPARISON SUMMARY REPORT</strong>' +
          				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button>' + 
          				'<button type="submit" id="print_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-print"></span> Print</button></div>';
@@ -161,18 +288,34 @@ $(document).ready(function() {
          }
     });
     
+    var payload_data_tr2_list = [];
     var payload_data_tr2 = {};
      $('#search_result_table tbody').on('click', 'input[name*="transcript2"]', function(e){
+     
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();   
             payload_data_tr2 = get_payload_data(row, 'transcript2');
+            console.log("======check me====");
+            console.log(payload_data_tr2);
+            payload_data_tr2_list.push(payload_data_tr2);
+            console.log("=====payload tr2 list===");
+            console.log(payload_data_tr2_list);
         }
     });
     
     
     var payload_data ={};
+    var multi_payload_data = {};
     $("#search_diff_transcript").click(function (e) {
-         payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
+        
+        if (payload_data_tr2_list.length > 1){
+         console.log("===reached here ===== length > 1");
+         multi_payload_data["payload_data_tr1"] = payload_data_tr1;
+         multi_payload_data["payload_data_tr2_list"] = payload_data_tr2_list;
+         get_multi_diff_result_summary(multi_payload_data);
+        }
+    
+        payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
         var transcript1_stable_id = payload_data['transcript1_stable_id'];
         var transcript2_stable_id = payload_data['transcript2_stable_id'];
        
@@ -191,13 +334,31 @@ $(document).ready(function() {
        $("#summary_diff_qs1_qs2").empty();
      });
     
-    //
+    //for print
     $("#summary_diff_qs1_qs2").on("click", "#print_diff_report", function () {
 	printData();
 	 });
     
-    
-    
+    //for clear button
+    $("#clear_button").click(function (e) {
+		payload_data = {};
+		payload_data_tr1 = {};
+		payload_data_tr2 = {};
+		payload_data_tr2_list = [];
+		$('#multi_summary_diff_query').empty();
+		$("#summary_diff_qs1_qs2").empty();
+		
+      $("input[name='transcript1']").each(function() {
+      	   $(this).prop( "checked", false );
+         });
+         
+          $("input[name='transcript2']").each(function() {
+    		$(this).prop( "checked", false );
+         });
+      
+      });
+      
+  
    });
 
 	</script>
@@ -233,7 +394,7 @@ $(document).ready(function() {
     {% for result in search_result %}
       <tr>
       <td><input type="radio" name="transcript1"></td>
-      <td><input type="radio" name="transcript2"></td>
+      <td><input type="checkbox" name="transcript2"></td>
       <td>
        <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
       </td>
@@ -294,6 +455,8 @@ $(document).ready(function() {
   </table>
   <button type="submit" id="search_diff_transcript" class="btn btn-info">Compare Transcripts</button>
   <a id="search_button" class="btn btn-primary" href="/">New Search</a>
+  <button type="submit" id="clear_button" class="btn btn-warning" >Clear Selection</button>
+    
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -317,6 +480,10 @@ $(document).ready(function() {
  
  <!--summary-->
  <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
+ <div class="row">
+  <div id="multi_summary_diff_query" class="col-md-4">  </div>
+ <div id="multi_summary_diff_details" class="col-md-8"> </div>
+ </div>
  <div id="summary_diff_qs1_qs2">  </div>
  
 </div>
