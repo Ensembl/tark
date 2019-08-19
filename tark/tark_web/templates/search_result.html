@@ -61,7 +61,7 @@ function get_multi_diff_result_summary(multi_payload_data){
         var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
         
         table_div += "<tr><th>Key</th><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Compare</th></tr>";
-        table_div += "<tr style='background-color:#f8c291'><td>T1</td><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#f8c291'><td>T1</td><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
         
         table_div += "<td></td></tr>";
        
@@ -70,7 +70,7 @@ function get_multi_diff_result_summary(multi_payload_data){
   			console.log(payload_data_tr);
   			key_t2 = "T2." + parseInt(index+1); 
   		table_div += "<tr><td>" + key_t2 + "</td><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
-  		table_div += "<td><button type='submit' id='dummy_button' class='btn btn-info btn-sm' style='padding: 5px;font-size: 10px;line-height: 0.6;'><strong>Compare with T1</strong></button></td>";
+  		table_div += "<td><button type='submit' class='btn btn-info btn-sm compare_tr2_with_tr1' style='padding: 5px;font-size: 10px;line-height: 0.6;'>Compare with T1</button></td>";
   		table_div += "</tr>";
           
 		});
@@ -357,7 +357,7 @@ $(document).ready(function() {
     var payload_data_tr2_list = [];
     var payload_data_tr2 = {};
      $('#search_result_table tbody').on('click', 'input[name*="transcript2"]', function(e){
-     
+     	
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();   
             payload_data_tr2 = get_payload_data(row, 'transcript2');
@@ -367,7 +367,10 @@ $(document).ready(function() {
             console.log("=====payload tr2 list===");
             console.log(payload_data_tr2_list);
         }
+      
     });
+    
+  
     
     
     var payload_data ={};
@@ -379,6 +382,7 @@ $(document).ready(function() {
          multi_payload_data["payload_data_tr1"] = payload_data_tr1;
          multi_payload_data["payload_data_tr2_list"] = payload_data_tr2_list;
          get_multi_diff_result_summary(multi_payload_data);
+         payload_data_tr2 = payload_data_tr2_list[0];
         }
     
         payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
@@ -412,6 +416,9 @@ $(document).ready(function() {
 		payload_data_tr2 = {};
 		payload_data_tr2_list = [];
 		$('#multi_summary_diff_query').empty();
+		$('#multi_summary_diff_transcript_details').empty();
+		$('#multi_summary_diff_gene_details').empty();
+		$('#multi_summary_diff_translation_details').empty();
 		$("#summary_diff_qs1_qs2").empty();
 		
       $("input[name='transcript1']").each(function() {
@@ -424,8 +431,68 @@ $(document).ready(function() {
       
       });
       
+      
+       //select the compare_tr2_with_tr1 buttons
+       $(document).on("click",".compare_tr2_with_tr1",function(){
+         console.log("*****compare_tr2_with_tr1***");
+         var tr2_row = $(this).parent().parent();
+
+         console.log(tr2_row);
+         tr2_stable_id = tr2_row.find("td:nth-child(2)").text().trim(); // Finds the 3rd <td> element
+         tr2_assembly = tr2_row.find("td:nth-child(3)").text().trim(); 
+         tr2_source = tr2_row.find("td:nth-child(4)").text().trim();
+         tr2_release = tr2_row.find("td:nth-child(5)").text().trim(); 
+         console.log('tr2_stable_id ' + tr2_stable_id);
+         console.log('tr2_assembly ' + tr2_assembly);
+         console.log('tr2_source ' + tr2_source);
+         console.log('tr2_release ' + tr2_release);
+         console.log('======');
+            //payload_data[transcript + '_stable_id'] = transcript_stable_id;
+      		//payload_data[transcript + '_assembly'] = transcript_assembly;
+      		//payload_data[transcript + '_source'] = transcript_source;
+      		//payload_data[transcript + '_release'] = transcript_release;
+         
+         var tr1_row = $('#compare_tr1_with_tr2');
+         console.log('===tr1_row  ===');
+         console.log(tr1_row);
+         tr1_stable_id = tr1_row.find("td:nth-child(2)").text().trim(); // Finds the 3rd <td> element
+         tr1_assembly = tr1_row.find("td:nth-child(3)").text().trim(); 
+         tr1_source = tr1_row.find("td:nth-child(4)").text().trim();
+         tr1_release = tr1_row.find("td:nth-child(5)").text().trim(); 
+         console.log('tr1_stable_id ' + tr1_stable_id);
+         console.log('tr1_assembly ' + tr1_assembly);
+         console.log('tr1_source ' + tr1_source);
+         console.log('tr1_release ' + tr1_release);
+         console.log('===tr1  ===');
+         
+         var payload_data_tr1 = {};
+         payload_data_tr1['transcript1_stable_id'] = tr1_stable_id;
+      	 payload_data_tr1['transcript1_assembly'] = tr1_assembly;
+      	 payload_data_tr1['transcript1_source'] = tr1_source;
+      	 payload_data_tr1['transcript1_release'] = tr1_release;
+      	 
+      	 var payload_data_tr2 = {};
+      	 payload_data_tr2['transcript2_stable_id'] = tr2_stable_id;
+      	 payload_data_tr2['transcript2_assembly'] = tr2_assembly;
+      	 payload_data_tr2['transcript2_source'] = tr2_source;
+      	 payload_data_tr2['transcript2_release'] = tr2_release;
+      	
+        var payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
+        var transcript1_stable_id = payload_data['transcript1_stable_id'];
+        var transcript2_stable_id = payload_data['transcript2_stable_id'];
+       
+      if(transcript1_stable_id && transcript2_stable_id){
+      console.log("Two transcripts selected");
+       $("#loadingSpinner_qs1_qs2").show();
+      get_diff_result_summary(payload_data);
+       }
+         
+      });
   
-   });
+  
+   }); //document ready
+   
+  
 
 	</script>
 
