@@ -161,9 +161,29 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
             elif identifier_type == SearchUtils.HGVS_REFSEQ_REF:
                 (refseq_identifier) = SearchUtils.parse_hgvs_refseq_string(identifier)  # @IgnorePep8
                 (identifier, identifier_version) = refseq_identifier.split('.')
-                queryset = queryset.filter(stable_id=identifier)
+                queryset_ref_stable_id = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
-                    queryset = queryset.filter(stable_id_version=identifier_version)
+                    queryset_ref_stable_id = queryset_ref_stable_id.filter(stable_id_version=identifier_version)
+
+                # get the location
+                refseq_transcript = queryset_ref_stable_id.first()
+
+                if refseq_transcript is not None:
+
+                    loc_region_ = refseq_transcript.loc_region
+                    loc_start_ = refseq_transcript.loc_start
+                    loc_end_ = refseq_transcript.loc_end
+                    assembly_name = refseq_transcript.assembly.assembly_name
+
+                    if assembly_name is not None:
+                        queryset = queryset.filter(assembly__assembly_name__icontains=assembly_name)
+                    if loc_region_ is not None:
+                        queryset = queryset.filter(loc_region=loc_region_)
+
+                    if loc_start_ is not None and loc_end_ is not None:
+                        queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
+                                   queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
+                                   queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
             elif identifier_type == SearchUtils.LRG_GENE:
                 queryset = queryset.filter(genes__stable_id__exact=identifier)
             elif identifier_type == SearchUtils.HGNC_SYMBOL:
