@@ -58,6 +58,9 @@ class SearchUtilsTest(TestCase):
         self.assertEqual(SearchUtils.get_identifier_type("NC_000023.11:g.32389644G>A"),
                          SearchUtils.HGVS_GENOMIC_REF, "Got the right id_type for " + SearchUtils.HGVS_GENOMIC_REF)
 
+        self.assertEqual(SearchUtils.get_identifier_type("NM_004006.2:c.4375C>T"),
+                         SearchUtils.HGVS_REFSEQ_REF, "Got the right id_type for " + SearchUtils.HGVS_REFSEQ_REF)
+
         self.assertEqual(SearchUtils.get_identifier_type("BRCA2"),
                          SearchUtils.HGNC_SYMBOL, "Got the right id_type for " + SearchUtils.HGNC_SYMBOL)
 
