@@ -6,7 +6,6 @@
 {% load compare_features %}
 {% load sequence_format %}
 
-
 {% block content %}
 
 <script type="text/javascript" class="init">
@@ -55,13 +54,13 @@ function get_multi_diff_result_summary(multi_payload_data){
 		
 		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
 		
-		var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #e67e22 !important;">' + 
-        				 '<strong>COMPARE TRANSCRIPTS</strong>' + '</div>';
+		var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #38ada9 !important;">' + 
+        				 '<strong>Click on "Compare" button below to COMPARE TWO TRANSCRIPTS in detail</strong>' + '</div>';
         				 
         var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
         
         table_div += "<tr><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Compare</th></tr>";
-        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#f8c291'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#f1c40f'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
         
         table_div += "<td></td></tr>";
        
@@ -69,14 +68,20 @@ function get_multi_diff_result_summary(multi_payload_data){
 			console.log("========= payload_data_tr =======");
   			console.log(payload_data_tr);
   			key_t2 = "T2." + parseInt(index+1); 
-  		table_div += "<tr><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
-  		table_div += "<td><button type='submit' class='btn btn-info btn-sm compare_tr2_with_tr1' style='padding: 5px;line-height: 0.6;'>Compare</button></td>";
+  			div_stable_id = payload_data_tr['transcript2_stable_id'];
+			div_stable_id = div_stable_id.replace(".", "_");
+
+  		table_div += "<tr id='" +  div_stable_id + "' ><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
+  		table_div += "<td><button type='submit' class='btn btn-info btn-sm compare_tr2_with_tr1' style='padding: 5px;line-height: 0.6;background-color:red;'>Compare</button></td>";
   		table_div += "</tr>";
           
 		});
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_query').html(header_div + table_div);
+		
+		//highlight the selected tr2
+		$("#query_diff tr:nth-child(3)").css('background-color','#b8e994');
 				
 		
 		all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
@@ -118,10 +123,11 @@ function get_multi_transcript_table(all_trancripts_details){
 		$.each(all_trancripts_details, function( index, current_transcript ) {
 			console.log("========= current_transcript =======");
   			console.log(current_transcript);
+  			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f8c291'>";
+   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
   			}else{
-  			table_div += "<tr>";
+  			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
     		
     		table_div += "<td>" + current_transcript['stable_id'] + '.' + current_transcript['stable_id_version']  + "</td>";
@@ -132,6 +138,7 @@ function get_multi_transcript_table(all_trancripts_details){
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_transcript_details').html(header_div + table_div);
+		$("#multi_tr_details tr:nth-child(3)").css('background-color','#b8e994');
 }
 
 //get multi gene table
@@ -146,10 +153,12 @@ function get_multi_gene_table(all_trancripts_details){
               
 		$.each(all_trancripts_details, function( index, current_transcript ) {
 			console.log("========= current_gene =======");
+			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
+			
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f8c291'>";
+   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
   			}else{
-  			table_div += "<tr>";
+  			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
   			
   			current_gene = current_transcript['genes'][0];
@@ -161,35 +170,42 @@ function get_multi_gene_table(all_trancripts_details){
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_gene_details').html(header_div + table_div);
+		$("#multi_gene_details tr:nth-child(3)").css('background-color','#b8e994');
 }
 
 
 //get multi translation table
 function get_multi_translation_table(all_trancripts_details){
 
-    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #60a3bc;color:#ffffff !important;">' + 
+    var header_div = '<div id="multi_summary_tl_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #60a3bc;color:#ffffff !important;">' + 
         				 '<strong>TRANSLATION DETAILS</strong>' + '</div>';
         				 
-        var table_div = "<table id='multi_gene_details' class='table table-bordered table-striped table-condensed'>";
+        var table_div = "<table id='multi_tl_details' class='table table-bordered table-striped table-condensed'>";
         
-        table_div += "<tr><th>StableID</th><th>Location</th></tr>";
+        table_div += "<tr><th>StableID</th><th>5'UTR</th><th>CDS</th><th>3'UTR</th></tr>";
               
 		$.each(all_trancripts_details, function( index, current_transcript ) {
 			console.log("========= current_gene =======");
-  			
+  			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f8c291'>";
+   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
   			}else{
-  			table_div += "<tr>";
+  			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
   			
   			current_translations = current_transcript['translations'];
   			if(current_translations.length > 0){
+  			
   			current_translation = current_translations[0];
   			console.log(current_translation);
   			table_div += "<td>" + current_translation['stable_id']  + '.' +  current_translation['stable_id_version']  + "</td>";
-    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] + "</td></tr>";
+    		
+    		cds_info = current_transcript['cds_info'];
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['five_prime_utr_start']  + ' - ' + cds_info['five_prime_utr_end'] + "</td>";
+    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] + "</td>";
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['three_prime_utr_start']  + ' - ' + cds_info['three_prime_utr_end'] + "</td></tr>";
+    		
             }else{
             table_div += "<tr><td colspan='2'>No translations for this transcript</td></tr>";
             }
@@ -197,6 +213,7 @@ function get_multi_translation_table(all_trancripts_details){
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_translation_details').html(header_div + table_div);
+		$("#multi_tl_details tr:nth-child(3)").css('background-color','#b8e994');
 }
 
 function get_tr_details(stable_id, stable_id_version, release,assembly, source ){
@@ -352,6 +369,8 @@ $(document).ready(function() {
     $('#search_result_table tbody').on('click', 'input[name*="transcript1"]', function(e){
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();
+            row.css('background-color','#f1c40f');
+            row.siblings().css('background-color','');
             payload_data_tr1 = get_payload_data(row, 'transcript1');
          }
     });
@@ -457,24 +476,33 @@ $(document).ready(function() {
        
        $(document).on("click",".compare_tr2_with_tr1",function(){
          console.log("*****compare_tr2_with_tr1***");
+
          var tr2_row = $(this).parent().parent();
-         //tr2_row.css('background-color','yellow');
+         tr2_row_id = tr2_row.attr("id");
+         console.log("tr2_row_id " + tr2_row_id);
+         //select all rows with the selected stable id and change the background color
+         $("[id=" + tr2_row_id + "]").css('background-color','#b8e994');
+         
+         
+         
+         //make all the other rows white background
+         $("[id=" + tr2_row_id + "]").siblings().css('background-color','');
+         
+         //retain the same background for the first transcript
+         $("#query_diff tr:nth-child(2)").css('background-color','#f1c40f');
+         $("#multi_tr_details tr:nth-child(2)").css('background-color','#f1c40f');
+         $("#multi_gene_details tr:nth-child(2)").css('background-color','#f1c40f');
+         $("#multi_tl_details tr:nth-child(2)").css('background-color','#f1c40f');
          
 
+         console.log("=========tr2_row start ======");
          console.log(tr2_row);
+         console.log("=========tr2_row end ========");
          tr2_stable_id = tr2_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
          tr2_assembly = tr2_row.find("td:nth-child(2)").text().trim(); 
          tr2_source = tr2_row.find("td:nth-child(3)").text().trim();
          tr2_release = tr2_row.find("td:nth-child(4)").text().trim(); 
-         console.log('tr2_stable_id ' + tr2_stable_id);
-         console.log('tr2_assembly ' + tr2_assembly);
-         console.log('tr2_source ' + tr2_source);
-         console.log('tr2_release ' + tr2_release);
-         console.log('======');
-            //payload_data[transcript + '_stable_id'] = transcript_stable_id;
-      		//payload_data[transcript + '_assembly'] = transcript_assembly;
-      		//payload_data[transcript + '_source'] = transcript_source;
-      		//payload_data[transcript + '_release'] = transcript_release;
+
          
          var tr1_row = $('#compare_tr1_with_tr2');
          console.log('===tr1_row  ===');
@@ -641,9 +669,14 @@ $(document).ready(function() {
  <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
  
 <!-- Multi details -->
- <div class="row" id="multi_details">
-  <div id="multi_summary_diff_transcript_details" class="col-md-3" > </div>
-  <div id="multi_summary_diff_gene_details" class="col-md-3"> </div>
+<!-- Multi details -->
+ <div class="row" id="multi_details_transcript">
+  <div id="multi_summary_diff_query" class="col-md-6">  </div>
+  <div id="multi_summary_diff_transcript_details" class="col-md-6" > </div>
+ </div>
+ 
+ <div class="row" id="multi_details_gene_translation">
+  <div id="multi_summary_diff_gene_details" class="col-md-6"> </div>
   <div id="multi_summary_diff_translation_details" class="col-md-6"> </div>
  </div>
 
@@ -652,8 +685,7 @@ $(document).ready(function() {
 
 <! -- Diff summary -->
  <div class="row" id="div_summary_diff_qs1_qs2_results" >
-  <div id="multi_summary_diff_query" class="col-md-3">  </div>
- <div id="summary_diff_qs1_qs2" class="col-md-9">  </div>
+ <div id="summary_diff_qs1_qs2" class="col-md-12">  </div>
  </div>
  
 </div>

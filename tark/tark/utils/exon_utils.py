@@ -89,7 +89,12 @@ class ExonUtils(object):
         five_prime_utr_seq = ""
         three_prime_utr_seq = ""
         if "translations" in transcript and len(transcript['translations']) > 0:
-            translation = transcript['translations']
+            translations = transcript['translations']
+
+            if type(translations) is list and len(translations) > 0:
+                translation = translations[0]
+            else:
+                translation = translations
             translation_start = translation['loc_start']
             translation_end = translation['loc_end']
 
