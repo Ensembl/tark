@@ -27,9 +27,7 @@ function get_query_params(row){
 			transcript_releases_trimmed.push(value.trim());
 			});
             }
-            console.log(transcript_releases_trimmed);
             transcript_release = transcript_releases_trimmed.sort().pop();
-			console.log(transcript_release);
 
             //removing e and r from release
             if(transcript_release.startsWith("e")){
@@ -48,8 +46,6 @@ function get_query_params(row){
 
 //for multi transcript comparison
 function get_multi_diff_result_summary(multi_payload_data){
-		console.log("=========multi diff summary called =======");
-		console.log(multi_payload_data);
 		payload_data_tr1 = multi_payload_data['payload_data_tr1'];
 		
 		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
@@ -60,13 +56,11 @@ function get_multi_diff_result_summary(multi_payload_data){
         var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
         
         table_div += "<tr><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Compare</th></tr>";
-        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#f1c40f'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#42d4f4'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
         
         table_div += "<td></td></tr>";
        
 		$.each(payload_data_tr2_list, function( index, payload_data_tr ) {
-			console.log("========= payload_data_tr =======");
-  			console.log(payload_data_tr);
   			key_t2 = "T2." + parseInt(index+1); 
   			div_stable_id = payload_data_tr['transcript2_stable_id'];
 			div_stable_id = div_stable_id.replace(".", "_");
@@ -81,7 +75,7 @@ function get_multi_diff_result_summary(multi_payload_data){
 		$('#multi_summary_diff_query').html(header_div + table_div);
 		
 		//highlight the selected tr2
-		$("#query_diff tr:nth-child(3)").css('background-color','#b8e994');
+		$("#query_diff tr:nth-child(3)").css('background-color','#b3d1ff');
 				
 		
 		all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
@@ -102,9 +96,7 @@ function get_multi_diff_result_summary(multi_payload_data){
 		
 		tr1_result = get_tr_details(stable_id, stable_id_version, release,assembly, source );
 		all_trancripts_details.unshift(tr1_result);
-		console.log("===== all_trancripts_details ====");
-		console.log(all_trancripts_details);
-		console.log("***** all_trancripts_details ****");
+
 		get_multi_transcript_table(all_trancripts_details);
 		get_multi_gene_table(all_trancripts_details);
 		get_multi_translation_table(all_trancripts_details);
@@ -121,24 +113,22 @@ function get_multi_transcript_table(all_trancripts_details){
         table_div += "<tr><th>StableID</th><th>Location</th><th>Exons</th></tr>";
               
 		$.each(all_trancripts_details, function( index, current_transcript ) {
-			console.log("========= current_transcript =======");
-  			console.log(current_transcript);
-  			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
+			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
     		
     		table_div += "<td>" + current_transcript['stable_id'] + '.' + current_transcript['stable_id_version']  + "</td>";
-    		table_div += "<td>" + current_transcript['loc_region'] + " : " + current_transcript['loc_start']  + ' - ' + current_transcript['loc_end'] + "</td><td>" + current_transcript['exons'].length + "</td>";
+    		table_div += "<td>" + current_transcript['loc_region'] + " : " + current_transcript['loc_start']  + ' - ' + current_transcript['loc_end'] + " ("+  current_transcript['sequence']['sequence'].length + " bp) "+ "</td><td>" + current_transcript['exons'].length + "</td>";
     		table_div += "</tr>";
           
 		});
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_transcript_details').html(header_div + table_div);
-		$("#multi_tr_details tr:nth-child(3)").css('background-color','#b8e994');
+		$("#multi_tr_details tr:nth-child(3)").css('background-color','#b3d1ff');
 }
 
 //get multi gene table
@@ -152,17 +142,15 @@ function get_multi_gene_table(all_trancripts_details){
         table_div += "<tr><th>StableID</th><th>Location</th><th>Symbol</th></tr>";
               
 		$.each(all_trancripts_details, function( index, current_transcript ) {
-			console.log("========= current_gene =======");
 			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
 			
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
   			
   			current_gene = current_transcript['genes'][0];
-  			console.log(current_gene);
   			table_div += "<td>" + current_gene['stable_id']  + '.' +  current_gene['stable_id_version']  + "</td>";
     		table_div += "<td>" + current_gene['loc_region'] + " : " + current_gene['loc_start']  + ' - ' + current_gene['loc_end'] + "</td><td>" +current_gene['name'] + "</td></tr>";
           
@@ -170,7 +158,7 @@ function get_multi_gene_table(all_trancripts_details){
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_gene_details').html(header_div + table_div);
-		$("#multi_gene_details tr:nth-child(3)").css('background-color','#b8e994');
+		$("#multi_gene_details tr:nth-child(3)").css('background-color','#b3d1ff');
 }
 
 
@@ -185,11 +173,10 @@ function get_multi_translation_table(all_trancripts_details){
         table_div += "<tr><th>StableID</th><th>5'UTR</th><th>CDS</th><th>3'UTR</th></tr>";
               
 		$.each(all_trancripts_details, function( index, current_transcript ) {
-			console.log("========= current_gene =======");
   			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#f1c40f' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
@@ -198,13 +185,12 @@ function get_multi_translation_table(all_trancripts_details){
   			if(current_translations.length > 0){
   			
   			current_translation = current_translations[0];
-  			console.log(current_translation);
   			table_div += "<td>" + current_translation['stable_id']  + '.' +  current_translation['stable_id_version']  + "</td>";
     		
     		cds_info = current_transcript['cds_info'];
-    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['five_prime_utr_start']  + ' - ' + cds_info['five_prime_utr_end'] + "</td>";
-    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] + "</td>";
-    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['three_prime_utr_start']  + ' - ' + cds_info['three_prime_utr_end'] + "</td></tr>";
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['five_prime_utr_start']  + ' - ' + cds_info['five_prime_utr_end'] + " ("+  cds_info['five_prime_utr_seq'].length + " bp) "+ "</td>";
+    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] +  " ("+  cds_info['cds_seq'].length + " bp) " + "</td>";
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['three_prime_utr_start']  + ' - ' + cds_info['three_prime_utr_end'] + " ("+  cds_info['three_prime_utr_seq'].length + " bp) "+ "</td></tr>";
     		
             }else{
             table_div += "<tr><td colspan='4'>No translations for this transcript</td></tr>";
@@ -213,7 +199,7 @@ function get_multi_translation_table(all_trancripts_details){
 		
 		 table_div += "</table>";
 		$('#multi_summary_diff_translation_details').html(header_div + table_div);
-		$("#multi_tl_details tr:nth-child(3)").css('background-color','#b8e994');
+		$("#multi_tl_details tr:nth-child(3)").css('background-color','#b3d1ff');
 }
 
 function get_tr_details(stable_id, stable_id_version, release,assembly, source ){
@@ -224,12 +210,9 @@ function get_tr_details(stable_id, stable_id_version, release,assembly, source )
         type: 'GET',
         async: false,
 		success: function(data) {
-		console.log("====================data success===========");
-		console.log(data);
 		tr_results =  data['results'][0];
 		},
 		error: function() {
-		console.log("Error from get_all_transcript_details");
 		}
     });
      return tr_results;
@@ -273,10 +256,10 @@ function get_diff_result_summary(payload_data){
         
 
         //collect diff_me params
-        console.log('diff_me_assembly ' + diff_me_assembly + ' diff_me_source ' + diff_me_source  + ' diff_me_release ' + diff_me_release  + '  diff_me_stable_id ' +  diff_me_stable_id);
+        //console.log('diff_me_assembly ' + diff_me_assembly + ' diff_me_source ' + diff_me_source  + ' diff_me_release ' + diff_me_release  + '  diff_me_stable_id ' +  diff_me_stable_id);
         
         //collect diff_with params
-        console.log('diff_with_assembly ' + diff_with_assembly + ' diff_with_source ' + diff_with_source  + ' diff_with_release ' + diff_with_release  + '  diff_with_stable_id ' +  diff_with_stable_id);
+        //console.log('diff_with_assembly ' + diff_with_assembly + ' diff_with_source ' + diff_with_source  + ' diff_with_release ' + diff_with_release  + '  diff_with_stable_id ' +  diff_with_stable_id);
 
         var root_url = "/api/transcript/diff/?";
         var diff_me_url = 'diff_me_assembly=' + diff_me_assembly + '&diff_me_source=' + diff_me_source  + '&diff_me_release=' + diff_me_release  + '&diff_me_stable_id=' + diff_me_stable_id;
@@ -309,16 +292,13 @@ function get_payload_data(row, transcript){
       		payload_data[transcript + '_assembly'] = transcript_assembly;
       		payload_data[transcript + '_source'] = transcript_source;
       		payload_data[transcript + '_release'] = transcript_release;
-      		console.log("===start get_payload_data ==");
-      		console.log(payload_data);
-      		console.log("===end get_payload_data ==");
       		
 			return payload_data;
 }
 
 function printData()
 {
-   console.log("print data called");
+
    $('#summary_diff_qs1_qs2').printThis({
   	importCSS: false,
   	importStyle: true,
@@ -369,7 +349,7 @@ $(document).ready(function() {
     $('#search_result_table tbody').on('click', 'input[name*="transcript1"]', function(e){
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();
-            row.css('background-color','#f1c40f');
+            row.css('background-color','#42d4f4');
             row.siblings().css('background-color','');
             payload_data_tr1 = get_payload_data(row, 'transcript1');
          }
@@ -377,18 +357,6 @@ $(document).ready(function() {
     
     var payload_data_tr2_list = [];
     var payload_data_tr2 = {};
-//     $('#search_result_table tbody').on('click', 'input[name*="transcript2"]', function(e){
-//        if( $(this).is(":checked") ){ // check if the radio is checked
-//          var row = $(this).parent().parent();   
-//            payload_data_tr2 = get_payload_data(row, 'transcript2');
-//            console.log("======check me====");
-//            console.log(payload_data_tr2);
-//            payload_data_tr2_list.push(payload_data_tr2);
-//            console.log("=====payload tr2 list===");
-//            console.log(payload_data_tr2_list);
-//        }
-//    });
-    
     
     
     
@@ -408,17 +376,12 @@ $(document).ready(function() {
           if($(this).is(':checked') ){
             var row = $(this).parent().parent();   
             payload_data_tr2 = get_payload_data(row, 'transcript2');
-            console.log("======check me====");
-            console.log(payload_data_tr2);
             payload_data_tr2_list.push(payload_data_tr2);
-            console.log("=====payload tr2 list===");
-            console.log(payload_data_tr2_list);
           
           }
         });
         
         if (payload_data_tr2_list.length > 0){
-         console.log("===reached here ===== length > 1");
          multi_payload_data["payload_data_tr1"] = payload_data_tr1;
          multi_payload_data["payload_data_tr2_list"] = payload_data_tr2_list;
          get_multi_diff_result_summary(multi_payload_data);
@@ -430,11 +393,9 @@ $(document).ready(function() {
         var transcript2_stable_id = payload_data['transcript2_stable_id'];
        
       if(transcript1_stable_id && transcript2_stable_id){
-      console.log("Two transcripts selected");
        $("#loadingSpinner_qs1_qs2").show();
       get_diff_result_summary(payload_data);
        }else{
-       console.log("Two transcripts NOT selected");
        $('#myModal').modal('show');
       }
       });
@@ -475,13 +436,11 @@ $(document).ready(function() {
        //select the compare_tr2_with_tr1 buttons
        
        $(document).on("click",".compare_tr2_with_tr1",function(){
-         console.log("*****compare_tr2_with_tr1***");
 
          var tr2_row = $(this).parent().parent();
          tr2_row_id = tr2_row.attr("id");
-         console.log("tr2_row_id " + tr2_row_id);
          //select all rows with the selected stable id and change the background color
-         $("[id=" + tr2_row_id + "]").css('background-color','#b8e994');
+         $("[id=" + tr2_row_id + "]").css('background-color','#b3d1ff');
          
          
          
@@ -489,15 +448,11 @@ $(document).ready(function() {
          $("[id=" + tr2_row_id + "]").siblings().css('background-color','');
          
          //retain the same background for the first transcript
-         $("#query_diff tr:nth-child(2)").css('background-color','#f1c40f');
-         $("#multi_tr_details tr:nth-child(2)").css('background-color','#f1c40f');
-         $("#multi_gene_details tr:nth-child(2)").css('background-color','#f1c40f');
-         $("#multi_tl_details tr:nth-child(2)").css('background-color','#f1c40f');
+         $("#query_diff tr:nth-child(2)").css('background-color','#42d4f4');
+         $("#multi_tr_details tr:nth-child(2)").css('background-color','#42d4f4');
+         $("#multi_gene_details tr:nth-child(2)").css('background-color','#42d4f4');
+         $("#multi_tl_details tr:nth-child(2)").css('background-color','#42d4f4');
          
-
-         console.log("=========tr2_row start ======");
-         console.log(tr2_row);
-         console.log("=========tr2_row end ========");
          tr2_stable_id = tr2_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
          tr2_assembly = tr2_row.find("td:nth-child(2)").text().trim(); 
          tr2_source = tr2_row.find("td:nth-child(3)").text().trim();
@@ -505,17 +460,11 @@ $(document).ready(function() {
 
          
          var tr1_row = $('#compare_tr1_with_tr2');
-         console.log('===tr1_row  ===');
-         console.log(tr1_row);
+
          tr1_stable_id = tr1_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
          tr1_assembly = tr1_row.find("td:nth-child(2)").text().trim(); 
          tr1_source = tr1_row.find("td:nth-child(3)").text().trim();
          tr1_release = tr1_row.find("td:nth-child(4)").text().trim(); 
-         console.log('tr1_stable_id ' + tr1_stable_id);
-         console.log('tr1_assembly ' + tr1_assembly);
-         console.log('tr1_source ' + tr1_source);
-         console.log('tr1_release ' + tr1_release);
-         console.log('===tr1  ===');
          
          var payload_data_tr1 = {};
          payload_data_tr1['transcript1_stable_id'] = tr1_stable_id;
