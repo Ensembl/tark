@@ -128,7 +128,7 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                                 'loc_checksum': '3246383400000000000000000000000000000000',  # @IgnorePep8
                                                                 'name': 'ACOT13',
                                                                 'gene_checksum': '3846383800000000000000000000000000000000'}],  # @IgnorePep8
-                                                     'translations': [], 'exons': [],
+                                                     'translations': [], 'exons': [], 'cds_info': {},
                                                      'gene': {'stable_id': 'ENSG00000161533',
                                                               'stable_id_version': 12, 'assembly': 'GRCh38',
                                                               'loc_start': 75941507, 'loc_end': 75979177,
@@ -160,7 +160,7 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                                   '3246383400000000000000000000000000000000',
                                                                   'name': 'ACOT13', 'gene_checksum':
                                                                   '3846383800000000000000000000000000000000'}],
-                                                       'translations': [], 'exons': [],
+                                                       'translations': [], 'exons': [], 'cds_info': {},
                                                        'gene': {'stable_id': 'ENSG00000161533', 'stable_id_version': 12,
                                                                 'assembly': 'GRCh38', 'loc_start': 75941507,
                                                                 'loc_end': 75979177, 'loc_strand': -1,
