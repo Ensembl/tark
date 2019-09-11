@@ -541,8 +541,10 @@ $(document).ready(function() {
        {% endif %}
        
         <!--source -->
-        {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
+       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
          <td>{{result.transcript_release_set|get_values_as_list:"source"}}</td>
+       {% elif "LRG" in result.transcript_release_set|get_values_as_list:"source" %}
+       <td class="text-success">RefSeq</td>
        {% else %}
         <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% endif %}

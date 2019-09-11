@@ -21,8 +21,10 @@ class SearchUtils(object):
 
     ENSEMBL_TRANSCRIPT = "ENSEMBL_TRANSCRIPT"
     ENSEMBL_GENE = "ENSEMBL_GENE"
+    ENSEMBL_PROTEIN = "ENSEMBL_PROTEIN"
 
     REFSEQ_TRANSCRIPT = "REFSEQ_TRANSCRIPT"
+    REFSEQ_PROTEIN = "REFSEQ_PROTEIN"
 
     LRG_TRANSCRIPT = "LRG_TRANSCRIPT"
     LRG_GENE = "LRG_GENE"
@@ -138,6 +140,14 @@ class SearchUtils(object):
         # ensembl gene
         if re.compile('^ENSG\d+').match(identifier):
             return cls.ENSEMBL_GENE
+
+        # ensembl protein
+        if re.compile('^ENSP\d+').match(identifier):
+            return cls.ENSEMBL_PROTEIN
+
+        # refseq protein
+        if re.compile('^NP_\d+').match(identifier):
+            return cls.REFSEQ_PROTEIN
 
         # hgvs genomic eg:  NC_000023.11:g.32389644G>A
         if re.compile(r'NC_\d+\.\d+:g\.\d+\w\>\w').match(identifier):

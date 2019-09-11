@@ -139,6 +139,10 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 queryset = queryset.filter(genes__stable_id=identifier)
                 if identifier_version is not None:
                     queryset = queryset.filter(stable_id_version=identifier_version)
+            elif identifier_type == SearchUtils.ENSEMBL_PROTEIN or identifier_type == SearchUtils.REFSEQ_PROTEIN:
+                queryset = queryset.filter(translations__stable_id=identifier)
+                if identifier_version is not None:
+                    queryset = queryset.filter(translations__stable_id_version=identifier_version)
             elif identifier_type == SearchUtils.GENOMIC_LOCATION:
                 (loc_region_, loc_start_, loc_end_) = SearchUtils.parse_location_string(identifier)
 
