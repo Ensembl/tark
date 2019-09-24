@@ -236,7 +236,7 @@ $(document).ready(function() {
 {% endif %}
 
 {% with transcript_details.genes.0 as gene %}
-<tr><td>External Links</td><td><a href="https://gtexportal.org/home/gene/{{ gene.name }}" target="_blank">GTExPortal <i class="fa fa-external-link-alt"></i></a>, <a href="https://gnomad.broadinstitute.org/gene/{{ gene.name }}" target="_blank">gnomAD <i class="fa fa-external-link-alt"></i></a></td></tr>
+<tr><td>External Links</td><td><a href="https://gtexportal.org/home/gene/{{ gene.name }}" target="_blank">GTExPortal <i class="fa fa-external-link-alt"></i></a>, <a href="https://gnomad.broadinstitute.org/gene/{{ gene.name }}" target="_blank">gnomAD <i class="fa fa-external-link-alt"></i></a>, <a href="https://www.genenames.org/data/gene-symbol-report/#!/symbol/{{ gene.name }}" target="_blank">HGNC <i class="fa fa-external-link-alt"></i></a></td></tr>
 {% endwith %}
 
 </table>
@@ -294,8 +294,11 @@ $(document).ready(function() {
 
 <td>{{transcript.assembly}}</td>
 {% with transcript_details.transcript_release_set.0 as release_info %}
+{% if "LRG" in tr_source %}
+<td>RefSeq</td>
+{% else %}
 <td>{{release_info.source}}</td>
-
+{% endif %}
 <td>
  {% if tr_source == "Ensembl"%}
  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}

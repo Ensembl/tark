@@ -21,15 +21,17 @@ class SearchUtils(object):
 
     ENSEMBL_TRANSCRIPT = "ENSEMBL_TRANSCRIPT"
     ENSEMBL_GENE = "ENSEMBL_GENE"
+    ENSEMBL_PROTEIN = "ENSEMBL_PROTEIN"
 
     REFSEQ_TRANSCRIPT = "REFSEQ_TRANSCRIPT"
+    REFSEQ_PROTEIN = "REFSEQ_PROTEIN"
 
     LRG_TRANSCRIPT = "LRG_TRANSCRIPT"
     LRG_GENE = "LRG_GENE"
 
     HGVS_GENOMIC_REF = "HGVS_GENOMIC_REF"
 
-    HGVS_REFSEQ_REF = "HGVS_REFSEQ_REF"
+    HGVS_REFSEQ_CDS = "HGVS_REFSEQ_CDS"
 
     HGNC_SYMBOL = "HGNC_SYMBOL"
 
@@ -120,10 +122,11 @@ class SearchUtils(object):
         return (loc_region, loc_start, loc_end, loc_assemby)
 
     @classmethod
-    def parse_hgvs_refseq_string(cls, hgvs_string):
+    def parse_hgvs_refseq_cds_string(cls, hgvs_string):
         matchloc = re.search(r'(NM_\d+\.\d+):c\.(\d+)(\w\>\w)', hgvs_string)
         refseq_accession = matchloc.group(1)
-        return (refseq_accession)
+        coding_location = matchloc.group(2)
+        return (refseq_accession, coding_location)
 
     @classmethod
     def get_identifier_type(cls, identifier):
@@ -139,13 +142,21 @@ class SearchUtils(object):
         if re.compile('^ENSG\d+').match(identifier):
             return cls.ENSEMBL_GENE
 
+        # ensembl protein
+        if re.compile('^ENSP\d+').match(identifier):
+            return cls.ENSEMBL_PROTEIN
+
+        # refseq protein
+        if re.compile('^NP_\d+').match(identifier):
+            return cls.REFSEQ_PROTEIN
+
         # hgvs genomic eg:  NC_000023.11:g.32389644G>A
         if re.compile(r'NC_\d+\.\d+:g\.\d+\w\>\w').match(identifier):
             return cls.HGVS_GENOMIC_REF
 
-        # hgvs refesq eg:  NM_004006.2:c.4375C>T
+        # hgvs refesq cds eg:  NM_004006.2:c.4375C>T
         if re.compile(r'NM_\d+\.\d+:c\.\d+\w\>\w').match(identifier):
-            return cls.HGVS_REFSEQ_REF
+            return cls.HGVS_REFSEQ_CDS
 
         # refseq trasncript
         if re.compile('(^NM_|NR_|XM_|XR_).*').match(identifier):

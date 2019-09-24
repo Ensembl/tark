@@ -29,6 +29,9 @@ from sequence.drf.serializers import SequenceSerializer
 from gene.drf.serializers import GeneSerializer
 from exon.drf.serializers import ExonTranscriptSerializer
 from translation.drf.serializers import TranslationSerializer
+import json
+from tark.utils.exon_utils import ExonUtils
+from exon.models import Exon
 
 
 class HgncNameField(serializers.RelatedField):
@@ -93,6 +96,27 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                 data['mane_transcript_type'] = mane_transcript["mane_transcript_type"]
             else:
                 data['mane_transcript_type'] = '-'
+
+        transcript_dict = json.loads(json.dumps(data))
+        if "translations" in transcript_dict:
+            if "exons" in transcript_dict:
+                all_exons = transcript_dict["exons"]
+                new_exons = []
+                for exon in all_exons:
+                    if "exon_id" in exon:
+                        current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+
+                        if current_exon_query_set is not None and len(current_exon_query_set) == 1:
+                            current_exon_with_sequence = current_exon_query_set[0]
+                            exon["sequence"] = current_exon_with_sequence.sequence.sequence
+                            exon["seq_checksum"] = current_exon_with_sequence.sequence.seq_checksum
+                            new_exons.append(exon)
+
+                if len(new_exons) > 0:
+                    transcript_dict["exons"] = new_exons
+            transcript_with_cds = ExonUtils.fetch_cds_info(transcript_dict)
+            if transcript_with_cds is not None:
+                data['cds_info'] = transcript_with_cds
 
         return data
 

@@ -24,6 +24,8 @@ from tark_web.utils.sequtils import TarkSeqUtils
 
 import logging
 from transcript.utils.search_utils import SearchUtils
+from django.core import serializers
+import json
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -125,7 +127,7 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
         identifier_type = SearchUtils.get_identifier_type(identifier)
 
         identifier_version = None
-        if '.' in identifier and identifier_type != SearchUtils.HGVS_GENOMIC_REF and identifier_type != SearchUtils.HGVS_REFSEQ_REF:  # @IgnorePep8
+        if '.' in identifier and identifier_type != SearchUtils.HGVS_GENOMIC_REF and identifier_type != SearchUtils.HGVS_REFSEQ_CDS:  # @IgnorePep8
             (identifier, identifier_version) = identifier.split('.')
 
         if identifier is not None:
@@ -139,6 +141,10 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                 queryset = queryset.filter(genes__stable_id=identifier)
                 if identifier_version is not None:
                     queryset = queryset.filter(stable_id_version=identifier_version)
+            elif identifier_type == SearchUtils.ENSEMBL_PROTEIN or identifier_type == SearchUtils.REFSEQ_PROTEIN:
+                queryset = queryset.filter(translations__stable_id=identifier)
+                if identifier_version is not None:
+                    queryset = queryset.filter(translations__stable_id_version=identifier_version)
             elif identifier_type == SearchUtils.GENOMIC_LOCATION:
                 (loc_region_, loc_start_, loc_end_) = SearchUtils.parse_location_string(identifier)
 
@@ -158,8 +164,10 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                     queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
                                queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
                                queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
-            elif identifier_type == SearchUtils.HGVS_REFSEQ_REF:
-                (refseq_identifier) = SearchUtils.parse_hgvs_refseq_string(identifier)  # @IgnorePep8
+            elif identifier_type == SearchUtils.HGVS_REFSEQ_CDS:
+
+                (refseq_identifier, coding_location) = SearchUtils.parse_hgvs_refseq_cds_string(identifier)  # @IgnorePep8
+
                 (identifier, identifier_version) = refseq_identifier.split('.')
                 queryset_ref_stable_id = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
@@ -170,20 +178,31 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
 
                 if refseq_transcript is not None:
 
-                    loc_region_ = refseq_transcript.loc_region
-                    loc_start_ = refseq_transcript.loc_start
-                    loc_end_ = refseq_transcript.loc_end
-                    assembly_name = refseq_transcript.assembly.assembly_name
+                    # try to get the translation and add the coding location to the translation start
+                    translation_qs = refseq_transcript.translations.all().values()
+                    if translation_qs is not None:
+                        translation_list = list(translation_qs)
 
-                    if assembly_name is not None:
-                        queryset = queryset.filter(assembly__assembly_name__icontains=assembly_name)
-                    if loc_region_ is not None:
-                        queryset = queryset.filter(loc_region=loc_region_)
+                        if len(translation_list) > 0:
+                            translation_dict = translation_list[0]
+                            cds_start = translation_dict["loc_start"]
+                            # cds_end = translation_dict["loc_end"]
 
-                    if loc_start_ is not None and loc_end_ is not None:
-                        queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
-                                   queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
-                                   queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
+                            # cds_strand = translation_dict["loc_strand"]
+                            loc_start_ = cds_start + int(coding_location)
+
+                            loc_region_ = refseq_transcript.loc_region
+                            loc_start_ = loc_start_
+                            loc_end_ = loc_start_
+                            assembly_name = refseq_transcript.assembly.assembly_name
+
+                            queryset_ = Transcript.objects.filter(assembly__assembly_name__icontains=assembly_name).filter(loc_region=loc_region_)  # @IgnorePep8
+                            if loc_start_ is not None and loc_end_ is not None:
+                                queryset_ = queryset_.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
+                                           queryset_.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
+                                           queryset_.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
+                                return queryset_.distinct()
+
             elif identifier_type == SearchUtils.LRG_GENE:
                 queryset = queryset.filter(genes__stable_id__exact=identifier)
             elif identifier_type == SearchUtils.HGNC_SYMBOL:
