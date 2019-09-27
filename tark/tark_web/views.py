@@ -152,7 +152,7 @@ def search_link(request, search_identifier):
     host_url = ApiUtils.get_host_url(request)
 
     query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-        "&expand=transcript_release_set,genes"
+        "&expand=transcript_release_set,genes,translations"
     response = requests.get(host_url + query_url)
     if response.status_code == 200:
         search_result = response.json()
@@ -167,7 +167,7 @@ def search_home(request):
     """
     host_url = ApiUtils.get_host_url(request)
     search_identifier = ""
-    query_url = "/api/transcript/search/?expand=transcript_release_set,genes&identifier_field="
+    query_url = "/api/transcript/search/?expand=transcript_release_set,genes,translations&identifier_field="
 
     # Render the HTML template index.html with data in the context variable
     search_result = {}
@@ -254,7 +254,7 @@ def transcript_details(request, stable_id_with_version, search_identifier):
 
     # get transcript details
     query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
-        "&expand=transcript_release_set,genes"
+        "&expand_all=true"
     response = requests.get(host_url + query_url_details)
     transcript_details = {}
     if response.status_code == 200:

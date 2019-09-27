@@ -159,7 +159,7 @@ class DrfFields(object):
             location='query',
             required=False,
             type='integer',
-            description='stable id version (eg: 1)')
+            description='stable id version (eg: 1 or 5)')
         return stable_id_version_field
 
     @classmethod
@@ -305,7 +305,7 @@ class DrfFields(object):
 
     @classmethod
     def get_stable_id_example(cls, model_name):
-        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000380152', 'Exon': 'ENSE00001184784',
+        example_dict = {'Gene': 'ENSG00000139618', 'Transcript': 'ENST00000252934', 'Exon': 'ENSE00001184784',
                         'Translation': 'ENSP00000369497'}
         if model_name in example_dict:
             return example_dict[model_name]
