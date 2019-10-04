@@ -86,8 +86,11 @@ class ExonUtils(object):
     def fetch_cds_info(cls, transcript):
         cds_info = {}
 
+        start_exon = None
+        end_exon = None
         five_prime_utr_seq = ""
         three_prime_utr_seq = ""
+        exons = None
         if "translations" in transcript and len(transcript['translations']) > 0:
             translations = transcript['translations']
 
@@ -120,8 +123,7 @@ class ExonUtils(object):
 
                 cds_info['loc_region'] = first_exon['loc_region']
 
-                start_exon = None
-                end_exon = None
+
                 # Find start exon
                 for exon in exons:
                     exon_start = exon['loc_start']
@@ -184,23 +186,25 @@ class ExonUtils(object):
                     if end_exon_utr_len > 0:
                         three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
 
-            cds_start_len = translation_start - start_exon['loc_start']
-            cds_seq = start_exon['sequence'][cds_start_len:]
+            if start_exon is not None:
+                cds_start_len = translation_start - start_exon['loc_start']
+                cds_seq = start_exon['sequence'][cds_start_len:]
 
-            last_exon = exons[-1]
+            if exons is not None:
+                last_exon = exons[-1]
 
-            if transcript['loc_strand'] == -1:
-                if len(three_prime_utr_seq) > 0:
-                    cds_info['three_prime_utr_end'] = last_exon['loc_start']
+                if transcript['loc_strand'] == -1:
+                    if len(three_prime_utr_seq) > 0:
+                        cds_info['three_prime_utr_end'] = last_exon['loc_start']
+                    else:
+                        cds_info['three_prime_utr_start'] = 0
+                        cds_info['three_prime_utr_end'] = 0
                 else:
-                    cds_info['three_prime_utr_start'] = 0
-                    cds_info['three_prime_utr_end'] = 0
-            else:
-                if len(three_prime_utr_seq) > 0:
-                    cds_info['three_prime_utr_end'] = last_exon['loc_end']
-                else:
-                    cds_info['three_prime_utr_start'] = 0
-                    cds_info['three_prime_utr_end'] = 0
+                    if len(three_prime_utr_seq) > 0:
+                        cds_info['three_prime_utr_end'] = last_exon['loc_end']
+                    else:
+                        cds_info['three_prime_utr_start'] = 0
+                        cds_info['three_prime_utr_end'] = 0
 
             cds_info['five_prime_utr_seq'] = five_prime_utr_seq
             cds_info['five_prime_utr_length'] = len(five_prime_utr_seq)
@@ -208,7 +212,7 @@ class ExonUtils(object):
             cds_info['three_prime_utr_length'] = len(three_prime_utr_seq)
 
             cds_info['cds_seq'] = None
-            if 'sequence' in transcript:
+            if 'sequence' in transcript and 'sequence' in transcript['sequence']:
                 cds_seq = cls.get_cds_sequence(transcript['sequence']['sequence'],
                                                cds_info['five_prime_utr_length'],
                                                cds_info['three_prime_utr_length'])

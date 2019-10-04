@@ -187,7 +187,7 @@ $(document).ready(function() {
 {% with transcript_details.transcript_release_set|get_values_as_list:"source" as tr_source %}
 {% if tr_source == "Ensembl" %}
   {% with transcript_details.transcript_release_set|format_release_set:"ensembl" as release_date %}
- <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}">
+ <a target="_blank" href="/web/search/?identifier={{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}">
 <strong>{{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}</strong>
 </a>
  {% endwith %}
@@ -206,7 +206,7 @@ $(document).ready(function() {
 </td>
 
 </tr>
-<tr><td>Assembly</td><td>{{transcript_details.assembly}}</td></tr>
+<tr><td>Assembly</td><td>{{transcript_details.assembly.assembly_name}}</td></tr>
 
 {% with transcript_details.transcript_release_set.0 as release_info %}
 <tr><td>Release</td><td>{{release_info.source}} {{release_info.shortname}} ({{ release_info.release_date }})</td></tr>
@@ -236,12 +236,84 @@ $(document).ready(function() {
 {% endif %}
 
 {% with transcript_details.genes.0 as gene %}
+{% with transcript_details.transcript_release_set|get_values_as_list:"source" as tr_source %}
+{% if tr_source == "Ensembl" %}
+<tr><td>Ensembl Links</td><td>
+  {% with transcript_details.transcript_release_set|format_release_set:"ensembl" as release_date %}
+ <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{transcript_details.stable_id}}.{{transcript_details.stable_id_version}}">
+<strong>Variation</strong> <i class="fa fa-external-link-alt"></i>
+</a>
+,
+<a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Location/View?db=core;g={{ gene.name }};r={{gene.loc_region}}:{{gene.loc_start}}-{{gene.loc_end}};t={{transcript_details.stable_id}}">
+<strong>Location</strong> <i class="fa fa-external-link-alt"></i>
+</a>
+ {% endwith %}
+</td></tr>
+{% endif %}
+ {% endwith %}
+  {% endwith %}
+
+{% with transcript_details.genes.0 as gene %}
 <tr><td>External Links</td><td><a href="https://gtexportal.org/home/gene/{{ gene.name }}" target="_blank">GTExPortal <i class="fa fa-external-link-alt"></i></a>, <a href="https://gnomad.broadinstitute.org/gene/{{ gene.name }}" target="_blank">gnomAD <i class="fa fa-external-link-alt"></i></a>, <a href="https://www.genenames.org/data/gene-symbol-report/#!/symbol/{{ gene.name }}" target="_blank">HGNC <i class="fa fa-external-link-alt"></i></a></td></tr>
 {% endwith %}
 
 </table>
 </div>
 </div>
+
+
+<!--Translation start -->
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+   <div class="panel panel-default">
+           <div class="panel-heading" role="tab" id="headingOne" style="background-color: #303952;color:#ffffff">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Translation Details
+                    </a>
+                </h4>
+            </div>
+            
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                 <table id="translation_table" class="table table-striped table-bordered table-responsive table-condensed">
+<thead>
+<tr style="background-color: #4b6584;color:#ffffff">
+<th class="text-center" data-sortable="false">StableID.version</th>
+<th class="text-center" data-sortable="false">5'UTR</th>
+<th class="text-center" data-sortable="false">CDS</th>
+<th class="text-center" data-sortable="false">3'UTR</th>
+</tr>
+</thead>
+<tbody>
+{% if transcript_details.translations %}
+{% with transcript_details.translations.0 as translation %}
+{% with transcript_details.cds_info as cds_info %}
+<tr>
+<td>{{translation.stable_id}}.{{translation.stable_id_version}}</td>
+<td>{{ cds_info.loc_region }}:{{ cds_info.five_prime_utr_start }}-{{cds_info.five_prime_utr_end}} ({{ cds_info.five_prime_utr_length}} bp)</td>
+<td>{{ translation.loc_region }}:{{ translation.loc_start }}-{{translation.loc_end}}</td>
+<td>{{ cds_info.loc_region }}:{{ cds_info.three_prime_utr_start }}-{{cds_info.three_prime_utr_end}} ({{ cds_info.three_prime_utr_length}} bp)</td>
+
+</tr>
+ {% endwith %}
+  {% endwith %}
+  
+{% else %}
+<tr><td colspan='4'>No translation details for this transcript </td></tr>
+{% endif %}
+</tbody>
+</table>
+                     
+                </div>     
+            </div>
+            
+      </div>
+ </div>
+
+<!--Translation end -->
+
 
 
 <div id="current_well_history" class="well well-sm" style="background-color: #303952;color:#ffffff"><strong>TRANSCRIPT HISTORY</strong></div>
@@ -314,7 +386,17 @@ $(document).ready(function() {
 
 
  {% endwith %}
+{% if tr_source == "Ensembl"%}
+  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
+  <td>
+<a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Location/View?db=core;r={{transcript_details.loc_region}}:{{transcript_details.loc_start}}-{{transcript_details.loc_end}};t={{transcript_details.stable_id}}">
+{{transcript_details.loc_region}}:{{transcript_details.loc_start}}-{{transcript_details.loc_end}}
+</td>
+ {% endwith %}
+ {% else %} 
 <td>{{transcript.loc_region}}:{{transcript.loc_start}}..{{transcript.loc_end}}</td>
+{% endif %} 
+
 <td>{{transcript.mane_transcript}}</td>
 <td>{{transcript.mane_transcript_type}}</td>
 
