@@ -374,11 +374,11 @@ $(document).ready(function() {
 <td>
  {% if tr_source == "Ensembl"%}
  {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
- {{release_date.max_release_datename_value}}
+ {{release_date.min_release_datename_value}}
  {% endwith %}
   {% else %}
   {% with transcript.transcript_release_set|format_release_set:"refseq" as release_date %}
- {{release_date.max_release_datename_value}}
+ {{release_date.min_release_datename_value}}
  {% endwith %}
  
  {% endif %}
