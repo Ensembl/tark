@@ -25,7 +25,6 @@ from django.db.models.aggregates import Max
 from django.conf import settings
 from assembly.models import Assembly
 from django.db.models import Q
-from django.db.models import Prefetch
 from transcript.models import Transcript
 from django.db import connection
 
@@ -183,6 +182,15 @@ class ReleaseUtils(object):
                     source_loading_stats[source_name] = [json.loads(rso.json)]
 
         return source_loading_stats
+
+    @classmethod
+    def dictfetchall(cls, cursor):
+        "Return all rows from a cursor as a dict"
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
 
     @classmethod
     def get_features_gained(cls, feature, current_release, previous_release):

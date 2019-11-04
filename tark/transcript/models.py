@@ -78,7 +78,7 @@ class Transcript(models.Model):
                 logger.error("Exception from  get_mane_transcript " + str(e))
 
         if "Ensembl" in source:
-            raw_sql = "SELECT \
+            raw_sql = "SELECT DISTINCT\
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
                         relationship_type.shortname as mane_type,\
                         t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
@@ -93,7 +93,7 @@ class Transcript(models.Model):
                         JOIN relationship_type ON \
                         transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id"
         else:
-            raw_sql = "SELECT \
+            raw_sql = "SELECT DISTINCT\
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
                         relationship_type.shortname as mane_type,\
                         t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version \
@@ -121,7 +121,7 @@ class Transcript(models.Model):
 
                 return mane_transcript_dict
         else:
-            raw_sql = "SELECT \
+            raw_sql = "SELECT DISTINCT\
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,\
                         relationship_type.shortname as mane_type,\
                         t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version,\
