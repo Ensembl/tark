@@ -14,10 +14,10 @@
 {% with diff_result.diff_with_transcript.translations as diff_with_tl %}
 {% with diff_result.results as diff_result %}
 
-<tr style="background-color: #60a3bc;color:#ffffff">
+<tr style="background-color: #303952;color:#ffffff">
      <th style="width:20%">Translation</th>
-     <th style="width:35%">COMPARE ME ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</th>
-     <th style="width:35%">COMPARE WITH ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</th>
+     <th style="width:35%"><span class="badge" style="background-color:#5bc0de;color:#303952;">T1 ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}}) </span></th>
+     <th style="width:35%"><span class="badge" style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}}) </span></th>
     <th style="text-align:center;width:10%;">MATCH</th>
 </tr>
 <tr>
