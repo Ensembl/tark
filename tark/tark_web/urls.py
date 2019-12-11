@@ -25,7 +25,7 @@ from transcript.views import TranscriptDatatableView
 from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
 from sequence.views import align_sequence, check_service_status,\
-    align_cds_sequence
+    align_cds_sequence, call_align_sequence_clustal
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set
 from tark_web.views import statistics
@@ -54,6 +54,9 @@ urlpatterns = [
     url(r'^alignsequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w\-\.]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w\-\.]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
         align_sequence, name='align_sequence'),
 
+
+    url(r'^call_align_sequence_clustal/$',
+        call_align_sequence_clustal, name='call_align_sequence_clustal'),
 
     url(r'^aligncdssequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w\-\.]+)/(?P<stable_id_version_a>[\w]+)/(?P<release_short_name_a>[\w]+)/(?P<assembly_name_a>[\w]+)/(?P<source_name_a>[\w]+)/(?P<stable_id_b>[\w\-\.]+)/(?P<stable_id_version_b>[\w]+)/(?P<release_short_name_b>[\w]+)/(?P<assembly_name_b>[\w]+)/(?P<source_name_b>[\w]+)/(?P<cds_type>[\w]+)/(?P<output_format>[\w]+)/',
         align_cds_sequence, 
