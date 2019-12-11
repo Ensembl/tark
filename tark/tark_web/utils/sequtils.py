@@ -31,7 +31,7 @@ import requests
 from translation.models import Translation
 from tark.utils.exon_utils import ExonUtils
 from exon.models import Exon
-from xmltramp2 import xmltramp
+
 try:
     from urllib.parse import urlparse, urlencode
     from urllib.request import urlopen, Request
@@ -209,7 +209,7 @@ class TarkSeqUtils(object):
             jobId = unicode(reqH.read(), u'utf-8')
             reqH.close()
         except HTTPError as ex:
-            print(xmltramp.parse(unicode(ex.read(), u'utf-8'))[0][0])
+            print(ex)
 
         return jobId
 
