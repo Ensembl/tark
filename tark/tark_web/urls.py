@@ -27,7 +27,7 @@ from exon.views import ExonDatatableView
 from sequence.views import align_sequence, check_service_status,\
     align_cds_sequence, call_align_sequence_clustal
 from release.views import ReleaseSetDatatableView
-from tark_web.views import datatable_view_release_set
+from tark_web.views import datatable_view_release_set, feature_diff
 from tark_web.views import statistics
 from django.views.generic.base import TemplateView
 
@@ -112,6 +112,12 @@ urlpatterns = [
     ),
 
     url(
+        r'statistics/(?P<feature>[\w]+)/(?P<from_release>[\w]+)/(?P<to_release>[\w]+)/(?P<source>[\w]+)/(?P<direction>[\w]+)',
+        feature_diff,
+        name="feature_diff"
+    ),
+
+    url(
         r'statistics',
         statistics,
         name="statistics"
@@ -129,7 +135,7 @@ urlpatterns = [
             template_name='mane_list.html'
         )
     ),
-    url(
+     url(
         r'^view_alignment/$',
         TemplateView.as_view(
             template_name='alignment_viewer.html'

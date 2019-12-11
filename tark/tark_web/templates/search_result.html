@@ -44,7 +44,7 @@ function get_query_params(row){
             transcript_release = transcript_release.substring(1,4);
             //console.log(' From e ' + transcript_release);
             }else if (transcript_release.startsWith("r")){
-            transcript_release = transcript_release.substring(1,4);
+            transcript_release = transcript_release.substring(1,13);
             //console.log('From r ' + transcript_release)
             }
             else{
@@ -63,13 +63,13 @@ function get_multi_diff_result_summary(multi_payload_data){
 		
 		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
 		
-        var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #4b6584;color:#ffffff" !important;">' + 
-        				 '<strong><span class="glyphicon glyphicon-shopping-cart" style="float:left;font-size: 20px;">'+ parseInt(payload_data_tr2_list.length+1) + '</span>TRANSCRIPT DETAILS (Click on "Compare" button below to COMPARE THE TWO TRANSCRIPTS in detail)</strong>' + '</div>';
+        var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff" !important;">' + 
+        				 '<strong><span class="glyphicon glyphicon-shopping-cart" style="float:left;font-size: 20px;">'+ parseInt(payload_data_tr2_list.length+1) + ' selected</span>TRANSCRIPT DETAILS (Click on "Compare" button below to COMPARE THE TWO TRANSCRIPTS in detail)</strong>' + '</div>';
         				 
         var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
         
         table_div += "<tr><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Location</th><th>Compare</th></tr>";
-        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#42d4f4'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#5bc0de'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
         table_div += "<td>" + payload_data_tr1['transcript1_location_str'] + "</td>";
         table_div += "<td></td></tr>";
        
@@ -120,7 +120,7 @@ function get_multi_diff_result_summary(multi_payload_data){
 //get multi transcript table
 function get_multi_transcript_table(all_trancripts_details){
 
-    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #4b6584;color:#ffffff" !important;">' + 
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff" !important;">' + 
         				 '<strong>TRANSCRIPT DETAILS</strong>' + '</div>';
         				 
         var table_div = "<table id='multi_tr_details' class='table table-bordered table-striped table-condensed'>";
@@ -130,7 +130,7 @@ function get_multi_transcript_table(all_trancripts_details){
 		$.each(all_trancripts_details, function( index, current_transcript ) {
 			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
@@ -160,7 +160,7 @@ function get_multi_gene_table(all_trancripts_details){
 			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
 			
   			if (index == 0){
-   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
@@ -180,7 +180,7 @@ function get_multi_gene_table(all_trancripts_details){
 //get multi translation table
 function get_multi_translation_table(all_trancripts_details){
 
-    var header_div = '<div id="multi_summary_tl_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #60a3bc;color:#ffffff !important;">' + 
+    var header_div = '<div id="multi_summary_tl_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff !important;">' + 
         				 '<strong>TRANSLATION DETAILS</strong>' + '</div>';
         				 
         var table_div = "<table id='multi_tl_details' class='table table-bordered table-striped table-condensed'>";
@@ -191,7 +191,7 @@ function get_multi_translation_table(all_trancripts_details){
   			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
 
   			if (index == 0){
-   			table_div += "<tr style='background-color:#42d4f4' id='" +  div_stable_id + "' >";
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
   			}else{
   			table_div += "<tr id='" +  div_stable_id + "' >";
   			}
@@ -392,7 +392,7 @@ $(document).ready(function() {
     $('#search_result_table tbody').on('click', 'input[name*="transcript1"]', function(e){
         if( $(this).is(":checked") ){ // check if the radio is checked
             var row = $(this).parent().parent();
-            row.css('background-color','#42d4f4');
+            row.css('background-color','#5bc0de');
             row.siblings().css('background-color','');
             payload_data_tr1 = get_payload_data(row, 'transcript1');
          }
@@ -517,10 +517,10 @@ $(document).ready(function() {
          $("[id=" + tr2_row_id + "]").siblings().css('background-color','');
          
          //retain the same background for the first transcript
-         $("#query_diff tr:nth-child(2)").css('background-color','#42d4f4');
-         $("#multi_tr_details tr:nth-child(2)").css('background-color','#42d4f4');
-         $("#multi_gene_details tr:nth-child(2)").css('background-color','#42d4f4');
-         $("#multi_tl_details tr:nth-child(2)").css('background-color','#42d4f4');
+         $("#query_diff tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_tr_details tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_gene_details tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_tl_details tr:nth-child(2)").css('background-color','#5bc0de');
          
          tr2_stable_id = tr2_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
          tr2_assembly = tr2_row.find("td:nth-child(2)").text().trim(); 
@@ -615,7 +615,7 @@ $(document).ready(function() {
        {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
          <td>{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% elif "LRG" in result.transcript_release_set|get_values_as_list:"source" %}
-       <td class="text-success">RefSeq</td>
+       <td class="text-success">LRG</td>
        {% else %}
         <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
        {% endif %}
