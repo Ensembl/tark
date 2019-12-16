@@ -19,7 +19,11 @@
 from django.shortcuts import render  # @UnusedImport
 from tark_web.utils.sequtils import TarkSeqUtils
 import urllib
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from setuptools.dist import sequence
+import io
 
 
 # Create your views here.
@@ -44,6 +48,53 @@ def align_sequence(request, feature_type, stable_id_a, stable_id_version_a, stab
     return render(request, 'alignment_viewer.html', context={'status': status,
                                                              'jobId': jobId,
                                                              })
+
+
+# Create your views here.
+@csrf_exempt
+def call_align_sequence_clustal(request):
+
+    if request.method == "POST":
+        data = request.body
+        body_unicode = data.decode('utf-8')
+
+        body = json.loads(body_unicode)
+        transcript_list = body['payload_data_list']
+        first_transcript = transcript_list.pop(0)
+        (first_tr_stable_id, first_tr_stable_id_version) = first_transcript['transcript1_stable_id'].split('.')
+
+        sequence_tr1 = TarkSeqUtils.fetch_fasta_sequence(request, "transcript", first_tr_stable_id,
+                                                         first_tr_stable_id_version,
+                                                         release_short_name=first_transcript['transcript1_release'],
+                                                         assembly_name=first_transcript['transcript1_assembly'],
+                                                         source_name=first_transcript['transcript1_source'])
+
+        output = io.StringIO()
+        output.write(sequence_tr1)
+        for transcript in transcript_list:
+            (tr_stable_id, tr_stable_id_version) = transcript['transcript2_stable_id'].split('.')
+            sequence_tr = TarkSeqUtils.fetch_fasta_sequence(request, "transcript", tr_stable_id,
+                                                            tr_stable_id_version,
+                                                            release_short_name=transcript['transcript2_release'],
+                                                            assembly_name=transcript['transcript2_assembly'],
+                                                            source_name=transcript['transcript2_source'])
+            print(sequence_tr, file=output, end="")
+
+        seq_data = output.getvalue()
+
+        pay_load = {'sequence': seq_data,
+                    'outfmt': 'clustal', 'stype': 'dna', 'email': 'prem@ebi.ac.uk',
+                    'title': "Results from Clustal Multiple Sequence alignment"}
+
+        encoded_pay_load = urllib.parse.urlencode(pay_load).encode("utf-8")
+        jobId = TarkSeqUtils.serviceRunClustal(encoded_pay_load)
+
+        # jobId= "clustalo-R20191210-155816-0727-14316613-p1m"
+        if jobId:
+            status = TarkSeqUtils.serviceGetStatus(jobId)
+
+        data = {'status': status, 'jobId': jobId}
+        return JsonResponse(data)
 
 
 def align_cds_sequence(request, feature_type,

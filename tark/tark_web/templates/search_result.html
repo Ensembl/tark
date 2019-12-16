@@ -325,6 +325,31 @@ function printData()
 });
 }
 
+
+//for get_multiple_sequence_alignment
+function get_multiple_sequence_alignment(multi_payload_data){
+		
+		//console.log("====payload========");
+		//console.log(multi_payload_data);
+		//console.log("====payload========");
+	var post_data = {"payload_data_list": multi_payload_data};
+	       $("#loadingSpinner_qs1_qs2").show();
+	$.ajax({
+    url:'/web/call_align_sequence_clustal/',
+    type: "POST",
+    data: JSON.stringify(post_data),
+    success:function(response){
+     var jobId = response.jobId;
+     //window.location.href ="https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + jobId + "/aln-clustal";
+     //window.location.href ="https://www.ebi.ac.uk/Tools/services/web/toolresult.ebi?jobId=" + jobId + "&analysis=alignments";
+     window.open("https://www.ebi.ac.uk/Tools/services/web/toolresult.ebi?jobId=" + jobId + "&analysis=alignments", '_blank');
+    },
+    complete:function(){$("#loadingSpinner_qs1_qs2").hide();},
+    error:function (xhr, textStatus, thrownError){}
+});
+}
+
+
 $(document).ready(function() {
   
     var search_table = $('#search_result_table').DataTable(
@@ -373,14 +398,40 @@ $(document).ready(function() {
          }
     });
     
+    //var payload_data_tr2_list = [];
+    //var payload_data_tr2 = {};
+    
+    //for multiple sequence alignment
+     $("#multiple_sequence_alignment").click(function (e) {
+
+    var payload_data ={};
+    var multi_payload_data = {};
     var payload_data_tr2_list = [];
     var payload_data_tr2 = {};
+
+        e.preventDefault();
+        var $checkbox = $('#search_result_table tbody').find('input[name*="transcript2"]');
+        
+         $checkbox.each(function(e){
+          if($(this).is(':checked') ){
+            var row = $(this).parent().parent();   
+            payload_data_tr2 = get_payload_data(row, 'transcript2');
+            payload_data_tr2_list.push(payload_data_tr2);
+          
+          }
+        });
+        
+        if (payload_data_tr2_list.length > 0){
+         payload_data_tr2_list.unshift(payload_data_tr1);
+         get_multiple_sequence_alignment(payload_data_tr2_list);
+        
+        }else{
+         $('#myModal').modal('show');
+        }
+      });
+    // end multiple sequence alignment
     
-    
-    
-   // var payload_data ={};
-   // var multi_payload_data = {};
-    $("#search_diff_transcript").click(function (e) {
+     $("#search_diff_transcript").click(function (e) {
 
     var payload_data ={};
     var multi_payload_data = {};
@@ -612,6 +663,7 @@ $(document).ready(function() {
   
   </table>
   <button type="submit" id="search_diff_transcript" class="btn btn-info">Compare Transcripts</button>
+  <button type="submit" id="multiple_sequence_alignment" class="btn btn-success">Multiple Sequence Alignment</button>
   <a id="search_button" class="btn btn-primary" href="/">New Search</a>
   <button type="submit" id="clear_button" class="btn btn-warning" >Clear Selection</button>
     
@@ -660,6 +712,9 @@ $(document).ready(function() {
  <div class="row" id="div_summary_diff_qs1_qs2_results" >
  <div id="summary_diff_qs1_qs2" class="col-md-12">  </div>
  </div>
+ 
+ 
+	
  
 </div>
 

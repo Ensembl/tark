@@ -31,6 +31,7 @@ import requests
 from translation.models import Translation
 from tark.utils.exon_utils import ExonUtils
 from exon.models import Exon
+
 try:
     from urllib.parse import urlparse, urlencode
     from urllib.request import urlopen, Request
@@ -172,12 +173,33 @@ class TarkSeqUtils(object):
 
         return sequence
 
-    # Submit job
+    # Submit job pairwise
     @classmethod
     def serviceRun(cls, requestData):
         # Errors are indicated by HTTP status codes.
         try:
             requestUrl = baseUrl + u'/run/'
+            # Set the HTTP User-agent.
+            user_agent = cls.getUserAgent()
+            http_headers = {u'User-Agent': user_agent}
+            req = Request(requestUrl, None, http_headers)
+            # Make the submission (HTTP POST).
+            reqH = urlopen(req, requestData)
+            jobId = unicode(reqH.read(), u'utf-8')
+            reqH.close()
+        except HTTPError as ex:
+            print(ex)
+
+        return jobId
+
+    @classmethod
+    def serviceRunClustal(cls, requestData):
+
+        baseUrlClustal = u'https://www.ebi.ac.uk/Tools/services/rest/clustalo'
+
+        requestUrl = baseUrlClustal + u'/run/'
+
+        try:
             # Set the HTTP User-agent.
             user_agent = cls.getUserAgent()
             http_headers = {u'User-Agent': user_agent}
