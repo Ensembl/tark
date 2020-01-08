@@ -367,7 +367,7 @@ $(document).ready(function() {
 <td>{{transcript.assembly}}</td>
 {% with transcript_details.transcript_release_set.0 as release_info %}
 {% if "LRG" in tr_source %}
-<td>RefSeq</td>
+<td>LRG</td>
 {% else %}
 <td>{{release_info.source}}</td>
 {% endif %}

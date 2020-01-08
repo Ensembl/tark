@@ -32,6 +32,7 @@ from django.urls.base import resolve
 from tark.utils.exon_utils import ExonUtils
 from tark_web.utils.sequtils import TarkSeqUtils
 from setuptools.dist import sequence
+from django.db import connections, connection
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
@@ -245,6 +246,107 @@ def statistics(request):
         'statistics_view.html',
         context={
             'reports': reports
+        }
+    )
+
+
+def feature_diff(request, feature, from_release, to_release, direction="changed", source="Ensembl"):
+    """
+    Get the list of features that are different between two releases in the context (addition, deletion or
+    change)
+
+    Parameters
+    ----------
+    feature : str
+    version : int
+    direction : str
+        One of gained|removed|changed
+
+    Returns
+    -------
+    count : int
+    """
+    # print("feature {} from_release {}, to_release {}, direction {}, source {} ".format(feature, from_release, to_release, direction, source))
+    sql = """
+        SELECT
+            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version
+        FROM
+            (
+                SELECT
+                    #FEATURE#.stable_id,
+                    #FEATURE#.stable_id_version,
+                    f_tag.feature_id,
+                    rs.shortname,
+                    rs.description,
+                    rs.assembly_id
+                FROM
+                    #FEATURE#
+                    JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                    JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                    JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                WHERE
+                    rs.shortname=%s AND
+                    rst.shortname=%s
+            ) AS v0
+            #DIRECTION# JOIN (
+                SELECT
+                    #FEATURE#.stable_id,
+                    #FEATURE#.stable_id_version,
+                    f_tag.feature_id,
+                    rs.shortname,
+                    rs.description,
+                    rs.assembly_id
+                FROM
+                    #FEATURE#
+                    JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                    JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                    JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                WHERE
+                    rs.shortname=%s AND
+                    rst.shortname=%s
+            ) AS v1 ON (v0.stable_id=v1.stable_id)
+        WHERE
+            #OUTER_WHERE#;
+    """
+
+    sql = sql.replace('#FEATURE#', feature)
+    if direction == 'removed':
+        sql = sql.replace('#DIRECTION#', 'LEFT')
+        sql = sql.replace('#OUTER_WHERE#', 'v1.stable_id IS NULL')
+    elif direction == 'gained':
+        sql = sql.replace('#DIRECTION#', 'RIGHT')
+        sql = sql.replace('#OUTER_WHERE#', 'v0.stable_id IS NULL')
+    else:
+        sql = sql.replace('#DIRECTION#', '')
+        sql = sql.replace(
+            '#OUTER_WHERE#',
+            'v0.stable_id_version!=v1.stable_id_version'
+        )
+
+    # print(sql)
+
+    with connections['tark'].cursor() as cursor:
+        cursor.execute(
+            sql,
+            [
+                str(from_release),
+                source,
+                str(to_release),
+                source,
+            ]
+        )
+        results = ReleaseUtils.dictfetchall(cursor)
+
+    return render(
+        request,
+        'feature_diff_list.html',
+        context={
+            'feature': feature,
+            'from_release': from_release,
+            'to_release': to_release,
+            'source': source,
+            'direction': direction,
+            'results': results
         }
     )
 
