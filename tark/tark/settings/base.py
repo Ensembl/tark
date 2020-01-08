@@ -226,9 +226,9 @@ LOGGING = {
      },
 }
 
-
+SESSION_COOKIE_SAMESITE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
-CURRENT_RELEASE = "95"
+CURRENT_RELEASE = "98"
 DEFAULT_SOURCE = "ensembl"
 INI_FILE = os.path.join(BASE_DIR, '../refseq_loader/management/commands/refseq_source.ini')
