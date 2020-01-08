@@ -601,7 +601,7 @@ $(document).ready(function() {
       <td><input type="radio" name="transcript1"></td>
       <td><input type="checkbox" name="transcript2"></td>
       <td>
-       <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+       <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier|urlencode}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
       </td>
       
        <!--assembly -->
