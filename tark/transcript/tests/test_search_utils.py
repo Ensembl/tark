@@ -81,3 +81,6 @@ class SearchUtilsTest(TestCase):
 
         self.assertEqual(SearchUtils.get_identifier_type("13: 32315474-32400266"),
                          SearchUtils.GENOMIC_LOCATION, "Got the right id_type for " + SearchUtils.GENOMIC_LOCATION)
+
+    def test_get_lrg_id_from_hgnc_name(self):
+        self.assertEqual(SearchUtils.get_lrg_id_from_hgnc_name("COL1A1"), "LRG_1", "Got the right LRG id back")

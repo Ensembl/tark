@@ -33,6 +33,7 @@ from tark.utils.exon_utils import ExonUtils
 from tark_web.utils.sequtils import TarkSeqUtils
 from setuptools.dist import sequence
 from django.db import connections, connection
+from transcript.utils.search_utils import SearchUtils
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
@@ -363,6 +364,13 @@ def transcript_details(request, stable_id_with_version, search_identifier):
         search_result = response.json()
         if "results" in search_result and len(search_result["results"]) > 0:
             transcript_details = search_result["results"][0]
+            if "genes" in transcript_details:
+                gene = transcript_details["genes"][0]
+                gene_name = gene["name"]
+                lrg_id = SearchUtils.get_lrg_id_from_hgnc_name(gene_name)
+                if lrg_id is not None:
+                    gene["lrg_id"] = lrg_id
+                    transcript_details["gene"] = gene
     else:
         logger.error("Error")
 

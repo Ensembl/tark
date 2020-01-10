@@ -15,6 +15,8 @@
    limitations under the License.
 """
 import re
+import requests
+import json
 
 
 class SearchUtils(object):
@@ -176,3 +178,23 @@ class SearchUtils(object):
 
         # default
         return cls.HGNC_SYMBOL
+
+    @classmethod
+    def get_lrg_id_from_hgnc_name(cls, hgnc_name):
+        host_url_root = "https://www.ebi.ac.uk/ebisearch/ws/rest/lrg?query=name:{}&format=json".format(hgnc_name)
+
+        response = requests.get(host_url_root)
+        if response.status_code == 200:
+            search_result_dict = response.json()
+
+            # Output:  {'hitCount': 1, 'entries': [{'id': 'LRG_1', 'source': 'lrg'}], 'facets': []}
+
+            if "hitCount" in search_result_dict and search_result_dict["hitCount"] == 1:
+                if "entries" in search_result_dict:
+                    hit = search_result_dict["entries"][0]
+                    if "id" in hit:
+                        lrg_id = hit["id"]
+                        return lrg_id
+        return None
+            
+            
