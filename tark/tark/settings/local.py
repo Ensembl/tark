@@ -22,6 +22,8 @@ DEBUG = True
 
 DEBUG_TOOLBAR = False
 
+SOFTWARE_RELEASE_TAG = "1.0.0"
+
 if DEBUG:
     INTERNAL_IPS = ('127.0.0.1', 'localhost', 'prem-ml.local')
 

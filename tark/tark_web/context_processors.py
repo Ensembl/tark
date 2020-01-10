@@ -18,6 +18,7 @@
 
 from release.utils.release_utils import ReleaseUtils
 import json
+from django.conf import settings
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -33,6 +34,7 @@ def init_assembly_releases(request):
     current_release = ReleaseUtils.get_latest_release()
     current_assembly = ReleaseUtils.get_latest_assembly()
     source_name = ReleaseUtils.get_default_source()
+    software_release_tag = "1.0.0" if settings.SOFTWARE_RELEASE_TAG is None else settings.SOFTWARE_RELEASE_TAG
 
     init_hash = {"all_assembly_releases": all_assembly_releases,
                  "all_assembly_releases_ensembl": all_assembly_releases_ensembl,
@@ -43,7 +45,8 @@ def init_assembly_releases(request):
                  "assembly_name": current_assembly,
                  'release_name_compare': int(current_release) - 1,
                  'assembly_name_compare': current_assembly,
-                 'source_name': source_name
+                 'source_name': source_name,
+                 'software_release_tag': software_release_tag
                  }
 
     return init_hash
