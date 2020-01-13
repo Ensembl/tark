@@ -24,10 +24,10 @@ git clone https://github.com/Ensembl/tark.git
 
 ```
 
-Create the Python environment
+Create the Python environment (using virtualenv or python3 -m venv or any environment tool)
 
 ```
-mkvirtualenv tarkenv
+mkvirtualenv tarkenv 
 workon tarkenv
 
 cd tark
