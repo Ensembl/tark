@@ -24,8 +24,37 @@ DEBUG_TOOLBAR = False
 
 SOFTWARE_RELEASE_TAG = "1.0.0"
 
+# Update this and include the vm host name while deployment
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+# Uncomment and update this while deploying it to apache server, this is where the static files will be copied
+# STATIC_ROOT = 
+
+# Point this to somewhere writable
+LOG_FILE = os.path.join(BASE_DIR, '../../logs/tark.log')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+     },
+}
+
+
+
 if DEBUG:
-    INTERNAL_IPS = ('127.0.0.1', 'localhost', 'prem-ml.local')
+    INTERNAL_IPS = ('127.0.0.1', 'localhost')
 
 if DEBUG_TOOLBAR:
     MIDDLEWARE += (

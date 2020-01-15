@@ -26,8 +26,6 @@ SECRET_KEY = '(=tzgu^(%+h6g9q!e3t7ne-m_+w3i8=w#k$r2so0)tl56b##6y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
 DATABASE_ROUTERS = ['tark.routers.TarkRouter']
 
 # Application definition
@@ -115,7 +113,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'tark_django_manager',
             'USER': secrets.DATABASE_USER,
-            'PASSWORD': '',
+            'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
             'OPTIONS': {
@@ -126,7 +124,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': secrets.DATABASE_NAME,
             'USER': secrets.DATABASE_USER,
-            'PASSWORD': '',
+            'PASSWORD': secrets.DATABASE_PASSWORD,
             'HOST': secrets.DATABASE_HOST,
             'PORT': secrets.DATABASE_PORT,
         }
@@ -204,31 +202,8 @@ SWAGGER_SETTINGS = {
     'VALIDATOR_URL': None,
 }
 
-# point this to somewhere writable
-LOG_FILE = os.path.join(BASE_DIR, '../../logs/tark.log')
-print(LOG_FILE)
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': LOG_FILE,
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-     },
-}
 
 SESSION_COOKIE_SAMESITE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
-CURRENT_RELEASE = "98"
 DEFAULT_SOURCE = "ensembl"
-INI_FILE = os.path.join(BASE_DIR, '../refseq_loader/management/commands/refseq_source.ini')
