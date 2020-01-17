@@ -22,7 +22,7 @@ DEBUG = True
 
 DEBUG_TOOLBAR = False
 
-SOFTWARE_RELEASE_TAG = "1.0.0"
+SOFTWARE_RELEASE_TAG = "1.0.1"
 
 # Update this and include the vm host name while deployment
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
