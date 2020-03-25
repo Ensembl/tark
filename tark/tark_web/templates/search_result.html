@@ -14,21 +14,21 @@
 function get_query_params(row){
 
             transcript_stable_id = row.find("td:nth-child(3)").text().trim(); // Finds the 3rd <td> element
-            transcript_assembly = row.find("td:nth-child(4)").text().trim(); 
-            transcript_source = row.find("td:nth-child(5)").text().trim();
+            transcript_assembly = row.find("td:nth-child(5)").text().trim();
+            transcript_source = row.find("td:nth-child(6)").text().trim();
             
             //location
-            transcript_region = row.find("td:nth-child(8)").text().trim();
-            transcript_start = row.find("td:nth-child(9)").text().trim();
-            transcript_end = row.find("td:nth-child(10)").text().trim();
-            transcript_strand = row.find("td:nth-child(11)").text().trim();
+            transcript_region = row.find("td:nth-child(9)").text().trim();
+            transcript_start = row.find("td:nth-child(10)").text().trim();
+            transcript_end = row.find("td:nth-child(11)").text().trim();
+            transcript_strand = row.find("td:nth-child(12)").text().trim();
             transcript_location_str = transcript_region + ':' + transcript_start + '-' + transcript_end;
             transcript_length = transcript_end - transcript_start + 1;
             transcript_strand = transcript_strand==1 ? "positive" : "reverse"
             transcript_location_str += ' (' +  transcript_length + ' bp) ' + transcript_strand + ' strand';
             
             
-            transcript_release = row.find("td:nth-child(7)").text().trim(); 
+            transcript_release = row.find("td:nth-child(8)").text().trim();
             transcript_releases = [];
             if (typeof transcript_release != "undefined") {
             transcript_releases = transcript_release.split('-');
@@ -53,7 +53,7 @@ function get_query_params(row){
             
             //get location
             
-            //console.log(transcript_release);
+            //console.log(transcript_stable_id, transcript_assembly, transcript_source, transcript_release, transcript_location_str);
             return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release, transcript_location_str];
 }
 
@@ -181,7 +181,7 @@ function get_multi_gene_table(all_trancripts_details){
 function get_multi_translation_table(all_trancripts_details){
 
     var header_div = '<div id="multi_summary_tl_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff !important;">' + 
-        				 '<strong>TRANSLATION DETAILS</strong>' + '</div>';
+        '<strong>PROTEIN DETAILS</strong>' + '</div>';
         				 
         var table_div = "<table id='multi_tl_details' class='table table-bordered table-striped table-condensed'>";
         
@@ -373,7 +373,7 @@ $(document).ready(function() {
             });          
         },
      
-    "order": [[ 10, "desc" ], [ 3, "desc" ], [ 5, "desc" ]],
+    "order": [[ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
@@ -581,6 +581,7 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="false">T1</th>
      <th class="text-center" data-sortable="false">T2</th>
      <th class="text-center" data-sortable="true">Transcript StableID</th>
+     <th class="text-center" data-sortable="true">Symbol</th>
      <th class="text-center" data-sortable="true">Assembly</th>
      <th class="text-center" data-sortable="true">Source</th>
      <th class="text-center" data-sortable="true">From Release</th>
@@ -592,7 +593,7 @@ $(document).ready(function() {
      <th class="text-center" data-sortable="true">Translation StableID</th>
      <th class="text-center" data-sortable="true" title="Closest match from other source">Match</th>
      <th class="text-center" data-sortable="true" title="Match type">TYPE</th>
-     <th class="text-center" data-sortable="true">Symbol</th>
+
 
   </tr>
  </thead>
@@ -603,6 +604,8 @@ $(document).ready(function() {
       <td>
        <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier|urlencode}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
       </td>
+
+      <td><a href="/web/search/?identifier={{result.genes|get_values_as_list:"name"}}">{{result.genes|get_values_as_list:"name"}}</a></td>
       
        <!--assembly -->
        {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
@@ -656,7 +659,7 @@ $(document).ready(function() {
       <td>{{result.translations.0.stable_id}}.{{result.translations.0.stable_id_version}}</td>
       <td>{{result.mane_transcript}}</td>
       <td>{{result.mane_transcript_type}}</td>
-      <td><a href="/web/search/?identifier={{result.genes|get_values_as_list:"name"}}">{{result.genes|get_values_as_list:"name"}}</a></td>
+
        </tr>
     {% endfor %}
 

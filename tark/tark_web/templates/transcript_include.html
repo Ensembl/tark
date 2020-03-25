@@ -38,13 +38,13 @@
 <td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_with_tr.stable_id}}"> {{diff_with_tr.stable_id}} </a> </td>
 {% endif %}
 
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_changed %}</td>
+<td style="text-align:center; background-color: #D3D3D3;"> N/A </td>
 </tr>
 <tr>
 <td>StableID Version</td>
 <td>{{ diff_me_tr.stable_id_version }} </td>
 <td>{{ diff_with_tr.stable_id_version }}</td>
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_stable_id_version_changed %}</td>
+<td style="text-align:center; background-color: #D3D3D3;"> N/A </td>
 </tr>
 <tr>
 <td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
