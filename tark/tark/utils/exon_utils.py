@@ -213,12 +213,31 @@ class ExonUtils(object):
 
             cds_info['cds_seq'] = None
             if 'sequence' in transcript and 'sequence' in transcript['sequence']:
+                transcript['sequence']['sequence'] = (cls.remove_polyA_tail(transcript['sequence']['sequence'], last_exon['sequence']))
                 cds_seq = cls.get_cds_sequence(transcript['sequence']['sequence'],
                                                cds_info['five_prime_utr_length'],
                                                cds_info['three_prime_utr_length'])
                 cds_info['cds_seq'] = cds_seq
 
         return cds_info
+
+    @classmethod
+    def remove_polyA_tail(cls, transcript_sequence, last_exon_sequence):
+
+        cdna_length = len(transcript_sequence)
+        last_exon_length = len(last_exon_sequence)
+
+        last_exon_seq_start_position = transcript_sequence.find(last_exon_sequence)
+
+        polyA_tail_length = cdna_length - (last_exon_seq_start_position + last_exon_length)
+
+        if polyA_tail_length > 0:
+            polya_tail_truncated_seq = transcript_sequence[:-polyA_tail_length]
+        else:
+            polya_tail_truncated_seq = transcript_sequence
+
+        return polya_tail_truncated_seq
+
 
     @classmethod
     def get_cds_sequence(cls, sequence_data, five_prime_utr_len=0, three_prime_utr_len=0):
