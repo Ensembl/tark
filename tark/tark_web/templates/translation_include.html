@@ -7,7 +7,10 @@
 <!-- Translation include -->
 
 {% if diff_result.diff_me_transcript.translations %}
+
 <table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
+
+
 {% with diff_result.diff_me_transcript as diff_me_tr %}
 {% with diff_result.diff_with_transcript as diff_with_tr %}
 {% with diff_result.diff_me_transcript.translations as diff_me_tl %}
@@ -20,6 +23,8 @@
      <th style="width:35%"><span class="badge" style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}}) </span></th>
     <th style="text-align:center;width:10%;">MATCH</th>
 </tr>
+
+
 <tr>
 <td>StableID</td>
 {% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
@@ -38,11 +43,18 @@
 <td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_with_tl.stable_id}}"> {{diff_with_tl.stable_id}} </a> </td>
 {% endif %}
 
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_changed %}</td>
+<td style="text-align:center"> </td>
 </tr>
+
+
 <tr>
-<td>StableID Version</td><td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td><td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_stable_id_version_changed %}</td>
+<td>StableID Version</td>
+    <td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td>
+    <td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td>
+    <td style="text-align:center"> </td>
 </tr>
+
+
 
 {% with diff_me_tr.cds_info.cds_seq as diff_me_tr_cds_sequence %}
 {% with diff_with_tr.cds_info.cds_seq as diff_with_tr_cds_sequence %}
@@ -58,6 +70,8 @@
 <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
 {% endif %}
 </tr>
+
+
 
 <tr style="color:#cd6839">
 <td>5'UTR Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="five_prime" %}</td>
@@ -95,6 +109,8 @@
 <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
 {% endif %}
 </tr>
+
+
 
 <tr style="color:#cd6839">
 <td>3'UTR Location</td>
