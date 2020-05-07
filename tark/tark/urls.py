@@ -71,6 +71,8 @@ urlpatterns = [
         {"hostname": "http://" + HOSTNAME}, name="tark_help"),
     url(r'^privacy_notice_tark', TemplateView.as_view(template_name='privacy_notice_tark.html'),
         name="privacy_notice_tark"),
+    url(r'^robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'),
+        name="robots_file"),
 
 ]
 
