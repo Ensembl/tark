@@ -35,7 +35,7 @@ def format_release_set(search_result, source):
     elif "refseq" in source:
         prefix = "r"
 
-    sorted_release_dict = sorted(release_dict)
+    sorted_release_dict = sorted(release_dict, key=int)
     if len(sorted_release_dict) == 1:
         min_release_shortname = sorted_release_dict[0]
         min_release_date = release_dict[min_release_shortname]
