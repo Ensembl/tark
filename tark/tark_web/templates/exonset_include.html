@@ -25,205 +25,121 @@
 
 <!--diffme2diffwith -->
 <div>
+    {% if diff_result.exonsets_diffme2diffwith %}
+        {% with diff_result.diff_with_transcript.exons as diff_with_exons %}
+            <table id="exonset_diff" class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr style="background-color: #303952;color:#ffffff">
+                <th>ExonSet1 from <span class="badge"
+                                        style="background-color:#5bc0de;color:#303952;">{{ diff_result.diff_me_transcript.stable_id }}.{{ diff_result.diff_me_transcript.stable_id_version }} </span>
+                </th>
+                <th>Location</th>
+                <th>Overlaps</th>
+                <th>ExonSet2 from <span class="badge"
+                                        style="background-color:#B3D1FF;color:#303952;">{{ diff_result.diff_with_transcript.stable_id }}.{{ diff_result.diff_with_transcript.stable_id_version }}</span>
+                </th>
+                <th>Location</th>
+                <th>LocMatch</th>
+                <th>SeqMatch</th>
+                <th>Align</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if diff_result.exonsets_diffme2diffwith.0.0 == "cumulative_overlap_score" and diff_result.exonsets_diffme2diffwith.0.1 == 0 %}
+                <tr>
+                    <td colspan="7">
+                        {{ diff_with_exons }} No overlapping exons
+                    </td>
+                </tr>
 
-    {% with diff_result.diff_me_transcript as diff_me_tr %}
-        {% with diff_result.diff_with_transcript as diff_with_tr %}
+            {% else %}
+                {% for diff_me_exon, diff_with_exons in exonsets_diff %}
 
-            {% if diff_result.exonsets_diffme2diffwith %}
-                {% with diff_result.exonsets_diffme2diffwith as exonsets_match_diffme2diffwith %}
-                    {% with diff_result.diff_me_transcript.exons as diff_me_exons %}
-                        {% with diff_result.exonsets_diffwith2diffme as exonsets_match_diffwith2diffme %}
-                            {% with diff_result.diff_with_transcript.exons as diff_with_exons %}
-                                <table id="exonset_diff" class="table table-bordered table-striped table-condensed">
-                                <thead>
-                                <tr style="background-color: #303952;color:#ffffff">
-                                    <th>ExonSet1 from <span class="badge"
-                                                            style="background-color:#5bc0de;color:#303952;">{{ diff_result.diff_me_transcript.stable_id }}.{{ diff_result.diff_me_transcript.stable_id_version }} </span>
-                                    </th>
-                                    <th>Location</th>
-                                    <th>Overlaps</th>
-                                    <th>ExonSet2 from <span class="badge"
-                                                            style="background-color:#B3D1FF;color:#303952;">{{ diff_result.diff_with_transcript.stable_id }}.{{ diff_result.diff_with_transcript.stable_id_version }}</span>
-                                    </th>
-                                    <th>Location</th>
-                                    <th>LocMatch</th>
-                                    <th>SeqMatch</th>
-                                    <th>Align</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                    {% with diff_with_exons.0 as diff_with_exon %}
 
-                                {% if exonsets_match_diffme2diffwith.0.0 == "cumulative_overlap_score" and exonsets_match_diffme2diffwith.0.1 == 0 %}
-                                    <tr>
-                                        <td colspan="7">
-                                            {{ diff_with_exons }} No overlapping exons
-                                        </td>
-                                    </tr>
-
+                        {% if diff_me_exon != "cumulative_overlap_score" %}
+                            <tr>
+                                {% if diff_me_exon.stable_id and not reversed %}
+                                    <td>{{ diff_me_exon.stable_id }}.{{ diff_me_exon.stable_id_version }}
+                                        ({{ diff_me_exon.exon_order }})
+                                        {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version release_short_name=diff_result.diff_me_transcript.transcript_release_set.shortname assembly_name=diff_result.diff_me_transcript.transcript_release_set.assembly source_name=diff_result.diff_me_transcript.transcript_release_set.source output_format="raw" %}
+                                    </td>
+                                    <td> {{ diff_me_exon|get_location_string:'True'}}</td>
+                                {% elif diff_with_exon.overlapping_exon.stable_id and reversed %}
+                                    <td>{{ diff_with_exon.overlapping_exon.stable_id }}.{{ diff_with_exon.overlapping_exon.stable_id_version }}
+                                        ({{ diff_with_exon.overlapping_exon.exon_order }})
+                                        {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version release_short_name=diff_result.diff_with_transcript.transcript_release_set.shortname assembly_name=diff_result.diff_with_transcript.transcript_release_set.assembly source_name=diff_result.diff_with_transcript.transcript_release_set.source output_format="raw" %}</td>
+                                    <td>
+                                        {{ diff_with_exon.overlapping_exon|get_location_string:'True'}}</td>
+                                    </td>
                                 {% else %}
-                                    {% if exonsets_match_diffme2diffwith|length >= exonsets_match_diffwith2diffme|length %}
-                                        {% for diff_me_exon, diff_with_exons in exonsets_match_diffme2diffwith %}
-
-                                            {% with diff_with_exons.0 as diff_with_exon %}
-
-                                                {% if diff_me_exon != "cumulative_overlap_score" %}
-                                                    <tr>
-                                                        {% if diff_me_exon.stable_id %}
-                                                            <td>{{ diff_me_exon.stable_id }}.{{ diff_me_exon.stable_id_version }}
-                                                                ({{ diff_me_exon.exon_order }})
-                                                                {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source output_format="raw" %}
-                                                            </td>
-                                                            <td> {{ diff_me_exon|get_location_string:'True'}}</td>
-                                                        {% else %}
-                                                            <td></td>
-                                                            <td></td>
-                                                        {% endif %}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.overlapping_exon.stable_id and diff_me_exon.assembly == diff_with_exon.overlapping_exon.assembly %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% else %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        {% if diff_with_exon.overlapping_exon.stable_id %}
-                                                            <td>{{ diff_with_exon.overlapping_exon.stable_id }}.{{ diff_with_exon.overlapping_exon.stable_id_version }}
-                                                                ({{ diff_with_exon.overlapping_exon.exon_order }})
-                                                                {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source output_format="raw" %}</td>
-                                                            <td>
-                                                                {{ diff_with_exon.overlapping_exon|get_location_string:'True'}}</td>
-                                                            </td>
-                                                        {% else %}
-                                                            <td></td>
-                                                            <td></td>
-                                                        {% endif %}
-
-
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.loc_checksum == False %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% elif diff_with_exon.loc_checksum == True %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.seq_checksum == False %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% elif diff_with_exon.seq_checksum == True %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        {% if diff_with_exon.overlapping_exon.stable_id %}
-                                                            <td class="text-center">
-                                                                {% include "align_button_include.html" with feature_type="exon" stable_id_a=diff_me_exon.stable_id stable_id_version_a=diff_me_exon.stable_id_version stable_id_b=diff_with_exon.overlapping_exon.stable_id stable_id_version_b=diff_with_exon.overlapping_exon.stable_id_version input_type="dna" outut_format="pair" %}
-                                                            </td>
-                                                        {% else %}
-                                                            <td></td>
-                                                        {% endif %}
-                                                    </tr>
-
-                                                {% endif %}
-                                            {% endwith %}
-
-                                        {% endfor %}
-                                    {% else %}
-                                        {% for diff_me_exon, diff_with_exons in exonsets_match_diffwith2diffme %}
-
-                                            {% with diff_with_exons.0 as diff_with_exon %}
-
-                                                {% if diff_me_exon != "cumulative_overlap_score" %}
-                                                    <tr>
-
-                                                        {% if diff_with_exon.overlapping_exon.stable_id %}
-                                                            <td>{{ diff_with_exon.overlapping_exon.stable_id }}.{{ diff_with_exon.overlapping_exon.stable_id_version }}
-                                                                ({{ diff_with_exon.overlapping_exon.exon_order }})
-                                                                {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source output_format="raw" %}</td>
-                                                            <td>
-                                                                {{ diff_with_exon.overlapping_exon|get_location_string:'True'}}</td>
-                                                            </td>
-                                                        {% else %}
-                                                            <td></td>
-                                                            <td></td>
-                                                        {% endif %}
-
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.overlapping_exon.stable_id and diff_me_exon.assembly == diff_with_exon.overlapping_exon.assembly %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% else %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        {% if diff_me_exon.stable_id %}
-                                                            <td>{{ diff_me_exon.stable_id }}.{{ diff_me_exon.stable_id_version }}
-                                                                ({{ diff_me_exon.exon_order }})
-                                                                {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source output_format="raw" %}
-                                                            </td>
-                                                            <td> {{ diff_me_exon|get_location_string:'True'}}</td>
-                                                        {% else %}
-                                                            <td></td>
-                                                            <td></td>
-                                                        {% endif %}
-
-
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.loc_checksum == False %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% elif diff_with_exon.loc_checksum == True %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        <td class="text-center">
-                                                            {% if diff_with_exon.seq_checksum == False %}
-                                                                <i class="glyphicon glyphicon-remove text-center"
-                                                                   style="color:red"></i>
-                                                            {% elif diff_with_exon.seq_checksum == True %}
-                                                                <i class="glyphicon glyphicon-ok text-center"
-                                                                   style="color:green"></i>
-                                                            {% endif %}
-                                                        </td>
-
-                                                        {% if diff_with_exon.overlapping_exon.stable_id %}
-                                                            <td class="text-center">
-                                                                {% include "align_button_include.html" with feature_type="exon" stable_id_a=diff_me_exon.stable_id stable_id_version_a=diff_me_exon.stable_id_version stable_id_b=diff_with_exon.overlapping_exon.stable_id stable_id_version_b=diff_with_exon.overlapping_exon.stable_id_version input_type="dna" outut_format="pair" %}
-                                                            </td>
-                                                        {% else %}
-                                                            <td></td>
-                                                        {% endif %}
-
-
-                                                    </tr>
-
-                                                {% endif %}
-                                            {% endwith %}
-
-                                        {% endfor %}
-                                    {% endif %}
-
+                                    <td></td>
+                                    <td></td>
                                 {% endif %}
-                            {% endwith %}
-                        {% endwith %}
+                                </td>
+                                <td class="text-center">
+                                    {% if diff_with_exon.overlapping_exon.stable_id and diff_me_exon.assembly == diff_with_exon.overlapping_exon.assembly %}
+                                        <i class="glyphicon glyphicon-ok text-center"
+                                           style="color:green"></i>
+                                    {% else %}
+                                        <i class="glyphicon glyphicon-remove text-center"
+                                           style="color:red"></i>
+                                    {% endif %}
+                                </td>
+
+                                {% if diff_with_exon.overlapping_exon.stable_id and not reversed %}
+                                    <td>{{ diff_with_exon.overlapping_exon.stable_id }}.{{ diff_with_exon.overlapping_exon.stable_id_version }}
+                                        ({{ diff_with_exon.overlapping_exon.exon_order }})
+                                        {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_with_exon.overlapping_exon.stable_id stable_id_version=diff_with_exon.overlapping_exon.stable_id_version release_short_name=diff_result.diff_with_transcript.transcript_release_set.shortname assembly_name=diff_result.diff_with_transcript.transcript_release_set.assembly source_name=diff_result.diff_with_transcript.transcript_release_set.source output_format="raw" %}</td>
+                                    <td>
+                                        {{ diff_with_exon.overlapping_exon|get_location_string:'True'}}</td>
+                                    </td>
+                                {% elif diff_me_exon.stable_id and reversed %}
+                                    <td>{{ diff_me_exon.stable_id }}.{{ diff_me_exon.stable_id_version }}
+                                        ({{ diff_me_exon.exon_order }})
+                                        {% include "fasta_button_include.html" with feature_type="exon" stable_id=diff_me_exon.stable_id stable_id_version=diff_me_exon.stable_id_version release_short_name=diff_result.diff_me_transcript.transcript_release_set.shortname assembly_name=diff_result.diff_me_transcript.transcript_release_set.assembly source_name=diff_result.diff_me_transcript.transcript_release_set.source output_format="raw" %}
+                                    </td>
+                                    <td> {{ diff_me_exon|get_location_string:'True'}}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+
+                                <td class="text-center">
+                                    {% if diff_with_exon.loc_checksum == False %}
+                                        <i class="glyphicon glyphicon-remove text-center"
+                                           style="color:red"></i>
+                                    {% elif diff_with_exon.loc_checksum == True %}
+                                        <i class="glyphicon glyphicon-ok text-center"
+                                           style="color:green"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center">
+                                    {% if diff_with_exon.seq_checksum == False %}
+                                        <i class="glyphicon glyphicon-remove text-center"
+                                           style="color:red"></i>
+                                    {% elif diff_with_exon.seq_checksum == True %}
+                                        <i class="glyphicon glyphicon-ok text-center"
+                                           style="color:green"></i>
+                                    {% endif %}
+                                </td>
+
+                                {% if diff_with_exon.overlapping_exon.stable_id %}
+                                    <td class="text-center">
+                                        {% include "align_button_include.html" with feature_type="exon" stable_id_a=diff_me_exon.stable_id stable_id_version_a=diff_me_exon.stable_id_version stable_id_b=diff_with_exon.overlapping_exon.stable_id stable_id_version_b=diff_with_exon.overlapping_exon.stable_id_version input_type="dna" outut_format="pair" %}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
                     {% endwith %}
-                {% endwith %}
+                {% endfor %}
             {% endif %}
-        </tbody>
-        </table>
         {% endwith %}
-    {% endwith %}
+    {% endif %}
+    </tbody>
+    </table>
 </div>
  
