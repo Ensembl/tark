@@ -91,7 +91,8 @@ function get_multi_diff_result_summary(multi_payload_data){
 		
 		//highlight the selected tr2
 		$("#query_diff tr:nth-child(3)").css('background-color','#b3d1ff');
-				
+
+	    document.getElementById('search_diff_transcript').scrollIntoView();
 		
 		all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
 		
