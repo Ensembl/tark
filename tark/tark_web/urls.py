@@ -135,6 +135,39 @@ urlpatterns = [
             template_name='mane_list.html'
         )
     ),
+
+    url(
+        r'^mane_project/$',
+        TemplateView.as_view(
+            template_name='mane_project.html'
+        ),
+        name="mane_project"
+    ),
+
+    url(
+        r'^about_mane_collaboration/$',
+        TemplateView.as_view(
+            template_name='mane_collaboration_about.html'
+        ),
+        name="about_mane_collaboration"
+    ),
+
+    url(
+        r'^access_mane_data/$',
+        TemplateView.as_view(
+            template_name='mane_data_access.html'
+        ),
+        name="access_mane_data"
+    ),
+
+    url(
+        r'^mane_feedback/$',
+        TemplateView.as_view(
+            template_name='mane_feedback.html'
+        ),
+        name="mane_feedback"
+    ),
+
      url(
         r'^view_alignment/$',
         TemplateView.as_view(
