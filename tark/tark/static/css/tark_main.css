@@ -209,3 +209,55 @@ tr.shown td.details-control {
 .noborder{
 border-top: none;
 }
+
+.mane-intro .intro{
+    background-color: rgb(238, 238, 238);
+    display: block;
+    font-size: 14px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-right: 6px solid #227093;
+    border-left: 6px solid #227093;
+}
+
+.mane-intro .row .col-md-4 p{
+    text-align: center;
+}
+
+.mane-intro .btn-circle.btn-xl{
+    border: 5px solid #227093;
+}
+
+.mane-intro .heading-pt{
+    background: rgb(238, 238, 238);
+    position: relative;
+    height: 36px;
+    width: max-content;
+    margin-top: 40px;
+}
+
+.mane-intro .heading-pt .glyph-container{
+    background: #227093;
+    position: relative;
+    float: left;
+    width: 36px;
+    text-align: center;
+    height: inherit;
+}
+
+
+.mane-intro .heading-pt .glyph-container .glyphicon-record{
+    color: #ffffff;
+    background: transparent;
+    font-size: 20px;
+    line-height: 36px;
+}
+
+.mane-intro .heading-pt .text-container{
+    padding: 8px;
+    position: relative;
+    float: left;
+    text-align: center;
+    min-height: inherit;
+    font-weight: bold;
+}
