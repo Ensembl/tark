@@ -224,6 +224,10 @@ border-top: none;
     text-align: center;
 }
 
+.mane-intro .row .col-md-4 a{
+    color: #333333;
+}
+
 .mane-intro .btn-circle.btn-xl{
     border: 5px solid #227093;
 }
