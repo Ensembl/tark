@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div class="container" style="padding-top:20px;">
+<div class="mane container" style="padding-top:20px;">
 
 <div class="row">
 
@@ -15,23 +15,24 @@
 
 <h1>About the MANE Collaboration</h1>
 
-        <p>The MANE project - The Matched Annotation from the National Center for Biotechnology Information (NCBI) and the European Molecular Biology Laboratories - European Bioinformatics Institute (EMBL-EBI) (MANE) is a collaborative project that aims to converge on human gene annotation to produce a genome wide transcript set that:</p>
-            <ul>
+        <p>The MANE project - The Matched Annotation from the National Center for Biotechnology Information (<a class="icon-external-link" href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>) and the European Molecular Biology Laboratories - European Bioinformatics Institute (<a class="icon-external-link" href="https://www.ebi.ac.uk/" target="_blank">EMBL-EBI</a>) (MANE) is a collaborative project that aims to converge on human gene annotation to produce a genome wide transcript set that:</p>
+         <ul>
                 <li>
                     matches GRCh38
                 </li>
                 <li>
-                    includes pairs of RefSeq (NM) and Ensembl/GENCODE (ENST) transcripts that are 100% identical (5’ UTR, coding region and 3’ UTR)
+                    includes pairs of <a href="https://www.ncbi.nlm.nih.gov/refseq/about/" class="icon-external-link" target="_blank">RefSeq</a> (NM) and <a href="https://www.gencodegenes.org/about.html" class="icon-external-link" target="_blank">Ensembl/GENCODE</a> (ENST) transcripts that are 100% identical (5’ UTR, coding region and 3’ UTR)
                 </li>
                 <li>
-                    is high-confidence based on conservation, expression and overall LRG creation process – Locus Reference Genomic – LRG sequences provide a stable genomic DNA framework for reporting variants with a permanent ID and core content that never changes.
+                     is high-confidence based on conservation and expression
                 </li>
             </ul>
-        <p>Each transcript will retain its original identifier e.g. "ENST00000350908.9", or "NM_000088.3".</p>
+        <p>Each transcript will retain its original identifier e.g. "<a href="https://www.ensembl.org/Homo_sapiens/Transcript/Summary?g=ENSG00000128573;r=7:114414815-114693765;t=ENST00000350908" target="_blank">ENST00000350908.9</a>", or "<a href="https://www.ncbi.nlm.nih.gov/nuccore/NM_000088.3" target="_blank">NM_000088.3</a>".</p>
 
         <h2>Background</h2>
         <p>Clinical data are more often reported using RefSeq (NM) transcripts, whereas large-scale genomics projects more often default to Ensembl’s ENSTs. This project will eliminate differences between RefSeq and Ensembl annotation for the MANE subset of transcripts to encourage and facilitate bi-directional exchange of data across RefSeq and Ensembl transcripts. Finally, the perfect alignment of all MANE transcripts to GRCh38 makes the set compatible with NGS-based sequencing technologies and other resources which default to GRCh38.</p>
-    <p>The MANE Select set will serve as a default set across genomics resources. Thus our effort to select one high-quality transcript at all protein-coding loci, and to have this be consistent across all genomics resources, will give a consistent starting view of biology for researchers, whether the intent is to use it for reporting variants, comparative genomics or any other endeavour. For the MANE Plus Clinical, we have identified additional transcripts as a standard critical for variant reporting.</p>
+    <p>The MANE Select set will serve as a default set across genomics resources. Thus our effort to select one high-quality transcript at all protein-coding loci, and to have this be consistent across all genomics resources, will give a consistent starting view of biology for researchers, whether the intent is to use it for reporting variants, comparative genomics or any other endeavour. For the MANE Plus Clinical, we have identified additional transcripts as a standard critical for variant reporting.
+    This is an extension of the Locus Reference Genomic (<a href=" http://www.lrg-sequence.org/" target="_blank">LRG</a>) project where all sequences must match GRCh38. See more about reference sequences <a href="http://www.lrg-sequence.org/documentation/ref-seq-sources/" target="_blank">here</a>.</p>
 
 
 
@@ -62,9 +63,9 @@
         <h4>MANE Plus Clinical&nbsp;<span class="label label-success">Current Project</span></h4>
 
         <ul>
-          <li>Additional transcripts per locus necessary to support clinical variant reporting, for example transcripts containing known “Pathogenic” or “Likely Pathogenic” clinical variants not reportable using the MANE Select set. </li>
-          <li>Note there may be additional clinically relevant transcripts in the wider  <a href="https://www.ncbi.nlm.nih.gov/refseq/about/" class="icon-external-link" target="_blank">RefSeq</a> and Ensembl/GENCODE sets but not yet in MANE. </li>
-           <li> Collaboration with, and feedback from, the clinical community is an important aspect of the MANE project. Transcripts of clinical interest not included in our MANE sets will be considered upon request and in consultation with expert clinical scientists. Contact email <a href="mailto:mane-help@ebi.ac.uk">mane-help@ebi.ac.uk</a>.
+          <li>This set contains additional transcripts per locus necessary to support clinical variant reporting, for example transcripts containing known “Pathogenic” or “Likely Pathogenic” clinical variants not reportable using the MANE Select set. </li>
+          <li>Note there may be additional clinically relevant transcripts in the wider  <a href="https://www.ncbi.nlm.nih.gov/refseq/about/" class="icon-external-link" target="_blank">RefSeq</a> and <a href="https://www.gencodegenes.org/about.html" class="icon-external-link" target="_blank">Ensembl/GENCODE</a> sets but not yet in MANE. </li>
+           <li> Collaboration with, and feedback from, the clinical community is an important aspect of the MANE projects. Transcripts of clinical interest not included in our MANE sets will be considered upon request and in consultation with expert clinical scientists. Contact us via <a href="mailto:mane-help@ebi.ac.uk">mane-help@ebi.ac.uk</a>.
     </li>
         </ul>
 

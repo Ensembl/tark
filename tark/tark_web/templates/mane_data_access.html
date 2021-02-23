@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div class="container" style="padding-top:20px;">
+<div class="mane container" style="padding-top:20px;">
 
 <div class="row">
 
@@ -25,7 +25,7 @@
         <h3><span class="glyphicon glyphicon-download-alt" style="top: 4px"></span>&nbsp;Bulk data download</h3>
 
         <p>The full MANE transcript datasets can be downloaded via NCBI's
-    <a href="https://ftp.ncbi.nlm.nih.gov/refseq/MANE/" class="icon-external-link" target="_blank">FTP</a>.
+    <a href="https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/" class="icon-external-link" target="_blank">FTP</a>.
     See the
        <a href="https://ftp.ncbi.nlm.nih.gov/refseq/MANE/README.txt" class="icon-external-link">README file</a>.
         </p>
@@ -33,7 +33,7 @@
 
     <ul>
       <li>Data are available in FASTA, GFF3 and GTF formats for both Ensembl (ENST) and RefSeq (NM) identifiers.</li>
-     <li>GenBank files are available for RefSeq transcripts and proteins. </li>
+        <li>GenBank files are available for RefSeq transcripts and proteins. (e.g. <a href="https://www.ncbi.nlm.nih.gov/nuccore/NM_014491.4" target="_blank">NM_014491.4</a>) </li>
      <li>For the GFF and GTF  <a class="icon-external-link" target="_blank"
        href="https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current">RefSeq annotation files</a>:
          <ul>
@@ -48,16 +48,17 @@
 
           <h3><span class="glyphicon glyphicon-search" style="top: 4px"></span>&nbsp;Browse list</h3>
 
-      <p>Browse or export a list of all transcripts in <a class="icon-external-link" target="_blank"
-        href="/web/manelist/">Tark</a>.</p>
+      <p>Browse or export a list of all MANE transcripts in <a class="icon-external-link" href="/web/manelist/">Tark</a>.</p>
 
 
 
 
       <h3><span class="glyphicon glyphicon-wrench" style="top: 4px"></span>&nbsp;Web services</h3>
 
-      <p>Ensembl provides a RESTful web service for access to Ensembl data including the MANE transcripts.
-        For example this works for Ensembl's Variant Effect Predictor (VEP) calls, enabling MANE transcript annotation to be included in VEP results, e.g. </p>
+        <p>The full list of MANE Select transcripts can be accessed programmatically using Tark’s REST API to GET the results in JSON format. For more information, see <a href="/api/#!/transcript/transcript_manelist_list">here</a>.</p>
+
+        <p>Ensembl provides a <a href="https://rest.ensembl.org/" target="_blank">RESTful web service</a> for access to Ensembl data including the MANE transcripts.
+            For example this works for Ensembl's Variant Effect Predictor (<a href="https://www.ensembl.org/vep" target="_blank">VEP</a>) calls, enabling MANE transcript annotation to be included in VEP results, e.g. </p>
 
      <ul>
         <li> <a class="icon-external-link" target="_blank" href="https://rest.ensembl.org/documentation/info/vep_id_post">Fetch variant consequences for multiple ids, including MANE Select annotations</a></li>
@@ -78,18 +79,18 @@
 
           <h3><span class="glyphicon glyphicon-search" style="top: 4px"></span>&nbsp;Browsers and other resources</h3>
 
-        <p>MANE Select is already shown in the following resources:</p>
+        <p>MANE transcripts are already displayed in the following resources:</p>
 
         <ul>
-          <li> Ensembl, VEP and BioMart, (see the Ensembl <a class="icon-external-link" target="_blank" href="https://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;g=ENSG00000121410;">transcript table</a> for example)</li>
+            <li> <a href="http://www.ensembl.org/index.html" target="_blank">Ensembl</a>, <a href="https://www.ensembl.org/vep" target="_blank">VEP</a> and <a href="http://www.ensembl.org/biomart/martview" target="_blank">BioMart</a>, (see the Ensembl <a class="icon-external-link" target="_blank" href="https://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;g=ENSG00000121410;">transcript table</a> for example)</li>
           <li>UCSC on the GRCh38 (hg38) assembly, (see configuration
             <a class="icon-external-link" target="_blank" href="https://genome.ucsc.edu/cgi-bin/hgTrackUi?hgsid=1017087173_CiSY9g1wezeoNbSXx5kIELWDjV7T&c=chrX&g=mane">
             page</a>)</li>
           <li>NCBI’s <a class="icon-external-link" target="_blank" href="https://www.ncbi.nlm.nih.gov/genome/gdv/">Genome Data Viewer</a> (GDV) or
             <a class="icon-external-link" target="_blank" href="https://www.ncbi.nlm.nih.gov/variation/view/">Variation Viewer</a> browsers</li>
-          <li>The Genome Aggregation Database (gnomAD v3)</li>
-          <li>ClinVar</li>
-          <li>DECIPHER</li>
+            <li>The Genome Aggregation Database (gnomAD v3 - <a href="https://gnomad.broadinstitute.org/gene/ENSG00000169174?dataset=gnomad_r3" target="_blank">see example</a>)</li>
+            <li>ClinVar (<a href="https://www.ncbi.nlm.nih.gov/clinvar/variation/8704" target="_blank">see example</a>)</li>
+          <li>DECIPHER (<a href="https://decipher.sanger.ac.uk/gene/EP300/transcripts" target="_blank">see example</a>)</li>
           <li>ClinGen Allele Registry (see
             <a  class="icon-external-link" target="_blank" href="http://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_caid?caid=CA028319">example</a>)</li>
           <li>NCBI Entrez search.</li>

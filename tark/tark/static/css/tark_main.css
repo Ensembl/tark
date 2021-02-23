@@ -265,3 +265,14 @@ border-top: none;
     min-height: inherit;
     font-weight: bold;
 }
+
+.mane h1, h2, h3{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+.mane h4, h5, h6, h7{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
