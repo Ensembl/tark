@@ -276,3 +276,15 @@ border-top: none;
     margin-bottom: 15px;
     margin-top: 15px;
 }
+
+a[target="_blank"] {
+    background-position: right center;
+    background-repeat: no-repeat;
+    padding-right: 10px;
+    margin-right: 2px;
+    background-image: url('../images/external-link.png')
+}
+
+.highlight_on_hover:hover button{
+    background-color: rgb(230, 230, 230);
+}
