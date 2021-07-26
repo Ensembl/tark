@@ -14,7 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+""" 
+EA-752  Update links to Tark on the Tark site to be https rather than http.
+Author: ranjits@ebi.ac.uk
+Date: 26 July 2021
+Changes: 
+    Remove backslash after entity  name
+"""
 from django.urls.conf import include
 from rest_framework_swagger.views import get_swagger_view
 
@@ -42,6 +48,8 @@ Including another URLconf
 
 
 api_version = "api/"
+"""EA - 752 - BEGIN  - Remove backslash after entity name
+
 tark_apis = [
     url(r'^' + api_version + 'assembly/', include('assembly.urls')),
     url(r'^' + api_version + 'gene/', include('gene.urls')),
@@ -50,8 +58,16 @@ tark_apis = [
     url(r'^' + api_version + 'exon/', include('exon.urls')),
     url(r'^' + api_version + 'release/', include('release.urls')),
     ]
-
-
+"""
+tark_apis = [
+    url(r'^' + api_version + 'assembly', include('assembly.urls')),
+    url(r'^' + api_version + 'gene', include('gene.urls')),
+    url(r'^' + api_version + 'transcript', include('transcript.urls')),
+    url(r'^' + api_version + 'translation', include('translation.urls')),
+    url(r'^' + api_version + 'exon', include('exon.urls')),
+    url(r'^' + api_version + 'release', include('release.urls')),
+    ]
+ """EA - 752 - END """   
 schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
 
 
