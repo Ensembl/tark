@@ -1,7 +1,22 @@
+<!--
+EA-672 Update Tark Logo to remove beta
+	Author: ranjits@ebi.ac.uk
+	Date: 26 July 2021
+	Changes: Remove Beta logo
+EA - 752 -  Update links to tark to be on HTTPS rather than HTTP
+	Author: ranjits@ebi.ac.uk
+	Date: 26 July 2021
+	Changes: Add meta tag to upgrade insecure requests
+-->
+
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
+  <!--  EA - 752 - BEGIN-->
+  <!--Add meta tag to upgrade insecure requests -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+  <!--  EA - 752 - END-->  
   <meta charset="UTF-8">
   <title>Tark</title>
   <link rel="icon" type="image/png" href="{% static '/images/ebang.png' %}" sizes="16x16" />
@@ -72,7 +87,11 @@
       
     <ul class="nav navbar-nav">
     
-      <li><a class="navbar-brand" id="logo" href="/"><span class="title"><img alt="ensembl" height="30" width="30" src="{% static '/images/ebang.png' %}" /> Transcript Archive <span class="beta_text"> Beta</span></span></a></li>
+	  <!-- EA - 672 - BEGIN -->
+	  <!--Remove span class beta_text -->
+      <!--<li><a class="navbar-brand" id="logo" href="/"><span class="title"><img alt="ensembl" height="30" width="30" src="{% static '/images/ebang.png' %}" /> Transcript Archive <span class="beta_text"> Beta</span></span></a></li>-->
+	  <li><a class="navbar-brand" id="logo" href="/"><span class="title"><img alt="ensembl" height="30" width="30" src="{% static '/images/ebang.png' %}" /> Transcript Archive </span></a></li>
+	  <!-- EA - 672 - END -->	  
       <li class="navbar-separator">|</li>
       <li  class="navbar-item"><a href="/web/"> Web-Tark</a></li>
      <li class="navbar-separator">|</li>

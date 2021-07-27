@@ -1,3 +1,10 @@
+<!--
+EA-742 Speed up MANE List
+	Author: ranjits@ebi.ac.uk
+	Date: 26 July 2021
+	Changes: 
+		Add deferRender (https://datatables.net/reference/option/deferRender) to defer the rendering for additional speed of initialisation.
+-->
 {% extends "web_home.html" %}
 
 {% load staticfiles %}
@@ -56,6 +63,9 @@
               "pageLength": 25,
               "order": [[ 3, "asc" ]],
               "processing": true,
+               <!-- EA - 742 - BEGIN-->
+              "deferRender": true,
+              <!-- EA - 742 - END-->
               "ajax": {
                  "processing": true,
                  "url": "/api/transcript/manelist/?format=json",
