@@ -67,7 +67,7 @@ tark_apis = [
     url(r'^' + api_version + 'exon', include('exon.urls')),
     url(r'^' + api_version + 'release', include('release.urls')),
     ]
- """EA - 752 - END """   
+"""EA - 752 - END """   
 schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
 
 
