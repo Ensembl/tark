@@ -13,10 +13,6 @@ EA - 752 -  Update links to tark to be on HTTPS rather than HTTP
 <!DOCTYPE html>
 <html>
 <head>
-  <!--  EA - 752 - BEGIN-->
-  <!--Add meta tag to upgrade insecure requests -->
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
-  <!--  EA - 752 - END-->  
   <meta charset="UTF-8">
   <title>Tark</title>
   <link rel="icon" type="image/png" href="{% static '/images/ebang.png' %}" sizes="16x16" />
@@ -119,6 +115,17 @@ EA - 752 -  Update links to tark to be on HTTPS rather than HTTP
 </script>
 
 <script src='{% static "rest_framework_swagger/init.js" %}' type='text/javascript'></script>
+<!--  EA - 752 - BEGIN-->
+<!--Add meta tag to upgrade insecure requests -->
+<script>
+  if (window.location.protocol.indexOf('https') == 0){
+    var el = document.createElement('meta')
+    el.setAttribute('http-equiv', 'Content-Security-Policy')
+    el.setAttribute('content', 'upgrade-insecure-requests')
+    document.head.append(el)
+  }
+</script>
+<!--  EA - 752 - END-->
 {% block extra_scripts %}
 {# -- Add any additional custom JS scripts here -- #}
 {% endblock %}
