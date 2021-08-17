@@ -1,3 +1,11 @@
+<!--
+EA-644 Additional information on the Release Stats page
+	Author: ranjits@ebi.ac.uk
+	Date: 12 August 2021
+	Changes: 
+		Added links to the number of genes added, removed and changed in each release.
+-->
+
 {% extends "web_home.html" %}
 
 
@@ -116,7 +124,10 @@
           {% endif %}
             {{report.gene.tark_release}}
             {% if report.gene.gained or report.gene.removed or report.gene.changed%}
-            (&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}}, &harr; {{report.gene.changed}})
+			      <!-- EA - 644 - BEGIN-->
+            <!--(&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}}, &harr; {{report.gene.changed}})-->
+            (&nearr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/gained">{{report.gene.gained}}</a>, &searr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/removed">{{report.gene.removed}}</a>, &harr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/changed">{{report.gene.changed}} </a>)			
+			      <!-- EA - 644 - END-->
             {% endif %}
           </td>
 
