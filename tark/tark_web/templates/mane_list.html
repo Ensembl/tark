@@ -57,15 +57,15 @@ EA-742 Speed up MANE List
 		       { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }}, 
 		        'colvis'
 		       ],
+              <!-- EA - 742 - BEGIN-->
+              "deferRender": true,
+              <!-- EA - 742 - END-->		  
               "language": {
               "search": "<strong>Filter results:</strong> "
                },
               "pageLength": 25,
               "order": [[ 3, "asc" ]],
               "processing": true,
-               <!-- EA - 742 - BEGIN-->
-              "deferRender": true,
-              <!-- EA - 742 - END-->
               "ajax": {
                  "processing": true,
                  "url": "/api/transcript/manelist/?format=json",
