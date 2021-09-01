@@ -1,3 +1,10 @@
+<!--
+EA-644 Additional information on the Release Stats page
+	Author: ranjits@ebi.ac.uk
+	Date: 01 September 2021
+	Changes: 
+		Added gene names along with the stable id . eg: JAG1(ENSG000XXXXX) .
+-->
 {% extends "web_home.html" %}
 
 {% load staticfiles %}
@@ -35,12 +42,26 @@
            {% if feature.from_stable_id is None %}
            <td>-</td>
            {% else %}
+	   <!-- EA - 644 - BEGIN-->	   
+           <!-- <td><a target="_blank" href=/web/search/?identifier={{feature.from_stable_id}}>{{feature.from_stable_id}}.{{feature.from_stable_id_version}}</td> -->
+           {% if feature.from_gene is None or feature.from_gene == '' %}
            <td><a target="_blank" href=/web/search/?identifier={{feature.from_stable_id}}>{{feature.from_stable_id}}.{{feature.from_stable_id_version}}</td>
+           {% else %}
+           <td><a target="_blank" href=/web/search/?identifier={{feature.from_stable_id}}>{{feature.from_gene}} ({{feature.from_stable_id}}.{{feature.from_stable_id_version}})</td>
+           {% endif %}
+           <!-- EA - 644 - END-->
            {% endif %}
            {% if feature.to_stable_id is None %}
             <td>-</td>
             {% else %}
+            <!-- EA - 644 - BEGIN-->
+            <!-- <td><a target="_blank" href=/web/search/?identifier={{feature.to_stable_id}}>{{feature.to_stable_id}}.{{feature.to_stable_id_version}}</td> -->
+            {% if feature.to_gene is None or feature.to_gene == '' %}
             <td><a target="_blank" href=/web/search/?identifier={{feature.to_stable_id}}>{{feature.to_stable_id}}.{{feature.to_stable_id_version}}</td>
+            {% else %}
+            <td><a target="_blank" href=/web/search/?identifier={{feature.to_stable_id}}>{{feature.to_gene}} ({{feature.to_stable_id}}.{{feature.to_stable_id_version}})</td>
+            {% endif %}
+	    <!-- EA - 644 - END-->
             {% endif %}
            {% endfor %}
            </tbody>
