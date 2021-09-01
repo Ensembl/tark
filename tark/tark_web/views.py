@@ -14,7 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+"""
+EA-644 Additional information on the Release Stats page
+	Author: ranjits@ebi.ac.uk
+	Date: 01 September 2021
+	Changes: 
+		Change SQL query to retrieve gene name if the feature = gene.
+"""
 
 from __future__ import unicode_literals
 
@@ -309,7 +315,54 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
         WHERE
             #OUTER_WHERE#;
     """
-
+    # EA - 644 - BEGIN
+    if feature == 'gene':
+        sql = """
+            SELECT
+                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version
+            FROM
+                (
+                    SELECT
+                        IF(gn.name IS NULL, '', gn.name) as gene_symbol,
+                        #FEATURE#.stable_id,
+                        #FEATURE#.stable_id_version,
+                        f_tag.feature_id,
+                        rs.shortname,
+                        rs.description,
+                        rs.assembly_id
+                    FROM
+                        #FEATURE#
+                        JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                        JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                        JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                        LEFT JOIN gene_names AS gn ON (#FEATURE#.name_id = gn.external_id) AND (gn.primary_id = 1)
+                    WHERE
+                        rs.shortname=%s AND
+                        rst.shortname=%s
+                ) AS v0
+                #DIRECTION# JOIN (
+                    SELECT
+                        IF(gn.name IS NULL, '', gn.name) as gene_symbol,
+                        #FEATURE#.stable_id,
+                        #FEATURE#.stable_id_version,
+                        f_tag.feature_id,
+                        rs.shortname,
+                        rs.description,
+                        rs.assembly_id
+                    FROM
+                        #FEATURE#
+                        JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                        JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                        JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                        LEFT JOIN gene_names AS gn ON (#FEATURE#.name_id = gn.external_id) AND (gn.primary_id = 1)
+                    WHERE
+                        rs.shortname=%s AND
+                        rst.shortname=%s
+                ) AS v1 ON (v0.stable_id=v1.stable_id)
+            WHERE
+                #OUTER_WHERE#;
+        """
+    # EA - 644 - END
     sql = sql.replace('#FEATURE#', feature)
     if direction == 'removed':
         sql = sql.replace('#DIRECTION#', 'LEFT')
