@@ -16,10 +16,15 @@
 """
 """
 EA-644 Additional information on the Release Stats page
-	Author: ranjits@ebi.ac.uk
-	Date: 01 September 2021
-	Changes: 
-		Change SQL query to retrieve gene name if the feature = gene.
+Author: ranjits@ebi.ac.uk
+Date: 01 September 2021
+Changes: Change SQL query to retrieve gene name if the feature = gene.
+"""
+"""
+EA-766 Update Tark UI to display biotypes for genes and transcripts
+Author: ranjits@ebi.ac.uk
+Date: 06 September 2021
+Changes: Change SQL query to retrieve biotype from gene & transcript tables.		
 """
 
 from __future__ import unicode_literals
@@ -274,14 +279,17 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
     count : int
     """
     # print("feature {} from_release {}, to_release {}, direction {}, source {} ".format(feature, from_release, to_release, direction, source))
+    # EA - 766 - BEGIN
+    # Change the original sql query to include biotypes from gene and transcript tables
     sql = """
         SELECT
-            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version
+            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v0.biotype as previous_biotype, v1.biotype as new_biotype
         FROM
             (
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
+		    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -299,6 +307,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
+		    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -315,17 +324,19 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
         WHERE
             #OUTER_WHERE#;
     """
+    # EA - 766 - END
     # EA - 644 - BEGIN
     if feature == 'gene':
         sql = """
             SELECT
-                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version
+                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v0.biotype as previous_biotype, v1.biotype as new_biotype
             FROM
                 (
                     SELECT
                         IF(gn.name IS NULL, '', gn.name) as gene_symbol,
                         #FEATURE#.stable_id,
                         #FEATURE#.stable_id_version,
+			#FEATURE#.biotype,
                         f_tag.feature_id,
                         rs.shortname,
                         rs.description,
@@ -345,6 +356,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                         IF(gn.name IS NULL, '', gn.name) as gene_symbol,
                         #FEATURE#.stable_id,
                         #FEATURE#.stable_id_version,
+			#FEATURE#.biotype,
                         f_tag.feature_id,
                         rs.shortname,
                         rs.description,
