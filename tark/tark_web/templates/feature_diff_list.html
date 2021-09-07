@@ -1,9 +1,14 @@
 <!--
 EA-644 Additional information on the Release Stats page
-	Author: ranjits@ebi.ac.uk
-	Date: 01 September 2021
-	Changes: 
-		Added gene names along with the stable id . eg: JAG1(ENSG000XXXXX) .
+Author: ranjits@ebi.ac.uk
+Date: 01 September 2021
+Changes:Added gene names along with the stable id . eg: JAG1(ENSG000XXXXX) .
+-->
+<!--
+EA-766 Update Tark UI to display biotypes for genes and transcripts
+Author: ranjits@ebi.ac.uk
+Date: 01 September 2021
+Changes: Added header columns and rows for preivous and new biotypes
 -->
 {% extends "web_home.html" %}
 
@@ -63,6 +68,18 @@ EA-644 Additional information on the Release Stats page
             {% endif %}
 	    <!-- EA - 644 - END-->
             {% endif %}
+	    <!-- EA - 766 - BEGIN-->
+            {% if feature.from_stable_id is None %}
+             <td>-</td>
+            {% else %}
+             <td>{{feature.previous_biotype}}</td>
+            {% endif %}
+            {% if feature.to_stable_id is None %}
+             <td>-</td>
+            {% else %}
+             <td>{{feature.new_biotype}}</td>
+            {% endif %}
+	    <!-- EA - 766 - END--> 
            {% endfor %}
            </tbody>
  </table>
