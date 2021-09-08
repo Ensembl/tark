@@ -283,7 +283,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
     # Change the original sql query to include biotypes from gene and transcript tables
     sql = """
         SELECT
-            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v0.biotype as previous_biotype, v1.biotype as new_biotype
+            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v1.biotype as new_biotype, case when v1.biotype=v0.biotype then ' ' else v0.biotype end as previous_biotype
         FROM
             (
                 SELECT
@@ -329,7 +329,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
     if feature == 'gene':
         sql = """
             SELECT
-                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v0.biotype as previous_biotype, v1.biotype as new_biotype
+                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version,v1.biotype as new_biotype, case when v1.biotype=v0.biotype then ' ' else v0.biotype end as previous_biotype
             FROM
                 (
                     SELECT
