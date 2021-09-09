@@ -14,7 +14,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+"""
+EA-774 Add biotype to the transcript history on the transcript detail page
+Author: ranjits@ebi.ac.uk
+Date: 09 September 2021
+Changes: Added biotype field to Transcript class.
+"""
 
 from django.db import models
 from assembly.models import Assembly
@@ -55,6 +60,9 @@ class Transcript(models.Model):
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
+    # EA - 774 - BEGIN
+    biotype =  models.CharField(max_length=40, blank=True, null=True)
+    # EA - 774 - END
     genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
