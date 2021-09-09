@@ -1,3 +1,9 @@
+<!--
+EA-776 MANE transcripts to be the top of the transcript search results
+Author: ranjits@ebi.ac.uk
+Date: 09 September 2021
+Changes: Changed table sort order.
+-->
 {% extends "web_home.html" %}
 
 {% load staticfiles %}
@@ -373,8 +379,10 @@ $(document).ready(function() {
                "container": 'body'
             });          
         },
-     
-    "order": [[ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
+    /* EA - 776 - BEGIN */
+    /* "order": [[ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],*/
+    "order": [[ 14, "desc" ], [ 5, "asc" ], [ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
+    /* EA - 776 - END */
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
