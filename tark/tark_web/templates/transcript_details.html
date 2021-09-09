@@ -1,3 +1,9 @@
+<!--
+EA-774 Add biotype to the transcript history on the transcript detail page
+Author: ranjits@ebi.ac.uk
+Date: 09 September 2021
+Changes: Added new column header and cells to display under the column.
+-->
 {% extends "web_home.html" %}
 
 {% load staticfiles %}
@@ -341,6 +347,9 @@ $(document).ready(function() {
 <th class="text-center" data-sortable="false">Location</th>
 <th class="text-center" data-sortable="true">MANE</th>
 <th class="text-center" data-sortable="true">MANE_TYPE</th>
+<!-- EA - 774 - BEGIN -->
+<th class="text-center" data-sortable="false">Biotype</th>	
+<!-- EA - 774 - END -->
 </tr>
 </thead>
 <tbody>
@@ -409,7 +418,10 @@ $(document).ready(function() {
 <td>{{transcript.mane_transcript}}</td>
 <td>{{transcript.mane_transcript_type}}</td>
 
-
+<!-- EA - 774 - BEGIN -->
+<td>{{transcript.biotype}}</td>
+<!-- EA - 774 - END -->
+	
 </tr>
  {% endwith %}
 {% endfor %}
