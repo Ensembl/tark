@@ -1,3 +1,9 @@
+<!--
+EA-779 Browse list on access mane data to be above Bulk data download
+Author: ranjits@ebi.ac.uk
+Date: 09 September 2021
+Changes: Changed order of the sections.
+-->
 {% extends "web_home.html" %}
 
 {% load staticfiles %}
@@ -24,7 +30,13 @@
                     <span class="glyphicon glyphicon-info-sign"></span>
                     Note: We will have several data releases as we make progress on completing the MANE projects.
                 </div>
+                <!-- EA-779 - BEGIN -->
 
+                <h3><span class="glyphicon glyphicon-search" style="top: 4px"></span>&nbsp;Browse list</h3>
+
+                <p>Browse or export a list of all MANE transcripts in <a class="icon-external-link"
+                                                                         href="/web/manelist/">Tark</a>.</p>                
+                <!-- EA-779 - END -->
                 <h3><span class="glyphicon glyphicon-download-alt" style="top: 4px"></span>&nbsp;Bulk data download</h3>
 
                 <p>The full MANE transcript datasets can be downloaded via:</p>
@@ -60,12 +72,12 @@
                     </li>
                 </ul>
 
+                <!-- EA-779 - BEGIN -->
+                <!-- <h3><span class="glyphicon glyphicon-search" style="top: 4px"></span>&nbsp;Browse list</h3> -->
 
-                <h3><span class="glyphicon glyphicon-search" style="top: 4px"></span>&nbsp;Browse list</h3>
-
-                <p>Browse or export a list of all MANE transcripts in <a class="icon-external-link"
-                                                                         href="/web/manelist/">Tark</a>.</p>
-
+                <!-- <p>Browse or export a list of all MANE transcripts in <a class="icon-external-link"
+                                                                         href="/web/manelist/">Tark</a>.</p> -->
+                <!-- EA-779 - END -->
 
                 <h3><span class="glyphicon glyphicon-wrench" style="top: 4px"></span>&nbsp;Web services</h3>
 
