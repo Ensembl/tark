@@ -14,6 +14,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
+"""
+EA-774 Add biotype to the transcript history on the transcript detail page
+Author: ranjits@ebi.ac.uk
+Date: 09 September 2021
+Changes: Added biotype to fields in class Meta in class TranscriptSerializer
+"""
 
 from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
@@ -122,8 +128,12 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Transcript
+        # EA - 774 - BEGIN
+        #fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
+        #                                          'sequence')
         fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
-                                                  'sequence')
+                                                  'sequence', 'biotype')
+        # EA - 774 - END
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)
