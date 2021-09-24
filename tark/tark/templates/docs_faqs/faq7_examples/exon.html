@@ -49,8 +49,8 @@
                         <div id="home_api_exon_perl" class="tab-pane fade in active"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -69,16 +69,16 @@ if(length $response-&gt;{content}) {
   local $Data::Dumper::Indent = 1;
   print Dumper $hash;
   print &quot;\n&quot;;
-}
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_python" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/exon/&quot;
@@ -88,14 +88,15 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_ruby" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -122,14 +123,15 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_java" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -183,14 +185,15 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_r" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -205,28 +208,30 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_curl" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/exon/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_wget" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/exon/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -260,8 +265,8 @@ wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/ex
                         <div id="home_api_exon_exon_id_perl" class="tab-pane fade in active"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -281,15 +286,16 @@ if(length $response-&gt;{content}) {
   print Dumper $hash;
   print &quot;\n&quot;;
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_python" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/exon/1/&quot;
@@ -299,15 +305,16 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_ruby" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -334,15 +341,16 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_java" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -396,15 +404,16 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_r" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -419,30 +428,32 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_curl" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/exon/1/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_exon_exon_id_wget" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_exon_exon_id_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/exon/1/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-
 
                     </div>
                 </div>

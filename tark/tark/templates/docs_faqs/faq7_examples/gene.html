@@ -47,8 +47,8 @@
                         <div id="home_api_gene_perl" class="tab-pane fade in active"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -68,15 +68,16 @@ if(length $response-&gt;{content}) {
   print Dumper $hash;
   print &quot;\n&quot;;
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_python" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/gene/&quot;
@@ -86,14 +87,15 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_ruby" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -120,14 +122,15 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_java" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -181,14 +184,15 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_r" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -203,28 +207,30 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_curl" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/gene/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_wget" class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -258,8 +264,8 @@ wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/ge
                         <div id="home_api_gene_gene_id_perl" class="tab-pane fade in active"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -279,15 +285,16 @@ if(length $response-&gt;{content}) {
   print Dumper $hash;
   print &quot;\n&quot;;
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_python" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/gene/1/&quot;
@@ -297,15 +304,16 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_ruby" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -332,15 +340,16 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_java" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -394,15 +403,16 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_r" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -417,27 +427,30 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_curl" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/gene/1/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_gene_gene_id_wget" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_gene_gene_id_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/1/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
                     </div>

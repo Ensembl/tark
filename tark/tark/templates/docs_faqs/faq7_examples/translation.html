@@ -54,8 +54,8 @@
                         <div id="home_api_translation_perl" class="tab-pane fade in active"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -75,15 +75,16 @@ if(length $response-&gt;{content}) {
   print Dumper $hash;
   print &quot;\n&quot;;
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_python" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/translation/&quot;
@@ -93,15 +94,16 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_ruby" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -128,15 +130,16 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_java" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -190,15 +193,16 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_r" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -213,37 +217,38 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_curl" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/translation/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_wget" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/translation/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
-                <!-----Example request - END -------------------------->
+                <!-- Example request - END -->
             </div>
         </div>
-        <!-- Modal for GET /api/translation/{translation_id}-->
+        <!-- Modal for GET /api/translation/{translation_id} -->
         <div class="modal modal_multi">
             <div class="modal-content">
                 <span class="close close_multi">&times;</span>
@@ -272,8 +277,8 @@ wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/tr
                         <div id="home_api_translation_translation_id_perl"
                              class="tab-pane fade in active" style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_perl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="perl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="perl">
 use strict;
 use warnings;
 use HTTP::Tiny;
@@ -293,15 +298,16 @@ if(length $response-&gt;{content}) {
   print Dumper $hash;
   print &quot;\n&quot;;
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_python"
                              class="tab-pane fade" style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_python'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="python">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="python">
 import requests, sys
 server = &quot;http://tark.ensembl.org&quot;
 ext = &quot;/api/translation/1/&quot;
@@ -311,15 +317,16 @@ if not r.ok:
   sys.exit()
 decoded = r.json()
 print(repr(decoded))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_ruby" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_ruby'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="ruby">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="ruby">
 require 'net/http'
 require 'uri'
 
@@ -346,15 +353,16 @@ require 'yaml'
 
 result = JSON.parse(response.body)
 puts YAML::dump(result)
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_java" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_java'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="java">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="java">
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
@@ -408,15 +416,16 @@ public class EnsemblRest {
     System.out.println(output);
   }
 }
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_r" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_r'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="r">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="r">
 library(httr)
 library(jsonlite)
 library(xml2)
@@ -431,31 +440,32 @@ stop_for_status(r)
 # use this if you get a simple nested list back, otherwise inspect its structure
 # head(data.frame(t(sapply(content(r),c))))
 head(fromJSON(toJSON(content(r))))
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_curl" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_curl'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="curl">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="curl">
 curl 'http://tark.ensembl.org/api/translation/1/' -H 'Content-type:application/json'
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
 
                         <div id="menu_api_translation_translation_id_wget" class="tab-pane fade"
                              style='width: 90%;'>
                             <div class='tab-pane' id='api_translation_translation_id_wget'>
-                                                        <pre class="pre-scrollable prettyprint linenums"><code
-                                                                class="wget">
+                                <pre class="pre-scrollable prettyprint linenums">
+                                    <code class="wget">
 wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/translation/1/'  -O -
-                                                    </code></pre>
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <!-- Example request - END -->
