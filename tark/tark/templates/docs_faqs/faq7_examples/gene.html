@@ -1,0 +1,450 @@
+<div class="collapsible">- Gene</div>
+<div class="content">
+    <table class="table table-striped" style="font-size:14px">
+        <thead>
+        <tr>
+            <th>Resource</th>
+            <th>Description</th>
+            <th>Example Requests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/gene/gene_list">GET /api/gene/ </a>
+            </td>
+            <td> Fetch details of all genes.</td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_gene_list">Click here</a></div>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/gene/gene_read">GET /api/gene/{gene_id}/
+            </a></td>
+            <td> Fetch details of a given gene.</td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_gene_read">Click here</a></div>
+            </td>
+        </tr>
+        <!-- Modal for GET /api/gene/ -->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-- Example request - BEGIN  -->
+                <div class="container">
+                    <h3>Example requests for GET /api/gene/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_gene_perl">Perl</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_python">Python</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_ruby">Ruby</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_java">Java</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_r">R</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_curl">Curl</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_wget">Wget</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_gene_perl" class="tab-pane fade in active"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/gene/';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/gene/&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_ruby" class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/gene/'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_java" class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/gene/&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_r" class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/gene/&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_curl" class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/gene/' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_wget" class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Example request - END -->
+            </div>
+        </div>
+        <!-- Modal for GET /api/gene/{gene_id} -->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-- Example request - BEGIN -->
+                <div class="container">
+                    <h3>GET /api/gene/{gene_id}/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_gene_gene_id_perl">Perl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_gene_gene_id_python">Python</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_gene_id_ruby">Ruby</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_gene_id_java">Java</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_gene_id_r">R</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_gene_id_curl">Curl</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_gene_gene_id_wget">Wget</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_gene_gene_id_perl" class="tab-pane fade in active"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/gene/1/';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/gene/1/&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_ruby" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/gene/1/'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_java" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/gene/1/&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_r" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/gene/1/&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_curl" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/gene/1/' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_gene_gene_id_wget" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_gene_gene_id_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/1/'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Example request - END -->
+            </div>
+        </div>
+        </tbody>
+    </table>
+</div>

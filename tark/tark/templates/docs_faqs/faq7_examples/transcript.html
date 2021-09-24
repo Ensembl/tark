@@ -1,0 +1,1154 @@
+<div class="collapsible">- Transcript</div>
+<div class="content">
+    <table class="table table-striped" style="font-size:14px">
+        <thead>
+        <tr>
+            <th>Resource</th>
+            <th>Description</th>
+            <th>Example Requests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_list">GET
+                /api/transcript/ </a></td>
+            <td> Fetch details of all transcripts. <br> Transcription is the process of making
+                an RNA (transcript) copy of a gene sequence.
+            </td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_transcript_list">Click here</a></div>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_diff_list">GET
+                /api/transcript/diff/ </a></td>
+            <td> Compare two given transcripts.</td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_transcript_diff_list">Click here</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_manelist_list">GET
+                /api/transcript/manelist/ </a></td>
+            <td><a
+                    href="https://ncbiinsights.ncbi.nlm.nih.gov/2018/10/11/matched-annotation-by-ncbi-and-embl-ebi-mane-a-new-joint-venture-to-define-a-set-of-representative-transcripts-for-human-protein-coding-genes/">MANE</a>
+                (Matched Annotation from the NCBI and EMBL-EBI).
+            </td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_transcript_manelist_list">Click here</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_search_list">GET
+                /api/transcript/search/ </a></td>
+            <td> Fetch details of a given transcript.</td>
+            <td>
+                <div class="myBtn_multi"><a href="#api_transcript_search">Click here</a></div>
+            </td>
+        </tr>
+        <tr>
+            <td><a
+                    href="http://tark.ensembl.org/api/#!/transcript/transcript_stable_id_with_version_list">GET
+                /api/transcript/stable_id_with_version/ </a></td>
+            <td> Fetch details of a given transcript.</td>
+            <td>
+                <div class="myBtn_multi"><a
+                        href="#api_transcript_stable_id_with_version_list">Click here</a></div>
+            </td>
+        </tr>
+        <!-- Modal for GET /api/transcript/ -->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-- Example request - BEGIN -->
+                <div class="container">
+                    <h3>Example requests for GET /api/transcript/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_transcript_perl">Perl</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_python">Python</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_ruby">Ruby</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_java">Java</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_r">R</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_curl">Curl</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_wget">Wget</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_transcript_perl" class="tab-pane fade in active"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/transcript/';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/transcript/&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_ruby" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/transcript/'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_java" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/transcript/&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_r" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/transcript/&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_curl" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/transcript/' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_wget" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-----Example request - END -------------------------->
+            </div>
+        </div>
+        <!-- Modal for GET /api/transcript/diff/-->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-----Example request - BEGIN -------------------------->
+                <div class="container">
+                    <h3>Example requests for GET /api/transcript/diff/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_transcript_diff_perl">Perl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_diff_python">Python</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_diff_ruby">Ruby</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_diff_java">Java</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_diff_r">R</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_diff_curl">Curl</a>
+                        </li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_diff_wget">Wget</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_transcript_diff_perl" class="tab-pane fade in active"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_ruby" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_java" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_r" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_curl" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_diff_wget" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_diff_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-----Example request - END -------------------------->
+            </div>
+        </div>
+        <!-- Modal for GET /api/transcript/manelist/-->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-----Example request - BEGIN -------------------------->
+                <div class="container">
+                    <h3>Example requests for GET /api/transcript/manelist/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_transcript_manelist_perl">Perl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_manelist_python">Python</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_manelist_ruby">Ruby</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_manelist_java">Java</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_manelist_r">R</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_manelist_curl">Curl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_manelist_wget">Wget</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_transcript_manelist_perl"
+                             class="tab-pane fade in active" style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/transcript/manelist/?page=1';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/transcript/manelist/?page=1&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_ruby" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/transcript/manelist/?page=1'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_java" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/transcript/manelist/?page=1&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_r" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/transcript/manelist/?page=1&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_curl" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/transcript/manelist/?page=1' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_manelist_wget" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_manelist_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/manelist/?page=1'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Example request - END -->
+            </div>
+        </div>
+        <!-- Modal for GET /api/transcript/search-->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-- Example request - BEGIN -->
+                <div class="container">
+                    <h3>Example requests for GET /api/transcript/search/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_transcript_search_perl">Perl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_search_python">Python</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_search_ruby">Ruby</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_search_java">Java</a></li>
+                        <li><a data-toggle="pill" href="#menu_api_transcript_search_r">R</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_search_curl">Curl</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_search_wget">Wget</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_transcript_search_perl"
+                             class="tab-pane fade in active" style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_python" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_ruby" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_java" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_r" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_curl" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_search_wget" class="tab-pane fade"
+                             style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_search_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-----Example request - END -------------------------->
+            </div>
+        </div>
+        <!-- Modal for GET /api/transcript/stable_id_with_version/-->
+        <div class="modal modal_multi">
+            <div class="modal-content">
+                <span class="close close_multi">&times;</span>
+                <!-----Example request - BEGIN -------------------------->
+                <div class="container">
+                    <h3>Example requests for GET /api/transcript/stable_id_with_version/</h3>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill"
+                                              href="#home_api_transcript_stable_id_with_version_perl">Perl</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_python">Python</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_ruby">Ruby</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_java">Java</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_r">R</a></li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_curl">Curl</a>
+                        </li>
+                        <li><a data-toggle="pill"
+                               href="#menu_api_transcript_stable_id_with_version_wget">Wget</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="home_api_transcript_stable_id_with_version_perl"
+                             class="tab-pane fade in active" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_perl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="perl">
+use strict;
+use warnings;
+use HTTP::Tiny;
+my $http = HTTP::Tiny-&gt;new();
+my $server = 'http://tark.ensembl.org';
+my $ext = '/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set';
+my $response = $http-&gt;get($server.$ext, {
+  headers =&gt; { 'Content-type' =&gt; 'application/json' }
+});
+die &quot;Failed!\n&quot; unless $response-&gt;{success};
+use JSON;
+use Data::Dumper;
+if(length $response-&gt;{content}) {
+  my $hash = decode_json($response-&gt;{content});
+  local $Data::Dumper::Terse = 1;
+  local $Data::Dumper::Indent = 1;
+  print Dumper $hash;
+  print &quot;\n&quot;;
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_python"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_python'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="python">
+import requests, sys
+server = &quot;http://tark.ensembl.org&quot;
+ext = &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;
+r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
+if not r.ok:
+  r.raise_for_status()
+  sys.exit()
+decoded = r.json()
+print(repr(decoded))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_ruby"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_ruby'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="ruby">
+require 'net/http'
+require 'uri'
+
+server='http://tark.ensembl.org'
+path = '/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set'
+
+url = URI.parse(server)
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(path, {'Content-Type' =&gt; 'application/json'})
+
+response = http.request(request)
+
+if response.code != &quot;200&quot;
+  puts &quot;Invalid response: #{response.code}&quot;
+  puts response.body
+  exit
+end
+
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+result = JSON.parse(response.body)
+puts YAML::dump(result)
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_java"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_java'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="java">
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+
+
+public class EnsemblRest {
+
+  public static void main(String[] args) throws Exception {
+    String server = &quot;http://tark.ensembl.org&quot;;
+    String ext = &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;;
+    URL url = new URL(server + ext);
+
+    URLConnection connection = url.openConnection();
+    HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+    httpConnection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+
+    InputStream response = connection.getInputStream();
+    int responseCode = httpConnection.getResponseCode();
+
+    if(responseCode != 200) {
+      throw new RuntimeException(&quot;Response code was not 200. Detected response was &quot;+responseCode);
+    }
+
+    String output;
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(response, &quot;UTF-8&quot;));
+      StringBuilder builder = new StringBuilder();
+      char[] buffer = new char[8192];
+      int read;
+      while ((read = reader.read(buffer, 0, buffer.length)) &gt; 0) {
+        builder.append(buffer, 0, read);
+      }
+      output = builder.toString();
+    }
+    finally {
+        if (reader != null) try {
+          reader.close();
+        } catch (IOException logOrIgnore) {
+          logOrIgnore.printStackTrace();
+        }
+    }
+
+    System.out.println(output);
+  }
+}
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_r"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane' id='api_transcript_stable_id_with_version_r'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="r">
+library(httr)
+library(jsonlite)
+library(xml2)
+
+server &lt;- &quot;http://tark.ensembl.org&quot;
+ext &lt;- &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;
+
+r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
+
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+head(fromJSON(toJSON(content(r))))
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_curl"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_curl'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="curl">
+curl 'http://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set' -H 'Content-type:application/json'
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+                        <div id="menu_api_transcript_stable_id_with_version_wget"
+                             class="tab-pane fade" style='width: 90%;'>
+                            <div class='tab-pane'
+                                 id='api_transcript_stable_id_with_version_wget'>
+                                                        <pre class="pre-scrollable prettyprint linenums"><code
+                                                                class="wget">
+wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set'  -O -
+                                                    </code></pre>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Example request - END -->
+            </div>
+        </div>
+        </tbody>
+    </table>
+</div>
