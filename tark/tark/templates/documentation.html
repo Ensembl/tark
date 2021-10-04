@@ -1,205 +1,66 @@
 {% extends "base.html" %}
-
-{% block title %}Tark Help{% endblock %}
-
 {% load staticfiles %}
 
+{% block title %}
+    Tark Help
+{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
+        <!-- FAQ Side bar - START -->
         <div class="col-md-3">
-		   <ul class="list-group">
-		  <li class="list-group-item active">FAQs</li>
-		  <li class="list-group-item"><a href="#tark_summary">{{"What is Tark?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_services">{{"What services are provided by Tark?" | truncatechars:60 }}</a></li>
-		   <li class="list-group-item"><a href="#tark_rest">{{"What services are provided by REST Tark?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_web">{{"What services are provided by Web Tark?" | truncatechars:60 }}</a></li>
- 		  <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
-		  <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of Tark?" | truncatechars:60 }}</a></li>
-		</ul>
+            <ul class="list-group">
+                <li class="list-group-item active">FAQs</li>
+                <li class="list-group-item"><a href="#tark_summary">{{"What is Tark?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_services">{{"What services are provided by Tark?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_rest">{{"What additional services are provided by REST Tark?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_web">{{"What additional services are provided by Web Tark?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
+                <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of Tark?" | truncatechars:60 }}</a></li>
+            </ul>
         </div>
-       <div class="col-md-9">
-		<div class="panel panel-info">
+        <!-- FAQ Side bar - END -->
+        <div class="col-md-9">
+            <div class="panel panel-info">
 
-	<div class="panel-heading">
-	<h4 class="panel-title">Tark FAQ</h4>
-	</div>
+                <div class="panel-heading">
+                    <h4 class="panel-title">Tark FAQ</h4>
+                </div>
+                <div class="panel-body" id="tark_faq" name="tark_faq">
+                    <!-- FAQ Q1 -->
+                    {% include "docs_faqs/faq1.html" %}
 
-	<div class="panel-body" id="tark_faq" name="tark_faq">
-    
-    <h4 id="tark_summary">What is Tark?</h4>
-    <p>
-    Tark stands for Transcript ARchive. The goal of TArK is to create an archive of all transcript sequences from Ensembl and other sources, including historical gene sets. To ensure robust tracking of exact changes between gene and transcript sets, <a href="#tark_checksum">checksums</a> are included at a fine grained level.
-    </p>
-    
-    <hr/>
-    <h4 id="tark_services">What services are provided by Tark?</h4>
-    <dl>
-    <dt>The Tark provides the following main services via REST Tark and Web Tark:</dt>
-	 <dd>- querying/searching of existing transcripts and related entities</dd>
-	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
-   </dl>
- 	
- 	<hr/>
-    <h4 id="tark_rest">What services are provided by REST Tark?</h4>
-    <dl>
-	 <dd>- querying/searching of existing transcripts and related entities applying various filters and GET the results in JSON format</dd>
-	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
-   </dl>
-   
-   	<hr/>
-    <h4 id="tark_we">What services are provided by Web Tark?</h4>
-    <dl>
-	 <dd>- querying/searching of existing transcripts and related entities</dd>
-	 <dd>- explore and determine the exact differences between transcripts from one release to the next</dd>
-	 <dd>- datatable view for the entities</dd>
-   </dl>
-   
-    <hr/>
-    <h4 id="ar_attribute">What attributes are captured for a given Transcript?</h4>
-   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th><strong>Attribute</strong></th>
-        <th><strong>Type</strong></th>
-        <th><strong>Mandatory</strong></th>
-        <th><strong>Description</strong></th>
-        <th><strong>Example</strong></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>StableID</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>stable id of the transcript</td>
-        <td>ENST00000387314</td>
-      </tr>
-     
-     <tr>
-        <td>StableID Version</td>
-        <td>Integer</td>
-        <td>YES</td>
-        <td>stable id version</td>
-        <td>2</td>
-      </tr>
-      
-       <tr>
-        <td>Assembly</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>assembly name</td>
-        <td>GRCh38</td>
-      </tr>
- 
-      <tr>
-        <td>Start</td>
-        <td>Integer</td>
-        <td>YES</td>
-        <td>location start</td>
-        <td>86107319</td>
-      </tr>
-      
-       <tr>
-        <td>End</td>
-        <td>Integer</td>
-        <td>YES</td>
-        <td>location end</td>
-        <td>86594074</td>
-      </tr>
-      
-      <tr>
-        <td>Strand</td>
-        <td>Integer</td>
-        <td>YES</td>
-        <td>location strand</td>
-        <td>-1</td>
-      </tr>
- 
- 	 <tr>
-        <td>Region</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>chromosomal region</td>
-        <td>4</td>
-      </tr>
-      
-       <tr>
-        <td>Location checksum</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>location checksum</td>
-        <td>A7B8DE6BC582980F1A0B580706E50560A25D3654</td>
-      </tr>
-      
-      <tr>
-        <td>Exonset checksum</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>exonset checksum</td>
-        <td>0DE665BF4AC8C50A6A4CD66185446F3034CDC504</td>
-      </tr>
-      
-      <tr>
-        <td>Transcript checksum</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>transcript checksum</td>
-        <td>183642CE18A48D2929FA2F999AC209F740D7341D</td>
-      </tr>
-      
-      <tr>
-        <td>Sequence checksum</td>
-        <td>String</td>
-        <td>YES</td>
-        <td>sequence checksum</td>
-        <td>C261E62157042BD94AD8E3975F55D5F29BBFF2C8</td>
-      </tr>
-      
-      
-    </tbody>
-  </table>
-<hr/>
-    
-    <h4 id="tark_checksum">What do you mean by Checksum? How is it derived?</h4>
-    <p>
-   A checksum is a small-sized datum derived from a block of digital data. The actual procedure which yields the checksum from a data input is called a checksum function or checksum algorithm, which usually output a significantly different value, even for small changes made to the input.
-    </p>
-    
-    <hr/>
-    <h4 id="tark_crud">How to do GET operations via REST API?</h4>
-    <div class="panel panel-info ">
-    <div class="panel-heading">GET</div>
-    <div class="panel-body">
-    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/'<br/>
-    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989'<br/>
-    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989&assembly_name=GRCh38'<br/>
-    curl -X GET --header 'Accept: application/json' '{{hostname}}/api/transcript/?stable_id=ENST00000639989&assembly_name=GRCh38&release_short_name=90'<br/><br/>
-    </div>
-    </div>
-    
-   
-    <hr/>
-    <h4 id="ar_tech_stack">What is the technology stack of Tark?</h4>
-    <p>
-    <a href="https://www.python.org/">Python3</a>, <a href="https://www.djangoproject.com/">Django</a>, <a href="http://www.django-rest-framework.org/">Django REST Framework</a> and <a href="https://django-rest-swagger.readthedocs.io/en/latest/">Django REST Swagger</a>. Backend support is provided by<a href="https://www.mysql.com/"> MySQL</a>.
-    </p>
-    
-    <a href="#tark_summary">Go Top</a>
-     </div>
-    </div>
-    
-    </div>
-  </div>
-</div>
+                    <!-- FAQ Q2 -->
+                    {% include "docs_faqs/faq2.html" %}
 
+                    <!-- FAQ Q3 -->
+                    {% include "docs_faqs/faq3.html" %}
 
+                    <!-- FAQ Q4 -->
+                    {% include "docs_faqs/faq4.html" %}
+
+                    <!-- FAQ Q5 -->
+                    {% include "docs_faqs/faq5.html" %}
+
+                    <!-- FAQ Q6 -->
+                    {% include "docs_faqs/faq6.html" %}
+
+                    <!-- FAQ Q7 -->
+                    {% include "docs_faqs/faq7.html" %}
+
+                    <!-- FAQ Q8 -->
+                    {% include "docs_faqs/faq8.html" %}
+
+                    <a href="#tark_summary">Go Top</a>
+
+                </div> <!-- closing div tag for div class="panel-body" id="tark_faq" name="tark_faq" -->
+            </div> <!-- closing div tag for  div class="panel panel-info" -->
+        </div> <!-- closing div tag for class="col-md-9" -->
+    </div> <!-- closing div tag for div class="row" -->
+</div> <!-- closing div tag for div class="container" -->
+
+<script src='{% static "js/docs_collapsible.js" %}' type='text/javascript'></script>
 
 {% endblock %}
-
-
-<body></body>
-
-

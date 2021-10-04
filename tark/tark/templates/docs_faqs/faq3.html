@@ -1,0 +1,297 @@
+<h4 id="tark_rest">What additional services are provided by REST Tark?</h4>
+<dl>
+    <dd>
+        <div class="collapsible">
+            - apply various filters and GET the results in JSON format when querying for existing
+            transcripts and related entities
+        </div>
+        <div class="content">
+            <ol>
+                <!-- ASSEMBLY -->
+                <li style="font-size:13px"><a
+                        href="http://tark.ensembl.org/api/#!/assembly">Assembly</a></li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/assembly/assembly_list">GET
+                        /api/assembly/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses based on
+                            <i>assembly_name</i>, enter <i>GRCh37</i> or <i>GRCh38</i> against the
+                            parameter and click <i>Try it out!</i> .
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/assembly/assembly_read">GET
+                        /api/assembly/{assembly_id}/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>assembly_id</i> field, enter <i>1</i> or
+                            <i>1001</i> to filter the response based on <i>GRCh37</i> or
+                            <i>GRCh38</i> respectively.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+                <!-- EXON -->
+                <li style="font-size:13px"><a href="http://tark.ensembl.org/api/#!/exon">Exon</a>
+                </li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/exon/exon_list">GET /api/exon/</a>
+                    </li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses, enter the
+                            filter value against the relevant parameter and click <i>Try it out!</i>
+                            .<br>These parameters include page number, stable id (<i>eg:
+                                ENSE00001184784</i>), stable id version (<i>eg: 1 or 5</i>), start
+                            or end location, chromosomal region (<i>eg: 1, 6, CHR_HSCHR7_2_CTG6,
+                                LRG_192</i>), strand, assembly name (<i>eg: GRCh37, GRCh38</i>),
+                            release short name (<i>eg: 90</i>), source name (<i>Ensembl or
+                                RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to expand a specific object
+                            (<i>sequence, session, assembly, exon_release_set or transcript</i>)
+                            from the response body, enter that object in the <i>expand</i> field and
+                            click <i>Try it out!</i>.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/exon/exon_read">GET
+                        /api/exon/{exon_id}/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>exon_id field</i>, enter an integer value,
+                            say <i>1</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+                <!-- GENE -->
+                <li style="font-size:13px"><a href="http://tark.ensembl.org/api/#!/gene">Gene</a>
+                </li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/gene/gene_list">GET /api/gene/</a>
+                    </li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses, enter the
+                            filter value against the relevant parameter and click <i>Try it out!</i>
+                            .<br>These parameters include page number, stable id (<i>eg:
+                                ENSG00000139618</i>), stable id version (<i>eg: 1 or 5</i>), start
+                            or end location, chromosomal region (<i>eg: 1, 6, CHR_HSCHR7_2_CTG6,
+                                LRG_192</i>), strand, assembly name (<i>eg: GRCh37, GRCh38</i>),
+                            release short name (<i>eg: 90</i>), source name (<i>Ensembl or
+                                RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to expand a specific object
+                            (<i>sequence, session, assembly, translation_release_set or
+                                transcripts</i>) from the response body, enter that object in the
+                            <i>expand</i> field and click <i>Try it out!</i>.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/gene/gene_read">GET
+                        /api/gene/{gene_id}/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>gene_id</i> field, enter an integer value,
+                            say <i>1</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+                <!-- RELEASE -->
+                <li style="font-size:13px"><a
+                        href="http://tark.ensembl.org/api/#!/release">Release</a></li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/release/release_list">GET
+                        /api/release/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses, enter the
+                            filter value against the relevant parameter and click <i>Try it out!</i>
+                            .<br>These parameters include page number, assembly name (<i>eg: GRCh37,
+                                GRCh38</i>), release short name (<i>eg: 90</i>), source name
+                            (<i>Ensembl or RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to expand a specific object (<i>eg:
+                            release_source or release_set</i>) from the response body, enter
+                            that object in the <i>expand</i> field and click <i>Try it out!</i>.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/release/release_nopagination_list">GET
+                        /api/release/nopagination</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>page</i> field, enter an integer value, say
+                            <i>1</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/release/release_read">GET
+                        /api/release/{release_id}/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>release_id</i> field, enter an integer
+                            value, say <i>1</i> or <i>1001</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+                <!-- TRANSCRIPT -->
+                <li style="font-size:13px"><a
+                        href="http://tark.ensembl.org/api/#!/transcript">Transcript</a></li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/transcript/transcript_list">GET
+                        /api/transcript/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses, enter the
+                            filter value against the relevant parameter and click <i>Try it out!</i>
+                            .<br>These parameters include page number, stable id (<i>eg:
+                                ENST00000252934</i>), stable id version (<i>eg: 1 or 5</i>), start
+                            or end location, chromosomal region (<i>eg: 1, 6, CHR_HSCHR7_2_CTG6,
+                                LRG_192</i>), strand, assembly name (<i>eg: GRCh37, GRCh38</i>),
+                            release short name (<i>eg: 90</i>), source name (<i>Ensembl or
+                                RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to expand a specific object
+                            (<i>sequence, session, assembly, transcript_release_set, genes,
+                                translations, exons</i>) from the response body, enter that object
+                            in the <i>expand</i> field and click <i>Try it out!</i>.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/transcript/transcript_diff_list">GET
+                        /api/transcript/diff/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>diff_me_stable_id</i> field, enter a
+                            stable_id (eg:<i>ENST00000380152</i>).
+                        </li>
+                        <li style="font-size:13px">In <i>diff_with_stable_id</i> field, enter a
+                            stable_id (eg:<i>ENST00000252934</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to further filter the responses,
+                            enter the filter value against the relevant parameter and click <i>Try
+                                it out!</i> .<br>
+                            These parameters include page number, assembly name (<i>eg: GRCh37,
+                                GRCh38</i>), release short name (<i>eg: 86, 88, 90</i>), source name
+                            (<i>Ensembl or RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/transcript/transcript_manelist_list">GET
+                        /api/transcript/manelist/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>page</i> field, enter an integer value, say
+                            <i>1</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/transcript/transcript_search_list">GET
+                        /api/transcript/search/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>identifier_field</i> field, enter any valid
+                            identifier (eg:<i>BRCA2, ENSG00000139618, ENST00000380152</i>).
+                        </li>
+                        <li style="font-size:13px">In <i>expand</i> field, enter
+                            <i>transcript_release_set</i> or <i>genes</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/transcript/transcript_stable_id_with_version_list">GET
+                        /api/transcript/stable_id_with_version/</a></li>
+                    <ol type="a">
+                        <li style="font-size:13px">In <i>stable_id_with_version</i> field, enter a
+                            stable id with its version, say <i>ENST00000252934.10</i>.
+                        </li>
+                        <li style="font-size:13px">In <i>expand</i> field, enter
+                            <i>transcript_release_set</i> or <i>genes</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+                <!-- TRANSLATION -->
+                <li style="font-size:13px"><a
+                        href="http://tark.ensembl.org/api/#!/translation">Translation</a></li>
+                <ol type="i">
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/translation/translation_list">GET
+                        /api/translation/</a>.
+                    </li>
+                    <ol type="a">
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages,
+                            without filling any parameter to view the curl command, request url,
+                            response body, code and headers.
+                        </li>
+                        <li style="font-size:13px">If you want to filter the responses, enter the
+                            filter value against the relevant parameter and click <i>Try it out!</i>
+                            .<br>These parameters include page number, stable id (<i>eg:
+                                ENSP00000369497</i>), stable id version (<i>eg: 1 or 5</i>), start
+                            or end location, chromosomal region (<i>eg: 1, 6, CHR_HSCHR7_2_CTG6,
+                                LRG_192</i>), strand, assembly name (<i>eg: GRCh37, GRCh38</i>),
+                            release short name (<i>eg: 90</i>), source name (<i>Ensembl or
+                                RefSeq</i>).
+                        </li>
+                        <li style="font-size:13px">If you want to expand a specific object
+                            (sequence, session, assembly, translation_release_set or transcripts)
+                            from the response body, enter that object in the <i>expand</i> field and
+                            click <i>Try it out!</i>.
+                        </li>
+                    </ol>
+                    <li style="font-size:13px">Go to <a
+                            href="http://tark.ensembl.org/api/#!/translation/translation_read">GET
+                        /api/translation/{translation_id}/</a>.
+                    </li>
+                    <ol type="a">
+                        <li style="font-size:13px">In translation_id field, enter an integer value,
+                            say <i>1</i>.
+                        </li>
+                        <li style="font-size:13px">Click <i>Try it out!</i> under Response Messages
+                            to view the curl command, request url, response body, code and headers.
+                        </li>
+                    </ol>
+                </ol>
+            </ol>
+        </div>
+    </dd>
+</dl>
+<hr/>
