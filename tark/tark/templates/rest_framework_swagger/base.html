@@ -97,6 +97,15 @@
 </script>
 
 <script src='{% static "rest_framework_swagger/init.js" %}' type='text/javascript'></script>
+<!--Add meta tag to upgrade insecure requests -->
+<script>
+  if (window.location.protocol.indexOf('https') == 0){
+    var el = document.createElement('meta')
+    el.setAttribute('http-equiv', 'Content-Security-Policy')
+    el.setAttribute('content', 'upgrade-insecure-requests')
+    document.head.append(el)
+  }
+</script>
 {% block extra_scripts %}
 {# -- Add any additional custom JS scripts here -- #}
 {% endblock %}
