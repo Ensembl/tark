@@ -268,14 +268,16 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
     count : int
     """
     # print("feature {} from_release {}, to_release {}, direction {}, source {} ".format(feature, from_release, to_release, direction, source))
+    # Change the original sql query to include biotypes from gene and transcript tables
     sql = """
         SELECT
-            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version
+            v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version, v1.biotype as new_biotype, case when v1.biotype=v0.biotype then ' ' else v0.biotype end as previous_biotype
         FROM
             (
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
+		    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -293,6 +295,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
+		    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -309,6 +312,56 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
         WHERE
             #OUTER_WHERE#;
     """
+    # In Release stats gene count details page, display gene name along with stable_id, if gene name is present in database
+    if feature == 'gene':
+        sql = """
+            SELECT
+                v0.gene_symbol as from_gene, v0.stable_id as from_stable_id, v0.stable_id_version as from_stable_id_version, v1.gene_symbol as to_gene, v1.stable_id as to_stable_id, v1.stable_id_version as to_stable_id_version,v1.biotype as new_biotype, case when v1.biotype=v0.biotype then ' ' else v0.biotype end as previous_biotype
+            FROM
+                (
+                    SELECT
+                        IF(gn.name IS NULL, '', gn.name) as gene_symbol,
+                        #FEATURE#.stable_id,
+                        #FEATURE#.stable_id_version,
+			#FEATURE#.biotype,
+                        f_tag.feature_id,
+                        rs.shortname,
+                        rs.description,
+                        rs.assembly_id
+                    FROM
+                        #FEATURE#
+                        JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                        JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                        JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                        LEFT JOIN gene_names AS gn ON (#FEATURE#.name_id = gn.external_id) AND (gn.primary_id = 1)
+                    WHERE
+                        rs.shortname=%s AND
+                        rst.shortname=%s
+                ) AS v0
+                #DIRECTION# JOIN (
+                    SELECT
+                        IF(gn.name IS NULL, '', gn.name) as gene_symbol,
+                        #FEATURE#.stable_id,
+                        #FEATURE#.stable_id_version,
+			#FEATURE#.biotype,
+                        f_tag.feature_id,
+                        rs.shortname,
+                        rs.description,
+                        rs.assembly_id
+                    FROM
+                        #FEATURE#
+                        JOIN #FEATURE#_release_tag AS f_tag ON (#FEATURE#.#FEATURE#_id=f_tag.feature_id)
+                        JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
+                        JOIN release_source AS rst ON (rs.source_id=rst.source_id)
+                        LEFT JOIN gene_names AS gn ON (#FEATURE#.name_id = gn.external_id) AND (gn.primary_id = 1)
+                    WHERE
+                        rs.shortname=%s AND
+                        rst.shortname=%s
+                ) AS v1 ON (v0.stable_id=v1.stable_id)
+            WHERE
+                #OUTER_WHERE#;
+        """
+
 
     sql = sql.replace('#FEATURE#', feature)
     if direction == 'removed':
