@@ -55,6 +55,7 @@ class Transcript(models.Model):
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
+    biotype =  models.CharField(max_length=40, blank=True, null=True)
     genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
