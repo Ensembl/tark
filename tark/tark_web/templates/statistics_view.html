@@ -116,7 +116,7 @@
           {% endif %}
             {{report.gene.tark_release}}
             {% if report.gene.gained or report.gene.removed or report.gene.changed%}
-            (&nearr; {{report.gene.gained}}, &searr; {{report.gene.removed}}, &harr; {{report.gene.changed}})
+            (&nearr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/gained">{{report.gene.gained}}</a>, &searr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/removed">{{report.gene.removed}}</a>, &harr; <a target="_blank" href="/web/statistics/gene/{{report.release.current|add:"-1" }}/{{report.release.current}}/{{ source }}/changed">{{report.gene.changed}} </a>)
             {% endif %}
           </td>
 
