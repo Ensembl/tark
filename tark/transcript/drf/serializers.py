@@ -70,6 +70,18 @@ class TranscriptManeSerializer(serializers.Serializer):
     mane_type = serializers.CharField()
     ens_gene_name = serializers.CharField()
 
+class TranscriptManeGRCh37Serializer(serializers.Serializer):
+    ens_stable_id = serializers.CharField()
+    ens_stable_id_version = serializers.CharField()
+    refseq_stable_id = serializers.CharField()
+    refseq_stable_id_version = serializers.CharField()
+    mane_type = serializers.CharField()
+    ens_gene_name = serializers.CharField()
+    grch37_stable_id = serializers.CharField()
+    grch37_stable_id_version = serializers.CharField()
+    five_prime_utr = serializers.BooleanField()
+    cds = serializers.BooleanField()
+    three_prime_utr = serializers.BooleanField()
 
 class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
