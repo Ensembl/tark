@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
     url(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
     url(r'^manelist/$', views.TranscriptManeList.as_view(), name='transcript_mane_list'),
+    url(r'^maneGRCh37list/$', views.TranscriptManeGRCh37List.as_view(), name='transcript_maneGRCh37_list'),
     # url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
 
 
