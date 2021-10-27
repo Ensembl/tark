@@ -137,6 +137,13 @@ urlpatterns = [
     ),
 
     url(
+        r'^maneGRCh37list/$',
+        TemplateView.as_view(
+            template_name='maneGRCh37_list.html'
+        )
+    ),
+   
+    url(
         r'^mane_project/$',
         TemplateView.as_view(
             template_name='mane_project.html'
