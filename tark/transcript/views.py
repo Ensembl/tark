@@ -22,7 +22,7 @@ from tark_drf.utils.decorators import setup_eager_loading, expand_all_related
 from transcript.models import Transcript
 from transcript.drf.serializers import TranscriptSerializer,\
     TranscriptDiffSerializer, TranscriptSearchSerializer,\
-    TranscriptDataTableSerializer, TranscriptManeSerializer
+    TranscriptDataTableSerializer, TranscriptManeSerializer, TranscriptManeGRCh37Serializer
 from transcript.drf.filters import TranscriptFilterBackend,\
     TranscriptDiffFilterBackend, TranscriptSearchFilterBackend, TranscriptDetailFilterBackend
 from tark.utils.diff_utils import DiffUtils
@@ -57,6 +57,13 @@ class TranscriptManeList(generics.ListAPIView):
         queryset = Transcript.fetch_mane_transcript_and_type()
         return queryset
 
+class TranscriptManeGRCh37List(generics.ListAPIView):
+    serializer_class = TranscriptManeGRCh37Serializer
+    pagination_class = NotPaginatedSetPagination
+
+    def get_queryset(self):
+        queryset = Transcript.fetch_mane_transcript_and_GRCh37()
+        return queryset
 
 class TranscriptList(generics.ListAPIView):
     queryset = Transcript.objects.all()
