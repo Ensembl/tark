@@ -145,9 +145,9 @@ urlpatterns = [
    
    # new mane GRCh37 page
     url(
-        r'^maneGRCh37list/$',
-        maneGRCh37list,
-        name='maneGRCh37_list'
+        r'^mane_GRCh37_list/$',
+        mane_GRCh37_list,
+        name='mane_GRCh37_list'
     ),
    
     url(
