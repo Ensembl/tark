@@ -30,7 +30,7 @@ from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set, feature_diff
 from tark_web.views import statistics
 from django.views.generic.base import TemplateView
-from tark_web.views import mane_list_new,maneGRCh37list
+from tark_web.views import mane_list_new,mane_GRCh37_list
 
 urlpatterns = [
     url(r'^$', views.web_home, name='web_home'),
