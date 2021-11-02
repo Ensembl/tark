@@ -445,3 +445,89 @@ def transcript_details(request, stable_id_with_version, search_identifier):
                                                                'transcript_history': transcript_history,
                                                                'search_identifier': search_identifier,
                                                                'stable_id_with_version': stable_id_with_version})
+
+# queryfor manelist
+def mane_list_new(request):
+    sql = """
+        SELECT DISTINCT
+                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,
+                        relationship_type.shortname as mane_type,
+                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version,
+                        gn1.name as ens_gene_name
+                        FROM
+                        transcript t1
+                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id
+                        JOIN transcript_release_tag_relationship ON
+                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id
+                        JOIN transcript_release_tag trt2 ON
+                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id
+                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id
+                        JOIN relationship_type ON
+                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id
+                         JOIN transcript_gene tg1 ON
+                        t1.transcript_id=tg1.transcript_id
+                        JOIN gene gene1 ON
+                        tg1.gene_id=gene1.gene_id
+                        JOIN gene_names gn1 ON
+                        gene1.name_id=gn1.external_id
+                        where gn1.primary_id=1;
+    """
+    # print(sql)
+    with connections['tark'].cursor() as cursor:
+        cursor.execute(sql)
+        results = ReleaseUtils.dictfetchall(cursor)
+    return render(
+        request,
+        'mane_list_new.html',
+        context={
+            'results': results
+        }
+    )
+
+# queryfor maneGRCh37list
+def maneGRCh37list(request):
+    sql = """
+        SELECT DISTINCT
+                        t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,
+                        relationship_type.shortname as mane_type,
+                        t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version,
+                        gn1.name as ens_gene_name, 
+                        t3.stable_id as grch37_stable_id, t3.stable_id_version as grch37_stable_id_version,
+                        IF(tl3.five_utr_checksum = tl1.five_utr_checksum,'True','False') as five_prime_utr,
+                        'True' as cds,
+                        IF(tl3.three_utr_checksum = tl1.three_utr_checksum,'True','False') as  three_prime_utr 
+                        FROM 
+                        transcript t1 
+                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id 
+                        JOIN transcript_release_tag_relationship ON 
+                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id 
+                        JOIN transcript_release_tag trt2 ON 
+                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id 
+                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id 
+                        JOIN relationship_type ON 
+                        transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id
+                        JOIN transcript_gene tg1 ON 
+                        t1.transcript_id=tg1.transcript_id 
+                        JOIN gene gene1 ON 
+                        tg1.gene_id=gene1.gene_id 
+                        JOIN gene_names gn1 ON 
+                        gene1.name_id=gn1.external_id and gn1.primary_id=1
+                        JOIN transcript t3 ON t3.stable_id = t1.stable_id 
+                        AND t3.assembly_id = 1
+                        JOIN  translation_transcript tt1 ON tt1.transcript_id = t1.transcript_id
+                        JOIN translation tl1 ON tl1.translation_id = tt1.translation_id
+                        JOIN translation_transcript tt3 ON tt3.transcript_id = t3.transcript_id
+                        JOIN translation tl3 ON tl3.translation_id = tt3.translation_id
+                        WHERE t1.assembly_id = 1001 and tl3.seq_checksum = tl1.seq_checksum ;
+    """
+    # print(sql)
+    with connections['tark'].cursor() as cursor:
+        cursor.execute(sql)
+        results = ReleaseUtils.dictfetchall(cursor)
+    return render(
+        request,
+        'maneGRCh37list.html',
+        context={
+            'results': results
+        }
+    )
