@@ -74,7 +74,8 @@ class ReleaseStats(models.Model):
         managed = False
         db_table = 'release_stats'
         # unique_together = (('release'),)
-
+        # display most recent release at top of the table
+        ordering = ['-release_stats_id']
 
 class GeneReleaseTag(models.Model):
     feature = models.ForeignKey(Gene, models.DO_NOTHING)
