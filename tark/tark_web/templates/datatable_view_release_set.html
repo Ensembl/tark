@@ -72,6 +72,7 @@ $(document).ready(function() {
 	 $('#loadingSpinner').hide();
      $release_set_datatable =  $('#release_set_datatable').DataTable( {
         "pageLength": 25,
+	"order":[[ 0, "asc" ],[3, "desc" ], [2, "desc" ]],
         ajax: {
         url: "/api/release/nopagination",
         dataSrc: '' 
