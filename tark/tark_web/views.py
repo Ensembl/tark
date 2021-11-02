@@ -485,7 +485,7 @@ def mane_list_new(request):
     )
 
 # queryfor maneGRCh37list
-def maneGRCh37list(request):
+def mane_GRCh37_list(request):
     sql = """
         SELECT DISTINCT
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,
@@ -526,7 +526,7 @@ def maneGRCh37list(request):
         results = ReleaseUtils.dictfetchall(cursor)
     return render(
         request,
-        'maneGRCh37list.html',
+        'mane_GRCh37_list.html',
         context={
             'results': results
         }
