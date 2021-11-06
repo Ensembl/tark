@@ -470,9 +470,9 @@ def mane_list_new(request):
                         tg1.gene_id=gene1.gene_id
                         JOIN gene_names gn1 ON
                         gene1.name_id=gn1.external_id
-                        where gn1.primary_id=1;
+                        where gn1.primary_id=1 ORDER BY gn1.name;
     """
-    # print(sql)
+    
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
@@ -518,9 +518,9 @@ def mane_GRCh37_list(request):
                         JOIN translation tl1 ON tl1.translation_id = tt1.translation_id
                         JOIN translation_transcript tt3 ON tt3.transcript_id = t3.transcript_id
                         JOIN translation tl3 ON tl3.translation_id = tt3.translation_id
-                        WHERE t1.assembly_id = 1001 and tl3.seq_checksum = tl1.seq_checksum ;
+                        WHERE t1.assembly_id = 1001 and tl3.seq_checksum = tl1.seq_checksum ORDER BY gn1.name;
     """
-    # print(sql)
+    
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
