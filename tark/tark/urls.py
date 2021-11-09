@@ -49,6 +49,7 @@ tark_apis = [
     url(r'^' + api_version + 'translation/', include('translation.urls')),
     url(r'^' + api_version + 'exon/', include('exon.urls')),
     url(r'^' + api_version + 'release/', include('release.urls')),
+    url(r'^' + api_version + 'sequence/', include('sequence.urls')),
     ]
 
 
