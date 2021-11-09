@@ -16,4 +16,23 @@
 """
 
 
-# include your filters here
+from rest_framework.filters import BaseFilterBackend
+from tark_drf.utils.drf_fields import DrfFields
+from sequence.models import Sequence
+
+# Fields
+seq_checksum_field = DrfFields.seq_checksum_field()
+
+class SequenceFilterBackend(BaseFilterBackend):
+    """
+    Filter to filter by sequence_checksum
+    """
+    def filter_queryset(self, request, queryset, view):
+        seq_checksum = request.query_params.get('seq_checksum', None)
+
+        if seq_checksum is not None:
+            queryset = queryset.extra(where=['HEX(sequence.seq_checksum)=%s'],params=[seq_checksum])
+        return queryset
+
+    def get_schema_fields(self, view):
+        return [seq_checksum_field]
