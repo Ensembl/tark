@@ -318,6 +318,15 @@ class DrfFields(object):
             return example_dict[model_name]
         return ""
 
+    @classmethod
+    def seq_checksum_field(cls):
+        seq_checksum_field = coreapi.Field(
+            name='seq_checksum',
+            location='query',
+            required=True,
+            type='string',
+            description='a sequence checksum (eg: 70C0CDEC98DCDE638087881493FF5A3B39E6BF52)')
+        return seq_checksum_field
 
 class ChecksumFieldSerializer(serializers.Field):
     """
