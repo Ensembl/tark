@@ -525,7 +525,7 @@ def mane_GRCh37_list(request):
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
-	page = request.GET.get('page', 1)
+        page = request.GET.get('page', 1)
         paginator = Paginator(results,25)
         try:
             results = paginator.page(page)
