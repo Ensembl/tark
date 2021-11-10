@@ -15,7 +15,11 @@
    limitations under the License.
 """
 
-
+from __future__ import unicode_literals
+from sequence.models import Sequence
+from sequence.drf.serializers import SequenceSerializer
+from rest_framework import generics
+from sequence.drf.filters import SequenceFilterBackend
 from django.shortcuts import render  # @UnusedImport
 from tark_web.utils.sequtils import TarkSeqUtils
 import urllib
@@ -135,3 +139,8 @@ def check_service_status(request, job_id):
     if job_id:
         status = TarkSeqUtils.serviceGetStatus(job_id)
     return JsonResponse({"status": status})
+
+class SequenceList(generics.ListAPIView):
+    queryset = Sequence.objects.all()
+    serializer_class = SequenceSerializer
+    filter_backends = (SequenceFilterBackend,)
