@@ -34,6 +34,7 @@ from tark_web.utils.sequtils import TarkSeqUtils
 from setuptools.dist import sequence
 from django.db import connections, connection
 from transcript.utils.search_utils import SearchUtils
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
@@ -524,6 +525,15 @@ def mane_GRCh37_list(request):
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
+	page = request.GET.get('page', 1)
+        paginator = Paginator(results,25)
+        try:
+            results = paginator.page(page)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(paginator.num_pages)
+
     return render(
         request,
         'mane_GRCh37_list.html',
