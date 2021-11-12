@@ -1,0 +1,129 @@
+{% extends "web_home.html" %}
+
+{% load staticfiles %}
+{% load add_class %}
+{% load search_result_formatter %}
+
+{% block content %}
+
+<div class="container" style="padding-top:20px;">
+    
+    <!-- Info -->
+    <div class="panel panel-success">
+        
+        <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong><a href="https://ncbiinsights.ncbi.nlm.nih.gov/2018/10/11/matched-annotation-by-ncbi-and-embl-ebi-mane-a-new-joint-venture-to-define-a-set-of-representative-transcripts-for-human-protein-coding-genes/" target="_blank">MANE</a> Transcripts</strong>
+            Note: "<strong>MANE Select</strong>" – representative transcripts that are matched between RefSeq and Ensembl</div>
+            
+            <div class="panel-body">
+                
+                <table id="feature_table" class="table table-striped table-bordered table-responsive table-condensed text-center">
+                    <thead>
+                        <tr>
+                            <th>Gene</th>
+                            <th>MANE TYPE</th>
+                            <th>Ensembl StableID</th>
+                            <th>RefSeq StableID</th>
+                            <th>GRCh37</th>
+                            <th>5'UTR</th>
+                            <th>CDS</th>
+                            <th>3'UTR</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for feature in results %}
+                        <tr>
+                            <td><a target="_blank" href=/web/search/?identifier={{feature.ens_gene_name}}>{{feature.ens_gene_name}}</td>
+                                <td>{{feature.mane_type}}</td>
+                                <td><a target="_blank" href=http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{feature.ens_stable_id}}.{{feature.ens_stable_id_version}}>{{feature.ens_stable_id}}.{{feature.ens_stable_id_version}}</td>
+                                    <td><a target="_blank" href=https://www.ncbi.nlm.nih.gov/nuccore/{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}>{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}</td>
+                                        <td><a target="_blank" href=http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{feature.grch37_stable_id}}.{{feature.grch37_stable_id_version}}>{{feature.grch37_stable_id}}.{{feature.grch37_stable_id_version}}</td>
+                                            {% if feature.five_prime_utr == 'False' %}
+                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            {% else %}
+                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            {% endif %}
+                                            {% if feature.cds == 'False' %}
+                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            {% else %}
+                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            {% endif %}
+                                            {% if feature.three_prime_utr == 'False' %}
+                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            {% else %}
+                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                    <ul class="pagination">
+                                        
+                                        {% if results.has_previous %}
+                                        <li><a href="?page={{ results.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                                        {% else %}
+                                        <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+                                        {% endif %}
+                                        
+                                        {% if results.number|add:'-4' > 1 %}
+                                        <li><a href="?page=1">1</a></li>
+                                        <li><a href="?page={{ results.number|add:'-5' }}">&hellip;</a></li>
+                                        {% endif %}
+                                        
+                                        {% for i in results.paginator.page_range %}
+                                        {% if results.number == i %}
+                                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                        {% elif i > results.number|add:'-5' and i < results.number|add:'5' %}
+                                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                        {% endfor %}
+                                        
+                                        {% if results.paginator.num_pages > results.number|add:'4' %}
+                                        <li><a href="?page={{ results.number|add:'5' }}">&hellip;</a></li>
+                                        {% endif %}
+                                        
+                                        
+                                        <li><a href="?page={{ results.paginator.num_pages }}">{{ results.paginator.num_pages }}</a></li>
+                                        
+                                        
+                                        {% if results.has_next %}
+                                        <li><a href="?page={{ results.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                                        {% else %}
+                                        <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+                                        {% endif %}
+                                        
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <script>
+                            $(document).ready(function() {
+                                $('[data-toggle="tooltip"]').tooltip();
+                                var table = $('#feature_table').DataTable({
+                                    dom: 'Brt',
+                                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                                    "pageLength": 10,
+                                    "buttons": [
+                                    { extend: 'copy', text: 'COPY', exportOptions: { columns: ':visible', rows: ':visible'}},
+                                    { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }},
+                                    { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }},
+                                    { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }},
+                                    'colvis'
+                                    ],
+                                    "language": {
+                                        "search": "<strong>Filter results:</strong> ",
+                                        "processing": true
+                                    },
+                                    "pageLength": 25,
+                                    "order": [[ 0, "asc" ]]
+                                });
+                            });
+                        </script>
+                        
+                        
+{% endblock %}
+                        
