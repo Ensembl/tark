@@ -11,8 +11,9 @@
     <!-- Info -->
     <div class="panel panel-success">
         
-        <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong><a href="https://ncbiinsights.ncbi.nlm.nih.gov/2018/10/11/matched-annotation-by-ncbi-and-embl-ebi-mane-a-new-joint-venture-to-define-a-set-of-representative-transcripts-for-human-protein-coding-genes/" target="_blank">MANE</a> Transcripts</strong>
-            Note: "<strong>MANE Select</strong>" – representative transcripts that are matched between RefSeq and Ensembl</div>
+        <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> Table of matches from GRCh37 showing equivalence in 5' UTR, 3' UTR and CDS in relation to 
+            <a href="https://ncbiinsights.ncbi.nlm.nih.gov/2018/10/11/matched-annotation-by-ncbi-and-embl-ebi-mane-a-new-joint-venture-to-define-a-set-of-representative-transcripts-for-human-protein-coding-genes/" target="_blank">MANE</a> 
+            Select and MANE Plus Clinical transcripts on GRCh38.</div> 
             
             <div class="panel-body">
                 
@@ -21,9 +22,9 @@
                         <tr>
                             <th>Gene</th>
                             <th>MANE TYPE</th>
-                            <th>Ensembl StableID</th>
-                            <th>RefSeq StableID</th>
-                            <th>GRCh37</th>
+                            <th>Ensembl StableID GRCh38</th>
+                            <th>RefSeq StableID <br>GRCh38/ GRCh37</th>
+                            <th>Ensembl StableID GRCh37 <br>(Not MANE)</th>
                             <th>5'UTR</th>
                             <th>CDS</th>
                             <th>3'UTR</th>
@@ -39,19 +40,19 @@
                                     <td><a target="_blank" href=https://www.ncbi.nlm.nih.gov/nuccore/{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}>{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}</td>
                                         <td><a target="_blank" href=http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{feature.grch37_stable_id}}.{{feature.grch37_stable_id_version}}>{{feature.grch37_stable_id}}.{{feature.grch37_stable_id_version}}</td>
                                             {% if feature.five_prime_utr == 'False' %}
-                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            <td>No Match</td>
                                             {% else %}
-                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            <td>Match</td>
                                             {% endif %}
                                             {% if feature.cds == 'False' %}
-                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            <td>No Match</td>
                                             {% else %}
-                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            <td>Match</td>
                                             {% endif %}
                                             {% if feature.three_prime_utr == 'False' %}
-                                            <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
+                                            <td>No Match</td>
                                             {% else %}
-                                            <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
+                                            <td>Match</td>
                                             {% endif %}
                                             {% endfor %}
                                         </tbody>
