@@ -35,7 +35,7 @@
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
-        var requestUrl = "https://raw.githubusercontent.com/Ensembl/tark-loader/dummy_ea818/mane_grch37.txt";
+        var requestUrl = "{% static '/txt/mane_grch37.txt' %}";
         var table = $('#feature_table').DataTable({
             dom: 'lBfrtip',
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
