@@ -59,6 +59,9 @@ class Transcript(models.Model):
     genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
+    # for order_by on 'mane type' and 'to release' to work properly, add the below fields
+    mane_type = models.CharField(max_length=24, blank=True, null=True)
+    latest_release = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
