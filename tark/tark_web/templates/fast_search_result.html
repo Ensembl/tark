@@ -1,0 +1,738 @@
+{% extends "web_home.html" %}
+
+{% load staticfiles %}
+{% load add_class %}
+{% load search_result_formatter %}
+{% load compare_features %}
+{% load sequence_format %}
+
+{% block content %}
+
+<script type="text/javascript" class="init">
+
+
+function get_query_params(row){
+
+            transcript_stable_id = row.find("td:nth-child(3)").text().trim(); // Finds the 3rd <td> element
+            transcript_assembly = row.find("td:nth-child(5)").text().trim();
+            transcript_source = row.find("td:nth-child(6)").text().trim();
+            
+            //location
+            transcript_region = row.find("td:nth-child(9)").text().trim();
+            transcript_start = row.find("td:nth-child(10)").text().trim();
+            transcript_end = row.find("td:nth-child(11)").text().trim();
+            transcript_strand = row.find("td:nth-child(12)").text().trim();
+            transcript_location_str = transcript_region + ':' + transcript_start + '-' + transcript_end;
+            transcript_length = transcript_end - transcript_start + 1;
+            transcript_strand = transcript_strand==1 ? "positive" : "reverse"
+            transcript_location_str += ' (' +  transcript_length + ' bp) ' + transcript_strand + ' strand';
+            
+            
+            transcript_release = row.find("td:nth-child(8)").text().trim();
+            transcript_releases = [];
+            if (typeof transcript_release != "undefined") {
+            transcript_releases = transcript_release.split('-');
+            transcript_releases_trimmed = [];
+            $.each(transcript_releases, function( index, value ) {
+			transcript_releases_trimmed.push(value.trim());
+			});
+            }
+            transcript_release = transcript_releases_trimmed.sort().pop();
+
+            //removing e and r from release
+            if(transcript_release.startsWith("e")){
+            transcript_release = transcript_release.substring(1,4);
+            //console.log(' From e ' + transcript_release);
+            }else if (transcript_release.startsWith("r")){
+            transcript_release = transcript_release.substring(1,13);
+            //console.log('From r ' + transcript_release)
+            }
+            else{
+            transcript_release = transcript_release.substring(0,2);
+            }
+            
+            //get location
+            
+            //console.log(transcript_stable_id, transcript_assembly, transcript_source, transcript_release, transcript_location_str);
+            return [transcript_stable_id, transcript_assembly, transcript_source, transcript_release, transcript_location_str];
+}
+
+//for multi transcript comparison
+function get_multi_diff_result_summary(multi_payload_data){
+		payload_data_tr1 = multi_payload_data['payload_data_tr1'];
+		
+		payload_data_tr2_list = multi_payload_data['payload_data_tr2_list'];
+		
+        var header_div = '<div id="multi_summary_diff_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff" !important;">' + 
+        				 '<strong><span class="glyphicon glyphicon-shopping-cart" style="float:left;font-size: 20px;">'+ parseInt(payload_data_tr2_list.length+1) + ' selected</span>TRANSCRIPT DETAILS (Click on "Compare" button below to COMPARE THE TWO TRANSCRIPTS in detail)</strong>' + '</div>';
+        				 
+        var table_div = "<table id='query_diff' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>StableID</th><th>Assembly</th><th>Source</th><th>Release</th><th>Location</th><th>Compare</th></tr>";
+        table_div += "<tr id='compare_tr1_with_tr2' style='background-color:#5bc0de'><td>" + payload_data_tr1['transcript1_stable_id'] + "</td><td>" + payload_data_tr1['transcript1_assembly'] + "</td><td> " + payload_data_tr1['transcript1_source'] + "</td><td>" + payload_data_tr1['transcript1_release'] + "</td>"
+        table_div += "<td>" + payload_data_tr1['transcript1_location_str'] + "</td>";
+        table_div += "<td></td></tr>";
+       
+		$.each(payload_data_tr2_list, function( index, payload_data_tr ) {
+		//console.log(payload_data_tr);
+  			key_t2 = "T2." + parseInt(index+1); 
+  			div_stable_id = payload_data_tr['transcript2_stable_id'];
+			div_stable_id = div_stable_id.replace(".", "_");
+
+  		table_div += "<tr id='" +  div_stable_id + "' ><td>" + payload_data_tr['transcript2_stable_id'] + "</td><td>" + payload_data_tr['transcript2_assembly'] + "</td><td> " + payload_data_tr['transcript2_source'] + "</td><td>" + payload_data_tr['transcript2_release'] + "</td>";
+  		table_div += "<td>" + payload_data_tr['transcript2_location_str'] + "</td>";
+  		table_div += "<td><button type='submit' class='btn btn-info btn-sm compare_tr2_with_tr1' style='padding: 5px;line-height: 0.6;background-color:red;'>Compare</button></td>";
+  		table_div += "</tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_query').html(header_div + table_div);
+		
+		//highlight the selected tr2
+		$("#query_diff tr:nth-child(3)").css('background-color','#b3d1ff');
+
+	    document.getElementById('search_diff_transcript').scrollIntoView();
+		
+		all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
+		
+		
+	  //get details for the first transcript
+	  var stable_id = payload_data_tr1['transcript1_stable_id'];
+      var stable_id_version = 1;
+      if (stable_id.includes('.')){
+      	var stable_id_split = stable_id.split(".");
+      	stable_id = stable_id_split[0];
+      	stable_id_version = stable_id_split[1];
+      }
+      
+      var assembly = payload_data_tr1['transcript1_assembly'];
+      var source = payload_data_tr1['transcript1_source'];
+      var release = payload_data_tr1['transcript1_release'];
+		
+		tr1_result = get_tr_details(stable_id, stable_id_version, release,assembly, source );
+		all_trancripts_details.unshift(tr1_result);
+
+		//get_multi_transcript_table(all_trancripts_details);
+		//get_multi_gene_table(all_trancripts_details);
+		get_multi_translation_table(all_trancripts_details);
+}
+
+//get multi transcript table
+function get_multi_transcript_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff" !important;">' + 
+        				 '<strong>TRANSCRIPT DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_tr_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>StableID</th><th>Location</th><th>Exons</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
+  			if (index == 0){
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
+  			}else{
+  			table_div += "<tr id='" +  div_stable_id + "' >";
+  			}
+    		
+    		table_div += "<td>" + current_transcript['stable_id'] + '.' + current_transcript['stable_id_version']  + "</td>";
+    		table_div += "<td>" + current_transcript['loc_region'] + " : " + current_transcript['loc_start']  + ' - ' + current_transcript['loc_end'] + " ("+  current_transcript['sequence']['sequence'].length + " bp) "+ "</td><td>" + current_transcript['exons'].length + "</td>";
+    		table_div += "</tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		//$('#multi_summary_diff_transcript_details').html(header_div + table_div);
+		$("#multi_tr_details tr:nth-child(3)").css('background-color','#b3d1ff');
+}
+
+//get multi gene table
+function get_multi_gene_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tr_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff !important;">' + 
+        				 '<strong>GENE DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_gene_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>StableID</th><th>Location</th><th>Symbol</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
+			
+  			if (index == 0){
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
+  			}else{
+  			table_div += "<tr id='" +  div_stable_id + "' >";
+  			}
+  			
+  			current_gene = current_transcript['genes'][0];
+  			table_div += "<td>" + current_gene['stable_id']  + '.' +  current_gene['stable_id_version']  + "</td>";
+    		table_div += "<td>" + current_gene['loc_region'] + " : " + current_gene['loc_start']  + ' - ' + current_gene['loc_end'] + "</td><td>" +current_gene['name'] + "</td></tr>";
+          
+		});
+		
+		 table_div += "</table>";
+		//$('#multi_summary_diff_gene_details').html(header_div + table_div);
+		$("#multi_gene_details tr:nth-child(3)").css('background-color','#b3d1ff');
+}
+
+
+//get multi translation table
+function get_multi_translation_table(all_trancripts_details){
+
+    var header_div = '<div id="multi_summary_tl_details_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #303952;color:#ffffff !important;">' + 
+        '<strong>PROTEIN DETAILS</strong>' + '</div>';
+        				 
+        var table_div = "<table id='multi_tl_details' class='table table-bordered table-striped table-condensed'>";
+        
+        table_div += "<tr><th>StableID</th><th>5'UTR</th><th>CDS</th><th>3'UTR</th><th>Symbol</th></tr>";
+              
+		$.each(all_trancripts_details, function( index, current_transcript ) {
+  			div_stable_id = current_transcript['stable_id'] + '_' + current_transcript['stable_id_version'] 
+
+  			if (index == 0){
+   			table_div += "<tr style='background-color:#5bc0de' id='" +  div_stable_id + "' >";
+  			}else{
+  			table_div += "<tr id='" +  div_stable_id + "' >";
+  			}
+  			
+  			current_translations = current_transcript['translations'];
+  			if(current_translations.length > 0){
+  			current_gene = current_transcript['genes'][0];
+  			current_translation = current_translations[0];
+  			table_div += "<td>" + current_translation['stable_id']  + '.' +  current_translation['stable_id_version']  + "</td>";
+    		
+    		cds_info = current_transcript['cds_info'];
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['five_prime_utr_start']  + ' - ' + cds_info['five_prime_utr_end'] + " ("+  cds_info['five_prime_utr_seq'].length + " bp) "+ "</td>";
+    		table_div += "<td>" + current_translation['loc_region'] + " : " + current_translation['loc_start']  + ' - ' + current_translation['loc_end'] +  " ("+  cds_info['cds_seq'].length + " bp) " + "</td>";
+    		table_div += "<td>" + cds_info['loc_region'] + " : " + cds_info['three_prime_utr_start']  + ' - ' + cds_info['three_prime_utr_end'] + " ("+  cds_info['three_prime_utr_seq'].length + " bp) "+ "</td>";
+    		table_div += "<td>" + current_gene['name'] + "</td>";
+    		table_div += "</tr>";
+    		
+            }else{
+            table_div += "<tr><td colspan='4'>No translations for this transcript</td></tr>";
+            }
+		});
+		
+		 table_div += "</table>";
+		$('#multi_summary_diff_translation_details').html(header_div + table_div);
+		$("#multi_tl_details tr:nth-child(3)").css('background-color','#b3d1ff');
+}
+
+function get_tr_details(stable_id, stable_id_version, release,assembly, source ){
+      tr_results = {};
+      tr_url = "/api/transcript/?stable_id=" + stable_id + "&stable_id_version=" + stable_id_version + "&release_short_name=" + release + "&assembly_name=" + assembly + "&source_name=" + source + "&expand_all=true";
+      $.ajax({
+      	url: tr_url, 
+        type: 'GET',
+        async: false,
+		success: function(data) {
+		tr_results =  data['results'][0];
+		},
+		error: function() {
+		}
+    });
+     return tr_results;
+}
+
+//details of all the transcripts
+function get_all_transcript_details(payload_data_tr2_list){
+    var transcript_container = [];
+   
+    $.each(payload_data_tr2_list, function( index, payload_data_tr ) {
+      var stable_id = payload_data_tr['transcript2_stable_id'];
+      var stable_id_version = 1;
+      if (stable_id.includes('.')){
+      	var stable_id_split = stable_id.split(".");
+      	stable_id = stable_id_split[0];
+      	stable_id_version = stable_id_split[1];
+      }
+      
+      var assembly = payload_data_tr['transcript2_assembly'];
+      var source = payload_data_tr['transcript2_source'];
+      var release = payload_data_tr['transcript2_release'];
+     tr_result = get_tr_details(stable_id, stable_id_version, release,assembly, source);
+     transcript_container.push(tr_result);
+    });
+     return transcript_container;
+}
+
+function get_diff_result_summary(payload_data){
+
+		//initialize diff_me
+        diff_me_stable_id = payload_data['transcript1_stable_id'];
+        diff_me_assembly = payload_data['transcript1_assembly'];
+        diff_me_source = payload_data['transcript1_source'];
+        diff_me_release = payload_data['transcript1_release'];
+        
+        //initialize diff with
+        diff_with_stable_id = payload_data['transcript2_stable_id'];
+        diff_with_assembly = payload_data['transcript2_assembly'];
+        diff_with_source = payload_data['transcript2_source'];
+        diff_with_release = payload_data['transcript2_release'];
+        
+
+        //collect diff_me params
+        //console.log('diff_me_assembly ' + diff_me_assembly + ' diff_me_source ' + diff_me_source  + ' diff_me_release ' + diff_me_release  + '  diff_me_stable_id ' +  diff_me_stable_id);
+        
+        //collect diff_with params
+        //console.log('diff_with_assembly ' + diff_with_assembly + ' diff_with_source ' + diff_with_source  + ' diff_with_release ' + diff_with_release  + '  diff_with_stable_id ' +  diff_with_stable_id);
+
+        var root_url = "/api/transcript/diff/?";
+        var diff_me_url = 'diff_me_assembly=' + diff_me_assembly + '&diff_me_source=' + diff_me_source  + '&diff_me_release=' + diff_me_release  + '&diff_me_stable_id=' + diff_me_stable_id;
+        var diff_with_url = 'diff_with_assembly=' + diff_with_assembly + '&diff_with_source=' + diff_with_source  + '&diff_with_release=' + diff_with_release  + '&diff_with_stable_id=' + diff_with_stable_id;
+        
+        var get_url = root_url + diff_me_url + '&' + diff_with_url;
+        get_url = get_url + "&render_as_string=True";
+        var header_div = '<div id="current_well" class="well well-sm text-center" style="padding:5px;margin-bottom:0px;background-color: #d9edf7 !important;">' + 
+        				 '<strong>TRANSCRIPT COMPARISON SUMMARY REPORT BETWEEN <span style="color:red">' + diff_me_stable_id + ' and ' + diff_with_stable_id + '</span></strong>' +
+         				'<button type="submit" id="close_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-remove"></span> Close</button>' + 
+         				'<button type="submit" id="print_diff_report" class="btn btn-default btn-sm" style="float:right;padding: 5px; font-size: 10px; line-height: 1.0;"><span class="glyphicon glyphicon-print"></span> Print</button></div>';
+         				
+        $.get(get_url, function(diff_data, status){
+    		gene_table = diff_data["gene"];
+    		transcript_table = diff_data["transcript"];
+    		translation_table = diff_data["translation"];
+    		exonset_table = diff_data["exonset"];
+
+    		$('#summary_diff_qs1_qs2').html(header_div +  transcript_table + gene_table + translation_table + exonset_table);
+    		$("#loadingSpinner_qs1_qs2").hide();
+ 		});
+
+}//end get_diff_result_summary
+
+
+function get_payload_data(row, transcript){
+	payload_data = {};
+  [transcript_stable_id, transcript_assembly, transcript_source, transcript_release, transcript_location_str] = get_query_params(row);
+            payload_data[transcript + '_stable_id'] = transcript_stable_id;
+      		payload_data[transcript + '_assembly'] = transcript_assembly;
+      		payload_data[transcript + '_source'] = transcript_source;
+      		payload_data[transcript + '_release'] = transcript_release;
+      		payload_data[transcript + '_location_str'] = transcript_location_str;
+      		
+			return payload_data;
+}
+
+function printData()
+{
+
+   $('#summary_diff_qs1_qs2').printThis({
+  	importCSS: false,
+  	importStyle: true,
+  	removeScripts: true
+
+});
+}
+
+
+//for get_multiple_sequence_alignment
+function get_multiple_sequence_alignment(multi_payload_data){
+		
+		//console.log("====payload========");
+		//console.log(multi_payload_data);
+		//console.log("====payload========");
+	var post_data = {"payload_data_list": multi_payload_data};
+	       $("#loadingSpinner_qs1_qs2").show();
+	$.ajax({
+    url:'/web/call_align_sequence_clustal/',
+    type: "POST",
+    data: JSON.stringify(post_data),
+    success:function(response){
+     var jobId = response.jobId;
+     //window.location.href ="https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + jobId + "/aln-clustal";
+     //window.location.href ="https://www.ebi.ac.uk/Tools/services/web/toolresult.ebi?jobId=" + jobId + "&analysis=alignments";
+     window.open("https://www.ebi.ac.uk/Tools/services/web/toolresult.ebi?jobId=" + jobId + "&analysis=alignments", '_blank');
+    },
+    complete:function(){$("#loadingSpinner_qs1_qs2").hide();},
+    error:function (xhr, textStatus, thrownError){}
+});
+}
+
+
+$(document).ready(function() {
+  
+    var search_table = $('#search_result_table').DataTable(
+    { 
+      dom: 'lBfrtip',
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "pageLength": 10,
+      "buttons": [ 
+       { extend: 'copy', text: 'COPY', exportOptions: { columns: ':visible', rows: ':visible'}}, 
+       { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+       { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }}, 
+       { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }}, 
+        'colvis'
+       ],
+     "initComplete": function(settings){
+  
+            /* Apply the tooltips */
+            $('#search_result_table thead th[title]').tooltip(
+            {
+               "container": 'body'
+            });          
+        },
+     
+    /* change order to Type desc,  Source asc, Strand desc, Assembly desc, From release desc*/
+    "order": [[ 14, "desc" ], [ 5, "asc" ], [ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
+    "lengthChange": false,
+    "bPaginate": false,
+    "columnDefs": [ {
+      "targets"  : 'no-sort',
+      "orderable": false,
+    	}],
+    	"language": {
+        "emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version.",
+        "search": "<strong>Filter results:</strong> ",
+        "sInfo" : "Showing 1 to 10 of {{total_transcripts}} entries"
+        }
+    });
+    
+    $('#loadingSpinner_qs1_qs2').hide();
+     
+     var payload_data = {};
+     var payload_data_tr1 = {};
+
+    $('#search_result_table tbody').on('click', 'input[name*="transcript1"]', function(e){
+        if( $(this).is(":checked") ){ // check if the radio is checked
+            var row = $(this).parent().parent();
+            row.css('background-color','#5bc0de');
+            row.siblings().css('background-color','');
+            payload_data_tr1 = get_payload_data(row, 'transcript1');
+         }
+    });
+    
+    //var payload_data_tr2_list = [];
+    //var payload_data_tr2 = {};
+    
+    //for multiple sequence alignment
+     $("#multiple_sequence_alignment").click(function (e) {
+
+    var payload_data ={};
+    var multi_payload_data = {};
+    var payload_data_tr2_list = [];
+    var payload_data_tr2 = {};
+
+        e.preventDefault();
+        var $checkbox = $('#search_result_table tbody').find('input[name*="transcript2"]');
+        
+         $checkbox.each(function(e){
+          if($(this).is(':checked') ){
+            var row = $(this).parent().parent();   
+            payload_data_tr2 = get_payload_data(row, 'transcript2');
+            payload_data_tr2_list.push(payload_data_tr2);
+          
+          }
+        });
+        
+        if (payload_data_tr2_list.length > 0){
+         payload_data_tr2_list.unshift(payload_data_tr1);
+         get_multiple_sequence_alignment(payload_data_tr2_list);
+        
+        }else{
+         $('#myModal').modal('show');
+        }
+      });
+    // end multiple sequence alignment
+    
+     $("#search_diff_transcript").click(function (e) {
+
+    var payload_data ={};
+    var multi_payload_data = {};
+    var payload_data_tr2_list = [];
+    var payload_data_tr2 = {};
+
+        e.preventDefault();
+        var $checkbox = $('#search_result_table tbody').find('input[name*="transcript2"]');
+        
+         $checkbox.each(function(e){
+          if($(this).is(':checked') ){
+            var row = $(this).parent().parent();   
+            payload_data_tr2 = get_payload_data(row, 'transcript2');
+            payload_data_tr2_list.push(payload_data_tr2);
+          
+          }
+        });
+        
+        if (payload_data_tr2_list.length > 0){
+         multi_payload_data["payload_data_tr1"] = payload_data_tr1;
+         multi_payload_data["payload_data_tr2_list"] = payload_data_tr2_list;
+         get_multi_diff_result_summary(multi_payload_data);
+         payload_data_tr2 = payload_data_tr2_list[0];
+        }
+    
+        payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
+        var transcript1_stable_id = payload_data['transcript1_stable_id'];
+        var transcript2_stable_id = payload_data['transcript2_stable_id'];
+       
+      if(transcript1_stable_id && transcript2_stable_id){
+       $("#loadingSpinner_qs1_qs2").show();
+      get_diff_result_summary(payload_data);
+       }else{
+       $('#myModal').modal('show');
+      }
+      });
+
+ 	// Add event listener for closing result table
+ 	$("#summary_diff_qs1_qs2").on("click", "#close_diff_report", function () {
+       $("#summary_diff_qs1_qs2").empty();
+     });
+    
+    //for print
+    $("#summary_diff_qs1_qs2").on("click", "#print_diff_report", function () {
+	printData();
+	 });
+    
+    //for clear button
+    $("#clear_button").click(function (e) {
+		payload_data = {};
+		payload_data_tr1 = {};
+		payload_data_tr2 = {};
+		payload_data_tr2_list = [];
+		$('#multi_summary_diff_query').empty();
+		//$('#multi_summary_diff_transcript_details').empty();
+		//$('#multi_summary_diff_gene_details').empty();
+		$('#multi_summary_diff_translation_details').empty();
+		$("#summary_diff_qs1_qs2").empty();
+		
+      $("input[name='transcript1']").each(function() {
+      	   $(this).prop( "checked", false );
+         });
+         
+          $("input[name='transcript2']").each(function() {
+    		$(this).prop( "checked", false );
+         });
+      
+      });
+      
+      
+       //select the compare_tr2_with_tr1 buttons
+       
+       $(document).on("click",".compare_tr2_with_tr1",function(){
+
+         var tr2_row = $(this).parent().parent();
+         tr2_row_id = tr2_row.attr("id");
+         //select all rows with the selected stable id and change the background color
+         $("[id=" + tr2_row_id + "]").css('background-color','#b3d1ff');
+         
+         
+         
+         //make all the other rows white background
+         $("[id=" + tr2_row_id + "]").siblings().css('background-color','');
+         
+         //retain the same background for the first transcript
+         $("#query_diff tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_tr_details tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_gene_details tr:nth-child(2)").css('background-color','#5bc0de');
+         $("#multi_tl_details tr:nth-child(2)").css('background-color','#5bc0de');
+         
+         tr2_stable_id = tr2_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
+         tr2_assembly = tr2_row.find("td:nth-child(2)").text().trim(); 
+         tr2_source = tr2_row.find("td:nth-child(3)").text().trim();
+         tr2_release = tr2_row.find("td:nth-child(4)").text().trim(); 
+
+         
+         var tr1_row = $('#compare_tr1_with_tr2');
+
+         tr1_stable_id = tr1_row.find("td:nth-child(1)").text().trim(); // Finds the 3rd <td> element
+         tr1_assembly = tr1_row.find("td:nth-child(2)").text().trim(); 
+         tr1_source = tr1_row.find("td:nth-child(3)").text().trim();
+         tr1_release = tr1_row.find("td:nth-child(4)").text().trim(); 
+         
+         var payload_data_tr1 = {};
+         payload_data_tr1['transcript1_stable_id'] = tr1_stable_id;
+      	 payload_data_tr1['transcript1_assembly'] = tr1_assembly;
+      	 payload_data_tr1['transcript1_source'] = tr1_source;
+      	 payload_data_tr1['transcript1_release'] = tr1_release;
+      	 
+      	 var payload_data_tr2 = {};
+      	 payload_data_tr2['transcript2_stable_id'] = tr2_stable_id;
+      	 payload_data_tr2['transcript2_assembly'] = tr2_assembly;
+      	 payload_data_tr2['transcript2_source'] = tr2_source;
+      	 payload_data_tr2['transcript2_release'] = tr2_release;
+      	
+        var payload_data = Object.assign({}, payload_data_tr1, payload_data_tr2);
+        var transcript1_stable_id = payload_data['transcript1_stable_id'];
+        var transcript2_stable_id = payload_data['transcript2_stable_id'];
+       
+      if(transcript1_stable_id && transcript2_stable_id){
+      //console.log("Two transcripts selected");
+       $("#loadingSpinner_qs1_qs2").show();
+      get_diff_result_summary(payload_data);
+       }
+         
+      });
+  
+  
+   }); //document ready
+   
+  
+
+	</script>
+
+<div class="container-fluid" style="padding-top:20px;">
+
+<!-- Info -->
+<div class="panel panel-info ">
+  <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> <strong>Search Results: </strong> 
+ To see the difference between two transcripts, select the two transcripts (T1 and T2) and click on "Compare Transcripts" button below.
+  </div>
+  <div class="panel-body">
+
+  <table id="search_result_table" class="table table-striped table-bordered table-responsive table-condensed text-center">
+ <thead>
+  <tr>
+     <th class="text-center" data-sortable="false">T1</th>
+     <th class="text-center" data-sortable="false">T2</th>
+     <th class="text-center" data-sortable="true">Transcript StableID</th>
+     <th class="text-center" data-sortable="true">Symbol</th>
+     <th class="text-center" data-sortable="true">Assembly</th>
+     <th class="text-center" data-sortable="true">Source</th>
+     <th class="text-center" data-sortable="true">From Release</th>
+     <th class="text-center" data-sortable="true">To Release</th>
+     <th class="text-center" data-sortable="true">Region</th>
+     <th class="text-center" data-sortable="true">Start</th>
+     <th class="text-center" data-sortable="true">End</th>
+     <th class="text-center" data-sortable="true">Strand</th>
+     <th class="text-center" data-sortable="true">Protein StableID</th>
+     <th class="text-center" data-sortable="true" title="Closest match from other source">Match</th>
+     <th class="text-center" data-sortable="true" title="Match type">TYPE</th>
+
+
+  </tr>
+ </thead>
+    {% for result in search_result %}
+      <tr>
+      <td><input type="radio" name="transcript1"></td>
+      <td><input type="checkbox" name="transcript2"></td>
+      <td>
+       <a href="/web/transcript_details/{{result.stable_id}}.{{result.stable_id_version}}/{{search_identifier|urlencode}}">{{result.stable_id}}.{{result.stable_id_version}}</a>
+      </td>
+
+      <td><a href="/web/search/?identifier={{result.genes|get_values_as_list:"name"}}">{{result.genes|get_values_as_list:"name"}}</a></td>
+      
+       <!--assembly -->
+       {% if result.transcript_release_set|get_values_as_list:"assembly" == "GRCh38"%}
+        <td>{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
+       {% else %}
+        <td class="text-danger">{{result.transcript_release_set|get_values_as_list:"assembly"}}</td>
+       {% endif %}
+       
+        <!--source -->
+       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl"%}
+         <td>{{result.transcript_release_set|get_values_as_list:"source"}}</td>
+       {% elif "LRG" in result.transcript_release_set|get_values_as_list:"source" %}
+       <td class="text-success">LRG</td>
+       {% else %}
+        <td class="text-success">{{result.transcript_release_set|get_values_as_list:"source"}}</td>
+       {% endif %}
+      
+      <!--release_set -->
+       {% if result.transcript_release_set|get_values_as_list:"source" == "Ensembl" or result.transcript_release_set|get_values_as_list:"source" == "LRG"%}
+       {% with result.transcript_release_set|format_release_set:"ensembl" as release_date %}
+      <td>
+       <a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}.{{result.stable_id_version}}">
+      {{release_date.min_release_datename_value}}
+      </a>
+      </td>
+      <td>
+       <a target="_blank" href="http://e{{release_date.max_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{result.stable_id}}.{{result.stable_id_version}}">
+      {{release_date.max_release_datename_value}}
+      </a>
+      </td>
+      {% endwith %}
+      {% else %}
+       {% with result.transcript_release_set|format_release_set:"refseq" as release_date %}
+      <td>
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}">	
+      {{release_date.min_release_datename_value}}
+      </a>
+      </td>
+      <td>
+       <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{result.stable_id}}">	
+      {{release_date.max_release_datename_value}}
+      </a>
+      </td>
+      {% endwith %}
+      {% endif %}
+       
+      <td>{{result.loc_region}}</td>
+      <td>{{result.loc_start}}</td>
+      <td>{{result.loc_end}}</td>
+      <td>{{result.loc_strand}}</td>
+      <td>{{result.translations.0.stable_id}}.{{result.translations.0.stable_id_version}}</td>
+      <td>{{result.mane_transcript}}</td>
+      <td>{{result.mane_transcript_type}}</td>
+
+       </tr>
+    {% endfor %}
+
+  
+  </table>
+    
+  {% if total_transcripts > 10 %}
+     <a id="search_button" class="btn btn-primary" href="/web/search/?identifier={{search_identifier}}" onClick="javascript:document.getElementById('loadingSpinner_qs1_qs2').style.display='block';">View all {{total_transcripts}} transcripts</a>
+  {% endif %} 
+    
+  <button type="submit" id="search_diff_transcript" class="btn btn-info">Compare Transcripts</button>
+  <button type="submit" id="multiple_sequence_alignment" class="btn btn-success">Multiple Sequence Alignment</button>
+  <a id="search_button" class="btn btn-primary" href="/">New Search</a>
+  <button type="submit" id="clear_button" class="btn btn-warning" >Clear Selection</button>
+    
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#dc3545;color:#fff">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Warning!</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select two transcripts to compare.</p>
+        </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+ </div>
+ 
+ <!--summary-->
+ <hr class="col-xs-12">
+ 
+ <div id="loadingSpinner_qs1_qs2"><strong>Loading, please wait... </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
+ 
+<!-- Multi details -->
+<!-- Multi details -->
+ <div class="row" id="multi_details_transcript">
+  <div id="multi_summary_diff_query" class="col-md-12">  </div>
+  <!--div id="multi_summary_diff_transcript_details" class="col-md-6" > </div>-->
+ </div>
+ 
+ <div class="row" id="multi_details_gene_translation">
+  <!--<div id="multi_summary_diff_gene_details" class="col-md-6"> </div>-->
+  <div id="multi_summary_diff_translation_details" class="col-md-12"> </div>
+ </div>
+
+  <hr class="col-xs-12" style="color:#31708f;" />
+<p></p>
+
+<! -- Diff summary -->
+ <div class="row" id="div_summary_diff_qs1_qs2_results" >
+ <div id="summary_diff_qs1_qs2" class="col-md-12">  </div>
+ </div>
+ 
+ 
+	
+ 
+</div>
+
+
+ 
+ 
+
+{% endblock %}
