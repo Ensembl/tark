@@ -35,6 +35,7 @@ from translation.models import Translation
 from rest_framework.response import Response
 from tark.utils.request_utils import RequestUtils
 from exon.models import Exon
+from collections import OrderedDict
 
 
 import logging
@@ -218,3 +219,36 @@ class TranscriptSearch(generics.ListAPIView):
 
         result = super(TranscriptSearch, self).get(request, *args, **kwargs)
         return result
+
+      
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    def get_paginated_response(self, data):
+        response = Response(OrderedDict([
+            ('total_transcripts', self.page.paginator.count),
+            ('transcripts_per_page', self.page_size),
+            ('total_pages', self.page.paginator.num_pages),
+            ('current_page', self.page.number),
+            ('next_page', self.get_next_link()),
+            ('previous_page', self.get_previous_link()),
+            ('results', data)
+        ]))
+        response["number_pages"] = self.page.paginator.num_pages
+        return response
+
+class TranscriptFastSearch(generics.ListAPIView):
+    queryset = Transcript.objects.all()
+    serializer_class = TranscriptSearchSerializer
+    filter_backends = (TranscriptSearchFilterBackend, )
+    pagination_class  = StandardResultsSetPagination
+
+    @expand_all_related(TranscriptDiffSerializer)
+    def get_queryset(self):
+        queryset = Transcript.objects.order_by('pk')
+        queryset = Transcript.objects.order_by('-mane_type','-latest_release')
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        result = super(TranscriptFastSearch, self).get(request, *args, **kwargs)
+        return result
+      
