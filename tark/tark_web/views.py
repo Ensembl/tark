@@ -228,6 +228,84 @@ def search_home(request):
 
     return render(request, 'tark_search.html', context={'form': search_form})
 
+# fast search link
+def fast_search_link(request, search_identifier):
+
+    search_form = SearchForm(request.POST)
+    host_url = ApiUtils.get_host_url(request)
+
+    query_url = "/api/transcript/fastsearch/?identifier_field=" + search_identifier + \
+        "&expand=transcript_release_set,genes,translations"
+
+    response = requests.get(host_url + query_url)
+    if response.status_code == 200:
+        search_result = response.json()['results']
+        return render(request, 'fast_search_result.html', 
+		      context={
+			      'form': search_form,
+			      'search_result': search_result, 
+			      'search_identifier': search_identifier,
+			      'total_transcripts': int(response.json()['total_transcripts'])
+		      }
+		     )
+
+# fast search home
+def fast_search_home(request):
+    host_url = ApiUtils.get_host_url(request)
+    search_identifier = ""
+    query_url = "/api/transcript/fastsearch/?expand=transcript_release_set,genes,translations&identifier_field="
+    # Render the HTML template index.html with data in the context variable
+    search_result = {}
+
+    if request.method == 'GET' and "identifier" in request.GET:
+        search_identifier = request.GET['identifier']
+        if search_identifier is not None:
+            # replace white space
+            search_identifier = search_identifier.replace(" ", "")
+            search_form = SearchForm(request.GET)
+            query_url = query_url+search_identifier
+            response = requests.get(host_url + query_url)
+            if response.status_code == 200:
+                search_result = response.json()['results']
+                return render(request, 'fast_search_result.html', 
+			      context={'form': search_form,
+				       'search_result': search_result, 
+				       'search_identifier': search_identifier, 
+				       'total_transcripts': int(response.json()['total_transcripts'])
+				      }
+			     )
+            else:
+                logger.error("Error from search")
+        else:
+            search_form = SearchForm()
+
+    elif request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            search_identifier = search_form.cleaned_data['search_identifier']
+            # replace white space
+            search_identifier = search_identifier.replace(" ", "")
+            query_url = query_url+search_identifier
+            response = requests.get(host_url + query_url)
+            if response.status_code == 200:
+                search_result = response.json()['results']
+                return render(request, 'fast_search_result.html', 
+			      context={'form': search_form,
+				       'search_result': search_result, 
+				       'search_identifier': search_identifier, 
+				       'total_transcripts': int(response.json()['total_transcripts'])
+				      }
+			     )
+            else:
+                logger.error("Error from search")
+        else:
+            logger.error(search_form.errors)
+	
+    else:
+        search_form = SearchForm()
+    return render(request, 'tark_search.html', context={'form': search_form})
+
+
 
 def load_releases(request):
     assembly_name = request.GET.get('assembly_name')
