@@ -244,7 +244,7 @@ class TranscriptFastSearch(generics.ListAPIView):
 
     @expand_all_related(TranscriptDiffSerializer)
     def get_queryset(self):
-        queryset = Transcript.objects.order_by('pk')
+        #queryset = Transcript.objects.order_by('pk')
         queryset = Transcript.objects.order_by('-mane_type','-latest_release')
         return queryset
 
