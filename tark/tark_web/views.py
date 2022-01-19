@@ -1,13 +1,10 @@
 """
 .. See the NOTICE file distributed with this work for additional information
    regarding copyright ownership.
-
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-
        http://www.apache.org/licenses/LICENSE-2.0
-
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -84,8 +81,6 @@ def diff_home(request):
     return render(request, 'tark_diff.html', context={'form': form,
                                                       'diff_release': diff_release,
                                                       })
-
-
 def diff_release_home(request):
     """
     View function for diff query page
@@ -164,7 +159,7 @@ def search_link(request, search_identifier, fast_search_enabled):
                                                               'search_identifier': search_identifier,
                                                               'fast_search_enabled': 0})
     else:
-	query_url = "/api/transcript/fastsearch/?identifier_field=" + search_identifier + \
+        query_url = "/api/transcript/fastsearch/?identifier_field=" + search_identifier + \
         "&expand=transcript_release_set,genes,translations"
         response = requests.get(host_url + query_url)
         if response.status_code == 200:
@@ -198,7 +193,7 @@ def search_home(request, fast_search_enabled):
             query_url = query_url+search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
-		if fast_search_enabled == 0:
+                if fast_search_enabled == 0:
                     search_result = response.json()
                     return render(
                     request,
@@ -210,9 +205,9 @@ def search_home(request, fast_search_enabled):
                         'fast_search_enabled': 0
                     }
                 )
-	        else:
-		    search_result = response.json()['results']
-		    return render(request, 'search_result.html', context={'form': search_form,
+                else:
+                    search_result = response.json()['results']
+                    return render(request, 'search_result.html', context={'form': search_form,
                                                                       'search_result': search_result,
                                                                       'search_identifier': search_identifier,
                                                                       'total_transcripts': int(response.json()['total_transcripts']),
@@ -232,7 +227,7 @@ def search_home(request, fast_search_enabled):
             query_url = query_url+search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
-		if fast_search_enabled == 0:
+                if fast_search_enabled == 0:
                     search_result = response.json()
                     return render(
                     request,
@@ -244,8 +239,8 @@ def search_home(request, fast_search_enabled):
                         'fast_search_enabled': 0
                     }
                 )
-		else:
-		    search_result = response.json()['results']
+                else:
+                    search_result = response.json()['results']
                     return render(request, 'search_result.html', context={'form': search_form,
                                                                        'search_result': search_result,
                                                                        'search_identifier': search_identifier,
@@ -287,14 +282,12 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
     """
     Get the list of features that are different between two releases in the context (addition, deletion or
     change)
-
     Parameters
     ----------
     feature : str
     version : int
     direction : str
         One of gained|removed|changed
-
     Returns
     -------
     count : int
@@ -309,7 +302,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
-		    #FEATURE#.biotype,
+                    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -327,7 +320,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                 SELECT
                     #FEATURE#.stable_id,
                     #FEATURE#.stable_id_version,
-		    #FEATURE#.biotype,
+                    #FEATURE#.biotype,
                     f_tag.feature_id,
                     rs.shortname,
                     rs.description,
@@ -355,7 +348,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                         IF(gn.name IS NULL, '', gn.name) as gene_symbol,
                         #FEATURE#.stable_id,
                         #FEATURE#.stable_id_version,
-			#FEATURE#.biotype,
+                        #FEATURE#.biotype,
                         f_tag.feature_id,
                         rs.shortname,
                         rs.description,
@@ -375,7 +368,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                         IF(gn.name IS NULL, '', gn.name) as gene_symbol,
                         #FEATURE#.stable_id,
                         #FEATURE#.stable_id_version,
-			#FEATURE#.biotype,
+                        #FEATURE#.biotype,
                         f_tag.feature_id,
                         rs.shortname,
                         rs.description,
@@ -386,6 +379,7 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                         JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)
                         JOIN release_source AS rst ON (rs.source_id=rst.source_id)
                         LEFT JOIN gene_names AS gn ON (#FEATURE#.name_id = gn.external_id) AND (gn.primary_id = 1)
+
                     WHERE
                         rs.shortname=%s AND
                         rst.shortname=%s
@@ -504,7 +498,7 @@ def manelist(request):
                         gene1.name_id=gn1.external_id
                         where gn1.primary_id=1 ORDER BY gn1.name;
     """
-    
+
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
@@ -515,7 +509,6 @@ def manelist(request):
             'results': results
         }
     )
-
 # queryfor maneGRCh37list
 def mane_GRCh37_list(request):
     sql = """
@@ -523,28 +516,28 @@ def mane_GRCh37_list(request):
                         t1.transcript_id, t1.stable_id as ens_stable_id, t1.stable_id_version as ens_stable_id_version,
                         relationship_type.shortname as mane_type,
                         t2.stable_id as refseq_stable_id, t2.stable_id_version as refseq_stable_id_version,
-                        gn1.name as ens_gene_name, 
+                        gn1.name as ens_gene_name,
                         t3.stable_id as grch37_stable_id, t3.stable_id_version as grch37_stable_id_version,
                         IF(tl3.five_utr_checksum = tl1.five_utr_checksum,'True','False') as five_prime_utr,
                         'True' as cds,
-                        IF(tl3.three_utr_checksum = tl1.three_utr_checksum,'True','False') as  three_prime_utr 
-                        FROM 
-                        transcript t1 
-                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id 
-                        JOIN transcript_release_tag_relationship ON 
-                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id 
-                        JOIN transcript_release_tag trt2 ON 
-                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id 
-                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id 
-                        JOIN relationship_type ON 
+                        IF(tl3.three_utr_checksum = tl1.three_utr_checksum,'True','False') as  three_prime_utr
+                        FROM
+                        transcript t1
+                        JOIN transcript_release_tag trt1 ON t1.transcript_id=trt1.feature_id
+                        JOIN transcript_release_tag_relationship ON
+                        trt1.transcript_release_id=transcript_release_tag_relationship.transcript_release_object_id
+                        JOIN transcript_release_tag trt2 ON
+                        transcript_release_tag_relationship.transcript_release_subject_id=trt2.transcript_release_id
+                        JOIN transcript t2 ON trt2.feature_id=t2.transcript_id
+                        JOIN relationship_type ON
                         transcript_release_tag_relationship.relationship_type_id=relationship_type.relationship_type_id
-                        JOIN transcript_gene tg1 ON 
-                        t1.transcript_id=tg1.transcript_id 
-                        JOIN gene gene1 ON 
-                        tg1.gene_id=gene1.gene_id 
-                        JOIN gene_names gn1 ON 
+                        JOIN transcript_gene tg1 ON
+                        t1.transcript_id=tg1.transcript_id
+                        JOIN gene gene1 ON
+                        tg1.gene_id=gene1.gene_id
+                        JOIN gene_names gn1 ON
                         gene1.name_id=gn1.external_id and gn1.primary_id=1
-                        JOIN transcript t3 ON t3.stable_id = t1.stable_id 
+                        JOIN transcript t3 ON t3.stable_id = t1.stable_id
                         AND t3.assembly_id = 1
                         JOIN  translation_transcript tt1 ON tt1.transcript_id = t1.transcript_id
                         JOIN translation tl1 ON tl1.translation_id = tt1.translation_id
@@ -552,7 +545,7 @@ def mane_GRCh37_list(request):
                         JOIN translation tl3 ON tl3.translation_id = tt3.translation_id
                         WHERE t1.assembly_id = 1001 and tl3.seq_checksum = tl1.seq_checksum ORDER BY gn1.name;
     """
-    
+
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
