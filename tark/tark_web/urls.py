@@ -40,12 +40,12 @@ urlpatterns = [
     url(r'^diff/release/$', views.diff_release_home, name='diff_home_release'),
 
     # search
-    url(r'^search/$', views.search_home, name='search_home'),
-    url(r'^search_link/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+)$', views.search_link, name='search_link'),
+    url(r'^search/$', views.search_home, {'fast_search_enabled': 0}, name='search_home'),
+    url(r'^search_link/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+)$', views.search_link, {'fast_search_enabled':0}, name='search_link'),
     
     # faster search
-    url(r'^fastsearch/$', views.fast_search_home, name='fast_search_home'),
-    url(r'^fast_search_link/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+)$', views.fast_search_link, name='fast_search_link'),
+    url(r'^fastsearch/$', views.fast_search_home, {'fast_search_enabled': 1}, name='fast_search_home'),
+    url(r'^fast_search_link/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+)$', views.fast_search_link, {'fast_search_enabled': 1}, name='fast_search_link'),
 
     url(r'^sequence/(?P<feature_type>[\w]+)/(?P<stable_id>[\w\-\.]+)/(?P<stable_id_version>[\w]+)/(?P<release_short_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<source_name>[\w]+)/(?P<output_format>[\w]+)/$',
         views.fetch_sequence,
