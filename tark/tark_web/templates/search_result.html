@@ -352,7 +352,43 @@ function get_multiple_sequence_alignment(multi_payload_data){
 
 
 $(document).ready(function() {
-  
+    var fast_search = {{fast_search_enabled}}
+    if (fast_search == 1) {
+    var search_table = $('#search_result_table').DataTable(
+    {
+      dom: 'lBfrtip',
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "pageLength": 30,
+      "buttons": [
+       { extend: 'copy', text: 'COPY', exportOptions: { columns: ':visible', rows: ':visible'}},
+       { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }},
+       { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }},
+       { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }},
+        'colvis'
+       ],
+     "initComplete": function(settings){
+
+            /* Apply the tooltips */
+            $('#search_result_table thead th[title]').tooltip(
+            {
+               "container": 'body'
+            });
+        },
+
+    "order": [[ 14, "desc" ], [ 5, "asc" ], [ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
+    "lengthChange": false,
+    "bPaginate": false,
+    "columnDefs": [ {
+      "targets"  : 'no-sort',
+      "orderable": false,
+        }],
+        "language": {
+        "emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version.",
+        "search": "<strong>Filter results:</strong> ",
+        "sInfo" : "Showing 1 to {{search_result|length}} of {{total_transcripts}} entries"
+        }
+    });	
+   }else{
     var search_table = $('#search_result_table').DataTable(
     { 
       dom: 'lBfrtip',
@@ -363,29 +399,29 @@ $(document).ready(function() {
        { extend: 'csv', text: 'CSV', exportOptions: { columns: ':visible', rows: ':visible' }}, 
        { extend: 'excel', text: 'Excel', exportOptions: { columns: ':visible', rows: ':visible' }}, 
        { extend: 'pdf', text: 'PDF', exportOptions:{ columns: ':visible', rows: ':visible' }}, 
-        'colvis'
+	'colvis'
        ],
      "initComplete": function(settings){
-  
-            /* Apply the tooltips */
-            $('#search_result_table thead th[title]').tooltip(
-            {
-               "container": 'body'
-            });          
-        },
-     
+
+	    /* Apply the tooltips */
+	    $('#search_result_table thead th[title]').tooltip(
+	    {
+	       "container": 'body'
+	    });          
+	},
+
     /* change order to Type desc,  Source asc, Strand desc, Assembly desc, From release desc*/
     "order": [[ 14, "desc" ], [ 5, "asc" ], [ 11, "desc" ], [ 4, "desc" ], [ 6, "desc" ]],
     "columnDefs": [ {
       "targets"  : 'no-sort',
       "orderable": false,
-    	}],
-    	"language": {
-        "emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version.",
-        "search": "<strong>Filter results:</strong> "
-        }
+	}],
+	"language": {
+	"emptyTable": "No results found for query <strong>{{search_identifier }}</strong>. Please try again with different identifier or without the version.",
+	"search": "<strong>Filter results:</strong> "
+	}
     });
-    
+   }
     $('#loadingSpinner_qs1_qs2').hide();
      
      var payload_data = {};
@@ -667,6 +703,10 @@ $(document).ready(function() {
 
   
   </table>
+  {% if fast_search_enabled == 1 and total_transcripts > 10 %}
+  <a id="search_button" class="btn btn-primary" href="/web/search/?identifier={{search_identifier}}" onClick="javascript:document.getElementById('loadingSpinner_qs1_qs2').style.display='block';">View all {{total_transcripts}} transcripts</a>
+  {% endif %}
+	  
   <button type="submit" id="search_diff_transcript" class="btn btn-info">Compare Transcripts</button>
   <button type="submit" id="multiple_sequence_alignment" class="btn btn-success">Multiple Sequence Alignment</button>
   <a id="search_button" class="btn btn-primary" href="/">New Search</a>
