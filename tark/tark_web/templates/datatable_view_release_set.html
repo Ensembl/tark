@@ -83,8 +83,12 @@ $(document).ready(function() {
   			{ "mData": "shortname",
   			   "mRender": function ( data, type, row ) {
   			    if(row["source"] == "Ensembl"){
+				    var patch_release = ["85", "84", "83", "82", "81", "79", "78", "76"];
+				    if (patch_release.includes(data)) {
+					    return  data ;
+				    }else{
                return  '<a target="_blank" href="http://e'+data+'.ensembl.org">' + data + '</a>' + '  <span class="glyphicon glyphicon-link" aria-hidden="true"></span>' ;
-               }else{
+               }}else{
                return  '<a target="_blank" href="https://www.ncbi.nlm.nih.gov/refseq/">' + data + '</a>' + '  <span class="glyphicon glyphicon-link" aria-hidden="true"></span>';
                 return data;
                }
