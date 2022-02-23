@@ -77,7 +77,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # custom
-                'tark_web.context_processors.init_assembly_releases',
+                # The line below slows down all the pages on the app
+                # because it executes many queries (6) two or three times
+                # whenever a page is loaded, it is commented for now while
+                # TODO: investigating why it was added
+                # 'tark_web.context_processors.init_assembly_releases',
             ],
         },
     },
