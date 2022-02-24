@@ -161,7 +161,7 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
     else:
         compare_set_form = CompareSetForm()
 
-    return render(request, 'datatable_view.html', {'table_name': table_name,
+    return render(request, '../tark_web/templates/datatable_view.html', {'table_name': table_name,
                                                    "assembly_name": assembly_name,
                                                    "release_name": release_name,
                                                    "source_name": source_name,

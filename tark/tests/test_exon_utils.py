@@ -18,7 +18,6 @@
 
 from django.test.testcases import TestCase
 from tark.utils.exon_utils import ExonUtils
-import exon
 
 
 # ./manage.py test tark.tests.test_exon_utils --settings=tark.settings.test

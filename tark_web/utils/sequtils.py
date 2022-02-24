@@ -23,7 +23,6 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 import subprocess
 import os
-import re
 import platform
 import time
 from tark_web.utils.apiutils import ApiUtils

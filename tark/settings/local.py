@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # STATIC_ROOT = 
 
 # Point this to somewhere writable
-LOG_FILE = os.path.join(BASE_DIR, '../../logs/tark.log')
+LOG_FILE = os.path.join(BASE_DIR, '../logs/tark.log')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

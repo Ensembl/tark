@@ -116,7 +116,7 @@ def align_cds_sequence(request, feature_type,
 
     if len(sequence_a) == 0 or len(sequence_b) == 0:
         return render(request, 'alignment_viewer.html', context={'error_msg': "Alignment Error...One of the sequence is not available, please check!",
-                                                             })
+                                                                 })
     pay_load = {'asequence': sequence_a, 'bsequence': sequence_b,
                 'format': "pair", 'stype': "dna", 'email': 'prem@ebi.ac.uk'}
 
