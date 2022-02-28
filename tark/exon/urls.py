@@ -18,7 +18,6 @@
 from django.conf.urls import url
 from exon import views
 
-
 urlpatterns = [
     url(r'^$', views.ExonList.as_view(), name='exon_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.ExonDetail.as_view(), name='exon_detail'),

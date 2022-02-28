@@ -23,7 +23,6 @@ from tark import views
 from django.views.generic.base import TemplateView
 import socket
 
-
 """tark URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -40,7 +39,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-
 api_version = "api/"
 tark_apis = [
     url(r'^' + api_version + 'assembly/', include('assembly.urls')),
@@ -50,11 +48,9 @@ tark_apis = [
     url(r'^' + api_version + 'exon/', include('exon.urls')),
     url(r'^' + api_version + 'release/', include('release.urls')),
     url(r'^' + api_version + 'sequence/', include('sequence.urls')),
-    ]
-
+]
 
 schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
-
 
 try:
     HOSTNAME = socket.gethostname()
@@ -76,7 +72,6 @@ urlpatterns = [
         name="robots_file"),
 
 ]
-
 
 internal_apis = []  # hide your urls here
 

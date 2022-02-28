@@ -6,61 +6,68 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <!-- FAQ Side bar - START -->
-        <div class="col-md-3">
-            <ul class="list-group">
-                <li class="list-group-item active">FAQs</li>
-                <li class="list-group-item"><a href="#tark_summary">{{"What is Tark?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_services">{{"What services are provided by Tark?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_rest">{{"What additional services are provided by REST Tark?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_web">{{"What additional services are provided by Web Tark?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_checksum">{{"What do you mean by checksum?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_crud">{{"How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
-                <li class="list-group-item"><a href="#tark_tech_stack">{{"What is the technology stack of Tark?" | truncatechars:60 }}</a></li>
-            </ul>
-        </div>
-        <!-- FAQ Side bar - END -->
-        <div class="col-md-9">
-            <div class="panel panel-info">
+    <div class="container">
+        <div class="row">
+            <!-- FAQ Side bar - START -->
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item active">FAQs</li>
+                    <li class="list-group-item"><a href="#tark_summary">{{ "What is Tark?" | truncatechars:60 }}</a>
+                    </li>
+                    <li class="list-group-item"><a href="#tark_services">
+                        {{ "What services are provided by Tark?" | truncatechars:60 }}</a></li>
+                    <li class="list-group-item"><a href="#tark_rest">
+                        {{ "What additional services are provided by REST Tark?" | truncatechars:60 }}</a></li>
+                    <li class="list-group-item"><a href="#tark_web">
+                        {{ "What additional services are provided by Web Tark?" | truncatechars:60 }}</a></li>
+                    <li class="list-group-item"><a href="#tark_checksum">
+                        {{ "What do you mean by checksum?" | truncatechars:60 }}</a></li>
+                    <li class="list-group-item"><a href="#tark_crud">
+                        {{ "How to do GET operations via REST API?" | truncatechars:60 }}</a></li>
+                    <li class="list-group-item"><a href="#tark_tech_stack">
+                        {{ "What is the technology stack of Tark?" | truncatechars:60 }}</a></li>
+                </ul>
+            </div>
+            <!-- FAQ Side bar - END -->
+            <div class="col-md-9">
+                <div class="panel panel-info">
 
-                <div class="panel-heading">
-                    <h4 class="panel-title">Tark FAQ</h4>
-                </div>
-                <div class="panel-body" id="tark_faq" name="tark_faq">
-                    <!-- FAQ Q1 -->
-                    {% include "docs_faqs/faq1.html" %}
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Tark FAQ</h4>
+                    </div>
+                    <div class="panel-body" id="tark_faq" name="tark_faq">
+                        <!-- FAQ Q1 -->
+                        {% include "docs_faqs/faq1.html" %}
 
-                    <!-- FAQ Q2 -->
-                    {% include "docs_faqs/faq2.html" %}
+                        <!-- FAQ Q2 -->
+                        {% include "docs_faqs/faq2.html" %}
 
-                    <!-- FAQ Q3 -->
-                    {% include "docs_faqs/faq3.html" %}
+                        <!-- FAQ Q3 -->
+                        {% include "docs_faqs/faq3.html" %}
 
-                    <!-- FAQ Q4 -->
-                    {% include "docs_faqs/faq4.html" %}
+                        <!-- FAQ Q4 -->
+                        {% include "docs_faqs/faq4.html" %}
 
-                    <!-- FAQ Q5 -->
-                    {% include "docs_faqs/faq5.html" %}
+                        <!-- FAQ Q5 -->
+                        {% include "docs_faqs/faq5.html" %}
 
-                    <!-- FAQ Q6 -->
-                    {% include "docs_faqs/faq6.html" %}
+                        <!-- FAQ Q6 -->
+                        {% include "docs_faqs/faq6.html" %}
 
-                    <!-- FAQ Q7 -->
-                    {% include "docs_faqs/faq7.html" %}
+                        <!-- FAQ Q7 -->
+                        {% include "docs_faqs/faq7.html" %}
 
-                    <!-- FAQ Q8 -->
-                    {% include "docs_faqs/faq8.html" %}
+                        <!-- FAQ Q8 -->
+                        {% include "docs_faqs/faq8.html" %}
 
-                    <a href="#tark_summary">Go Top</a>
+                        <a href="#tark_summary">Go Top</a>
 
-                </div> <!-- closing div tag for div class="panel-body" id="tark_faq" name="tark_faq" -->
-            </div> <!-- closing div tag for  div class="panel panel-info" -->
-        </div> <!-- closing div tag for class="col-md-9" -->
-    </div> <!-- closing div tag for div class="row" -->
-</div> <!-- closing div tag for div class="container" -->
+                    </div> <!-- closing div tag for div class="panel-body" id="tark_faq" name="tark_faq" -->
+                </div> <!-- closing div tag for  div class="panel panel-info" -->
+            </div> <!-- closing div tag for class="col-md-9" -->
+        </div> <!-- closing div tag for div class="row" -->
+    </div> <!-- closing div tag for div class="container" -->
 
-<script src='{% static "js/docs_collapsible.js" %}' type='text/javascript'></script>
+    <script src='{% static "js/docs_collapsible.js" %}' type='text/javascript'></script>
 
 {% endblock %}

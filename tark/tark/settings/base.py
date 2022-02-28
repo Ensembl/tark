@@ -16,7 +16,6 @@ from tark.settings import secrets
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -95,7 +94,7 @@ if 'TRAVIS' in os.environ:
             'NAME': 'tark_django_manager',
             'USER': 'root',
             'PASSWORD': '',
-            'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+            'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
             'PORT': '3306',
         },
         'tark': {
@@ -103,7 +102,7 @@ if 'TRAVIS' in os.environ:
             'NAME': secrets.DATABASE_NAME,
             'USER': 'root',
             'PASSWORD': '',
-            'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+            'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
             'PORT': '3306',
         }
     }
@@ -118,7 +117,7 @@ else:
             'PORT': secrets.DATABASE_PORT,
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-                }
+            }
         },
         'tark': {
             'ENGINE': 'django.db.backends.mysql',
@@ -129,7 +128,6 @@ else:
             'PORT': secrets.DATABASE_PORT,
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -149,7 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -162,7 +159,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -201,7 +197,6 @@ SWAGGER_SETTINGS = {
     "is_superuser": False,  # Set to True to enforce admin only access
     'VALIDATOR_URL': None,
 }
-
 
 SESSION_COOKIE_SAMESITE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

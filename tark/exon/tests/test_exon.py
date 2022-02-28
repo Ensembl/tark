@@ -21,6 +21,7 @@ from rest_framework import status
 import json
 from exon.models import Exon
 
+
 # ./manage.py test exon.tests --settings=tark.settings.test
 
 
@@ -40,10 +41,10 @@ class ExonTest(APITestCase):
         self.assertEqual(Exon.objects.count(), 5)
         self.assertEqual(Exon.objects.count(), len(exon_all["results"]))
 
-#         expected_assemblies = [{'assembly_id': 1, 'assembly_name': 'GRCh38', 'genome': 1, 'session': 1},
-#                                {'assembly_id': 6, 'assembly_name': 'GRCh37', 'genome': 1, 'session': 6}]
-#         self.assertListEqual(assembly_all['results'], expected_assemblies, "Got expected assemblies")
-# 
+        #         expected_assemblies = [{'assembly_id': 1, 'assembly_name': 'GRCh38', 'genome': 1, 'session': 1},
+        #                                {'assembly_id': 6, 'assembly_name': 'GRCh37', 'genome': 1, 'session': 6}]
+        #         self.assertListEqual(assembly_all['results'], expected_assemblies, "Got expected assemblies")
+        #
         data = {'stable_id': 'ENSE00001184784'}
         response = self.client.get(url, data, format='json')
         exon_784 = json.loads(json.dumps(response.data))
@@ -54,6 +55,8 @@ class ExonTest(APITestCase):
                              'exon_checksum': '3537323932000000000000000000000000000000',
                              'sequence': None}
         self.assertDictEqual(exon_784['results'][0], expected_exon_784, "Got expected exon")
+
+
 '''
 Created on 2 Aug 2019
 

@@ -1,199 +1,261 @@
 [
-
-{
+  {
     "model": "session.session",
     "pk": 1,
     "fields": {
-        "client_id": "Test client",
-        "start_date": null,
-        "status": "2"
+      "client_id": "Test client",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "genome.genome",
     "pk": 1,
     "fields": {
-        "name": "homo_sapiens",
-        "tax_id": 9606,
-        "session": 1
+      "name": "homo_sapiens",
+      "tax_id": 9606,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "assembly.assembly",
     "pk": 1,
     "fields": {
-        "genome": 1,
-        "assembly_name": "GRCh38",
-        "session": 1
+      "genome": 1,
+      "assembly_name": "GRCh38",
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "transcript.transcript",
     "pk": 1,
     "fields": {
-        "stable_id": "ENST00000380152",
-        "stable_id_version": 7,
-        "assembly": 1,
-        "loc_start": 32315474,
-        "loc_end": 32400266,
-        "loc_strand": 1,
-        "loc_region": "13",
-        "loc_checksum": "1",
-        "exon_set_checksum": "1",
-        "transcript_checksum": "1",
-        "sequence": null,
-        "session": 1
+      "stable_id": "ENST00000380152",
+      "stable_id_version": 7,
+      "assembly": 1,
+      "loc_start": 32315474,
+      "loc_end": 32400266,
+      "loc_strand": 1,
+      "loc_region": "13",
+      "loc_checksum": "1",
+      "exon_set_checksum": "1",
+      "transcript_checksum": "1",
+      "sequence": null,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "transcript.transcript",
     "pk": 2,
     "fields": {
-        "stable_id": "ENST00000530893",
-        "stable_id_version": 6,
-        "assembly": 1,
-        "loc_start": 32315505,
-        "loc_end": 32333291,
-        "loc_strand": 1,
-        "loc_region": "13",
-        "loc_checksum": "2",
-        "exon_set_checksum": "2",
-        "transcript_checksum": "2",
-        "sequence": null,
-        "session": 1
+      "stable_id": "ENST00000530893",
+      "stable_id_version": 6,
+      "assembly": 1,
+      "loc_start": 32315505,
+      "loc_end": 32333291,
+      "loc_strand": 1,
+      "loc_region": "13",
+      "loc_checksum": "2",
+      "exon_set_checksum": "2",
+      "transcript_checksum": "2",
+      "sequence": null,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "transcript.transcript",
     "pk": 3,
     "fields": {
-        "stable_id": "ENST00000614259",
-        "stable_id_version": 1,
-        "assembly": 1,
-        "loc_start": 32316461,
-        "loc_end": 32362659,
-        "loc_strand": 1,
-        "loc_region": "13",
-        "loc_checksum": "3",
-        "exon_set_checksum": "3",
-        "transcript_checksum": "3",
-        "sequence": null,
-        "session": 1
+      "stable_id": "ENST00000614259",
+      "stable_id_version": 1,
+      "assembly": 1,
+      "loc_start": 32316461,
+      "loc_end": 32362659,
+      "loc_strand": 1,
+      "loc_region": "13",
+      "loc_checksum": "3",
+      "exon_set_checksum": "3",
+      "transcript_checksum": "3",
+      "sequence": null,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "transcript.transcript",
     "pk": 4,
     "fields": {
-        "stable_id": "ENST00000528762",
-        "stable_id_version": 1,
-        "assembly": 1,
-        "loc_start": 32370971,
-        "loc_end": 32379495,
-        "loc_strand": 1,
-        "loc_region": "13",
-        "loc_checksum": "4",
-        "exon_set_checksum": "4",
-        "transcript_checksum": "4",
-        "sequence": null,
-        "session": 1
+      "stable_id": "ENST00000528762",
+      "stable_id_version": 1,
+      "assembly": 1,
+      "loc_start": 32370971,
+      "loc_end": 32379495,
+      "loc_strand": 1,
+      "loc_region": "13",
+      "loc_checksum": "4",
+      "exon_set_checksum": "4",
+      "transcript_checksum": "4",
+      "sequence": null,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "transcript.transcript",
     "pk": 5,
     "fields": {
-        "stable_id": "ENST00000470094",
-        "stable_id_version": 1,
-        "assembly": 1,
-        "loc_start": 32379840,
-        "loc_end": 32398272,
-        "loc_strand": 1,
-        "loc_region": "13",
-        "loc_checksum": "5",
-        "exon_set_checksum": "5",
-        "transcript_checksum": "5",
-        "sequence":null,
-        "session": 1
+      "stable_id": "ENST00000470094",
+      "stable_id_version": 1,
+      "assembly": 1,
+      "loc_start": 32379840,
+      "loc_end": 32398272,
+      "loc_strand": 1,
+      "loc_region": "13",
+      "loc_checksum": "5",
+      "exon_set_checksum": "5",
+      "transcript_checksum": "5",
+      "sequence": null,
+      "session": 1
     }
-},
-
-{"model": "transcript.transcript", 
-"pk": 4606534, 
-"fields": {
-	"stable_id": "ENST00000293217",
-	"stable_id_version": 10,
-	"assembly": 1,
-	"loc_start": 75941507,
-	"loc_end": 75979166,
-	"loc_strand": -1,
-	"loc_region": "17",
-	"loc_checksum": "6",
-	"exon_set_checksum": "8",
-	"transcript_checksum": "6",
-	"sequence": null,
-	"session": 1
-	}
-	}, 
-{"model": "transcript.transcript",
-"pk": 5027388,
-"fields": {
-	"stable_id": "NM_004035",
-	"stable_id_version": 7,
-	"assembly": 1,
-	"loc_start": 75941507,
-	"loc_end": 75979166,
-	"loc_strand": -1,
-	"loc_region": "17", 
-	"loc_checksum": "7",
-	"exon_set_checksum": "9",
-	"transcript_checksum": "7",
-	"sequence": null,
-	"session": 1
-	}
-	},
-{"model": "release.transcriptreleasetag", 
-	"pk": 4606531, 
-	"fields": {
-	"feature": 4606534, "release": 21001}
-	}, 
-{"model": "release.transcriptreleasetag", 
-	"pk": 5027388, 
-	"fields": {
-		"feature": 5027388, "release": 22004}
-	},
-{"model": "release.releaseset", 
-	"pk": 21001, 
-	"fields": {"shortname": "96", 
-	"description": "Ensembl release", 
-	"assembly": 1, "release_date": "2019-04-09", 
-	"session": 1, "release_checksum": "CF0F", 
-	"source": 1}}, 
-{"model": "release.releaseset", "pk": 22004, 
-	"fields": {"shortname": "110", "description": "Refseq Homo sapiens Annotation Release 110", 
-	"assembly": 1, "release_date": "2019-06-17", "session": 1, "release_checksum": "DFD23", "source": 2
-	}},
-{ "model": "release.releasesource",
+  },
+  {
+    "model": "transcript.transcript",
+    "pk": 4606534,
+    "fields": {
+      "stable_id": "ENST00000293217",
+      "stable_id_version": 10,
+      "assembly": 1,
+      "loc_start": 75941507,
+      "loc_end": 75979166,
+      "loc_strand": -1,
+      "loc_region": "17",
+      "loc_checksum": "6",
+      "exon_set_checksum": "8",
+      "transcript_checksum": "6",
+      "sequence": null,
+      "session": 1
+    }
+  },
+  {
+    "model": "transcript.transcript",
+    "pk": 5027388,
+    "fields": {
+      "stable_id": "NM_004035",
+      "stable_id_version": 7,
+      "assembly": 1,
+      "loc_start": 75941507,
+      "loc_end": 75979166,
+      "loc_strand": -1,
+      "loc_region": "17",
+      "loc_checksum": "7",
+      "exon_set_checksum": "9",
+      "transcript_checksum": "7",
+      "sequence": null,
+      "session": 1
+    }
+  },
+  {
+    "model": "release.transcriptreleasetag",
+    "pk": 4606531,
+    "fields": {
+      "feature": 4606534,
+      "release": 21001
+    }
+  },
+  {
+    "model": "release.transcriptreleasetag",
+    "pk": 5027388,
+    "fields": {
+      "feature": 5027388,
+      "release": 22004
+    }
+  },
+  {
+    "model": "release.releaseset",
+    "pk": 21001,
+    "fields": {
+      "shortname": "96",
+      "description": "Ensembl release",
+      "assembly": 1,
+      "release_date": "2019-04-09",
+      "session": 1,
+      "release_checksum": "CF0F",
+      "source": 1
+    }
+  },
+  {
+    "model": "release.releaseset",
+    "pk": 22004,
+    "fields": {
+      "shortname": "110",
+      "description": "Refseq Homo sapiens Annotation Release 110",
+      "assembly": 1,
+      "release_date": "2019-06-17",
+      "session": 1,
+      "release_checksum": "DFD23",
+      "source": 2
+    }
+  },
+  {
+    "model": "release.releasesource",
     "pk": 1,
     "fields": {
-        "shortname": "Ensembl",
-        "description": "Ensembl data imports from Human Core DBs"
+      "shortname": "Ensembl",
+      "description": "Ensembl data imports from Human Core DBs"
     }
-},
-{
+  },
+  {
     "model": "release.releasesource",
     "pk": 2,
     "fields": {
-        "shortname": "RefSeq",
-        "description": "RefSeq data imports from Human otherfeatures DBs"
+      "shortname": "RefSeq",
+      "description": "RefSeq data imports from Human otherfeatures DBs"
     }
-},
-{"model": "transcript.transcriptgene", "pk": 4606533, "fields": {"gene": 1367893, "transcript": 4606534, "session": 1}},
-{"model": "gene.gene", "pk": 1367893,
-"fields": {"stable_id": "ENSG00000161533", "stable_id_version": 12, 
-"assembly": 1, "loc_start": 75941507, "loc_end": 75979177, "loc_strand": -1, "loc_region": "17", 
-"loc_checksum": "2F84", 
-"name": "HGNC:119", "gene_checksum": "8F88", "session": 1}},
-{"model": "genenames.genenames", "pk": 586, "fields": {"external_id": "HGNC:119", "name": "ACOX1", "source": "ACOX1", "primary_id": 0, "session": 1}}, 
-{"model": "genenames.genenames", "pk": 587, "fields": {"external_id": "HGNC:119", "name": "ACOT13", "source": "HGNC", "primary_id": 1, "session": 1}}
+  },
+  {
+    "model": "transcript.transcriptgene",
+    "pk": 4606533,
+    "fields": {
+      "gene": 1367893,
+      "transcript": 4606534,
+      "session": 1
+    }
+  },
+  {
+    "model": "gene.gene",
+    "pk": 1367893,
+    "fields": {
+      "stable_id": "ENSG00000161533",
+      "stable_id_version": 12,
+      "assembly": 1,
+      "loc_start": 75941507,
+      "loc_end": 75979177,
+      "loc_strand": -1,
+      "loc_region": "17",
+      "loc_checksum": "2F84",
+      "name": "HGNC:119",
+      "gene_checksum": "8F88",
+      "session": 1
+    }
+  },
+  {
+    "model": "genenames.genenames",
+    "pk": 586,
+    "fields": {
+      "external_id": "HGNC:119",
+      "name": "ACOX1",
+      "source": "ACOX1",
+      "primary_id": 0,
+      "session": 1
+    }
+  },
+  {
+    "model": "genenames.genenames",
+    "pk": 587,
+    "fields": {
+      "external_id": "HGNC:119",
+      "name": "ACOT13",
+      "source": "HGNC",
+      "primary_id": 1,
+      "session": 1
+    }
+  }
 ]

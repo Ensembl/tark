@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from Bio.Alphabet import generic_dna
 from Bio.SeqRecord import SeqRecord
 from io import StringIO
@@ -114,8 +113,8 @@ class TarkSeqUtils(object):
                         "&source_name=" + source_name + "&expand_all=true"
         else:
             query_url = "/api/" + feature_type.lower() + "/?stable_id=" + stable_id + \
-            "&stable_id_version=" + stable_id_version + \
-            "&expand_all=true"
+                        "&stable_id_version=" + stable_id_version + \
+                        "&expand_all=true"
 
         sequence = None
         response = requests.get(host_url + query_url)
@@ -128,7 +127,8 @@ class TarkSeqUtils(object):
 
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
-                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')
+                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related(
+                            'sequence')
                         if tl_query_set is not None and len(tl_query_set) == 1:
                             tl_obj = tl_query_set[0]
                             translation["sequence"] = tl_obj.sequence.sequence
@@ -140,7 +140,8 @@ class TarkSeqUtils(object):
                                 new_exons = []
                                 for exon in all_exons:
                                     if "exon_id" in exon:
-                                        current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+                                        current_exon_query_set = Exon.objects.filter(
+                                            exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
 
                                         if current_exon_query_set is not None and len(current_exon_query_set) == 1:
                                             current_exon_with_sequence = current_exon_query_set[0]
@@ -220,7 +221,7 @@ class TarkSeqUtils(object):
         status = cls.restRequest(requestUrl)
         return status
 
-# Client-side poll
+    # Client-side poll
     @classmethod
     def clientPoll(cls, jobId):
         result = u'PENDING'

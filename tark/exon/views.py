@@ -36,7 +36,7 @@ class ExonDatatableView(DataTableListApi):
 class ExonList(generics.ListAPIView):
     queryset = Exon.objects.all()
     serializer_class = ExonSerializer
-    filter_backends = (ExonFilterBackend, )
+    filter_backends = (ExonFilterBackend,)
 
     @setup_eager_loading(ExonSerializer)
     def get_queryset(self):

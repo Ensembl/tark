@@ -17,35 +17,35 @@
 
 
 class FilterNotFound(LookupError):
-        def __init__(self, value):
-            self.value = value
+    def __init__(self, value):
+        self.value = value
 
-        def __str__(self):
-            return repr(self.value)
+    def __str__(self):
+        return repr(self.value)
 
 
 class AssemblyNotFound(Exception):
-        def __init__(self, value):
-            self.value = value
+    def __init__(self, value):
+        self.value = value
 
-        def __str__(self):
-            return repr(self.value)
+    def __str__(self):
+        return repr(self.value)
 
 
 class ReleaseNotFound(Exception):
-        def __init__(self, value):
-            self.value = value
+    def __init__(self, value):
+        self.value = value
 
-        def __str__(self):
-            return repr(self.value)
+    def __str__(self):
+        return repr(self.value)
 
 
 class FeatureNotFound(Exception):
-        def __init__(self, value):
-            self.value = value
+    def __init__(self, value):
+        self.value = value
 
-        def __str__(self):
-            return repr(self.value)
+    def __str__(self):
+        return repr(self.value)
 
 
 class MissingTranscriptError(LookupError):

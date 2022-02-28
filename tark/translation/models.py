@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-
 from django.db import models
 from assembly.models import Assembly
 
@@ -26,7 +25,6 @@ from session.models import Session
 
 
 class Translation(models.Model):
-
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'translation_release_set', 'TRANSCRIPT': "transcripts"}
 

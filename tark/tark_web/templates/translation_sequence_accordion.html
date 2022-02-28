@@ -5,85 +5,71 @@
 {% load lookups %}
 
 <div class="panel-group" id="tl_sequenceaccordion">
-	<div class="panel panel-default">
-    	<div class="panel-heading" data-target="#collapse_tl_sequence" data-toggle="collapse" data-parent="#tl_sequenceaccordion">
-        	<h4 class="panel-title">
-            	<a href="#.">
-                	<span class="glyphicon glyphicon-plus"></span>
+    <div class="panel panel-default">
+        <div class="panel-heading" data-target="#collapse_tl_sequence" data-toggle="collapse"
+             data-parent="#tl_sequenceaccordion">
+            <h4 class="panel-title">
+                <a href="#.">
+                    <span class="glyphicon glyphicon-plus"></span>
                     Translation Sequence
                 </a>
             </h4>
         </div>
         <div class="panel-collapse collapse" id="collapse_tl_sequence">
-        	<div class="panel-body">
-                          
-
-        <table class="table">
- 		<thead>
-		<tr>
-		<th scope="col" bgcolor="#C1CDC1" width="50%">
-		DIFF ME
-		</th>
-		<th scope="col" bgcolor="#E0EEEE" width="50%">
-		DIFF WITH
-		</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-	<!-- diff me seq -->
-		<td>
-	 {% with diff_result.diff_me_transcript as diff_me_tr %}
- 	{% with diff_me_tr.translations as diff_me_tl %}
-    {% if diff_me_tl %}
-    {% with diff_me_tl.sequence|format_fasta:diff_me_tl.stable_id as fasta_seq_diff_me %}
-    <p class="text-justify" style="font-family:monospace;font-size:90%;">
-  	{{ fasta_seq_diff_me }}
-  	</p>
-    {% endwith %}
-    {% endif %}
-	{% endwith %}
-	{% endwith %}
-        </td>
-
-     <!-- diff with seq -->
-     <td>
-    {% with diff_result.diff_with_transcript as diff_with_tr %}
- 	{% with diff_with_tr.translations as diff_with_tl %}
-    {% if diff_with_tl %}
-    {% with diff_with_tl.sequence|format_fasta:diff_with_tl.stable_id as fasta_seq_diff_with %}
-    <p class="text-justify" style="font-family:monospace;font-size:90%;">
-  	{{ fasta_seq_diff_with }}
-  	</p>
-    {% endwith %}
-    {% endif %}
-	{% endwith %}
-	{% endwith %}
-        </td>
-     
-     
-     
-        </tr>
-        </tbody>
-      </table> 
+            <div class="panel-body">
 
 
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col" bgcolor="#C1CDC1" width="50%">
+                            DIFF ME
+                        </th>
+                        <th scope="col" bgcolor="#E0EEEE" width="50%">
+                            DIFF WITH
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <!-- diff me seq -->
+                        <td>
+                            {% with diff_result.diff_me_transcript as diff_me_tr %}
+                                {% with diff_me_tr.translations as diff_me_tl %}
+                                    {% if diff_me_tl %}
+                                        {% with diff_me_tl.sequence|format_fasta:diff_me_tl.stable_id as fasta_seq_diff_me %}
+                                            <p class="text-justify" style="font-family:monospace;font-size:90%;">
+                                                {{ fasta_seq_diff_me }}
+                                            </p>
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endwith %}
+                            {% endwith %}
+                        </td>
+
+                        <!-- diff with seq -->
+                        <td>
+                            {% with diff_result.diff_with_transcript as diff_with_tr %}
+                                {% with diff_with_tr.translations as diff_with_tl %}
+                                    {% if diff_with_tl %}
+                                        {% with diff_with_tl.sequence|format_fasta:diff_with_tl.stable_id as fasta_seq_diff_with %}
+                                            <p class="text-justify" style="font-family:monospace;font-size:90%;">
+                                                {{ fasta_seq_diff_with }}
+                                            </p>
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endwith %}
+                            {% endwith %}
+                        </td>
 
 
-
-
-
-
-
-
-
-
-
-
+                    </tr>
+                    </tbody>
+                </table>
 
 
             </div>
         </div>
 
-   </div>
- </div>
+    </div>
+</div>

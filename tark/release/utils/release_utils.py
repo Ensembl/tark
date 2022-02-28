@@ -76,7 +76,7 @@ class ReleaseUtils(object):
         if source_name is "all":
             all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name).values('shortname')
         else:
-            all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name).\
+            all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name). \
                 filter(source__shortname__iexact=source_name).values('shortname')
 
         all_release_short_names = [release["shortname"] for release in all_releases]
@@ -123,16 +123,18 @@ class ReleaseUtils(object):
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset1 = queryset_all.filter(Q(release__source__shortname__iexact=str(set1_params["source"]))
                                         & Q(release__shortname__iexact=set1_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))  # @IgnorePep8
-                                     ).values("feature_id").distinct()  # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))
+                                        # @IgnorePep8
+                                        ).values("feature_id").distinct()  # @IgnorePep8
 
         queryset1_count = queryset1.count()
 
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset2 = queryset_all.filter(Q(release__source__shortname__iexact=str(set2_params["source"]))
                                         & Q(release__shortname__iexact=set2_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))  # @IgnorePep8
-                                     ).values("feature_id").distinct()  # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))
+                                        # @IgnorePep8
+                                        ).values("feature_id").distinct()  # @IgnorePep8
 
         queryset2_count = queryset2.count()
         logger.info("queryset2_count " + queryset2_count)
@@ -202,8 +204,8 @@ class ReleaseUtils(object):
                       (\
                     SELECT\
                       feature_id\
-                    FROM " +\
-            feature + "_release_tag AS f_tag\
+                    FROM " + \
+                  feature + "_release_tag AS f_tag\
                       JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)\
                     WHERE\
                       rs.shortname=%s\
@@ -212,7 +214,7 @@ class ReleaseUtils(object):
                     SELECT\
                       feature_id\
                     FROM " + \
-            feature + "_release_tag AS f_tag\
+                  feature + "_release_tag AS f_tag\
                       JOIN release_set AS rs ON (f_tag.release_id=rs.release_id)\
                     WHERE\
                       rs.shortname=%s\

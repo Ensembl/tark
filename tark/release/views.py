@@ -19,9 +19,9 @@ from __future__ import unicode_literals
 from rest_framework import generics
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
-from release.models import ReleaseSource, ReleaseSet,\
+from release.models import ReleaseSource, ReleaseSet, \
     TranscriptReleaseTagRelationship
-from release.drf.serializers import ReleaseSourceSerializer,\
+from release.drf.serializers import ReleaseSourceSerializer, \
     ReleaseSetSerializer
 from release.drf.filters import ReleaseSetFilterBackend
 from rest_framework.pagination import PageNumberPagination
@@ -54,7 +54,7 @@ class ReleaseSourceDatatableView(DataTableListApi):
 class ReleaseSetList(generics.ListAPIView):
     queryset = ReleaseSet.objects.all()
     serializer_class = ReleaseSetSerializer
-    filter_backends = (ReleaseSetFilterBackend, )
+    filter_backends = (ReleaseSetFilterBackend,)
 
 
 class ReleaseSetDetail(generics.RetrieveAPIView):

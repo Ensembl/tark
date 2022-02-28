@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.db import models
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
@@ -23,11 +22,11 @@ from django.db.models.fields.related_descriptors import ForwardManyToOneDescript
 import binascii
 
 ALPHABETS = {
-             'gene': IUPAC.ambiguous_dna,
-             'transcript': IUPAC.ambiguous_dna,
-             'exon': IUPAC.ambiguous_dna,
-             'translation': IUPAC.extended_protein
-    }
+    'gene': IUPAC.ambiguous_dna,
+    'transcript': IUPAC.ambiguous_dna,
+    'exon': IUPAC.ambiguous_dna,
+    'translation': IUPAC.extended_protein
+}
 
 
 class ChecksumField(models.CharField):
@@ -112,6 +111,7 @@ class HGNCForwardManyToOneDescription(ForwardManyToOneDescriptor):
     done, if the related column in gene_name fails we return none
     rather than letting the exception bubble up.
     """
+
     def __get__(self, instance, cls=None):
         try:
             rel_obj = super(HGNCForwardManyToOneDescription, self).__get__(instance, cls)

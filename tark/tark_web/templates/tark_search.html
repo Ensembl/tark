@@ -1,23 +1,23 @@
 {% extends "web_home.html" %}
 
 {% block extra_scripts %}
- <script>
- jQuery(function($) {
-    $("#id_search_assembly").change(function () {
-        var assembly_releases = {{ all_assembly_releases|safe|escape }};
-        var cur_assembly_name = $(this).val(); 
+    <script>
+        jQuery(function ($) {
+            $("#id_search_assembly").change(function () {
+                var assembly_releases = {{ all_assembly_releases|safe|escape }};
+                var cur_assembly_name = $(this).val();
 
-        var releases = assembly_releases[cur_assembly_name] || [];
-        
-        var options = $.map(releases, function(release){
-            return '<option value="' + release + '">' + release + '</option>'
-        }).join('');
-        $("#id_search_release").html(options);
-    });
-    
-  
-  });
-  </script>
+                var releases = assembly_releases[cur_assembly_name] || [];
+
+                var options = $.map(releases, function (release) {
+                    return '<option value="' + release + '">' + release + '</option>'
+                }).join('');
+                $("#id_search_release").html(options);
+            });
+
+
+        });
+    </script>
 {% endblock %}
 
 
@@ -26,10 +26,10 @@
 
 {% block content %}
 
-<div class="container" style="padding-top:200px;">
+    <div class="container" style="padding-top:200px;">
 
 
-    {% include "search_big_box.html" %}
+        {% include "search_big_box.html" %}
 
 
 {% endblock %}

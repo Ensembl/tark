@@ -1,11 +1,11 @@
 {% load add_class %}
-{% load compare_features %} 
- 
-  {% if has_var_checksum == False %}
-    <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i>
-  {% else %}
+{% load compare_features %}
+
+{% if has_var_checksum == False %}
+    <i class="glyphicon glyphicon-ok text-center" style="color:green"></i>
+{% else %}
     <i class="glyphicon glyphicon-remove text-center" style="color:red"></i>
-  {% endif %}
-  </li>
+{% endif %}
+</li>
 
   

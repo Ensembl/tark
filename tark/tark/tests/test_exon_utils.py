@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import TestCase
 from tark.utils.exon_utils import ExonUtils
 import exon
@@ -79,7 +78,7 @@ class ExonUtilsTest(TestCase):
             {'stable_id': 'ENSE5', 'stable_id_version': '1', 'exon_order': 5, 'seq_checksum': 'seq_E',
              'loc_checksum': 'loc_E', 'exon_checksum': 'exon_E', 'assembly': 'GRCh38',
              'loc_region': 22, 'loc_start': 50, 'loc_end': 55, 'loc_strand': 1, 'sequence': 'ATATA'},
-            ]
+        ]
         diff_with_exon_set = diff_me_exon_set.copy()
 
         self.diff_me_transcript['exons'] = diff_me_exon_set
@@ -120,7 +119,6 @@ class ExonUtilsTest(TestCase):
         self.assertListEqual(exon1_overlaps, expected_exon1_overlaps)
 
     def test_compute_overlap(self):
-
         # full overlap score=5
         overlap_score = ExonUtils.compute_overlap(10, 15, 10, 15)
         self.assertEqual(overlap_score, 5)
@@ -144,13 +142,13 @@ class ExonUtilsTest(TestCase):
     def test_fetch_cds_info(self):
         cds_info = ExonUtils.fetch_cds_info(self.diff_me_transcript)
         expected_cds_info = {
-                            'translation_start': 12, 'translation_end': 52,
-                            'loc_strand': 1, 'five_prime_utr_end': 11, 'three_prime_utr_start': 53,
-                            'five_prime_utr_start': 10, 'loc_region': 22,
-                            'three_prime_utr_end': 55, 'five_prime_utr_seq': 'AA',
-                            'five_prime_utr_length': 2,
-                            'three_prime_utr_seq': 'ATA', 'three_prime_utr_length': 3,
-                            'cds_seq': 'ATGTTTTTGGGGGCCCCCAT'}
+            'translation_start': 12, 'translation_end': 52,
+            'loc_strand': 1, 'five_prime_utr_end': 11, 'three_prime_utr_start': 53,
+            'five_prime_utr_start': 10, 'loc_region': 22,
+            'three_prime_utr_end': 55, 'five_prime_utr_seq': 'AA',
+            'five_prime_utr_length': 2,
+            'three_prime_utr_seq': 'ATA', 'three_prime_utr_length': 3,
+            'cds_seq': 'ATGTTTTTGGGGGCCCCCAT'}
         self.assertDictEqual(expected_cds_info, cds_info)
 
     def test_compute_cds_sequence(self):

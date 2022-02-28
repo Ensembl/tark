@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import TestCase
 from tark.utils.diff_utils import DiffUtils
 from tark.utils.exon_utils import ExonUtils
@@ -79,14 +78,13 @@ class DiffUtilsTest(TestCase):
             {'stable_id': 'ENSE5', 'stable_id_version': '1', 'exon_order': 5, 'seq_checksum': 'seq_E',
              'loc_checksum': 'loc_E', 'exon_checksum': 'exon_E', 'assembly': 'GRCh38',
              'loc_region': 22, 'loc_start': 50, 'loc_end': 55},
-            ]
+        ]
 
         self.diff_me_transcript['exons'] = diff_me_exon_set
         # initially test that both transcripts are same
         self.diff_with_transcript = self.diff_me_transcript.copy()
 
     def test_compare_transcripts(self):
-
         diff_me_transcript = self.diff_me_transcript
         diff_with_transcript = self.diff_with_transcript
 
@@ -119,9 +117,8 @@ class DiffUtilsTest(TestCase):
         expected_diff_me_transcript = compare_results_all["diff_me_transcript"]
         expected_diff_with_transcript = compare_results_all["diff_with_transcript"]
 
-
-#         self.assertTrue('exonsets_diffme2diffwith' in expected_diff_me_transcript,
-#                         "'exonsets_diffme2diffwith' key exists")
+        #         self.assertTrue('exonsets_diffme2diffwith' in expected_diff_me_transcript,
+        #                         "'exonsets_diffme2diffwith' key exists")
 
         self.assertDictEqual(diff_me_transcript, expected_diff_me_transcript,
                              "Got back the right diff me transcript")

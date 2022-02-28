@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test import RequestFactory
 from tark_web.utils.apiutils import ApiUtils
 import json
@@ -26,7 +25,6 @@ from transcript.utils.search_utils import SearchUtils
 
 # ./manage.py test tark_web.tests.test_apiutils --settings=tark.settings.test
 class ApiUtilsTest(APITestCase):
-
     fixtures = ['assembly', 'gene', 'gene_names', 'release_set', 'sequence', 'transcript']
 
     def setUp(self):
@@ -56,7 +54,6 @@ class ApiUtilsTest(APITestCase):
         self.check_transcript_search_result(identifier, identifier_type)
 
     def check_transcript_search_result(self, identifier, id_type):
-
         response = self.client.get("http://testserver/api/transcript/search/" +
                                    "?identifier_field=" + identifier +
                                    "&expand=transcript_release_set,genes")

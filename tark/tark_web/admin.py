@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.contrib import admin  # @UnusedImport
 
 # Register your models here.

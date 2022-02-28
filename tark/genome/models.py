@@ -18,6 +18,7 @@
 from django.db import models
 from session.models import Session
 
+
 # Create your models here.
 
 

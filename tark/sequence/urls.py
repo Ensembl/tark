@@ -20,5 +20,5 @@ from sequence import views
 
 urlpatterns = [
     url(r'^$', views.SequenceList.as_view(), name='sequence_list'),
-  
+
 ]

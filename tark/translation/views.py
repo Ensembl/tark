@@ -26,7 +26,7 @@ from translation.drf.filters import TranslationFilterBackend
 class TranslationList(generics.ListAPIView):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
-    filter_backends = (TranslationFilterBackend, )
+    filter_backends = (TranslationFilterBackend,)
 
     @setup_eager_loading(TranslationSerializer)
     def get_queryset(self):

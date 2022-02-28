@@ -31,7 +31,8 @@ class ExonUtils(object):
             exon1_stable_id_version = str(exon1['stable_id']) + '.' + str(exon1['stable_id_version'])  # @UnusedVariable
 
             for exon2 in exonset2:
-                exon2_stable_id_version = str(exon2['stable_id']) + '.' + str(exon2['stable_id_version'])  # @UnusedVariable
+                exon2_stable_id_version = str(exon2['stable_id']) + '.' + str(
+                    exon2['stable_id_version'])  # @UnusedVariable
 
                 # check if exon from exonset1 overlaps with any exon in exonset2
                 current_compare_result = {}
@@ -40,7 +41,6 @@ class ExonUtils(object):
                     overlap_score = cls.compute_overlap(exon1['loc_start'], exon1['loc_end'], exon2['loc_start'],
                                                         exon2['loc_end'])
                     if overlap_score > 0:
-
                         cumulative_overlap_score = cumulative_overlap_score + 1
                         current_compare_result['overlapping_exon'] = exon2
 
@@ -51,7 +51,6 @@ class ExonUtils(object):
                 else:
                     # different assembly won't overlap, so check seq_checksum
                     if exon1['seq_checksum'] == exon2['seq_checksum']:
-
                         cumulative_overlap_score = cumulative_overlap_score + 1
                         current_compare_result['overlapping_exon'] = exon2
 
@@ -123,7 +122,6 @@ class ExonUtils(object):
 
                 cds_info['loc_region'] = first_exon['loc_region']
 
-
                 # Find start exon
                 for exon in exons:
                     exon_start = exon['loc_start']
@@ -132,15 +130,15 @@ class ExonUtils(object):
                     if overlap_score > 0:
                         start_exon = exon
                         break
-#
-#                 #  collect all the previous exons to calculate the five prime utr length
-#                 #  Work here tomorrow
+                #
+                #                 #  collect all the previous exons to calculate the five prime utr length
+                #                 #  Work here tomorrow
                 five_prime_exon_iterator = iter(exons)
                 current_exon = next(five_prime_exon_iterator)
                 start_exon_order = start_exon['exon_order']
 
                 # print('Start exon order ' + str(start_exon_order))
-                while(current_exon['exon_order'] < start_exon_order):
+                while (current_exon['exon_order'] < start_exon_order):
                     # print(' 5 prime UTR exon %d' %current_exon['exon_order'])
                     five_prime_utr_seq = five_prime_utr_seq + current_exon['sequence']
                     current_exon = next(five_prime_exon_iterator)
@@ -163,15 +161,15 @@ class ExonUtils(object):
                     if overlap_score > 0:
                         end_exon = exon
                         break
-#
-#                 #  collect all the previous exons to calculate the three prime utr length
-#                 #  Work here tomorrow
+                #
+                #                 #  collect all the previous exons to calculate the three prime utr length
+                #                 #  Work here tomorrow
                 three_prime_exon_iterator = iter(exons_copy)
                 current_exon = next(three_prime_exon_iterator)
                 end_exon_order = end_exon['exon_order']
 
                 # print('End exon order ' + str(end_exon_order))
-                while(current_exon['exon_order'] > end_exon_order):
+                while (current_exon['exon_order'] > end_exon_order):
                     # print(' 3 prime UTR exon %d' %current_exon['exon_order'])
                     three_prime_utr_seq = current_exon['sequence'] + three_prime_utr_seq
                     current_exon = next(three_prime_exon_iterator)
@@ -213,7 +211,8 @@ class ExonUtils(object):
 
             cds_info['cds_seq'] = None
             if 'sequence' in transcript and 'sequence' in transcript['sequence']:
-                transcript['sequence']['sequence'] = (cls.remove_polyA_tail(transcript['sequence']['sequence'], last_exon['sequence']))
+                transcript['sequence']['sequence'] = (
+                    cls.remove_polyA_tail(transcript['sequence']['sequence'], last_exon['sequence']))
                 cds_seq = cls.get_cds_sequence(transcript['sequence']['sequence'],
                                                cds_info['five_prime_utr_length'],
                                                cds_info['three_prime_utr_length'])
@@ -237,7 +236,6 @@ class ExonUtils(object):
             polya_tail_truncated_seq = transcript_sequence
 
         return polya_tail_truncated_seq
-
 
     @classmethod
     def get_cds_sequence(cls, sequence_data, five_prime_utr_len=0, three_prime_utr_len=0):

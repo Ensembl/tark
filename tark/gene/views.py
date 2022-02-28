@@ -38,7 +38,7 @@ class GeneDatatableView(DataTableListApi):
 class GeneList(generics.ListAPIView):
     queryset = Gene.objects.all()
     serializer_class = GeneSerializer
-    filter_backends = (GeneFilterBackend, )
+    filter_backends = (GeneFilterBackend,)
 
     @setup_eager_loading(GeneSerializer)
     def get_queryset(self):

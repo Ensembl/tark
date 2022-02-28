@@ -23,7 +23,6 @@ from genenames.models import GeneNames
 
 
 class Gene(models.Model):
-
     MANY2ONE_RELATED = {'SESSION': 'session', 'ASSEMBLY': 'assembly', 'HGNC': 'name'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'gene_release_set'}
 

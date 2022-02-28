@@ -3,79 +3,79 @@
 {% load sequence_format %}
 
 <!-- Sequence Expander -->
-  <div id="has_seq_changed" class="tab-pane fade in" style="padding:10px;">
+<div id="has_seq_changed" class="tab-pane fade in" style="padding:10px;">
 
-  {% if diff_result.results.has_seq_changed %}
-  <div class="well well-sm well-diff-red" ><strong>CDNA Sequence Compare</strong></div>
-  {% else %}
-  <div class="well well-sm well-diff-green" ><strong>CDNA Sequence Compare</strong></div>
-  {% endif %}
-      
-       <div class="row">
-  
-  <div class="col-md-5 col-sm-5">
-  <ul class="list-group">
-  {% with diff_result.diff_me_transcript as diff_me_tr %}
-  
-  <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
-  <li class="list-group-item">
-    {% if diff_me_tr %}
-    {% with diff_me_tr.sequence.sequence|format_fasta:diff_me_tr.stable_id as fasta_seq %}
-    <p class="text-justify" style="font-family:monospace;font-size:80%;">
-  	{{ fasta_seq }}
-  	</p>
-    {% endwith %}
+    {% if diff_result.results.has_seq_changed %}
+        <div class="well well-sm well-diff-red"><strong>CDNA Sequence Compare</strong></div>
+    {% else %}
+        <div class="well well-sm well-diff-green"><strong>CDNA Sequence Compare</strong></div>
     {% endif %}
-  </li>
-    {% endwith %}
-  </ul>
-  </div>
-  
-  <!--match-->
-  <div class="col-md-2 col-sm-2">
-  <ul class="list-group">
-  <li class="list-group-item text-center">Match</li>
-  {% with diff_result.results.has_seq_changed as has_seq_checksum %}
-    {% include "checksum_match.html" with has_var_checksum=has_seq_checksum %}
-  {% endwith %}
-  </ul>
-  </div>
-   <!--match-->
-  
-  <div class="col-md-5 col-sm-5">
-  <ul class="list-group">
-  {% with diff_result.diff_with_transcript as diff_with_tr %}
-  <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
-  <li class="list-group-item">
-    {% if diff_with_tr %}
-    {% with diff_with_tr.sequence.sequence|format_fasta:diff_with_tr.stable_id as fasta_seq %}
-      <p class="text-justify" style="font-family:monospace;font-size:80%;">
-  	{{ fasta_seq }}
-  	</p>
-    {% endwith %}
-    {% endif %}
-  </li>
-    {% endwith %}
-  </ul>
-  </div>
-  
 
-<!--alignment
- <div class="row">
-  
-  <div class="col-md-12 col-sm-12">
-  <ul class="list-group">
-  <li class="list-group-item list-group-item-success"><strong>Alignment</strong></li>
-    <li class="list-group-item">
-    
-    
-    </li>
-  </ul>
-  </div>
-  </div>
- -->
+    <div class="row">
 
-  </div>
+        <div class="col-md-5 col-sm-5">
+            <ul class="list-group">
+                {% with diff_result.diff_me_transcript as diff_me_tr %}
+
+                    <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
+                    <li class="list-group-item">
+                        {% if diff_me_tr %}
+                            {% with diff_me_tr.sequence.sequence|format_fasta:diff_me_tr.stable_id as fasta_seq %}
+                                <p class="text-justify" style="font-family:monospace;font-size:80%;">
+                                    {{ fasta_seq }}
+                                </p>
+                            {% endwith %}
+                        {% endif %}
+                    </li>
+                {% endwith %}
+            </ul>
+        </div>
+
+        <!--match-->
+        <div class="col-md-2 col-sm-2">
+            <ul class="list-group">
+                <li class="list-group-item text-center">Match</li>
+                {% with diff_result.results.has_seq_changed as has_seq_checksum %}
+                    {% include "checksum_match.html" with has_var_checksum=has_seq_checksum %}
+                {% endwith %}
+            </ul>
+        </div>
+        <!--match-->
+
+        <div class="col-md-5 col-sm-5">
+            <ul class="list-group">
+                {% with diff_result.diff_with_transcript as diff_with_tr %}
+                    <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
+                    <li class="list-group-item">
+                        {% if diff_with_tr %}
+                            {% with diff_with_tr.sequence.sequence|format_fasta:diff_with_tr.stable_id as fasta_seq %}
+                                <p class="text-justify" style="font-family:monospace;font-size:80%;">
+                                    {{ fasta_seq }}
+                                </p>
+                            {% endwith %}
+                        {% endif %}
+                    </li>
+                {% endwith %}
+            </ul>
+        </div>
+
+
+        <!--alignment
+         <div class="row">
+
+          <div class="col-md-12 col-sm-12">
+          <ul class="list-group">
+          <li class="list-group-item list-group-item-success"><strong>Alignment</strong></li>
+            <li class="list-group-item">
+
+
+            </li>
+          </ul>
+          </div>
+          </div>
+         -->
+
+    </div>
 
 </div>
 

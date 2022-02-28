@@ -27,7 +27,6 @@ class AssemblyAliasSerializer(serializers.ModelSerializer):
 
 
 class AssemblySerializer(SerializerMixin, serializers.ModelSerializer):
-
     class Meta:
         model = Assembly
         fields = '__all__'

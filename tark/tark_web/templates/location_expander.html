@@ -2,85 +2,93 @@
 {% load compare_features %}
 
 <!-- Location Expander -->
-<div id="has_location_changed"  class="tab-pane fade in active" style="padding:10px;">
+<div id="has_location_changed" class="tab-pane fade in active" style="padding:10px;">
 
-  {% if diff_result.results.has_location_changed %}
-   <div class="well well-sm well-diff-red" ><strong>CDNA Location Compare</strong></div>
-  {% else %}
-    <div class="well well-sm well-diff-green" ><strong>CDNA Location Compare</strong></div>
-  {% endif %}
+    {% if diff_result.results.has_location_changed %}
+        <div class="well well-sm well-diff-red"><strong>CDNA Location Compare</strong></div>
+    {% else %}
+        <div class="well well-sm well-diff-green"><strong>CDNA Location Compare</strong></div>
+    {% endif %}
 
     <!--Location start-->
-      <div class="row">
-     <!--Transcript1 -->
-   <div class="col-md-5 col-sm-5">
-  <ul class="list-group">
-    {% with diff_result.diff_me_transcript as diff_me_tr %}
-  <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">{{ diff_me_tr.loc_region }}</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">{{ diff_me_tr.loc_start }}</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">{{ diff_me_tr.loc_end }}</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">{{ diff_me_tr.loc_strand }}</span></li> 
+    <div class="row">
+        <!--Transcript1 -->
+        <div class="col-md-5 col-sm-5">
+            <ul class="list-group">
+                {% with diff_result.diff_me_transcript as diff_me_tr %}
+                    <li class="list-group-item list-group-item-info"><strong>Diff Me</strong></li>
+                    <li class="list-group-item">Region <span
+                            class="label label-primary label-diff">{{ diff_me_tr.loc_region }}</span></li>
+                    <li class="list-group-item">Start <span
+                            class="label label-primary label-diff">{{ diff_me_tr.loc_start }}</span></li>
+                    <li class="list-group-item">Stop <span
+                            class="label label-primary label-diff">{{ diff_me_tr.loc_end }}</span></li>
+                    <li class="list-group-item">Strand <span
+                            class="label label-primary label-diff">{{ diff_me_tr.loc_strand }}</span></li>
 
-  <li class="list-group-item list-group-item-info"><strong>Checksums</strong></li>
-  <li class="list-group-item">Location <span class="label label-primary label-diff">{{ diff_me_tr.loc_checksum }}</span></li> 
-      {% endwith %}
-  </ul>
-   </div>
-     <!--Transcript1 -->
-   
-   <!--Match -->
-  <div class="col-md-2 col-sm-2">
-  <ul class="list-group">
-  <li class="list-group-item text-center">Match</li>
+                    <li class="list-group-item list-group-item-info"><strong>Checksums</strong></li>
+                    <li class="list-group-item">Location <span
+                            class="label label-primary label-diff">{{ diff_me_tr.loc_checksum }}</span></li>
+                {% endwith %}
+            </ul>
+        </div>
+        <!--Transcript1 -->
 
-  {% include "checksum_match.html" with has_var_checksum=diff_result.result.has_location_changed %}
+        <!--Match -->
+        <div class="col-md-2 col-sm-2">
+            <ul class="list-group">
+                <li class="list-group-item text-center">Match</li>
 
-  {% with diff_result|compare_transcript:"loc_start" as has_loc_start_changed %}
-  {% include "checksum_match.html" with has_var_checksum=has_loc_start_changed %}
-  {% endwith %}
-  
-  {% with diff_result|compare_transcript:"loc_end" as has_loc_end_changed %}
-    {% include "checksum_match.html" with has_var_checksum=has_loc_end_changed %}
-  {% endwith %}
+                {% include "checksum_match.html" with has_var_checksum=diff_result.result.has_location_changed %}
 
-  {% with diff_result|compare_transcript:"loc_strand" as has_loc_strand_changed %}
-    {% include "checksum_match.html" with has_var_checksum=has_loc_strand_changed %}
-  {% endwith %}
+                {% with diff_result|compare_transcript:"loc_start" as has_loc_start_changed %}
+                    {% include "checksum_match.html" with has_var_checksum=has_loc_start_changed %}
+                {% endwith %}
 
-<!--checksums -->
-  <li class="list-group-item text-center">Checksums</li>
-  
-  {% with diff_result|compare_transcript:"loc_checksum" as has_transcript_checksum %}
-  {% include "checksum_match.html" with has_var_checksum=has_transcript_checksum %}
-  {% endwith %}
-  
-  </ul>
-  </div>
-  <!--Match -->
-   
-   
-   
-   
-     <!--Transcript2 -->
-   <div class="col-md-5 col-sm-5">
-    <ul class="list-group">
-   {% with diff_result.diff_with_transcript as diff_with_tr %}
-  <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">{{ diff_with_tr.loc_region }}</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">{{ diff_with_tr.loc_start }}</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">{{ diff_with_tr.loc_end }}</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">{{ diff_with_tr.loc_strand }}</span></li> 
+                {% with diff_result|compare_transcript:"loc_end" as has_loc_end_changed %}
+                    {% include "checksum_match.html" with has_var_checksum=has_loc_end_changed %}
+                {% endwith %}
 
-  <li class="list-group-item list-group-item-warning"><strong>Checksums</strong></li>
-  <li class="list-group-item">Location<span class="label label-primary label-diff">{{ diff_with_tr.loc_checksum }}</span></li> 
-   {% endwith %}
-   </ul>
-   </div>
-  <!--Transcript2 -->
-     
-   </div>
-      
-  </div>
+                {% with diff_result|compare_transcript:"loc_strand" as has_loc_strand_changed %}
+                    {% include "checksum_match.html" with has_var_checksum=has_loc_strand_changed %}
+                {% endwith %}
+
+                <!--checksums -->
+                <li class="list-group-item text-center">Checksums</li>
+
+                {% with diff_result|compare_transcript:"loc_checksum" as has_transcript_checksum %}
+                    {% include "checksum_match.html" with has_var_checksum=has_transcript_checksum %}
+                {% endwith %}
+
+            </ul>
+        </div>
+        <!--Match -->
+
+
+        <!--Transcript2 -->
+        <div class="col-md-5 col-sm-5">
+            <ul class="list-group">
+                {% with diff_result.diff_with_transcript as diff_with_tr %}
+                    <li class="list-group-item list-group-item-warning"><strong>Diff With</strong></li>
+                    <li class="list-group-item">Region <span
+                            class="label label-primary label-diff">{{ diff_with_tr.loc_region }}</span></li>
+                    <li class="list-group-item">Start <span
+                            class="label label-primary label-diff">{{ diff_with_tr.loc_start }}</span></li>
+                    <li class="list-group-item">Stop <span
+                            class="label label-primary label-diff">{{ diff_with_tr.loc_end }}</span></li>
+                    <li class="list-group-item">Strand <span
+                            class="label label-primary label-diff">{{ diff_with_tr.loc_strand }}</span></li>
+
+                    <li class="list-group-item list-group-item-warning"><strong>Checksums</strong></li>
+                    <li class="list-group-item">Location<span
+                            class="label label-primary label-diff">{{ diff_with_tr.loc_checksum }}</span></li>
+                {% endwith %}
+            </ul>
+        </div>
+        <!--Transcript2 -->
+
+    </div>
+
+</div>
 
 

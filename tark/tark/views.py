@@ -43,8 +43,8 @@ def index(request):
 
 
 class DataTablePagination(LimitOffsetPagination):
-        limit_query_param = 'length'
-        offset_query_param = 'start'
+    limit_query_param = 'length'
+    offset_query_param = 'start'
 
 
 class DataTableListApi(generics.ListAPIView):
@@ -72,9 +72,9 @@ class DataTableListApi(generics.ListAPIView):
             latest_source = ReleaseUtils.get_default_source()
 
         self.unfiltered_query_set = query_set = Transcript.objects.filter(
-                Q(transcript_release_set__shortname__icontains=latest_release) &
-                Q(assembly__assembly_name__icontains=latest_assembly) &
-                Q(transcript_release_set__source__shortname__icontains=latest_source))
+            Q(transcript_release_set__shortname__icontains=latest_release) &
+            Q(assembly__assembly_name__icontains=latest_assembly) &
+            Q(transcript_release_set__source__shortname__icontains=latest_source))
 
         order_by_index = int(self.request.query_params.get('order[0][column]', 0))
         orderable = bool(self.request.query_params.get('columns[{}][orderable]'.format(order_by_index), 'false'))
@@ -82,7 +82,7 @@ class DataTableListApi(generics.ListAPIView):
         if order_by_index == 0 or not orderable:
             order_by_index = 1
 
-        order_by = self.request.query_params.get('columns[{}][data]'.format(order_by_index), self.default_order_by).\
+        order_by = self.request.query_params.get('columns[{}][data]'.format(order_by_index), self.default_order_by). \
             replace('.', '__')
         order_by_dir = self.request.query_params.get('order[0][dir]', 'asc')
 
@@ -131,8 +131,8 @@ class DataTableListApi(generics.ListAPIView):
         return result
 
 
-
-def datatable_view(request, table_name, assembly_name, release_name, source_name, assembly_name_compare, release_name_compare, source_name_compare):  # @IgnorePep8
+def datatable_view(request, table_name, assembly_name, release_name, source_name, assembly_name_compare,
+                   release_name_compare, source_name_compare):  # @IgnorePep8
 
     server_side_processing = "false"
     if table_name in ['gene', 'transcript', 'translation', 'exon']:
@@ -174,7 +174,6 @@ def datatable_view(request, table_name, assembly_name, release_name, source_name
 
 
 def datatable_fetch(request, table_name):
-
     draw = request.GET.get('draw', None)
     server_side = request.GET.get('serverSide', False)
 

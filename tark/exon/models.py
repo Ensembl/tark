@@ -25,7 +25,6 @@ from tark.fields import ChecksumField
 
 # Create your models here.
 class Exon(models.Model):
-
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'exon_release_set', 'EXON_TRANSCRIPT': 'transcript'}
 

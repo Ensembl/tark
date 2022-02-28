@@ -41,11 +41,10 @@ class ExonTranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExonTranscript
         fields = ('exon_id', 'stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand',
-                  'loc_region', 'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order', )
+                  'loc_region', 'loc_checksum', 'exon_checksum', 'seq_checksum', 'exon_order',)
 
 
 class ExonSerializer(SerializerMixin, serializers.ModelSerializer):
-
     MANY2ONE_SERIALIZER = {Exon.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
                            Exon.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
     ONE2MANY_SERIALIZER = {Exon.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,

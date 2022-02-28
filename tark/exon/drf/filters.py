@@ -25,6 +25,7 @@ class ExonFilterBackend(BaseFilterBackend):
     """
     Filter to filter by common fields..
     """
+
     def filter_queryset(self, request, queryset, view):
         queryset = CommonFilterBackend.get_common_filter_querysets(request, queryset, view)
         queryset = CommonFilterBackend.get_common_related_querysets(request, queryset, view)
@@ -37,4 +38,4 @@ class ExonFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return CommonFields.get_common_query_set("Exon") + CommonFields.COMMON_RELATED_QUERY_SET + \
-                CommonFields.get_expand_query_set(Exon)
+               CommonFields.get_expand_query_set(Exon)

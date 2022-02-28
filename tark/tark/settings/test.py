@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from tark.settings.base import *  # @UnusedWildImport
 from django.test.runner import DiscoverRunner
 
@@ -66,7 +65,6 @@ MIGRATION_MODULES = {
     'translation': None,
     'tark_web': None,
 }
-
 
 # Set Django's test runner to the custom class defined above
 TEST_RUNNER = 'tark.settings.test.UnManagedModelTestRunner'

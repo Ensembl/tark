@@ -9,75 +9,101 @@
 <table id="compare_result_transcript" class="table table-bordered table-striped table-condensed">
 
 
-{% with diff_result.diff_me_transcript as diff_me_tr %}
-{% with diff_result.diff_with_transcript as diff_with_tr %}
-{% with diff_result.results as diff_result %}
+    {% with diff_result.diff_me_transcript as diff_me_tr %}
+        {% with diff_result.diff_with_transcript as diff_with_tr %}
+            {% with diff_result.results as diff_result %}
 
-<tr style="background-color: #303952;color:#ffffff">
+                <tr style="background-color: #303952;color:#ffffff">
 
-    <th style="width:20%">Transcript</th>
-    <th style="width:35%"><span class="badge" style="background-color:#5bc0de;color:#303952;">T1 ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}})</span></th>
-    <th style="width:35%"><span class="badge" style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}})</span></th>
-    <th style="text-align:center;width:10%">MATCH</th>
+                    <th style="width:20%">Transcript</th>
+                    <th style="width:35%"><span class="badge"
+                                                style="background-color:#5bc0de;color:#303952;">T1 ({{ diff_result.diff_me_assembly.assembly_name }}/{{ diff_result.diff_me_release }})</span>
+                    </th>
+                    <th style="width:35%"><span class="badge"
+                                                style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name }}/{{ diff_result.diff_with_release }})</span>
+                    </th>
+                    <th style="text-align:center;width:10%">MATCH</th>
 
-</tr>
-
-
-<tr>
-
-<td>StableID</td>
-{% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
-{% with diff_me_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
-<td id="{{ diff_me_tr.stable_id }}_{{ diff_me_tr.stable_id_version }}" ><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_me_tr.stable_id }}">{{ diff_me_tr.stable_id }}</a> </td>
-{% endwith %}
-{% else %}
-<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_me_tr.stable_id}}"> {{diff_me_tr.stable_id}} </a> </td>
-{% endif %}
-
-{% if diff_with_tr.transcript_release_set.source == "Ensembl" or diff_with_tr.transcript_release_set.source == "LRG"%}
-{% with diff_with_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
-<td id="{{ diff_with_tr.stable_id }}_{{ diff_with_tr.stable_id_version }}"><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_with_tr.stable_id }}">{{ diff_with_tr.stable_id }}</a></td>
-{% endwith %}
-
-{% else %}
-<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_with_tr.stable_id}}"> {{diff_with_tr.stable_id}} </a> </td>
-{% endif %}
-
-<td style="text-align:center;"> </td>
-</tr>
+                </tr>
 
 
-<tr>
-<td>StableID Version</td>
-<td>{{ diff_me_tr.stable_id_version }} </td>
-<td>{{ diff_with_tr.stable_id_version }}</td>
-<td style="text-align:center;"> </td>
-</tr>
+                <tr>
+
+                    <td>StableID</td>
+                    {% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG" %}
+                        {% with diff_me_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+                            <td id="{{ diff_me_tr.stable_id }}_{{ diff_me_tr.stable_id_version }}"><a target="_blank"
+                                                                                                      href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_me_tr.stable_id }}">{{ diff_me_tr.stable_id }}</a>
+                            </td>
+                        {% endwith %}
+                    {% else %}
+                        <td><a target="_blank"
+                               href="https://www.ncbi.nlm.nih.gov/nuccore/{{ diff_me_tr.stable_id }}"> {{ diff_me_tr.stable_id }} </a>
+                        </td>
+                    {% endif %}
+
+                    {% if diff_with_tr.transcript_release_set.source == "Ensembl" or diff_with_tr.transcript_release_set.source == "LRG" %}
+                        {% with diff_with_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+                            <td id="{{ diff_with_tr.stable_id }}_{{ diff_with_tr.stable_id_version }}"><a
+                                    target="_blank"
+                                    href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ diff_with_tr.stable_id }}">{{ diff_with_tr.stable_id }}</a>
+                            </td>
+                        {% endwith %}
+
+                    {% else %}
+                        <td><a target="_blank"
+                               href="https://www.ncbi.nlm.nih.gov/nuccore/{{ diff_with_tr.stable_id }}"> {{ diff_with_tr.stable_id }} </a>
+                        </td>
+                    {% endif %}
+
+                    <td style="text-align:center;"></td>
+                </tr>
 
 
-<tr>
-<td>Location</td><td>{{diff_me_tr|get_location_string}}</td><td>{{diff_with_tr|get_location_string}}</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
-</tr>
+                <tr>
+                    <td>StableID Version</td>
+                    <td>{{ diff_me_tr.stable_id_version }} </td>
+                    <td>{{ diff_with_tr.stable_id_version }}</td>
+                    <td style="text-align:center;"></td>
+                </tr>
 
 
-<tr>
-{% if diff_me_tr.exons|length == diff_with_tr.exons|length %}
-<td>Number of Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td>Exons</td><td>{{ diff_me_tr.exons|length }} exons</td><td>{{ diff_with_tr.exons|length }} exons</td><td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
+                <tr>
+                    <td>Location</td>
+                    <td>{{ diff_me_tr|get_location_string }}</td>
+                    <td>{{ diff_with_tr|get_location_string }}</td>
+                    <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_location_changed %}</td>
+                </tr>
 
 
-<tr>
-<td>CDNA Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
-<td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }} ({{ diff_me_tr.sequence.sequence|length }} bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="transcript" output_format="raw" %}</td>
-<td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }} ({{ diff_with_tr.sequence.sequence|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source  seq_type="transcript"  output_format="raw" %}</td>
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
-</tr>
+                <tr>
+                    {% if diff_me_tr.exons|length == diff_with_tr.exons|length %}
+                        <td>Number of Exons</td>
+                        <td>{{ diff_me_tr.exons|length }} exons</td>
+                        <td>{{ diff_with_tr.exons|length }} exons</td>
+                        <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                    {% else %}
+                        <td>Exons</td>
+                        <td>{{ diff_me_tr.exons|length }} exons</td>
+                        <td>{{ diff_with_tr.exons|length }} exons</td>
+                        <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                    {% endif %}
+                </tr>
 
 
-{% endwith %}
-{% endwith %}
-{% endwith %}
+                <tr>
+                    <td>CDNA
+                        Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version input_type="dna" outut_format="pair" %}</td>
+                    <td>{{ diff_me_tr.sequence.sequence|truncatechars:15 }} ({{ diff_me_tr.sequence.sequence|length }}
+                        bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="transcript" output_format="raw" %}</td>
+                    <td>{{ diff_with_tr.sequence.sequence|truncatechars:15 }}
+                        ({{ diff_with_tr.sequence.sequence|length }}
+                        bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="transcript" output_format="raw" %}</td>
+                    <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_seq_changed %}</td>
+                </tr>
+
+
+            {% endwith %}
+        {% endwith %}
+    {% endwith %}
 </table>

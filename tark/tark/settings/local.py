@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from .base import *  # @UnusedWildImport
 
 DEBUG = True
@@ -48,10 +47,8 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-     },
+    },
 }
-
-
 
 if DEBUG:
     INTERNAL_IPS = ('127.0.0.1', 'localhost')
@@ -62,7 +59,7 @@ if DEBUG_TOOLBAR:
     )
 
     INSTALLED_APPS += (
-       'debug_toolbar',
+        'debug_toolbar',
     )
 
     DEBUG_TOOLBAR_PANELS = [

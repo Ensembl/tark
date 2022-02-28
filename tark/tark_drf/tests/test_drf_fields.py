@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import TestCase
 from transcript.models import Transcript
 from tark_drf.utils.drf_fields import DrfFields, CommonFields
@@ -26,12 +25,11 @@ from coreapi.document import Field
 class DrfFieldsTest(TestCase):
 
     def test_get_expand_field(self):
-
         expected_field = Field(name='expand',
                                required=False,
                                location='query', schema=None,
-                               description='comma separated list of objects to expand (eg:<br/> '\
-                               'sequence,session,assembly,transcript_release_set,genes,translations,<br/>exons,)',
+                               description='comma separated list of objects to expand (eg:<br/> ' \
+                                           'sequence,session,assembly,transcript_release_set,genes,translations,<br/>exons,)',
                                type='string', example=None)
         expanded_field = DrfFields.get_expand_field(Transcript)
         self.assertEqual(expected_field, expanded_field)
@@ -39,7 +37,7 @@ class DrfFieldsTest(TestCase):
         exptected_expand_all_field = Field(name='expand_all', required=False,
                                            location='query', schema=None,
                                            description='selecting true will expand all the related fields, ' \
-                                           'to selectively expand, use expand above',
+                                                       'to selectively expand, use expand above',
                                            type='boolean', example=None)
         expanded_all_field = DrfFields.get_expand_all_field()
         self.assertEqual(exptected_expand_all_field, expanded_all_field)

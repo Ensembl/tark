@@ -35,6 +35,7 @@ class TranscriptFilterBackend(BaseFilterBackend):
     """
     Filter to filter by common fields..
     """
+
     def filter_queryset(self, request, queryset, view):
         queryset = CommonFilterBackend.get_common_filter_querysets(request, queryset, view)
         queryset = CommonFilterBackend.get_common_related_querysets(request, queryset, view)
@@ -54,21 +55,22 @@ class TranscriptFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return CommonFields.get_common_query_set("Transcript") + CommonFields.COMMON_RELATED_QUERY_SET + \
-                CommonFields.get_expand_query_set(Transcript)
+               CommonFields.get_expand_query_set(Transcript)
 
 
 class TranscriptDiffFilterBackend(BaseFilterBackend):
     """
     Diff Filter
     """
+
     def filter_queryset(self, request, queryset, view):
 
         # handle diff me
-        diff_me_stable_id = request.query_params.get('diff_me_stable_id',  None)
-        diff_me_stable_id_version = request.query_params.get('diff_me_stable_id_version',  1)
+        diff_me_stable_id = request.query_params.get('diff_me_stable_id', None)
+        diff_me_stable_id_version = request.query_params.get('diff_me_stable_id_version', 1)
 
         if diff_me_stable_id is not None and diff_me_stable_id_version is not None:
-            queryset_me = queryset.filter(stable_id=diff_me_stable_id).\
+            queryset_me = queryset.filter(stable_id=diff_me_stable_id). \
                 filter(stable_id_version=diff_me_stable_id_version)
         else:
             queryset_me = queryset.filter(stable_id=diff_me_stable_id)
@@ -78,16 +80,16 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         diff_me_source = request.query_params.get('diff_me_source', ReleaseUtils.get_default_source())
 
         if diff_me_release is not None and diff_me_assembly is not None:
-            queryset_me = queryset_me.filter(transcript_release_set__source__shortname=diff_me_source).\
+            queryset_me = queryset_me.filter(transcript_release_set__source__shortname=diff_me_source). \
                 filter(assembly__assembly_name__icontains=diff_me_assembly). \
                 filter(transcript_release_set__shortname=diff_me_release)
 
         # handle diff with
-        diff_with_stable_id = request.query_params.get('diff_with_stable_id',  None)
-        diff_with_stable_id_version = request.query_params.get('diff_with_stable_id_version',  1)
+        diff_with_stable_id = request.query_params.get('diff_with_stable_id', None)
+        diff_with_stable_id_version = request.query_params.get('diff_with_stable_id_version', 1)
 
         if diff_with_stable_id is not None and diff_with_stable_id_version is not None:
-            queryset_with = queryset.filter(stable_id=diff_with_stable_id).\
+            queryset_with = queryset.filter(stable_id=diff_with_stable_id). \
                 filter(stable_id_version=diff_with_stable_id_version)
         else:
             queryset_with = queryset.filter(stable_id=diff_with_stable_id)
@@ -97,11 +99,11 @@ class TranscriptDiffFilterBackend(BaseFilterBackend):
         diff_with_source = request.query_params.get('diff_with_source', ReleaseUtils.get_default_source())
 
         if diff_with_release is not None and diff_with_assembly is not None:
-            queryset_with = queryset_with.filter(transcript_release_set__source__shortname=diff_with_source).\
+            queryset_with = queryset_with.filter(transcript_release_set__source__shortname=diff_with_source). \
                 filter(assembly__assembly_name__icontains=diff_with_assembly). \
                 filter(transcript_release_set__shortname=diff_with_release)
 
-        queryset = queryset_me | queryset_with   # queryset will contain all unique records of q1 + q2
+        queryset = queryset_me | queryset_with  # queryset will contain all unique records of q1 + q2
 
         return queryset.distinct()
 
@@ -118,6 +120,7 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
     """
     Diff Filter
     """
+
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('identifier_field', None)
         # replace space and comma
@@ -132,8 +135,8 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
 
         if identifier is not None:
             if identifier_type == SearchUtils.ENSEMBL_TRANSCRIPT or \
-                                    identifier_type == SearchUtils.REFSEQ_TRANSCRIPT or \
-                                    identifier_type == SearchUtils.LRG_TRANSCRIPT:
+                    identifier_type == SearchUtils.REFSEQ_TRANSCRIPT or \
+                    identifier_type == SearchUtils.LRG_TRANSCRIPT:
                 queryset = queryset.filter(stable_id=identifier)
                 if identifier_version is not None:
                     queryset = queryset.filter(stable_id_version=identifier_version)
@@ -156,9 +159,11 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                                queryset.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
                                queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
             elif identifier_type == SearchUtils.HGVS_GENOMIC_REF:
-                (loc_region_, loc_start_, loc_end_, assembly_) = SearchUtils.parse_hgvs_genomic_location_string(identifier)  # @IgnorePep8
+                (loc_region_, loc_start_, loc_end_, assembly_) = SearchUtils.parse_hgvs_genomic_location_string(
+                    identifier)  # @IgnorePep8
                 if loc_region_ is not None and assembly_:
-                    queryset = queryset.filter(assembly__assembly_name__icontains=assembly_).filter(loc_region=loc_region_)  # @IgnorePep8
+                    queryset = queryset.filter(assembly__assembly_name__icontains=assembly_).filter(
+                        loc_region=loc_region_)  # @IgnorePep8
 
                 if loc_start_ is not None and loc_end_ is not None:
                     queryset = queryset.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
@@ -166,7 +171,8 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                                queryset.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
             elif identifier_type == SearchUtils.HGVS_REFSEQ_CDS:
 
-                (refseq_identifier, coding_location) = SearchUtils.parse_hgvs_refseq_cds_string(identifier)  # @IgnorePep8
+                (refseq_identifier, coding_location) = SearchUtils.parse_hgvs_refseq_cds_string(
+                    identifier)  # @IgnorePep8
 
                 (identifier, identifier_version) = refseq_identifier.split('.')
                 queryset_ref_stable_id = queryset.filter(stable_id=identifier)
@@ -196,11 +202,14 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
                             loc_end_ = loc_start_
                             assembly_name = refseq_transcript.assembly.assembly_name
 
-                            queryset_ = Transcript.objects.filter(assembly__assembly_name__icontains=assembly_name).filter(loc_region=loc_region_)  # @IgnorePep8
+                            queryset_ = Transcript.objects.filter(
+                                assembly__assembly_name__icontains=assembly_name).filter(
+                                loc_region=loc_region_)  # @IgnorePep8
                             if loc_start_ is not None and loc_end_ is not None:
-                                queryset_ = queryset_.filter(loc_start__lte=loc_start_).filter(loc_end__gte=loc_start_) | \
-                                           queryset_.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
-                                           queryset_.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
+                                queryset_ = queryset_.filter(loc_start__lte=loc_start_).filter(
+                                    loc_end__gte=loc_start_) | \
+                                            queryset_.filter(loc_start__lte=loc_end_).filter(loc_end__gte=loc_end_) | \
+                                            queryset_.filter(loc_start__gte=loc_start_).filter(loc_end__lte=loc_end_)
                                 return queryset_.distinct()
 
             elif identifier_type == SearchUtils.LRG_GENE:
@@ -218,6 +227,7 @@ class TranscriptDetailFilterBackend(BaseFilterBackend):
     """
     Detail Filter
     """
+
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('stable_id_with_version', None)
 
@@ -259,7 +269,7 @@ class TranscriptSetFilterBackent(BaseFilterBackend):
             queryset_with = queryset.filter(assembly__assembly_name__icontains=diff_with_assembly). \
                 filter(transcript_release_set__shortname=diff_with_release)
 
-            queryset = queryset_me | queryset_with   # queryset will contain all unique records of q1 + q2
+            queryset = queryset_me | queryset_with  # queryset will contain all unique records of q1 + q2
 
         return queryset.distinct()
 

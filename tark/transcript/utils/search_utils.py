@@ -20,7 +20,6 @@ import json
 
 
 class SearchUtils(object):
-
     ENSEMBL_TRANSCRIPT = "ENSEMBL_TRANSCRIPT"
     ENSEMBL_GENE = "ENSEMBL_GENE"
     ENSEMBL_PROTEIN = "ENSEMBL_PROTEIN"
@@ -196,5 +195,3 @@ class SearchUtils(object):
                         lrg_id = hit["id"]
                         return lrg_id
         return None
-            
-            

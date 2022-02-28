@@ -1,25 +1,30 @@
 .cookie-banner {
-  position: fixed;
-  background-color: #222;
-  width: 100%;
-  padding: 2rem;
-  left: 0;
-  bottom: 0;
-  color: #eee; }
-  .cookie-banner a, .cookie-banner a:hover {
-    color: #f8f8f8; }
-  .cookie-banner .text {
-    margin-right: 2em; }
-    
+    position: fixed;
+    background-color: #222;
+    width: 100%;
+    padding: 2rem;
+    left: 0;
+    bottom: 0;
+    color: #eee;
+}
+
+.cookie-banner a, .cookie-banner a:hover {
+    color: #f8f8f8;
+}
+
+.cookie-banner .text {
+    margin-right: 2em;
+}
+
 .agree-button {
-background-color: #6dab49;
-border-color:#218838;
-color:#ffffff !important;
+    background-color: #6dab49;
+    border-color: #218838;
+    color: #ffffff !important;
 }
 
 .white-color {
-color:#ffffff !important;
-text-decoration: underline;
+    color: #ffffff !important;
+    text-decoration: underline;
 }
 
 div.agree-button {
@@ -33,7 +38,7 @@ div.agree-button {
 
 div.agree-button a.button {
     background-color: transparent !important;
-    color: #ccc!important;
+    color: #ccc !important;
     font-size: 1.1em;
     margin: auto;
     margin-right: auto !important;
@@ -49,22 +54,22 @@ div.cookie-message div.agree-button {
     min-width: 96px;
 }
 
-div.cookie-message div.agree-button a.button{
-  background-color: transparent !important;
-  color: #ccc!important;
-  font-size: 1.1em;
-  margin: auto;
-  margin-right: auto !important;
-  padding: auto;
+div.cookie-message div.agree-button a.button {
+    background-color: transparent !important;
+    color: #ccc !important;
+    font-size: 1.1em;
+    margin: auto;
+    margin-right: auto !important;
+    padding: auto;
 }
 
-div.cookie-message div.agree-button a.button :hover{
-  color: #fff!important;
+div.cookie-message div.agree-button a.button :hover {
+    color: #fff !important;
 }
 
-div.cookie-message div.agree-button a.button.clicked{
-  color: #fff!important;
-  background: url(/i/16/rev/check.png) no-repeat left center;
-  padding: 6px 15px 2px 32px!important;
-  background-position-x: 8px;
+div.cookie-message div.agree-button a.button.clicked {
+    color: #fff !important;
+    background: url(/i/16/rev/check.png) no-repeat left center;
+    padding: 6px 15px 2px 32px !important;
+    background-position-x: 8px;
 }

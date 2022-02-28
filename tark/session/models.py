@@ -15,8 +15,8 @@
    limitations under the License.
 """
 
-
 from django.db import models
+
 
 # Create your models here.
 

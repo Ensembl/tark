@@ -39,7 +39,6 @@ class HgncNameField(serializers.RelatedField):
 
 
 class GeneSerializer(SerializerMixin, serializers.ModelSerializer):
-
     MANY2ONE_SERIALIZER = {Gene.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer,
                            Gene.MANY2ONE_RELATED['HGNC']: GeneNamesSerializer}
     ONE2MANY_SERIALIZER = {Gene.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
@@ -49,7 +48,7 @@ class GeneSerializer(SerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Gene
-        fields = CommonFields.COMMON_FIELD_SET + ('name', 'gene_checksum', )
+        fields = CommonFields.COMMON_FIELD_SET + ('name', 'gene_checksum',)
 
     def __init__(self, *args, **kwargs):
         super(GeneSerializer, self).__init__(*args, **kwargs)

@@ -1,66 +1,71 @@
-	{% extends "web_home.html" %}
-	{% load staticfiles %}
-	
-	{% if error_msg is None %}
+{% extends "web_home.html" %}
+{% load staticfiles %}
 
-	{% block extra_scripts %}
-	 <script>
-	 
-	 var myVar;
-	 $(document).ready(function() {
-    
-    var refreshId = setInterval( function() 
-    {
-	 $.ajax({
-  		url: '/web/check_service_status/{{jobId}}',
-  		type: 'get',
-  		success: function(data){
-  		console.log(data);
-   	    // Perform operation on return value
-  		if(data["status"] === 'FINISHED'){
+{% if error_msg is None %}
 
-    		clearInterval(refreshId);
-    		$("#loadingSpinner").hide();
+    {% block extra_scripts %}
+        <script>
 
-  			$( "#sequenceDisplay" ).load("https://www.ebi.ac.uk/Tools/services/rest/emboss_needle/result/{{ jobId }}/aln");
-	
-  		}
-  		}, error: function (xhr, ajaxOptions, thrownError) {
-  		clearInterval(refreshId);
-  		}
- 		});
-        
-    }, 5000);
-    
-    });
-  
-</script>
- {% endblock %}
-  {% endif %}
-	  
-	{% block content %}
-	<div class="container" style="padding-top:20px;">
-	
-	<div id='subpage'>
+            var myVar;
+            $(document).ready(function () {
 
-	{% if jobId %}
-	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job "{{ jobId }}" submitted successfully.</strong> </div>
-	{% else %}
-	<div id="align_well" class="well well-sm text-center" style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job failed..Please try again</strong> </div>
-	{% endif %}
+                var refreshId = setInterval(function () {
+                    $.ajax({
+                        url: '/web/check_service_status/{{jobId}}',
+                        type: 'get',
+                        success: function (data) {
+                            console.log(data);
+                            // Perform operation on return value
+                            if (data["status"] === 'FINISHED') {
 
-	{% if error_msg is None %}
-	<div id="loadingSpinner"><strong>Processing...Please wait for the page to reload </strong><img id="loading-img" src="{% static '/images/ajax-loader.gif' %}"><p></p></div>
-	<pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;"></pre>
-	{% else %}
-	<pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;">{{error_msg}}</pre>
-	{% endif %}
-	
-	
-	</div>  <!-- subpage -->
-	
-	
-	</div>
-	
-	{% endblock %}
+                                clearInterval(refreshId);
+                                $("#loadingSpinner").hide();
+
+                                $("#sequenceDisplay").load("https://www.ebi.ac.uk/Tools/services/rest/emboss_needle/result/{{ jobId }}/aln");
+
+                            }
+                        }, error: function (xhr, ajaxOptions, thrownError) {
+                            clearInterval(refreshId);
+                        }
+                    });
+
+                }, 5000);
+
+            });
+
+        </script>
+    {% endblock %}
+{% endif %}
+
+{% block content %}
+    <div class="container" style="padding-top:20px;">
+
+        <div id='subpage'>
+
+            {% if jobId %}
+                <div id="align_well" class="well well-sm text-center"
+                     style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job
+                    "{{ jobId }}" submitted successfully.</strong></div>
+            {% else %}
+                <div id="align_well" class="well well-sm text-center"
+                     style="padding:5px;background-color: #d9edf7 !important;"><strong>Sequence Alignment job
+                    failed..Please try again</strong></div>
+            {% endif %}
+
+            {% if error_msg is None %}
+                <div id="loadingSpinner"><strong>Processing...Please wait for the page to reload </strong><img
+                        id="loading-img" src="{% static '/images/ajax-loader.gif' %}">
+                    <p></p></div>
+                <pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;"></pre>
+            {% else %}
+                <pre id="sequenceDisplay" style="word-wrap: break-word; white-space: pre-wrap;">{{ error_msg }}</pre>
+            {% endif %}
+
+
+        </div>  <!-- subpage -->
+
+
+    </div>
+
+{% endblock %}
 
