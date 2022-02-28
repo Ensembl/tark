@@ -61,7 +61,7 @@ DATABASES = {
 ```
 
 
-Update the log file location in the base.py (point this to somewhere writable location)
+Update the log file location in `local.py` (point this to somewhere writable location)
 ```
 LOG_FILE = os.path.join(BASE_DIR, '../../logs/tark.log')
 ```
