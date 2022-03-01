@@ -123,8 +123,7 @@ class ReleaseUtils(object):
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset1 = queryset_all.filter(Q(release__source__shortname__iexact=str(set1_params["source"]))
                                         & Q(release__shortname__iexact=set1_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))
-                                        # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))  # @IgnorePep8
                                         ).values("feature_id").distinct()  # @IgnorePep8
 
         queryset1_count = queryset1.count()
@@ -132,8 +131,7 @@ class ReleaseUtils(object):
         queryset_all = TranscriptReleaseTag.objects.all()
         queryset2 = queryset_all.filter(Q(release__source__shortname__iexact=str(set2_params["source"]))
                                         & Q(release__shortname__iexact=set2_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))
-                                        # @IgnorePep8
+                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))  # @IgnorePep8
                                         ).values("feature_id").distinct()  # @IgnorePep8
 
         queryset2_count = queryset2.count()
