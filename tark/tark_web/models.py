@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.db import models  # @UnusedImport
 
 # Create your models here.

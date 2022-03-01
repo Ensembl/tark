@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 # Not used anymore
 # FEATURE_TYPES = {'gene': 'Gene',
 #                  'transcript': 'Transcript',

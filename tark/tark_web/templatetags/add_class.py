@@ -16,6 +16,7 @@
 """
 
 from django import template
+
 register = template.Library()
 
 
@@ -31,6 +32,6 @@ def add_location(transcript):
     location = None
     if len(transcript) > 0:
         location = str(transcript['loc_region']) + " : " + str(transcript['loc_start']) + " - " + \
-            str(transcript['loc_end']) + \
-            " : " + str(transcript['loc_strand'])
+                   str(transcript['loc_end']) + \
+                   " : " + str(transcript['loc_strand'])
     return location

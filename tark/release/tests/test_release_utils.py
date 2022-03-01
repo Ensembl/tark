@@ -19,11 +19,13 @@ from django.test.testcases import TestCase
 from release.utils.release_utils import ReleaseUtils
 from django.conf import settings
 
+
 # ./manage.py test release.tests.test_release_utils --settings=tark.settings.test
 
 
 class ReleaseUtilsTest(TestCase):
     fixtures = ['assembly', 'release_set']
+
     # multi_db = True
 
     def test_get_latest_release(self):

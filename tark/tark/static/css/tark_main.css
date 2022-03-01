@@ -1,53 +1,54 @@
 .nav-section {
-  background-color:#002663;
-  padding: 9px 14px 9px 14px;
-  margin-bottom: 5px;
+    background-color: #002663;
+    padding: 9px 14px 9px 14px;
+    margin-bottom: 5px;
 }
 
 .navbar-separator {
-  color: #FFFFFF;
-  padding-top:10px;
-  font-weight: bold;
+    color: #FFFFFF;
+    padding-top: 10px;
+    font-weight: bold;
 }
 
-.navbar-item{
+.navbar-item {
 
-  color: #FFFFFF;
-  padding-top:5px;
-  font-size:16px;
+    color: #FFFFFF;
+    padding-top: 5px;
+    font-size: 16px;
 
 }
 
-.web-section{
-  background-color:#002663;
+.web-section {
+    background-color: #002663;
 }
 
-.rest-section{
-  background-color:#6a89cc;
-} 
+.rest-section {
+    background-color: #6a89cc;
+}
 
 .nav-section #header #logo {
-  font-size: 1.0em;
-  font-weight: bold;
-  text-decoration: none;
-  color: white;
+    font-size: 1.0em;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
 
 }
 
 .title {
-  padding: 10px 0 0 10px;
-  color: white;
-  font-size: 1em;
-  font-weight: bold;
+    padding: 10px 0 0 10px;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 .title_text {
-  padding: 10px 0 0 10px;
-  color:#fff;
-  font-size:1em;
-  text-decoration: none;
-  float:right;
+    padding: 10px 0 0 10px;
+    color: #fff;
+    font-size: 1em;
+    text-decoration: none;
+    float: right;
 }
+
 /*
 .nav-section #header #logo .logo__img {
   display: block;
@@ -55,11 +56,11 @@
   margin-top: 2px;
 }*/
 .nav-section #header #logo .logo__title {
-  display: inline-block;
+    display: inline-block;
 }
 
 .beta_text {
-  color: red;
+    color: red;
 }
 
 .fundingimg {
@@ -67,89 +68,91 @@
 }
 
 .btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
 }
+
 .btn-circle.btn-lg {
-  width: 50px;
-  height: 50px;
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.33;
-  border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
 }
+
 .btn-circle.btn-xl {
-  width: 70px;
-  height: 70px;
-  #padding: 10px 16px;
-  font-size: 24px;
-  line-height: 1.33;
-  border-radius: 35px;
+    width: 70px;
+    height: 70px;
+    #padding: 10px 16px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
 }
 
 
 .label-diff {
-float:right;
-font-size:80%;
+    float: right;
+    font-size: 80%;
 }
 
 
-.well-diff-red{
- color: #a94442;
- background-color:#f2dede;
+.well-diff-red {
+    color: #a94442;
+    background-color: #f2dede;
 }
 
-.well-diff-green{
- color: #a94442;
- background-color:#dff0d8;
+.well-diff-green {
+    color: #a94442;
+    background-color: #dff0d8;
 }
 
-.a-diff-red{
-   padding:5px;
-   background-color:#d9534f;
-   color:#ffffff;
-}
-
-
-.a-diff-green{
-   padding:5px;
-   background-color:#5cb85c;
-   color:#ffffff;
+.a-diff-red {
+    padding: 5px;
+    background-color: #d9534f;
+    color: #ffffff;
 }
 
 
-.a-diff-neutral{
-   padding:5px;
-   background-color:#A9A9A9;
-   color:#ffffff;
-}
-
-.a-diff-noresult{
-   padding:5px 5px;
-   color: #333;
-   background-color: #fff;
-   border-color: #ccc;
+.a-diff-green {
+    padding: 5px;
+    background-color: #5cb85c;
+    color: #ffffff;
 }
 
 
-.glyp-diff-red{
-   color:#d9534f;
-   font-size:2em;
+.a-diff-neutral {
+    padding: 5px;
+    background-color: #A9A9A9;
+    color: #ffffff;
 }
 
-.glyp-diff-green{
-   color:#5cb85c;
-   font-size:2em;
+.a-diff-noresult {
+    padding: 5px 5px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
 }
 
-.glyp-diff-noresult{
-   color:#ccc;
-   font-size:2em;
+
+.glyp-diff-red {
+    color: #d9534f;
+    font-size: 2em;
+}
+
+.glyp-diff-green {
+    color: #5cb85c;
+    font-size: 2em;
+}
+
+.glyp-diff-noresult {
+    color: #ccc;
+    font-size: 2em;
 }
 
 /*
@@ -160,6 +163,7 @@ td.details-control {
     background: url('../images/details_open.png') no-repeat center center;
     cursor: pointer;
 }
+
 tr.shown td.details-control {
     background: url('../images/details_close.png') no-repeat center center;
 }
@@ -195,22 +199,22 @@ tr.shown td.details-control {
 }
 
 /*overwritten padding*/
-.nav>li>a {
+.nav > li > a {
     position: relative;
     display: block;
     padding: 5px;
 }
 
 
-.panel-heading-sm{
+.panel-heading-sm {
     padding: 4px 5px;
 }
 
-.noborder{
-border-top: none;
+.noborder {
+    border-top: none;
 }
 
-.mane-intro .intro{
+.mane-intro .intro {
     background-color: rgb(238, 238, 238);
     display: block;
     font-size: 14px;
@@ -220,19 +224,19 @@ border-top: none;
     border-left: 6px solid #227093;
 }
 
-.mane-intro .row .col-md-4 p{
+.mane-intro .row .col-md-4 p {
     text-align: center;
 }
 
-.mane-intro .row .col-md-4 a{
+.mane-intro .row .col-md-4 a {
     color: #333333;
 }
 
-.mane-intro .btn-circle.btn-xl{
+.mane-intro .btn-circle.btn-xl {
     border: 5px solid #227093;
 }
 
-.mane-intro .heading-pt{
+.mane-intro .heading-pt {
     background: rgb(238, 238, 238);
     position: relative;
     height: 36px;
@@ -240,7 +244,7 @@ border-top: none;
     margin-top: 40px;
 }
 
-.mane-intro .heading-pt .glyph-container{
+.mane-intro .heading-pt .glyph-container {
     background: #227093;
     position: relative;
     float: left;
@@ -250,14 +254,14 @@ border-top: none;
 }
 
 
-.mane-intro .heading-pt .glyph-container .glyphicon-record{
+.mane-intro .heading-pt .glyph-container .glyphicon-record {
     color: #ffffff;
     background: transparent;
     font-size: 20px;
     line-height: 36px;
 }
 
-.mane-intro .heading-pt .text-container{
+.mane-intro .heading-pt .text-container {
     padding: 8px;
     position: relative;
     float: left;
@@ -266,13 +270,13 @@ border-top: none;
     font-weight: bold;
 }
 
-.mane h1, h2, h3{
+.mane h1, h2, h3 {
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
 
-.mane h4, h5, h6, h7{
+.mane h4, h5, h6, h7 {
     margin-bottom: 15px;
     margin-top: 15px;
 }
@@ -285,6 +289,6 @@ a[target="_blank"] {
     background-image: url('../images/external-link.png')
 }
 
-.highlight_on_hover:hover button{
+.highlight_on_hover:hover button {
     background-color: rgb(230, 230, 230);
 }

@@ -18,7 +18,6 @@
 from django.conf.urls import url
 from assembly import views
 
-
 urlpatterns = [
     url(r'^$', views.AssemblyList.as_view(), name='assembly_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.AssemblyDetail.as_view(), name='assembly_detail'),

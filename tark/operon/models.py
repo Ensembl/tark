@@ -21,6 +21,7 @@ from sequence.models import Sequence
 from session.models import Session
 from transcript.models import Transcript
 
+
 # Create your models here.
 
 

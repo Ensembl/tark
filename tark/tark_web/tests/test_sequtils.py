@@ -22,7 +22,7 @@ import os
 
 class SeqUtilsTest(TestCase):
 
-# ./manage.py test tark_web.tests.test_sequtils --settings=tark.settings.test
+    # ./manage.py test tark_web.tests.test_sequtils --settings=tark.settings.test
     def test_format_fasta(self):
         sequence = "GATTGCGCCACTGCACTCCAGCCTGGGCGTGCAGATCAGAGCGAGACCTTGTCTCTAAAGGAAAAAAAAAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAACCTAGCGAGGTAGATAATTTT"  # @IgnorePep8
         formatted_seq = TarkSeqUtils.format_fasta(sequence)

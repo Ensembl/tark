@@ -18,7 +18,6 @@ limitations under the License.
 from django.conf.urls import url
 from translation import views
 
-
 urlpatterns = [
     url(r'^$', views.TranslationList.as_view(), name='translation_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.TranslationDetail.as_view(), name='translation_detail'),

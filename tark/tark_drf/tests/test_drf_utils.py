@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import TestCase
 from tark_drf.utils.drf_utils import DrfUtils
 from transcript.models import Transcript

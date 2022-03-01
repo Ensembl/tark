@@ -15,15 +15,14 @@
    limitations under the License.
 """
 
-
 from __future__ import unicode_literals
 from rest_framework import generics
 from tark_drf.utils.decorators import setup_eager_loading, expand_all_related
 from transcript.models import Transcript
-from transcript.drf.serializers import TranscriptSerializer,\
-    TranscriptDiffSerializer, TranscriptSearchSerializer,\
+from transcript.drf.serializers import TranscriptSerializer, \
+    TranscriptDiffSerializer, TranscriptSearchSerializer, \
     TranscriptDataTableSerializer, TranscriptManeSerializer
-from transcript.drf.filters import TranscriptFilterBackend,\
+from transcript.drf.filters import TranscriptFilterBackend, \
     TranscriptDiffFilterBackend, TranscriptSearchFilterBackend, TranscriptDetailFilterBackend
 from tark.utils.diff_utils import DiffUtils
 from tark.views import DataTableListApi
@@ -36,10 +35,8 @@ from rest_framework.response import Response
 from tark.utils.request_utils import RequestUtils
 from exon.models import Exon
 
-
 import logging
 from tark.utils.exon_utils import ExonUtils
-
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -61,7 +58,7 @@ class TranscriptManeList(generics.ListAPIView):
 class TranscriptList(generics.ListAPIView):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
-    filter_backends = (TranscriptFilterBackend, )
+    filter_backends = (TranscriptFilterBackend,)
 
     @setup_eager_loading(TranscriptSerializer)
     def get_queryset(self):
@@ -83,7 +80,7 @@ class TranscriptDatatableView(DataTableListApi):
 class TranscriptDetail(generics.ListAPIView):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
-    filter_backends = (TranscriptDetailFilterBackend, )
+    filter_backends = (TranscriptDetailFilterBackend,)
 
     @setup_eager_loading(TranscriptSerializer)
     def get_queryset(self):
@@ -94,7 +91,7 @@ class TranscriptDetail(generics.ListAPIView):
 class TranscriptDiff(generics.ListAPIView):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptDiffSerializer
-    filter_backends = (TranscriptDiffFilterBackend, )
+    filter_backends = (TranscriptDiffFilterBackend,)
 
     def get(self, request, *args, **kwargs):
 
@@ -126,7 +123,9 @@ class TranscriptDiff(generics.ListAPIView):
             gene_include_html = render_to_string('gene_include.html', {'diff_result': compare_results})
             transcript_include_html = render_to_string('transcript_include.html', {'diff_result': compare_results})
             translation_include_html = render_to_string('translation_include.html', {'diff_result': compare_results})
-            exonset_include_html = render_to_string('exonset_include.html', {'diff_result': compare_results, 'exonsets_diff': exonsets_diff, 'reversed': reversed})
+            exonset_include_html = render_to_string('exonset_include.html',
+                                                    {'diff_result': compare_results, 'exonsets_diff': exonsets_diff,
+                                                     'reversed': reversed})
             rendered_result = {"gene": gene_include_html, "transcript": transcript_include_html,
                                "translation": translation_include_html,
                                "exonset": exonset_include_html}
@@ -147,7 +146,8 @@ class TranscriptDiff(generics.ListAPIView):
         if response.status_code == 200:
             search_result = response.json()
 
-        if search_result is not None and "count" in search_result and search_result["count"] == 1 and "results" in search_result:
+        if search_result is not None and "count" in search_result and search_result[
+            "count"] == 1 and "results" in search_result:
             search_result = search_result["results"][0]
 
             if "transcript_release_set" in search_result:
@@ -165,7 +165,8 @@ class TranscriptDiff(generics.ListAPIView):
 
                     if "translation_id" in translation:
                         tl_translation_id = translation["translation_id"]
-                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related('sequence')
+                        tl_query_set = Translation.objects.filter(translation_id=tl_translation_id).select_related(
+                            'sequence')
                         if tl_query_set is not None and len(tl_query_set) == 1:
                             tl_obj = tl_query_set[0]
                             translation["sequence"] = tl_obj.sequence.sequence
@@ -178,7 +179,8 @@ class TranscriptDiff(generics.ListAPIView):
                     new_exons = []
                     for exon in all_exons:
                         if "exon_id" in exon:
-                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+                            current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related(
+                                'sequence')  # @IgnorePep8
 
                             if current_exon_query_set is not None and len(current_exon_query_set) == 1:
                                 current_exon_with_sequence = current_exon_query_set[0]
@@ -206,7 +208,7 @@ class TranscriptDiff(generics.ListAPIView):
 class TranscriptSearch(generics.ListAPIView):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSearchSerializer
-    filter_backends = (TranscriptSearchFilterBackend, )
+    filter_backends = (TranscriptSearchFilterBackend,)
     pagination_class = NotPaginatedSetPagination
 
     @expand_all_related(TranscriptDiffSerializer)
@@ -215,6 +217,5 @@ class TranscriptSearch(generics.ListAPIView):
         return queryset
 
     def get(self, request, *args, **kwargs):
-
         result = super(TranscriptSearch, self).get(request, *args, **kwargs)
         return result

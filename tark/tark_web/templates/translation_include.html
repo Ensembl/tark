@@ -8,154 +8,189 @@
 
 {% if diff_result.diff_me_transcript.translations %}
 
-<table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
+    <table id="compare_result_translation" class="table table-bordered table-striped table-condensed">
 
 
-{% with diff_result.diff_me_transcript as diff_me_tr %}
-{% with diff_result.diff_with_transcript as diff_with_tr %}
-{% with diff_result.diff_me_transcript.translations as diff_me_tl %}
-{% with diff_result.diff_with_transcript.translations as diff_with_tl %}
-{% with diff_result.results as diff_result %}
+        {% with diff_result.diff_me_transcript as diff_me_tr %}
+            {% with diff_result.diff_with_transcript as diff_with_tr %}
+                {% with diff_result.diff_me_transcript.translations as diff_me_tl %}
+                    {% with diff_result.diff_with_transcript.translations as diff_with_tl %}
+                        {% with diff_result.results as diff_result %}
 
-<tr style="background-color: #303952;color:#ffffff">
-     <th style="width:20%">Protein</th>
-     <th style="width:35%"><span class="badge" style="background-color:#5bc0de;color:#303952;">T1 ({{ diff_result.diff_me_assembly.assembly_name}}/{{diff_result.diff_me_release}}) </span></th>
-     <th style="width:35%"><span class="badge" style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name}}/{{diff_result.diff_with_release}}) </span></th>
-    <th style="text-align:center;width:10%;">MATCH</th>
-</tr>
-
-
-<tr>
-<td>StableID</td>
-{% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
-{% with diff_me_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
-<td><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/protview?db=core;peptide={{ diff_me_tl.stable_id|default:"Non-coding" }}">{{ diff_me_tl.stable_id|default:"Non-coding" }}</a> </td>
-{% endwith %}
-{% else %}
-<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_me_tl.stable_id}}"> {{diff_me_tl.stable_id}} </a> </td>
-{% endif %}
-
-{% if diff_with_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG"%}
-{% with diff_with_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
-<td><a target="_blank" href="http://e{{release_date.min_release}}.ensembl.org/Homo_sapiens/protview?db=core;peptide={{ diff_with_tl.stable_id|default:"Non-coding" }}">{{ diff_with_tl.stable_id|default:"Non-coding" }}</a></td>
-{% endwith %}
-{% else %}
-<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{diff_with_tl.stable_id}}"> {{diff_with_tl.stable_id}} </a> </td>
-{% endif %}
-
-<td style="text-align:center"> </td>
-</tr>
+                            <tr style="background-color: #303952;color:#ffffff">
+                                <th style="width:20%">Protein</th>
+                                <th style="width:35%"><span class="badge"
+                                                            style="background-color:#5bc0de;color:#303952;">T1 ({{ diff_result.diff_me_assembly.assembly_name }}/{{ diff_result.diff_me_release }}) </span>
+                                </th>
+                                <th style="width:35%"><span class="badge"
+                                                            style="background-color:#B3D1FF;color:#303952;">T2 ({{ diff_result.diff_with_assembly.assembly_name }}/{{ diff_result.diff_with_release }}) </span>
+                                </th>
+                                <th style="text-align:center;width:10%;">MATCH</th>
+                            </tr>
 
 
-<tr>
-<td>StableID Version</td>
-    <td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td>
-    <td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td>
-    <td style="text-align:center"> </td>
-</tr>
+                            <tr>
+                                <td>StableID</td>
+                                {% if diff_me_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG" %}
+                                    {% with diff_me_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+                                        <td><a target="_blank"
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/protview?db=core;peptide=
+                                                       {{ diff_me_tl.stable_id|default:"Non-coding" }}">
+                                            {{ diff_me_tl.stable_id|default:"Non-coding" }}</a></td>
+                                    {% endwith %}
+                                {% else %}
+                                    <td><a target="_blank"
+                                           href="https://www.ncbi.nlm.nih.gov/nuccore/{{ diff_me_tl.stable_id }}"> {{ diff_me_tl.stable_id }} </a>
+                                    </td>
+                                {% endif %}
+
+                                {% if diff_with_tr.transcript_release_set.source == "Ensembl" or diff_me_tr.transcript_release_set.source == "LRG" %}
+                                    {% with diff_with_tr.transcript_release_set|format_release_set:"ensembl" as release_date %}
+                                        <td><a target="_blank"
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/protview?db=core;peptide=
+                                                       {{ diff_with_tl.stable_id|default:"Non-coding" }}">
+                                            {{ diff_with_tl.stable_id|default:"Non-coding" }}</a></td>
+                                    {% endwith %}
+                                {% else %}
+                                    <td><a target="_blank"
+                                           href="https://www.ncbi.nlm.nih.gov/nuccore/{{ diff_with_tl.stable_id }}"> {{ diff_with_tl.stable_id }} </a>
+                                    </td>
+                                {% endif %}
+
+                                <td style="text-align:center"></td>
+                            </tr>
 
 
-
-{% with diff_me_tr.cds_info.cds_seq as diff_me_tr_cds_sequence %}
-{% with diff_with_tr.cds_info.cds_seq as diff_with_tr_cds_sequence %}
-
-<tr style="color:#cd6839">
-<td>5'UTR Location</td>
-<td>{{ diff_me_tr.cds_info|get_cds_location_string:"five" }}</td>
-<td>{{ diff_with_tr.cds_info|get_cds_location_string:"five" }}</td>
-
-{% if diff_me_tr.cds_info|get_cds_location_string:"five" == diff_with_tr.cds_info|get_cds_location_string:"five" %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
+                            <tr>
+                                <td>StableID Version</td>
+                                <td>{{ diff_me_tl.stable_id_version|default:"Non-coding" }} </td>
+                                <td>{{ diff_with_tl.stable_id_version|default:"Non-coding" }}</td>
+                                <td style="text-align:center"></td>
+                            </tr>
 
 
 
-<tr style="color:#cd6839">
-<td>5'UTR Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="five_prime" %}</td>
-<td>{{ diff_me_tr.cds_info.five_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.five_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source  seq_type="five_prime" output_format="raw" %}</td>
-<td>{{ diff_with_tr.cds_info.five_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.five_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="five_prime" output_format="raw" %}</td>
+                            {% with diff_me_tr.cds_info.cds_seq as diff_me_tr_cds_sequence %}
+                                {% with diff_with_tr.cds_info.cds_seq as diff_with_tr_cds_sequence %}
 
-{% if diff_me_tr.cds_info.five_prime_utr_seq == diff_with_tr.cds_info.five_prime_utr_seq %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
+                                    <tr style="color:#cd6839">
+                                        <td>5'UTR Location</td>
+                                        <td>{{ diff_me_tr.cds_info|get_cds_location_string:"five" }}</td>
+                                        <td>{{ diff_with_tr.cds_info|get_cds_location_string:"five" }}</td>
 
-
-
-<tr style="color:blue">
-<td>CDS Location</td><td>{{diff_me_tl|get_location_string|default:"Non-coding"}}</td>
-<td>{{diff_with_tl|get_location_string|default:"Non-coding"}}</td>
-
-{% if diff_me_tl|get_location_string == diff_with_tl|get_location_string %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
-
-
-<tr style="color:blue">
-<td>CDS Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="cds" %}</td>
-<td>{{ diff_me_tr_cds_sequence|truncatechars:15 }} ({{ diff_me_tr_cds_sequence|length }} bp)  {% include "fasta_button_include.html" with feature_type="transcript"  stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="cds" output_format="raw" %}</td>
-<td>{{ diff_with_tr_cds_sequence|truncatechars:15 }}  ({{ diff_with_tr_cds_sequence|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="cds" output_format="raw" %}</td>
-{% if diff_me_tr_cds_sequence == diff_with_tr_cds_sequence %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
+                                        {% if diff_me_tr.cds_info|get_cds_location_string:"five" == diff_with_tr.cds_info|get_cds_location_string:"five" %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+                                    </tr>
 
 
 
-<tr style="color:#cd6839">
-<td>3'UTR Location</td>
-<td>{{ diff_me_tr.cds_info|get_cds_location_string:"three" }}</td>
-<td>{{ diff_with_tr.cds_info|get_cds_location_string:"three" }}</td>
+                                    <tr style="color:#cd6839">
+                                        <td>5'UTR
+                                            Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="five_prime" %}</td>
+                                        <td>{{ diff_me_tr.cds_info.five_prime_utr_seq|truncatechars:15 }}
+                                            ({{ diff_me_tr.cds_info.five_prime_utr_seq|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="five_prime" output_format="raw" %}</td>
+                                        <td>{{ diff_with_tr.cds_info.five_prime_utr_seq|truncatechars:15  }}
+                                            ({{ diff_with_tr.cds_info.five_prime_utr_seq|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="five_prime" output_format="raw" %}</td>
 
-{% if diff_me_tr.cds_info|get_cds_location_string:"three" == diff_with_tr.cds_info|get_cds_location_string:"three" %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-
-</tr>
-
-
-<tr style="color:#cd6839">
-<td>3'UTR Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="three_prime" %}</td>
-<td>{{ diff_me_tr.cds_info.three_prime_utr_seq|truncatechars:15 }}  ({{ diff_me_tr.cds_info.three_prime_utr_seq|length }} bp)  {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version  release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
-<td>{{ diff_with_tr.cds_info.three_prime_utr_seq|truncatechars:15  }}  ({{ diff_with_tr.cds_info.three_prime_utr_seq|length }} bp)   {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
-
-{% if diff_me_tr.cds_info.three_prime_utr_seq == diff_with_tr.cds_info.three_prime_utr_seq %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
-{% else %}
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
-{% endif %}
-</tr>
-
-
-<tr>
-<td>Protein Sequence {% include "align_button_include.html" with feature_type="translation" stable_id_a=diff_me_tl.stable_id stable_id_version_a=diff_me_tl.stable_id_version stable_id_b=diff_with_tl.stable_id stable_id_version_b=diff_with_tl.stable_id_version input_type="protein" outut_format="pair" %}</td>
-<td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }} ({{ diff_me_tl.sequence|length|default:"Non-coding" }} aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_me_tl.stable_id stable_id_version=diff_me_tl.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="translation" output_format="raw" %}</td>
-<td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }} ({{ diff_with_tl.sequence|length|default:"Non-coding" }} aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_with_tl.stable_id stable_id_version=diff_with_tl.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="translation" output_format="raw" %}</td>
-<td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
-
-</tr>
-{% endwith %}
-{% endwith %}
+                                        {% if diff_me_tr.cds_info.five_prime_utr_seq == diff_with_tr.cds_info.five_prime_utr_seq %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+                                    </tr>
 
 
 
-{% endwith %}
-{% endwith %}
-{% endwith %}
-{% endwith %}
-{% endwith %}
-</table>
+                                    <tr style="color:blue">
+                                        <td>CDS Location</td>
+                                        <td>{{ diff_me_tl|get_location_string|default:"Non-coding"}}</td>
+                                        <td>{{ diff_with_tl|get_location_string|default:"Non-coding"}}</td>
+
+                                        {% if diff_me_tl|get_location_string == diff_with_tl|get_location_string %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+                                    </tr>
+
+
+                                    <tr style="color:blue">
+                                        <td>CDS
+                                            Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="cds" %}</td>
+                                        <td>{{ diff_me_tr_cds_sequence|truncatechars:15 }}
+                                            ({{ diff_me_tr_cds_sequence|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="cds" output_format="raw" %}</td>
+                                        <td>{{ diff_with_tr_cds_sequence|truncatechars:15 }}
+                                            ({{ diff_with_tr_cds_sequence|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="cds" output_format="raw" %}</td>
+                                        {% if diff_me_tr_cds_sequence == diff_with_tr_cds_sequence %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+                                    </tr>
+
+
+
+                                    <tr style="color:#cd6839">
+                                        <td>3'UTR Location</td>
+                                        <td>{{ diff_me_tr.cds_info|get_cds_location_string:"three" }}</td>
+                                        <td>{{ diff_with_tr.cds_info|get_cds_location_string:"three" }}</td>
+
+                                        {% if diff_me_tr.cds_info|get_cds_location_string:"three" == diff_with_tr.cds_info|get_cds_location_string:"three" %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+
+                                    </tr>
+
+
+                                    <tr style="color:#cd6839">
+                                        <td>3'UTR
+                                            Sequence {% include "align_button_include.html" with feature_type="transcript" stable_id_a=diff_me_tr.stable_id stable_id_version_a=diff_me_tr.stable_id_version release_short_name_a=diff_me_tr.transcript_release_set.shortname assembly_name_a=diff_me_tr.transcript_release_set.assembly source_name_a=diff_me_tr.transcript_release_set.source stable_id_b=diff_with_tr.stable_id stable_id_version_b=diff_with_tr.stable_id_version release_short_name_b=diff_with_tr.transcript_release_set.shortname assembly_name_b=diff_with_tr.transcript_release_set.assembly source_name_b=diff_with_tr.transcript_release_set.source cds_type="three_prime" %}</td>
+                                        <td>{{ diff_me_tr.cds_info.three_prime_utr_seq|truncatechars:15 }}
+                                            ({{ diff_me_tr.cds_info.three_prime_utr_seq|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_me_tr.stable_id stable_id_version=diff_me_tr.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
+                                        <td>{{ diff_with_tr.cds_info.three_prime_utr_seq|truncatechars:15  }}
+                                            ({{ diff_with_tr.cds_info.three_prime_utr_seq|length }}
+                                            bp) {% include "fasta_button_include.html" with feature_type="transcript" stable_id=diff_with_tr.stable_id stable_id_version=diff_with_tr.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="three_prime" output_format="raw" %}</td>
+
+                                        {% if diff_me_tr.cds_info.three_prime_utr_seq == diff_with_tr.cds_info.three_prime_utr_seq %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=False %}</td>
+                                        {% else %}
+                                            <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=True %}</td>
+                                        {% endif %}
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Protein
+                                            Sequence {% include "align_button_include.html" with feature_type="translation" stable_id_a=diff_me_tl.stable_id stable_id_version_a=diff_me_tl.stable_id_version stable_id_b=diff_with_tl.stable_id stable_id_version_b=diff_with_tl.stable_id_version input_type="protein" outut_format="pair" %}</td>
+                                        <td>{{ diff_me_tl.sequence|truncatechars:15|default:"Non-coding" }}
+                                            ({{ diff_me_tl.sequence|length|default:"Non-coding" }}
+                                            aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_me_tl.stable_id stable_id_version=diff_me_tl.stable_id_version release_short_name=diff_me_tr.transcript_release_set.shortname assembly_name=diff_me_tr.transcript_release_set.assembly source_name=diff_me_tr.transcript_release_set.source seq_type="translation" output_format="raw" %}</td>
+                                        <td>{{ diff_with_tl.sequence|truncatechars:15|default:"Non-coding" }}
+                                            ({{ diff_with_tl.sequence|length|default:"Non-coding" }}
+                                            aa) {% include "fasta_button_include.html" with feature_type="translation" stable_id=diff_with_tl.stable_id stable_id_version=diff_with_tl.stable_id_version release_short_name=diff_with_tr.transcript_release_set.shortname assembly_name=diff_with_tr.transcript_release_set.assembly source_name=diff_with_tr.transcript_release_set.source seq_type="translation" output_format="raw" %}</td>
+                                        <td style="text-align:center"> {% include "match_include.html" with has_var_checksum=diff_result.has_translation_seq_changed %}</td>
+
+                                    </tr>
+                                {% endwith %}
+                            {% endwith %}
+
+
+
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            {% endwith %}
+        {% endwith %}
+    </table>
 {% endif %}
 

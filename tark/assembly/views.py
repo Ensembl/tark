@@ -19,7 +19,7 @@ from __future__ import unicode_literals
 from assembly.models import Assembly, AssemblyAlias
 from assembly.drf.serializers import AssemblySerializer, AssemblyAliasSerializer
 from rest_framework import generics
-from assembly.drf.filters import AssemblyExpandFilterBackend,\
+from assembly.drf.filters import AssemblyExpandFilterBackend, \
     AssemblyFilterBackend
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils

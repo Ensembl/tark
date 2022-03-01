@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from __future__ import unicode_literals
 
 import os
@@ -48,7 +47,7 @@ def web_home(request):
     return render(
         request,
         'web_home.html'
-     )
+    )
 
 
 def diff_home(request):
@@ -106,7 +105,7 @@ def diff_release_home(request):
                                           "assembly": form_data_dict["diff_me_assembly"].lower(),
                                           "version": form_data_dict["diff_me_release"]}
 
-            diff_dict['release_set_2'] = {"source":  form_data_dict["diff_with_source"].lower(),
+            diff_dict['release_set_2'] = {"source": form_data_dict["diff_with_source"].lower(),
                                           "assembly": form_data_dict["diff_with_assembly"].lower(),
                                           "version": form_data_dict["diff_with_release"]}
 
@@ -125,7 +124,6 @@ def diff_release_home(request):
 
 
 def show_fasta(request, sequence_data, stable_id, stable_id_version, outut_format="fasta"):
-
     return render(request, 'sequence_fasta.html', context={'sequence_data': sequence_data,
                                                            'stable_id': stable_id + '.' + stable_id_version,
                                                            })
@@ -134,7 +132,6 @@ def show_fasta(request, sequence_data, stable_id, stable_id_version, outut_forma
 def fetch_sequence(request, feature_type, stable_id, stable_id_version,
                    release_short_name=None, assembly_name=None, source_name=None,
                    seq_type=None, output_format="fasta"):
-
     if seq_type is not None and seq_type in ["cds", "five_prime", "three_prime"]:
         sequence_data = TarkSeqUtils.fetch_cds_sequence(request, feature_type, stable_id, stable_id_version,
                                                         release_short_name, assembly_name, source_name,
@@ -150,12 +147,11 @@ def fetch_sequence(request, feature_type, stable_id, stable_id_version,
 
 
 def search_link(request, search_identifier):
-
     search_form = SearchForm(request.POST)
     host_url = ApiUtils.get_host_url(request)
 
     query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-        "&expand=transcript_release_set,genes,translations"
+                "&expand=transcript_release_set,genes,translations"
     response = requests.get(host_url + query_url)
     if response.status_code == 200:
         search_result = response.json()
@@ -181,7 +177,7 @@ def search_home(request):
             # replace white space
             search_identifier = search_identifier.replace(" ", "")
             search_form = SearchForm(request.GET)
-            query_url = query_url+search_identifier
+            query_url = query_url + search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
                 search_result = response.json()
@@ -206,7 +202,7 @@ def search_home(request):
             search_identifier = search_form.cleaned_data['search_identifier']
             # replace white space
             search_identifier = search_identifier.replace(" ", "")
-            query_url = query_url+search_identifier
+            query_url = query_url + search_identifier
             response = requests.get(host_url + query_url)
             if response.status_code == 200:
                 search_result = response.json()
@@ -240,7 +236,6 @@ def datatable_view_release_set(request):
 
 
 def statistics(request):
-
     reports = ReleaseUtils.get_release_loading_stats()
 
     return render(
@@ -363,7 +358,6 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
                 #OUTER_WHERE#;
         """
 
-
     sql = sql.replace('#FEATURE#', feature)
     if direction == 'removed':
         sql = sql.replace('#DIRECTION#', 'LEFT')
@@ -411,7 +405,7 @@ def transcript_details(request, stable_id_with_version, search_identifier):
 
     # get transcript details
     query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
-        "&expand_all=true"
+                        "&expand_all=true"
     response = requests.get(host_url + query_url_details)
     transcript_details = {}
     if response.status_code == 200:
@@ -434,7 +428,7 @@ def transcript_details(request, stable_id_with_version, search_identifier):
         (identifier, identifier_version) = stable_id_with_version.split('.')  # @UnusedVariable
 
         query_url_history = "/api/transcript/?stable_id=" + identifier + \
-            "&expand=transcript_release_set"
+                            "&expand=transcript_release_set"
         response = requests.get(host_url + query_url_history)
 
         if response.status_code == 200:
@@ -446,6 +440,7 @@ def transcript_details(request, stable_id_with_version, search_identifier):
                                                                'transcript_history': transcript_history,
                                                                'search_identifier': search_identifier,
                                                                'stable_id_with_version': stable_id_with_version})
+
 
 # queryfor manelist
 def manelist(request):
@@ -473,7 +468,7 @@ def manelist(request):
                         gene1.name_id=gn1.external_id
                         where gn1.primary_id=1 ORDER BY gn1.name;
     """
-    
+
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
@@ -484,6 +479,7 @@ def manelist(request):
             'results': results
         }
     )
+
 
 # queryfor maneGRCh37list
 def mane_GRCh37_list(request):
@@ -521,12 +517,12 @@ def mane_GRCh37_list(request):
                         JOIN translation tl3 ON tl3.translation_id = tt3.translation_id
                         WHERE t1.assembly_id = 1001 and tl3.seq_checksum = tl1.seq_checksum ORDER BY gn1.name;
     """
-    
+
     with connections['tark'].cursor() as cursor:
         cursor.execute(sql)
         results = ReleaseUtils.dictfetchall(cursor)
         page = request.GET.get('page', 1)
-        paginator = Paginator(results,25)
+        paginator = Paginator(results, 25)
         try:
             results = paginator.page(page)
         except PageNotAnInteger:

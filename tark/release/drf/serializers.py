@@ -37,7 +37,6 @@ class ReleaseSetSerializer(SerializerMixin, serializers.ModelSerializer):
 
 
 class ReleaseSourceSerializer(SerializerMixin, serializers.ModelSerializer):
-
     ONE2MANY_SERIALIZER = {ReleaseSource.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
 
     class Meta:

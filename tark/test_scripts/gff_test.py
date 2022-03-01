@@ -9,10 +9,10 @@ pprint.pprint(examiner.available_limits(in_handle))
 in_handle.close()
 
 limit_info = dict(
-        gff_source = ["ensembl"])
+    gff_source=["ensembl"])
 
 in_handle = open(in_file)
 for rec in GFF.parse(in_handle, limit_info=limit_info):
     print(rec.features)
-     
+
 in_handle.close()

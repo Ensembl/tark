@@ -15,11 +15,11 @@
    limitations under the License.
 """
 
-
 from release.utils.release_utils import ReleaseUtils
 import json
 from django.conf import settings
 import logging
+
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 

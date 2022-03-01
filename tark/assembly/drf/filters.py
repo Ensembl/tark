@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from rest_framework.filters import BaseFilterBackend
 from assembly.models import Assembly
 from tark_drf.utils.drf_fields import DrfFields
@@ -37,6 +36,7 @@ class AssemblyFilterBackend(BaseFilterBackend):
     """
     Filter to filter by assembly_name
     """
+
     def filter_queryset(self, request, queryset, view):
         assembly_name = request.query_params.get('assembly_name', None)
         if assembly_name is not None:

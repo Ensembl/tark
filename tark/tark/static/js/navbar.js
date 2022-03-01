@@ -1,7 +1,8 @@
 // Navbar and dropdowns
 var toggle = document.getElementsByClassName('navbar-toggle')[0],
     collapse = document.getElementsByClassName('navbar-collapse')[0],
-    dropdowns = document.getElementsByClassName('dropdown');;
+    dropdowns = document.getElementsByClassName('dropdown');
+;
 
 // Toggle if navbar menu is open or closed
 function toggleMenu() {
@@ -19,7 +20,7 @@ function closeMenus() {
 
 // Add click handling to dropdowns
 for (var i = 0; i < dropdowns.length; i++) {
-    dropdowns[i].addEventListener('click', function() {
+    dropdowns[i].addEventListener('click', function () {
         if (document.body.clientWidth < 768) {
             var open = this.classList.contains('open');
             closeMenus();

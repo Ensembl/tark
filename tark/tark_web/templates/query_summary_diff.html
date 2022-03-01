@@ -4,55 +4,52 @@
 {% load sequence_format %}
 
 
-
 <div class="panel panel-info ">
-  <div class="panel-heading panel-heading-sm">
-  <i class="glyphicon glyphicon-info-sign"></i> <strong>Query Summary</strong>
-  </div>
+    <div class="panel-heading panel-heading-sm">
+        <i class="glyphicon glyphicon-info-sign"></i> <strong>Query Summary</strong>
+    </div>
 
-  <div class="panel-body">
-  
+    <div class="panel-body">
 
-  <table class="table table-bordered table-condensed" style="font-size:12px;font-weight: bold">
- <thead>
-  <tr style="background-color:#044F67;color:white">
-  <th>Feature</th>
-  <th>DiffMe</th>
-  <th>DiffWith</th>
- </thead>
- </tr>
- <tbody>
- <tr>
- <td>Source </td>
- <td>{{form_data_dict.diff_me_source}}</td>
-<td>{{form_data_dict.diff_with_source}}</td>
- </tr>
- 
-  <tr>
- <td>StableID </td>
- <td>{{form_data_dict.diff_me_stable_id}}</td>
-<td>{{form_data_dict.diff_with_stable_id}}</td>
- </tr>
- 
-  <tr>
- <td>Assembly</td>
- <td>{{form_data_dict.diff_me_assembly}}</td>
-<td>{{form_data_dict.diff_with_assembly}}</td>
- </tr>
- 
-  <tr>
- <td>Release</td>
- <td>{{form_data_dict.diff_me_release}}</td>
-<td>{{form_data_dict.diff_with_release}}</td>
- </tr>
- 
- </tbody>
-  
-  
-  </table>
-  
-  
-  
-  
-  </div>
+
+        <table class="table table-bordered table-condensed" style="font-size:12px;font-weight: bold">
+            <thead>
+            <tr style="background-color:#044F67;color:white">
+                <th>Feature</th>
+                <th>DiffMe</th>
+                <th>DiffWith</th>
+            </thead>
+            </tr>
+            <tbody>
+            <tr>
+                <td>Source</td>
+                <td>{{ form_data_dict.diff_me_source }}</td>
+                <td>{{ form_data_dict.diff_with_source }}</td>
+            </tr>
+
+            <tr>
+                <td>StableID</td>
+                <td>{{ form_data_dict.diff_me_stable_id }}</td>
+                <td>{{ form_data_dict.diff_with_stable_id }}</td>
+            </tr>
+
+            <tr>
+                <td>Assembly</td>
+                <td>{{ form_data_dict.diff_me_assembly }}</td>
+                <td>{{ form_data_dict.diff_with_assembly }}</td>
+            </tr>
+
+            <tr>
+                <td>Release</td>
+                <td>{{ form_data_dict.diff_me_release }}</td>
+                <td>{{ form_data_dict.diff_with_release }}</td>
+            </tr>
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
 </div>

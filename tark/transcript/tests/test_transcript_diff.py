@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import LiveServerTestCase
 from rest_framework.test import APITestCase
 from django.test.client import RequestFactory
@@ -29,7 +28,6 @@ import requests
 # Using the APITestCase
 # ./manage.py test transcript.tests.test_transcript_diff.TranscriptTest --settings=tark.settings.test
 class TranscriptTest(APITestCase):
-
     fixtures = ['assembly', 'gene', 'gene_names', 'release_set', 'sequence', 'transcript']
 
     def setUp(self):
@@ -43,11 +41,10 @@ class TranscriptTest(APITestCase):
         self.assertEqual("http://testserver", host_url, "Got the testserver url")
 
     def test_transcript(self):
-
         test_host = "http://testserver"
         test_api = "/api/transcript/"
         test_params = "?stable_id=ENST00000293217&release_short_name=96&" + \
-            "assembly_name=GRCh38&source_name=Ensembl&expand_all=true"
+                      "assembly_name=GRCh38&source_name=Ensembl&expand_all=true"
 
         request = self.factory.get(test_host + test_api + test_params)
         # Use this syntax for class-based views.
@@ -67,21 +64,19 @@ class TranscriptTest(APITestCase):
 # Using the LiveServerTestCase
 # ./manage.py test transcript.tests.test_transcript_diff.TranscriptDiffTest --settings=tark.settings.test
 class TranscriptDiffTest(LiveServerTestCase):
-
     fixtures = ['assembly', 'gene', 'gene_names', 'release_set', 'sequence', 'transcript']
 
     def test_transcript_diff(self):
-
         test_host = self.live_server_url
         test_api = "/api/transcript/diff/"
         diff_params = "?diff_me_stable_id=ENST00000293217" + \
-            "&diff_me_release=96" + \
-            "&diff_me_source=Ensembl" + \
-            "&diff_me_assembly=GRCh38" + \
-            "&diff_with_stable_id=ENST00000293217" + \
-            "&diff_with_source=Ensembl" + \
-            "&diff_with_release=96" + \
-            "&diff_with_assembly=GRCh38"
+                      "&diff_me_release=96" + \
+                      "&diff_me_source=Ensembl" + \
+                      "&diff_me_assembly=GRCh38" + \
+                      "&diff_with_stable_id=ENST00000293217" + \
+                      "&diff_with_source=Ensembl" + \
+                      "&diff_with_release=96" + \
+                      "&diff_with_assembly=GRCh38"
 
         response = requests.get(test_host + test_api + diff_params)
 
@@ -125,9 +120,11 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                                 'assembly': 'GRCh38',
                                                                 'loc_start': 75941507, 'loc_end': 75979177,
                                                                 'loc_strand': -1, 'loc_region': '17',
-                                                                'loc_checksum': '3246383400000000000000000000000000000000',  # @IgnorePep8
+                                                                'loc_checksum': '3246383400000000000000000000000000000000',
+                                                                # @IgnorePep8
                                                                 'name': 'ACOT13',
-                                                                'gene_checksum': '3846383800000000000000000000000000000000'}],  # @IgnorePep8
+                                                                'gene_checksum': '3846383800000000000000000000000000000000'}],
+                                                     # @IgnorePep8
                                                      'translations': [], 'exons': [], 'cds_info': {},
                                                      'gene': {'stable_id': 'ENSG00000161533',
                                                               'stable_id_version': 12, 'assembly': 'GRCh38',
@@ -135,10 +132,10 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                               'loc_strand': -1,
                                                               'loc_region': '17',
                                                               'loc_checksum':
-                                                              '3246383400000000000000000000000000000000',
+                                                                  '3246383400000000000000000000000000000000',
                                                               'name': 'ACOT13',
                                                               'gene_checksum':
-                                                              '3846383800000000000000000000000000000000'}},
+                                                                  '3846383800000000000000000000000000000000'}},
                               'diff_with_transcript': {'stable_id': 'ENST00000293217', 'stable_id_version': 10,
                                                        'assembly': {'assembly_id': 1, 'assembly_name': 'GRCh38',
                                                                     'genome': 1, 'session': 1},
@@ -147,27 +144,27 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                        'loc_checksum': '3600000000000000000000000000000000000000',
                                                        'exon_set_checksum': '3800000000000000000000000000000000000000',
                                                        'transcript_checksum':
-                                                       '3600000000000000000000000000000000000000',
+                                                           '3600000000000000000000000000000000000000',
                                                        'sequence': None, 'transcript_release_set': {
-                                                           'assembly': 'GRCh38', 'shortname': '96',
-                                                           'description': 'Ensembl release',
-                                                           'release_date': '2019-04-09', 'source': 'Ensembl'},
+                                      'assembly': 'GRCh38', 'shortname': '96',
+                                      'description': 'Ensembl release',
+                                      'release_date': '2019-04-09', 'source': 'Ensembl'},
                                                        'genes': [{'stable_id': 'ENSG00000161533',
                                                                   'stable_id_version': 12, 'assembly': 'GRCh38',
                                                                   'loc_start': 75941507, 'loc_end': 75979177,
                                                                   'loc_strand': -1, 'loc_region': '17',
                                                                   'loc_checksum':
-                                                                  '3246383400000000000000000000000000000000',
+                                                                      '3246383400000000000000000000000000000000',
                                                                   'name': 'ACOT13', 'gene_checksum':
-                                                                  '3846383800000000000000000000000000000000'}],
+                                                                      '3846383800000000000000000000000000000000'}],
                                                        'translations': [], 'exons': [], 'cds_info': {},
                                                        'gene': {'stable_id': 'ENSG00000161533', 'stable_id_version': 12,
                                                                 'assembly': 'GRCh38', 'loc_start': 75941507,
                                                                 'loc_end': 75979177, 'loc_strand': -1,
                                                                 'loc_region': '17', 'loc_checksum':
-                                                                '3246383400000000000000000000000000000000',
+                                                                    '3246383400000000000000000000000000000000',
                                                                 'name': 'ACOT13', 'gene_checksum':
-                                                                '3846383800000000000000000000000000000000'}},
+                                                                    '3846383800000000000000000000000000000000'}},
                               'exonsets_diffme2diffwith': [['cumulative_overlap_score', 0]],
                               'exonsets_diffwith2diffme': [['cumulative_overlap_score', 0]]}
 

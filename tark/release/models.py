@@ -27,7 +27,6 @@ from django.contrib import admin
 
 
 class ReleaseSource(models.Model):
-
     ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
 
     source_id = models.AutoField(primary_key=True)
@@ -40,7 +39,6 @@ class ReleaseSource(models.Model):
 
 
 class ReleaseSet(models.Model):
-
     MANY2ONE_RELATED = {'RELEASE_SOURCE': 'release_source'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
 
@@ -60,7 +58,6 @@ class ReleaseSet(models.Model):
 
 
 class ReleaseStats(models.Model):
-
     release_stats_id = models.AutoField(primary_key=True)
     release = models.ForeignKey(
         ReleaseSet,
@@ -77,6 +74,7 @@ class ReleaseStats(models.Model):
         # display most recent release at top of the table
         ordering = ['-release_stats_id']
 
+
 class GeneReleaseTag(models.Model):
     feature = models.ForeignKey(Gene, models.DO_NOTHING)
     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
@@ -88,7 +86,6 @@ class GeneReleaseTag(models.Model):
 
 
 class TranscriptReleaseTag(models.Model):
-
     ONE2MANY_RELATED = {'TRANSCRIPTRELEASETAGRELATIONSHIP': "transcript_release_tag_relationship"
                         }
 
@@ -116,9 +113,9 @@ class RelationshipType(models.Model):
 
 
 class TranscriptReleaseTagRelationshipAdmin(admin.ModelAdmin):
-        search_fields = ["transcript_release_tag_relationship__transcript_release_object__transcript_release_tag",
-                         "transcript_release_tag_relationship__transcript_release_subject__transcript_release_tag"]
-        list_select_related = ('transcript_release_tag', 'transcript')
+    search_fields = ["transcript_release_tag_relationship__transcript_release_object__transcript_release_tag",
+                     "transcript_release_tag_relationship__transcript_release_subject__transcript_release_tag"]
+    list_select_related = ('transcript_release_tag', 'transcript')
 
 
 class TranscriptReleaseTagRelationship(models.Model):
@@ -135,7 +132,6 @@ class TranscriptReleaseTagRelationship(models.Model):
 
 
 class ExonReleaseTag(models.Model):
-
     feature = models.ForeignKey(Exon, models.DO_NOTHING)
     release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
 

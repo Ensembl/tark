@@ -1,118 +1,118 @@
 [
-{
+  {
     "model": "session.session",
     "pk": 5,
     "fields": {
-        "client_id": "HGNC loader",
-        "start_date": null,
-        "status": "2"
+      "client_id": "HGNC loader",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "genome.genome",
     "pk": 1,
     "fields": {
-        "name": "homo_sapiens",
-        "tax_id": 9606,
-        "session": 1
+      "name": "homo_sapiens",
+      "tax_id": 9606,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "session.session",
     "pk": 6,
     "fields": {
-        "client_id": "Test client",
-        "start_date": null,
-        "status": "2"
+      "client_id": "Test client",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "session.session",
     "pk": 3,
     "fields": {
-        "client_id": "Test client",
-        "start_date": null,
-        "status": "2"
+      "client_id": "Test client",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "session.session",
     "pk": 1,
     "fields": {
-        "client_id": "Test client",
-        "start_date": null,
-        "status": "2"
+      "client_id": "Test client",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "genenames.genenames",
     "pk": 35852,
     "fields": {
-        "external_id": 6872,
-        "name": "MAPK10",
-        "source": "HGNC",
-        "primary_id": 1,
-        "session": 5
+      "external_id": 6872,
+      "name": "MAPK10",
+      "source": "HGNC",
+      "primary_id": 1,
+      "session": 5
     }
-},
-{
+  },
+  {
     "model": "assembly.assembly",
     "pk": 1,
     "fields": {
-        "genome": 1,
-        "assembly_name": "GRCh38",
-        "session": 1
+      "genome": 1,
+      "assembly_name": "GRCh38",
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "gene.gene",
     "pk": 304949,
     "fields": {
-        "stable_id": "ENSG00000109339",
-        "stable_id_version": 21,
-        "assembly": 1,
-        "loc_start": 85990007,
-        "loc_end": 86594625,
-        "loc_strand": -1,
-        "loc_region": "4",
-        "loc_checksum": null,
-        "name": 6872,
-        "gene_checksum": null,
-        "session": 6
+      "stable_id": "ENSG00000109339",
+      "stable_id_version": 21,
+      "assembly": 1,
+      "loc_start": 85990007,
+      "loc_end": 86594625,
+      "loc_strand": -1,
+      "loc_region": "4",
+      "loc_checksum": null,
+      "name": 6872,
+      "gene_checksum": null,
+      "session": 6
     }
-},
-{
+  },
+  {
     "model": "gene.gene",
     "pk": 180869,
     "fields": {
-        "stable_id": "ENSG00000109339",
-        "stable_id_version": 20,
-        "assembly": 1,
-        "loc_start": 85990007,
-        "loc_end": 86594625,
-        "loc_strand": -1,
-        "loc_region": "4",
-        "loc_checksum": null,
-        "name": 6872,
-        "gene_checksum": null,
-        "session": 3
+      "stable_id": "ENSG00000109339",
+      "stable_id_version": 20,
+      "assembly": 1,
+      "loc_start": 85990007,
+      "loc_end": 86594625,
+      "loc_strand": -1,
+      "loc_region": "4",
+      "loc_checksum": null,
+      "name": 6872,
+      "gene_checksum": null,
+      "session": 3
     }
-},
-{
+  },
+  {
     "model": "gene.gene",
     "pk": 32157,
     "fields": {
-        "stable_id": "ENSG00000109339",
-        "stable_id_version": 19,
-        "assembly": 1,
-        "loc_start": 86010395,
-        "loc_end": 86594131,
-        "loc_strand": -1,
-        "loc_region": "4",
-        "loc_checksum": null,
-        "name": 6872,
-        "gene_checksum": null,
-        "session": 1
+      "stable_id": "ENSG00000109339",
+      "stable_id_version": 19,
+      "assembly": 1,
+      "loc_start": 86010395,
+      "loc_end": 86594131,
+      "loc_strand": -1,
+      "loc_region": "4",
+      "loc_checksum": null,
+      "name": 6872,
+      "gene_checksum": null,
+      "session": 1
     }
-}
+  }
 ]

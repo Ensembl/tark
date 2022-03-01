@@ -4,111 +4,111 @@
 {% load sequence_format %}
 
 
-
 <div class="panel panel-primary ">
-  <div class="panel-heading panel-heading-sm">
-  <i class="glyphicon glyphicon-info-sign"></i> <strong>Result Summary</strong>
-  </div>
+    <div class="panel-heading panel-heading-sm">
+        <i class="glyphicon glyphicon-info-sign"></i> <strong>Result Summary</strong>
+    </div>
 
-  <div class="panel-body">
-  
+    <div class="panel-body">
 
-  <table class="table table-bordered table-condensed" style="font-size:12px;font-weight: bold">
- <thead>
-  <tr style="background-color:#B0C4DE;">
-  <th>Feature</th>
-  <th>Result</th>
-  <th>Location</th>
-  <th>Sequence</th>
-  </tr>
- </thead>
- <tbody>
-  <tr>
-    <td>Transcript</td>
-  {% if diff_result.results.has_transcript_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% else %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% endif %}
-  
-  {% if diff_result.results.has_location_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% else %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% endif %}
-  
-  {% if diff_result.results.has_seq_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% else %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% endif %}
-  
-  </tr>
-  
-  <tr>
-  <td>Translation</td>
-  {% if diff_result.results.has_translation_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% elif diff_result.results.has_translation_changed == False %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% else %}
-  <td>N/A</td>
-  {% endif %}
-  
-  {% if diff_result.results.has_translation_location_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% elif diff_result.results.has_translation_location_changed == False %}
-   <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% else %}
-  <td>N/A</td>
-  {% endif %}
-  
-  {% if diff_result.results.has_translation_seq_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% elif diff_result.results.has_translation_seq_changed == False  %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% else %}
-  <td>N/A</td>
-  {% endif %}
-  
-  </tr>
-  
-  <tr>
-  <td>Gene</td>
-  {% if diff_result.results.has_gene_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% elif diff_result.results.has_gene_changed == False %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% else %}
-  <td>N/As</td>
-  {% endif %}
-  
-  {% if diff_result.results.has_gene_location_changed == True %}
-  <td><i class="glyphicon glyphicon-remove text-center"  style="color:red"></i></td>
-  {% else %}
-  <td><i class="glyphicon glyphicon-ok text-center"  style="color:green"></i></td>
-  {% endif %}
-  
 
-  <td><strong>N/A</strong></td>
-  
-  
-  </tr>
-  </tbody>
-  
-  
-  </table>
-  
-  <div class="row">
+        <table class="table table-bordered table-condensed" style="font-size:12px;font-weight: bold">
+            <thead>
+            <tr style="background-color:#B0C4DE;">
+                <th>Feature</th>
+                <th>Result</th>
+                <th>Location</th>
+                <th>Sequence</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Transcript</td>
+                {% if diff_result.results.has_transcript_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% else %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% endif %}
+
+                {% if diff_result.results.has_location_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% else %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% endif %}
+
+                {% if diff_result.results.has_seq_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% else %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% endif %}
+
+            </tr>
+
+            <tr>
+                <td>Translation</td>
+                {% if diff_result.results.has_translation_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% elif diff_result.results.has_translation_changed == False %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+
+                {% if diff_result.results.has_translation_location_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% elif diff_result.results.has_translation_location_changed == False %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+
+                {% if diff_result.results.has_translation_seq_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% elif diff_result.results.has_translation_seq_changed == False %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+
+            </tr>
+
+            <tr>
+                <td>Gene</td>
+                {% if diff_result.results.has_gene_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% elif diff_result.results.has_gene_changed == False %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% else %}
+                    <td>N/As</td>
+                {% endif %}
+
+                {% if diff_result.results.has_gene_location_changed == True %}
+                    <td><i class="glyphicon glyphicon-remove text-center" style="color:red"></i></td>
+                {% else %}
+                    <td><i class="glyphicon glyphicon-ok text-center" style="color:green"></i></td>
+                {% endif %}
+
+
+                <td><strong>N/A</strong></td>
+
+
+            </tr>
+            </tbody>
+
+
+        </table>
+
+        <div class="row">
   <span style="float:left;padding-left:15px;">
-  <i class="glyphicon glyphicon-ok text-center"  style="color:green"></i> = <kbd style="background-color:green">MATCHED</kbd>
+  <i class="glyphicon glyphicon-ok text-center" style="color:green"></i> = <kbd
+          style="background-color:green">MATCHED</kbd>
   </span>
-  <span style="float:right;padding-right:15px;">
-  <i class="glyphicon glyphicon-remove text-center"  style="color:red"></i> = <kbd style="background-color:red">NOT MATCHED</kbd> </br>
+            <span style="float:right;padding-right:15px;">
+  <i class="glyphicon glyphicon-remove text-center" style="color:red"></i> = <kbd style="background-color:red">NOT MATCHED</kbd> </br>
   </span>
-  
-  </div>
-  
-    
-  </div>
+
+        </div>
+
+
+    </div>
 </div>

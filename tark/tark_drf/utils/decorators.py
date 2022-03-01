@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 import logging
 
 # Get an instance of a logger
@@ -59,6 +58,7 @@ class setup_eager_loading(object):
                         queryset = queryset.prefetch_related(entry)
 
             return queryset
+
         return wrapped_f
 
 
@@ -90,4 +90,5 @@ class expand_all_related(object):
                     queryset = queryset.prefetch_related(entry)
 
             return queryset
+
         return wrapped_f

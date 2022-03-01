@@ -48,9 +48,10 @@ class ApiUtils(object):
         host_url = cls.get_host_url(request)
         query_url = "/api/" + feature_type + "/?"
 
-        query_param = "stable_id=" + diff_params[diff_type+'_stable_id'] + "&assembly_name=" + \
-            diff_params[diff_type+'_assembly'] + "&release_short_name=" + diff_params[diff_type+'_release'] + \
-            "&expand_all=true"
+        query_param = "stable_id=" + diff_params[diff_type + '_stable_id'] + "&assembly_name=" + \
+                      diff_params[diff_type + '_assembly'] + "&release_short_name=" + diff_params[
+                          diff_type + '_release'] + \
+                      "&expand_all=true"
 
         return host_url + query_url + query_param
 

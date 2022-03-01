@@ -1,129 +1,125 @@
 <table class="table table-bordered text-center">
     <thead>
-      <tr>
+    <tr>
         <th class="text-center col-md-4 alert alert-info">Transcript</th>
         <th class="text-center col-md-4 alert alert-warning">Translation</th>
-      </tr>
+    </tr>
     </thead>
     <tbody>
-      <tr>
+    <tr>
         <td>
-        {% if diff_result.results.has_transcript_changed %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% endif %}
+            {% if diff_result.results.has_transcript_changed %}
+                <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+            {% endif %}
         </td>
 
-         <td>
-	
-        {% if diff_result.results.has_translation_changed == True %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-       {% elif diff_result.results.has_translation_changed == False %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% else %}
-        <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
-        {% endif %}
-         </td>
-      </tr>
-      <tr>
         <td>
-    <!--CDNA Summary -->
-   <table class="table table-bordered text-center">
-    <thead>
-      <tr>
-        <th class="text-center col-md-4 alert alert-info">Location</th>
-        <th class="text-center col-md-4 alert alert-info">Exonset</th>
-        <th class="text-center col-md-4 alert alert-info">Sequence</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-        {% if diff_result.results.has_location_changed %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% endif %}
-         </td>
-        
-        <td>
-         {% if diff_result.results.has_exon_set_changed %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% endif %}
+
+            {% if diff_result.results.has_translation_changed == True %}
+                <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+            {% elif diff_result.results.has_translation_changed == False %}
+                <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
+            {% endif %}
         </td>
-        
+    </tr>
+    <tr>
         <td>
-         {% if diff_result.results.has_seq_changed %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% else %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% endif %}
+            <!--CDNA Summary -->
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="text-center col-md-4 alert alert-info">Location</th>
+                    <th class="text-center col-md-4 alert alert-info">Exonset</th>
+                    <th class="text-center col-md-4 alert alert-info">Sequence</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {% if diff_result.results.has_location_changed %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if diff_result.results.has_exon_set_changed %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if diff_result.results.has_seq_changed %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <!--CDNA Summary -->
         </td>
-        
-      </tr>
-    </tbody>
-    </table>
-    <!--CDNA Summary -->
-        </td>
-        
+
         <td>
-        
-           <!--CDS Summary -->
-   <table class="table table-bordered text-center">
-    <thead>
-      <tr>
-        <th class="text-center col-md-4 alert alert-warning">Location</th>
-        <th class="text-center col-md-4 alert alert-warning">Exonset</th>
-        <th class="text-center col-md-4 alert alert-warning">Sequence</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-        {% if diff_result.results.has_translation_location_changed == True %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% elif diff_result.results.has_translation_location_changed == False %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-        {% else %}
-          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
-        {% endif %}
+
+            <!--CDS Summary -->
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="text-center col-md-4 alert alert-warning">Location</th>
+                    <th class="text-center col-md-4 alert alert-warning">Exonset</th>
+                    <th class="text-center col-md-4 alert alert-warning">Sequence</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {% if diff_result.results.has_translation_location_changed == True %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% elif diff_result.results.has_translation_location_changed == False %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if diff_result.results.has_translation_exon_set_changed == True %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% elif diff_result.results.has_cds_exon_set_changed == False %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if diff_result.results.has_translation_seq_changed == True %}
+                            <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
+                        {% elif diff_result.results.has_translation_seq_changed == False %}
+                            <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <!--CDS Summary -->
+
+
         </td>
-        
-        <td>
-         {% if diff_result.results.has_translation_exon_set_changed == True  %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% elif diff_result.results.has_cds_exon_set_changed == False %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-         {% else %}
-          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
-        {% endif %}
-        </td>
-        
-        <td>
-         {% if diff_result.results.has_translation_seq_changed == True %}
-        <span class="glyphicon glyphicon-remove-circle glyp-diff-red"></span>
-        {% elif diff_result.results.has_translation_seq_changed == False  %}
-         <span class="glyphicon glyphicon-ok-circle glyp-diff-green"></span>
-         {% else %}
-          <span class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></span>
-        {% endif %}
-        </td>
-        
-      </tr>
-    </tbody>
-    </table>
-    <!--CDS Summary -->
-        
-        
-        
-        
-        
-        
-        </td>
-      </tr>
-    
+    </tr>
+
     </tbody>
 </table>

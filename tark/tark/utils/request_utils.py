@@ -45,7 +45,7 @@ class RequestUtils(object):
     @classmethod
     def get_query_param_string(self, params):
         param_string = ""
-        for key,value in params.items():  # @IgnorePep8
+        for key, value in params.items():  # @IgnorePep8
 
             if value is not None and len(value) > 0:
                 param_string = param_string + key + "=" + value + "&"

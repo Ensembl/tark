@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from rest_framework.filters import BaseFilterBackend
 from tark_drf.utils.drf_fields import CommonFields
 from tark_drf.utils.drf_filters import CommonFilterBackend
@@ -26,6 +25,7 @@ class TranslationFilterBackend(BaseFilterBackend):
     """
     Filter to filter by common fields..
     """
+
     def filter_queryset(self, request, queryset, view):
         queryset = CommonFilterBackend.get_common_filter_querysets(request, queryset, view)
         queryset = CommonFilterBackend.get_common_related_querysets(request, queryset, view)
@@ -38,4 +38,4 @@ class TranslationFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return CommonFields.get_common_query_set("Translation") + CommonFields.COMMON_RELATED_QUERY_SET + \
-                CommonFields.get_expand_query_set(Translation)
+               CommonFields.get_expand_query_set(Translation)

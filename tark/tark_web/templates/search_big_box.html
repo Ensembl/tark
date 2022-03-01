@@ -1,37 +1,41 @@
-   <div class="row" id="search_big" style="padding-top: 40px;padding-bottom:5px; background: lightblue;border-radius: 25px;">
+<div class="row" id="search_big"
+     style="padding-top: 40px;padding-bottom:5px; background: lightblue;border-radius: 25px;">
     <div class="col-md-12">
-    <form action="/web/search/" method="POST">
-    <div class="form-group" style="text-align: center;">
-    {% csrf_token %}
-      <input type="text" name="search_identifier" required="" id="id_search_identifier" placeholder="Search..eg: ACOX1 or ENST00000252934 or NM_013236.4" class="form-control input-lg" style="display:inline;width:60%;">
-      <button type="submit"><i class="fa fa-search fa-2x"></i></button>
+        <form action="/web/search/" method="POST">
+            <div class="form-group" style="text-align: center;">
+                {% csrf_token %}
+                <input type="text" name="search_identifier" required="" id="id_search_identifier"
+                       placeholder="Search..eg: ACOX1 or ENST00000252934 or NM_013236.4" class="form-control input-lg"
+                       style="display:inline;width:60%;">
+                <button type="submit"><i class="fa fa-search fa-2x"></i></button>
+            </div>
+        </form>
+        <p class="text-center" style="font-size: 14px;">
+            <strong>Search using any valid identifiers with or without version: <br/> (eg:
+                <a href="/web/search/?identifier=ACOX1">ACOX1</a> or
+                <a href="/web/search/?identifier=ENST00000252934">ENST00000252934</a> or
+                <a href="/web/search/?identifier=ENST00000252934.10">ENST00000252934.10</a> or
+                <a href="/web/search/?identifier=ENSP00000252934">ENSP00000252934</a> or
+                <a href="/web/search/?identifier=NM_013236">NM_013236</a> or
+                <a href="/web/search/?identifier=NM_013236.4">NM_013236.4</a> or
+                <a href="/web/search/?identifier=NR_000005">NR_000005</a> or
+                <a href="/web/search/?identifier=NP_004026">NP_004026</a>
+                <!--a href="/web/search/?identifier=LRG_500">LRG_500</a-->
+                )
+                <br/> <br/>
+                or using a location string </br>
+                (Supported format:
+                <a href="/web/search/?identifier=13: 32315474-32400266">13: 32315474-32400266</a>
+                )
+                <br/> <br/>
+                or using <a href="https://varnomen.hgvs.org/bg-material/simple/" target="_blank">HGVS</a>
+                identifiers </br>
+                (Supported format:
+                <a href="/web/search/?identifier=NC_000023.11:g.32389644G>A">NC_000023.11:g.32389644G>A </a>,
+                <a href="/web/search/?identifier=NM_004006.2:c.4375C>T">NM_004006.2:c.4375C>T </a>
+                )
+            </strong>
+            <br/>(Please note: The allele is ignored in the HGVS search)
+        </p>
     </div>
-    </form>
-    <p class="text-center" style="font-size: 14px;">
-    <strong>Search using any valid identifiers with or without version: <br/> (eg: 
-    <a href="/web/search/?identifier=ACOX1">ACOX1</a> or 
-    <a href="/web/search/?identifier=ENST00000252934">ENST00000252934</a> or 
-    <a href="/web/search/?identifier=ENST00000252934.10">ENST00000252934.10</a> or 
-    <a href="/web/search/?identifier=ENSP00000252934">ENSP00000252934</a> or 
-    <a href="/web/search/?identifier=NM_013236">NM_013236</a> or 
-    <a href="/web/search/?identifier=NM_013236.4">NM_013236.4</a> or
-    <a href="/web/search/?identifier=NR_000005">NR_000005</a> or
-    <a href="/web/search/?identifier=NP_004026">NP_004026</a>
-    <!--a href="/web/search/?identifier=LRG_500">LRG_500</a-->
-    )
-    <br/> <br/>
-    or using a location string </br>
-    (Supported format: 
-    <a href="/web/search/?identifier=13: 32315474-32400266">13: 32315474-32400266</a>
-    )
-    <br/> <br/>
-    or using <a href="https://varnomen.hgvs.org/bg-material/simple/" target="_blank">HGVS</a> identifiers </br>
-    (Supported format: 
-    <a href="/web/search/?identifier=NC_000023.11:g.32389644G>A">NC_000023.11:g.32389644G>A </a>,
-    <a href="/web/search/?identifier=NM_004006.2:c.4375C>T">NM_004006.2:c.4375C>T </a>
-    )
-    </strong>
-     <br/>(Please note: The allele is ignored in the HGVS search)
-    </p>
-  </div>  
-  </div>  
+</div>

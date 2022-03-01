@@ -25,6 +25,7 @@ class ReleaseSetFilterBackend(BaseFilterBackend):
     """
     Filter to filter by source_name
     """
+
     def filter_queryset(self, request, queryset, view):
         queryset = CommonFilterBackend.get_common_related_querysets(request, queryset, view)
 
@@ -36,4 +37,4 @@ class ReleaseSetFilterBackend(BaseFilterBackend):
 
     def get_schema_fields(self, view):
         return CommonFields.COMMON_RELATED_QUERY_SET + \
-                CommonFields.get_expand_query_set(ReleaseSet)
+               CommonFields.get_expand_query_set(ReleaseSet)

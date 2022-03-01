@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from rest_framework import serializers
 import binascii
 from tark_drf.utils.drf_utils import DrfUtils
@@ -42,11 +41,11 @@ class DrfFields(object):
         description_ += ")"
 
         expand_field = coreapi.Field(
-                name='expand',
-                location='query',
-                required=False,
-                type='string',
-                description=description_)
+            name='expand',
+            location='query',
+            required=False,
+            type='string',
+            description=description_)
         return expand_field
 
     @classmethod
@@ -280,7 +279,7 @@ class DrfFields(object):
             required=False,
             type='string',
             description='release_short_name to diff with(eg: 86 default to highest release in the releaset set - ' +
-            str(ReleaseUtils.get_latest_release()) + ' )')
+                        str(ReleaseUtils.get_latest_release()) + ' )')
         return diff_with_release_field
 
     @classmethod
@@ -328,10 +327,12 @@ class DrfFields(object):
             description='a sequence checksum (eg: 70C0CDEC98DCDE638087881493FF5A3B39E6BF52)')
         return seq_checksum_field
 
+
 class ChecksumFieldSerializer(serializers.Field):
     """
     Does the binary to hex conversion
     """
+
     def to_internal_value(self, value):
         '''
         The to_internal_value() method is called to restore a primitive datatype into
@@ -342,7 +343,7 @@ class ChecksumFieldSerializer(serializers.Field):
                 return binascii.hexlify(value.strip()).decode('ascii').upper()
             except:
                 print("Validation Error")
-                raise(serializers.ValidationError)
+                raise (serializers.ValidationError)
 
         return None
 
@@ -364,8 +365,8 @@ class ManeField(serializers.RelatedField):
 class TranscriptFieldEnsReleaseVersion(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
-                transcript = Transcript.objects.get(pk=value.feature_id)
-                return transcript.release.shortname
+            transcript = Transcript.objects.get(pk=value.feature_id)
+            return transcript.release.shortname
         return None
 
 
@@ -406,9 +407,8 @@ class ReleaseSourceField(serializers.RelatedField):
 
 
 class CommonFields(object):
-
     COMMON_FIELD_SET = ('stable_id', 'stable_id_version', 'assembly', 'loc_start', 'loc_end', 'loc_strand',
-                        'loc_region', 'loc_checksum', )
+                        'loc_region', 'loc_checksum',)
 
     COMMON_QUERY_SET = [DrfFields.stable_id_version_field(),
                         DrfFields.loc_start_field(), DrfFields.loc_end_field(),

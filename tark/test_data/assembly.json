@@ -1,29 +1,29 @@
 [
-{
+  {
     "model": "session.session",
     "pk": 1,
     "fields": {
-        "client_id": "Test client",
-        "start_date": null,
-        "status": "2"
+      "client_id": "Test client",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "genome.genome",
     "pk": 1,
     "fields": {
-        "name": "homo_sapiens",
-        "tax_id": 9606,
-        "session": 1
+      "name": "homo_sapiens",
+      "tax_id": 9606,
+      "session": 1
     }
-},
-{
+  },
+  {
     "model": "assembly.assembly",
     "pk": 1,
     "fields": {
-        "genome": 1,
-        "assembly_name": "GRCh38",
-        "session": 1
+      "genome": 1,
+      "assembly_name": "GRCh38",
+      "session": 1
     }
-}
+  }
 ]

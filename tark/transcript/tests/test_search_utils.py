@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.test.testcases import TestCase
 from transcript.utils.search_utils import SearchUtils
 

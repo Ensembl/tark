@@ -15,10 +15,8 @@
    limitations under the License.
 """
 
-
 from django.conf.urls import url
 from transcript import views
-
 
 urlpatterns = [
     url(r'^$', views.TranscriptList.as_view(), name='transcript_list'),
@@ -27,6 +25,5 @@ urlpatterns = [
     url(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
     url(r'^manelist/$', views.TranscriptManeList.as_view(), name='transcript_mane_list'),
     # url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
-
 
 ]

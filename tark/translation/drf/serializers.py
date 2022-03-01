@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from rest_framework import serializers
 from tark_drf.utils.drf_mixin import SerializerMixin
 from assembly.drf.serializers import AssemblySerializer
@@ -33,12 +32,11 @@ class TranslationReleaseTagSerializer(serializers.ModelSerializer):
 
 
 class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
-
     MANY2ONE_SERIALIZER = {Translation.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
                            Translation.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
     ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
                            Translation.ONE2MANY_RELATED['TRANSCRIPT']:
-                           "transcript.drf.serializers.TranscriptSerializer"}
+                               "transcript.drf.serializers.TranscriptSerializer"}
 
     assembly = AssemblyField(read_only=True)
 

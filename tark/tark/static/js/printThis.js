@@ -42,7 +42,7 @@
  *  - the loadCSS will load additional CSS (with or without @media print) into the iframe, adjusting layout
  */
 ;
-(function($) {
+(function ($) {
 
     function appendContent($el, content) {
         if (!content) return;
@@ -71,7 +71,7 @@
             $content.appendTo($body);
         } else {
             // otherwise just print interior elements of container
-            $content.each(function() {
+            $content.each(function () {
                 $(this).children().appendTo($body)
             });
         }
@@ -81,13 +81,13 @@
     function copyValues(origin, clone, elementSelector) {
         var $originalElements = origin.find(elementSelector);
 
-        clone.find(elementSelector).each(function(index, item) {
+        clone.find(elementSelector).each(function (index, item) {
             $(item).val($originalElements.eq(index).val());
         });
     }
 
     var opt;
-    $.fn.printThis = function(options) {
+    $.fn.printThis = function (options) {
         opt = $.extend({}, $.fn.printThis.defaults, options);
         var $element = this instanceof jQuery ? this : $(this);
 
@@ -127,10 +127,10 @@
         }
 
         // $iframe.ready() and $iframe.load were inconsistent between browsers
-        setTimeout(function() {
+        setTimeout(function () {
 
             // Add doctype to fix the style difference between printing and render
-            function setDocType($iframe, doctype){
+            function setDocType($iframe, doctype) {
                 var win, doc;
                 win = $iframe.get(0);
                 win = win.contentWindow || win.contentDocument || win;
@@ -140,7 +140,7 @@
                 doc.close();
             }
 
-            if (opt.doctypeString){
+            if (opt.doctypeString) {
                 setDocType($iframe, opt.doctypeString);
             }
 
@@ -165,7 +165,7 @@
             $head.append('<base href="' + baseURL + '">');
 
             // import page stylesheets
-            if (opt.importCSS) $("link[rel=stylesheet]").each(function() {
+            if (opt.importCSS) $("link[rel=stylesheet]").each(function () {
                 var href = $(this).attr("href");
                 if (href) {
                     var media = $(this).attr("media") || "all";
@@ -174,7 +174,7 @@
             });
 
             // import style tags
-            if (opt.importStyle) $("style").each(function() {
+            if (opt.importStyle) $("style").each(function () {
                 $head.append(this.outerHTML);
             });
 
@@ -184,7 +184,7 @@
             // import additional stylesheet(s)
             if (opt.loadCSS) {
                 if ($.isArray(opt.loadCSS)) {
-                    jQuery.each(opt.loadCSS, function(index, value) {
+                    jQuery.each(opt.loadCSS, function (index, value) {
                         $head.append("<link type='text/css' rel='stylesheet' href='" + this + "'>");
                     });
                 } else {
@@ -216,7 +216,7 @@
                 // add canvas data-ids for easy access after cloning.
                 var canvasId = 0;
                 // .addBack('canvas') adds the top-level element if it is a canvas.
-                $element.find('canvas').addBack('canvas').each(function(){
+                $element.find('canvas').addBack('canvas').each(function () {
                     $(this).attr('data-printthis', canvasId++);
                 });
             }
@@ -225,7 +225,7 @@
 
             if (opt.canvas) {
                 // Re-draw new canvases by referencing the originals
-                $body.find('canvas').each(function(){
+                $body.find('canvas').each(function () {
                     var cid = $(this).data('printthis'),
                         $src = $('[data-printthis="' + cid + '"]');
 
@@ -235,7 +235,7 @@
                     if ($.isFunction($.fn.removeAttr)) {
                         $src.removeAttr('data-printthis');
                     } else {
-                        $.each($src, function(i, el) {
+                        $.each($src, function (i, el) {
                             el.removeAttribute('data-printthis');
                         });
                     }
@@ -264,17 +264,18 @@
 
                 if (typeof beforePrintHandler === "function") {
                     if ('matchMedia' in win) {
-                        win.matchMedia('print').addListener(function(mql) {
-                            if(mql.matches)  beforePrintHandler();
+                        win.matchMedia('print').addListener(function (mql) {
+                            if (mql.matches) beforePrintHandler();
                         });
                     } else {
                         win.onbeforeprint = beforePrintHandler;
                     }
                 }
             }
+
             attachOnBeforePrintEvent($iframe, opt.beforePrintEvent);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 if ($iframe.hasClass("MSIE")) {
                     // check if the iframe was created with the ugly hack
                     // and perform another ugly hack out of neccessity
@@ -292,7 +293,7 @@
 
                 // remove iframe after print
                 if (!opt.debug) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $iframe.remove();
 
                     }, 1000);

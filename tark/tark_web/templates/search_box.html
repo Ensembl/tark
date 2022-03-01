@@ -1,9 +1,10 @@
-  <div id="search">
+<div id="search">
     <form action="/web/search/" method="POST">
-    <div class="form-group" style="text-align: right;">
-    {% csrf_token %}
-      <input type="text" name="search_identifier" required="" id="id_search_identifier_nav" placeholder="Search.." class="form-control" style="display:inline;width:20%;">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </div>
+        <div class="form-group" style="text-align: right;">
+            {% csrf_token %}
+            <input type="text" name="search_identifier" required="" id="id_search_identifier_nav" placeholder="Search.."
+                   class="form-control" style="display:inline;width:20%;">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </div>
     </form>
-  </div>
+</div>

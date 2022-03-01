@@ -16,9 +16,8 @@
 """
 
 from django.conf.urls import url
-from release.views import ReleaseSetList, ReleaseSetDetail,\
+from release.views import ReleaseSetList, ReleaseSetDetail, \
     ReleaseSetDatatableView
-
 
 urlpatterns = [
     url(r'^$', ReleaseSetList.as_view(), name='release_set_list'),

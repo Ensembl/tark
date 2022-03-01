@@ -21,11 +21,13 @@ from django.urls.base import reverse
 from rest_framework import status
 import json
 
+
 # ./manage.py test tark.tests.test_transcript --settings=tark.settings.test
 
 
 class TranscriptTest(APITestCase):
     fixtures = ['transcript']
+
     # multi_db = True
 
     def test_transcript(self):

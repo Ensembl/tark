@@ -16,7 +16,7 @@
 """
 
 from django.contrib import admin
-from release.models import TranscriptReleaseTagRelationship,\
+from release.models import TranscriptReleaseTagRelationship, \
     TranscriptReleaseTagRelationshipAdmin
 
 # Register your models here.

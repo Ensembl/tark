@@ -4,13 +4,13 @@
 
 {% block content %}
 
-   <div class="row">
-   <div class="col-md-4" style="width:20%">
- {% with sequence_data|format_fasta:stable_id as fasta_seq %}
-      <p class="text-justify" style="font-family:monospace;">
-  	{{ fasta_seq }}
-  	</p>
- {% endwith %}
-  </div>
-  </div>
+    <div class="row">
+        <div class="col-md-4" style="width:20%">
+            {% with sequence_data|format_fasta:stable_id as fasta_seq %}
+                <p class="text-justify" style="font-family:monospace;">
+                    {{ fasta_seq }}
+                </p>
+            {% endwith %}
+        </div>
+    </div>
 {% endblock %}

@@ -4,138 +4,216 @@
 <!-- Exon set Expander -->
 <div id="has_exon_set_changed" class="tab-pane fade in" style="padding:10px;">
 
-  {% if diff_result.results.has_exon_set_changed %}
-  <div class="well well-sm well-diff-red" ><strong>CDNA Exonset Compare</strong></div>
-  {% else %}
-  <div class="well well-sm well-diff-green"><strong>CDNA Exonset Compare</strong></div>
-  {% endif %}
- 
- 
- <!--exonset ordered trials start -->
- <div class="row">
- {% with diff_result.results.exon_set_compare.0 as  diff_me_exonset%}
- {% with diff_result.results.exon_set_compare.1 as  diff_with_exonset%}
- 
-  {%for a, b in diff_me_exonset|zip_lists:diff_with_exonset %}
- 
- <!--Exon1 -->
- {% with diff_result.diff_me_transcript.results.0 as diff_me_tr %}
-   {% with diff_me_tr.exons|get_exon_by_exon_order:a as diff_me_tr_exon %}
-   
-   {% with diff_result.diff_with_transcript.results.0 as diff_with_tr %}
-   {% with diff_with_tr.exons|get_exon_by_exon_order:b as diff_with_tr_exon %}
+    {% if diff_result.results.has_exon_set_changed %}
+        <div class="well well-sm well-diff-red"><strong>CDNA Exonset Compare</strong></div>
+    {% else %}
+        <div class="well well-sm well-diff-green"><strong>CDNA Exonset Compare</strong></div>
+    {% endif %}
 
-{% if diff_me_tr_exon  %}
-  <div class="col-md-5 col-sm-5">
-  <ul class="list-group">
-  <li class="list-group-item list-group-item-info"><strong>Exon Order</strong><span class="label label-primary label-diff">{{ diff_me_tr_exon.exon_order }}</span></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ diff_me_tr_exon.stable_id }}</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ diff_me_tr_exon.stable_id_version }}</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ diff_me_tr_exon.assembly }}</span></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_region }}</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_start }}</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_end }}</span></li>
-  <li class="list-group-item">Length/Overlap <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_end|subtract:diff_me_tr_exon.loc_start  }}/{{ diff_me_tr_exon|compute_exon_overlap:diff_with_tr_exon}}</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_strand }}</span></li> 
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ diff_me_tr_exon.loc_checksum }}</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ diff_me_tr_exon.seq_checksum }}</span></li>
-  <li class="list-group-item">Exon Checksum <span class="label label-primary label-diff">{{ diff_me_tr_exon.exon_checksum }}</span></li>
-  </ul>
-  </div>
-{% else %}
-<div class="col-md-5 col-sm-5">
-  <ul class="list-group">
-  <li class="list-group-item list-group-item-info"><strong>Exon Order</strong><span class="label label-primary label-diff">{{ diff_me_tr_exon.exon_order }}</span></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">N/A</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Length <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">N/A</span></li> 
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Exon Checksum <span class="label label-primary label-diff">N/A</span></li>
-  </ul>
-  </div>
 
-{% endif %}
-<!--Exon1 End-->
+    <!--exonset ordered trials start -->
+    <div class="row">
+        {% with diff_result.results.exon_set_compare.0 as diff_me_exonset %}
+            {% with diff_result.results.exon_set_compare.1 as diff_with_exonset %}
 
-<!-- Match -->
-  <div class="col-md-2 col-sm-2">
+                {% for a, b in diff_me_exonset|zip_lists:diff_with_exonset %}
 
-  <ul class="list-group">
-    <li class="list-group-item text-center">Match</li>
-{% if diff_me_tr_exon and diff_with_tr_exon %}
-  {% with diff_me_tr_exon|compare_exon:diff_with_tr_exon as has_matches %}
-   {% for has_match in has_matches %}
-    {% include "checksum_match.html" with has_var_checksum=has_match %}
-   {% endfor %}
- {% endwith %}
+                    <!--Exon1 -->
+                    {% with diff_result.diff_me_transcript.results.0 as diff_me_tr %}
+                        {% with diff_me_tr.exons|get_exon_by_exon_order:a as diff_me_tr_exon %}
 
-{% else %}
-     {% for o in "01234567890"|make_list %}
-    <li class="list-group-item list-group-item-secondary text-center" style="font-size:8.8px">
-    <i class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></i>
-    </li>
-    {% endfor %}
+                            {% with diff_result.diff_with_transcript.results.0 as diff_with_tr %}
+                                {% with diff_with_tr.exons|get_exon_by_exon_order:b as diff_with_tr_exon %}
 
-{% endif %}
- </ul>  
-  </div>
-<!-- Match -->
+                                    {% if diff_me_tr_exon %}
+                                        <div class="col-md-5 col-sm-5">
+                                            <ul class="list-group">
+                                                <li class="list-group-item list-group-item-info"><strong>Exon
+                                                    Order</strong><span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.exon_order }}</span>
+                                                </li>
+                                                <li class="list-group-item">StableID <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.stable_id }}</span>
+                                                </li>
+                                                <li class="list-group-item">StableID Version <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.stable_id_version }}</span>
+                                                </li>
+                                                <li class="list-group-item">Assembly<span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.assembly }}</span>
+                                                </li>
+                                                <li class="list-group-item">Region <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_region }}</span>
+                                                </li>
+                                                <li class="list-group-item">Start <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_start }}</span>
+                                                </li>
+                                                <li class="list-group-item">Stop <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_end }}</span>
+                                                </li>
+                                                <li class="list-group-item">Length/Overlap <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_end|subtract:diff_me_tr_exon.loc_start  }}/{{ diff_me_tr_exon|compute_exon_overlap:diff_with_tr_exon}}</span>
+                                                </li>
+                                                <li class="list-group-item">Strand <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_strand }}</span>
+                                                </li>
+                                                <li class="list-group-item">Loc Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.loc_checksum }}</span>
+                                                </li>
+                                                <li class="list-group-item">Seq Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.seq_checksum }}</span>
+                                                </li>
+                                                <li class="list-group-item">Exon Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.exon_checksum }}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-5 col-sm-5">
+                                            <ul class="list-group">
+                                                <li class="list-group-item list-group-item-info"><strong>Exon
+                                                    Order</strong><span
+                                                        class="label label-primary label-diff">{{ diff_me_tr_exon.exon_order }}</span>
+                                                </li>
+                                                <li class="list-group-item">StableID <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">StableID Version <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Assembly<span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Region <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Start <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Stop <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Length <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Strand <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Loc Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Seq Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Exon Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                            </ul>
+                                        </div>
 
-<!--Exon2 -->
-  <div class="col-md-5 col-sm-5">
+                                    {% endif %}
+                                    <!--Exon1 End-->
 
-{% if diff_with_tr_exon  %}
-     <ul class="list-group">
-  <li class="list-group-item list-group-item-warning"><strong>Exon Order</strong><span class="label label-primary label-diff">{{ diff_with_tr_exon.exon_order }}</span></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">{{ diff_with_tr_exon.stable_id }}</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">{{ diff_with_tr_exon.stable_id_version }}</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">{{ diff_with_tr_exon.assembly }}</span></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_region }}</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_start }}</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_end }}</span></li>
-  <li class="list-group-item">Length <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_end|subtract:diff_with_tr_exon.loc_start  }}/{{ diff_me_tr_exon|compute_exon_overlap:diff_with_tr_exon}}</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_strand }}</span></li> 
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">{{ diff_with_tr_exon.loc_checksum }}</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">{{ diff_with_tr_exon.seq_checksum }}</span></li>  
-  <li class="list-group-item">Exon Checksum <span class="label label-primary label-diff">{{ diff_with_tr_exon.exon_checksum }}</span></li> 
-    </ul>
-{% else %}
-     <ul class="list-group">
-  <li class="list-group-item list-group-item-warning"><strong>Exon Order</strong><span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">StableID 	<span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">StableID Version <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Assembly<span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Region <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Start <span class="label label-primary label-diff">N/A</span></li> 
-  <li class="list-group-item">Stop <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Length <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Strand <span class="label label-primary label-diff">N/A</span></li> 
-  <li class="list-group-item">Loc Checksum <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Seq Checksum <span class="label label-primary label-diff">N/A</span></li>
-  <li class="list-group-item">Exon Checksum <span class="label label-primary label-diff">N/A</span></li>
-    </ul>
-{% endif %}
+                                    <!-- Match -->
+                                    <div class="col-md-2 col-sm-2">
 
-  </div>
-  <!--Exon2 End-->
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-center">Match</li>
+                                            {% if diff_me_tr_exon and diff_with_tr_exon %}
+                                                {% with diff_me_tr_exon|compare_exon:diff_with_tr_exon as has_matches %}
+                                                    {% for has_match in has_matches %}
+                                                        {% include "checksum_match.html" with has_var_checksum=has_match %}
+                                                    {% endfor %}
+                                                {% endwith %}
 
-{% endwith %}
-{% endwith %}
-{% endwith %}
-{% endwith %}
+                                            {% else %}
+                                                {% for o in "01234567890"|make_list %}
+                                                    <li class="list-group-item list-group-item-secondary text-center"
+                                                        style="font-size:8.8px">
+                                                        <i class="glyphicon glyphicon-ban-circle glyp-diff-noresult"></i>
+                                                    </li>
+                                                {% endfor %}
 
-  {% endfor %}
-  
-   {% endwith %}
-{% endwith %}
- </div>
-  <!--exonset ordered trials end  -->
- 
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <!-- Match -->
+
+                                    <!--Exon2 -->
+                                    <div class="col-md-5 col-sm-5">
+
+                                        {% if diff_with_tr_exon %}
+                                            <ul class="list-group">
+                                                <li class="list-group-item list-group-item-warning"><strong>Exon
+                                                    Order</strong><span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.exon_order }}</span>
+                                                </li>
+                                                <li class="list-group-item">StableID <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.stable_id }}</span>
+                                                </li>
+                                                <li class="list-group-item">StableID Version <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.stable_id_version }}</span>
+                                                </li>
+                                                <li class="list-group-item">Assembly<span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.assembly }}</span>
+                                                </li>
+                                                <li class="list-group-item">Region <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_region }}</span>
+                                                </li>
+                                                <li class="list-group-item">Start <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_start }}</span>
+                                                </li>
+                                                <li class="list-group-item">Stop <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_end }}</span>
+                                                </li>
+                                                <li class="list-group-item">Length <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_end|subtract:diff_with_tr_exon.loc_start  }}/{{ diff_me_tr_exon|compute_exon_overlap:diff_with_tr_exon}}</span>
+                                                </li>
+                                                <li class="list-group-item">Strand <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_strand }}</span>
+                                                </li>
+                                                <li class="list-group-item">Loc Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.loc_checksum }}</span>
+                                                </li>
+                                                <li class="list-group-item">Seq Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.seq_checksum }}</span>
+                                                </li>
+                                                <li class="list-group-item">Exon Checksum <span
+                                                        class="label label-primary label-diff">{{ diff_with_tr_exon.exon_checksum }}</span>
+                                                </li>
+                                            </ul>
+                                        {% else %}
+                                            <ul class="list-group">
+                                                <li class="list-group-item list-group-item-warning"><strong>Exon
+                                                    Order</strong><span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">StableID <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">StableID Version <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Assembly<span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Region <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Start <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Stop <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Length <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Strand <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Loc Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Seq Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                                <li class="list-group-item">Exon Checksum <span
+                                                        class="label label-primary label-diff">N/A</span></li>
+                                            </ul>
+                                        {% endif %}
+
+                                    </div>
+                                    <!--Exon2 End-->
+
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+
+                {% endfor %}
+
+            {% endwith %}
+        {% endwith %}
+    </div>
+    <!--exonset ordered trials end  -->
+
 
 </div>

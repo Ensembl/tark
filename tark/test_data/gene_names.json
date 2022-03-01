@@ -1,22 +1,22 @@
 [
-{
+  {
     "model": "session.session",
     "pk": 5,
     "fields": {
-        "client_id": "HGNC loader",
-        "start_date": null,
-        "status": "2"
+      "client_id": "HGNC loader",
+      "start_date": null,
+      "status": "2"
     }
-},
-{
+  },
+  {
     "model": "gene.genenames",
     "pk": 6872,
     "fields": {
-        "external_id": 26649,
-        "name": "FLJ35681",
-        "source": "HGNC",
-        "primary_id": 0,
-        "session": 5
+      "external_id": 26649,
+      "name": "FLJ35681",
+      "source": "HGNC",
+      "primary_id": 0,
+      "session": 5
     }
-}
+  }
 ]

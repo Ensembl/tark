@@ -22,7 +22,8 @@ from django.urls.conf import include
 class SchemaUtils(object):
 
     @classmethod
-    def get_field_names(cls, app_name=None, model_name=None, exclude_pk=False, include_parents_=False, exclude_fields=None, include_fields=None):
+    def get_field_names(cls, app_name=None, model_name=None, exclude_pk=False, include_parents_=False,
+                        exclude_fields=None, include_fields=None):
 
         model = apps.get_model(app_name, model_name)
         field_names = []
@@ -36,13 +37,11 @@ class SchemaUtils(object):
                                                                           include_hidden=False)
                            if (field.related_model is None)]
 
-
         if exclude_fields is not None:
             field_names = [field for field in field_names if field not in exclude_fields]
 
         if include_fields is not None:
             field_names = field_names + include_fields
-
 
         return field_names
 

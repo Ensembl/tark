@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.db import models
 from assembly.models import Assembly
 
@@ -31,7 +30,6 @@ logger = logging.getLogger(__name__)
 
 
 class Transcript(models.Model):
-
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'transcript_release_set', 'GENE': 'genes',
                         'TRANSLATION': "translations", "EXONTRANSCRIPT": "exons"
@@ -55,7 +53,7 @@ class Transcript(models.Model):
     session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
-    biotype =  models.CharField(max_length=40, blank=True, null=True)
+    biotype = models.CharField(max_length=40, blank=True, null=True)
     genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
@@ -116,8 +114,8 @@ class Transcript(models.Model):
             if mane_transcripts is not None and len(list(mane_transcripts)) > 0:
                 mane_transcript = mane_transcripts[0]
                 mane_transcript_dict = {"mane_transcript_stableid":
-                                        "{}.{}".format(mane_transcript.refseq_stable_id,
-                                                       mane_transcript.refseq_stable_id_version),
+                                            "{}.{}".format(mane_transcript.refseq_stable_id,
+                                                           mane_transcript.refseq_stable_id_version),
                                         "mane_transcript_type": mane_transcript.mane_type}
 
                 return mane_transcript_dict

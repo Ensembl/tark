@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-
 from django.conf.urls import url
 from tark_web import views
 
@@ -24,13 +23,13 @@ from assembly.views import AssemblyDatatableView
 from transcript.views import TranscriptDatatableView
 from gene.views import GeneDatatableView
 from exon.views import ExonDatatableView
-from sequence.views import align_sequence, check_service_status,\
+from sequence.views import align_sequence, check_service_status, \
     align_cds_sequence, call_align_sequence_clustal
 from release.views import ReleaseSetDatatableView
 from tark_web.views import datatable_view_release_set, feature_diff
 from tark_web.views import statistics
 from django.views.generic.base import TemplateView
-from tark_web.views import manelist,mane_GRCh37_list
+from tark_web.views import manelist, mane_GRCh37_list
 
 urlpatterns = [
     url(r'^$', views.web_home, name='web_home'),
@@ -54,12 +53,11 @@ urlpatterns = [
     url(r'^alignsequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w\-\.]+)/(?P<stable_id_version_a>[\w]+)/(?P<stable_id_b>[\w\-\.]+)/(?P<stable_id_version_b>[\w]+)/(?P<input_type>[\w]+)/(?P<outut_format>[\w]+)/',
         align_sequence, name='align_sequence'),
 
-
     url(r'^call_align_sequence_clustal/$',
         call_align_sequence_clustal, name='call_align_sequence_clustal'),
 
     url(r'^aligncdssequence/(?P<feature_type>[\w]+)/(?P<stable_id_a>[\w\-\.]+)/(?P<stable_id_version_a>[\w]+)/(?P<release_short_name_a>[\w]+)/(?P<assembly_name_a>[\w]+)/(?P<source_name_a>[\w]+)/(?P<stable_id_b>[\w\-\.]+)/(?P<stable_id_version_b>[\w]+)/(?P<release_short_name_b>[\w]+)/(?P<assembly_name_b>[\w]+)/(?P<source_name_b>[\w]+)/(?P<cds_type>[\w]+)/(?P<output_format>[\w]+)/',
-        align_cds_sequence, 
+        align_cds_sequence,
         name='align_cds_sequence'),
 
     #  datatables
@@ -70,7 +68,8 @@ urlpatterns = [
     ),
 
     url(
-        r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/',  # pylint:disable=line-too-long
+        r'^datatable/(?P<table_name>[\w]+)/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/(?P<assembly_name_compare>[\w]+)/(?P<release_name_compare>[\w]+)/(?P<source_name_compare>[\w]+)/',
+        # pylint:disable=line-too-long
         datatable_view,
         name="datatable_view"
     ),
@@ -88,7 +87,8 @@ urlpatterns = [
     ),
 
     url(
-        r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/',  # pylint:disable=line-too-long
+        r'^datatable_serverside/transcript/(?P<assembly_name>[\w]+)/(?P<release_name>[\w]+)/(?P<source_name>[\w]+)/',
+        # pylint:disable=line-too-long
         TranscriptDatatableView.as_view(),
         name="datatablefetch_serverside_transcript"
     ),
@@ -129,12 +129,12 @@ urlpatterns = [
         name='ajax_load_releases'
     ),
     # commented old mane list 
-    #url(
+    # url(
     #    r'^manelist/$',
     #    TemplateView.as_view(
     #        template_name='mane_list.html'
     #    )
-    #),
+    # ),
 
     # new mane list page
     url(
@@ -142,14 +142,14 @@ urlpatterns = [
         manelist,
         name="manelist"
     ),
-   
-   # new mane GRCh37 page
+
+    # new mane GRCh37 page
     url(
         r'^mane_GRCh37_list/$',
         mane_GRCh37_list,
         name='mane_GRCh37_list'
     ),
-   
+
     url(
         r'^mane_project/$',
         TemplateView.as_view(
@@ -182,7 +182,7 @@ urlpatterns = [
         name="mane_feedback"
     ),
 
-     url(
+    url(
         r'^view_alignment/$',
         TemplateView.as_view(
             template_name='alignment_viewer.html'
@@ -190,7 +190,8 @@ urlpatterns = [
     ),
 
     url(
-        r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+))?/$',  # pylint:disable=line-too-long
+        r'^transcript_details/(?P<stable_id_with_version>[a-zA-Z0-9\.\_]+)(?:/(?P<search_identifier>[a-zA-Z0-9\.\-\_\:\>]+))?/$',
+        # pylint:disable=line-too-long
         views.transcript_details,
         name='transcript_details'
     ),

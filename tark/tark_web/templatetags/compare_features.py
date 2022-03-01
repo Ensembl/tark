@@ -17,6 +17,7 @@
 
 from django import template
 from tark.utils.exon_utils import ExonUtils
+
 register = template.Library()
 
 
@@ -89,7 +90,6 @@ def subtract(value, arg):
 
 @register.filter
 def get_exon_by_exon_order(exon_list, exon_order):
-
     for exon in exon_list:
         if exon_order is not None:
             if exon['exon_order'] == exon_order:
@@ -100,7 +100,6 @@ def get_exon_by_exon_order(exon_list, exon_order):
 
 @register.filter
 def compare_exons(diff_result, compare_attrs):
-
     compare_result = []
 
     if compare_attrs is None:
@@ -145,17 +144,16 @@ def compare_exons(diff_result, compare_attrs):
 
 @register.filter
 def compare_translation(diff_result, compare_attrs):
-
     compare_result = []
 
     if compare_attrs is None:
         return compare_result
 
     compare_attr_list = [attr.strip() for attr in compare_attrs.split(',')]
-#
-#     if len(diff_result['diff_me_transcript']['results']) == 0 or \
-#             len(diff_result['diff_with_transcript']['results']) == 0:
-#         return compare_result
+    #
+    #     if len(diff_result['diff_me_transcript']['results']) == 0 or \
+    #             len(diff_result['diff_with_transcript']['results']) == 0:
+    #         return compare_result
 
     diff_me_tr = diff_result['diff_me_transcript']
     diff_with_tr = diff_result['diff_with_transcript']
@@ -167,7 +165,7 @@ def compare_translation(diff_result, compare_attrs):
         diff_with_tr_translation = diff_with_tr['translations']
 
     print("==========compare attrs list from translation===  " + str(compare_attrs))
- #   for (diff_me_tr_translation, diff_with_tr_translation) in zip(diff_me_tr_translations, diff_with_tr_translations):
+    #   for (diff_me_tr_translation, diff_with_tr_translation) in zip(diff_me_tr_translations, diff_with_tr_translations):
     diff_me_translation_attr = None
     diff_with_translation_attr = None
     exon_result = []
@@ -187,7 +185,8 @@ def compare_translation(diff_result, compare_attrs):
                 diff_with_translation_attr = diff_with_tr_translation[compare_attr]
 
         if diff_me_translation_attr and diff_with_translation_attr:
-            print("Diff me tl  " + str(diff_me_translation_attr)  + "  Diff with tl   " + str(diff_with_translation_attr))
+            print(
+                "Diff me tl  " + str(diff_me_translation_attr) + "  Diff with tl   " + str(diff_with_translation_attr))
             is_equal = str(diff_me_translation_attr) == str(diff_with_translation_attr)
 
         exon_result.append(is_equal)
@@ -228,7 +227,6 @@ def compare_location(diff_result):
 
 @register.filter
 def get_location_string(transcript, reverse=False):
-
     location_string = ""
     if 'loc_region' in transcript and 'loc_start' in transcript and 'loc_end' in transcript:
         if reverse and transcript['loc_strand'] == -1:
@@ -253,7 +251,7 @@ def get_location_string(transcript, reverse=False):
 @register.filter
 def get_cds_location_string(cds_info, utr):
     utr_start = utr + '_prime_utr_start'
-    utr_end = utr +'_prime_utr_end'
+    utr_end = utr + '_prime_utr_end'
     location_string = ""
     if 'loc_region' in cds_info and utr_start in cds_info and utr_end in cds_info:
         if cds_info[utr_start] == 0 and cds_info[utr_end] == 0:
@@ -264,8 +262,8 @@ def get_cds_location_string(cds_info, utr):
                                                     cds_info[utr_start])
         else:
             location_string = "{} : {} - {}".format(cds_info['loc_region'],
-                                                cds_info[utr_start],
-                                                cds_info[utr_end])
+                                                    cds_info[utr_start],
+                                                    cds_info[utr_end])
 
     return location_string
 
@@ -319,14 +317,16 @@ def compare_coding_sequence(diff_result, compare_attr):
     if diff_me_tr and "translations" in diff_me_tr and len(diff_me_tr["translations"]) > 0:
         print("reached here1====")
         diff_me_translation = diff_me_tr["translations"][0]
-        if diff_me_translation and "sequence" in diff_me_translation and compare_attr in diff_me_translation["sequence"]:
+        if diff_me_translation and "sequence" in diff_me_translation and compare_attr in diff_me_translation[
+            "sequence"]:
             diff_me_tr_attr = diff_me_translation["sequence"][compare_attr]
             print("diff_me_tr_attr  " + str(diff_me_tr_attr))
 
     if diff_with_tr and "translations" in diff_with_tr and len(diff_with_tr["translations"]) > 0:
         print("reached here2====")
         diff_with_translation = diff_with_tr["translations"][0]
-        if diff_with_translation and "sequence" in diff_with_translation and compare_attr in diff_with_translation["sequence"]:
+        if diff_with_translation and "sequence" in diff_with_translation and compare_attr in diff_with_translation[
+            "sequence"]:
             diff_with_tr_attr = diff_with_translation["sequence"][compare_attr]
 
     if diff_me_tr_attr and diff_with_tr_attr:
@@ -339,5 +339,3 @@ def compare_coding_sequence(diff_result, compare_attr):
 def zip_lists(a, b):
     print(zip(a, b))
     return zip(a, b)
-
-  

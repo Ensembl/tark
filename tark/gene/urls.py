@@ -18,7 +18,6 @@
 from django.conf.urls import url
 from gene import views
 
-
 urlpatterns = [
     url(r'^$', views.GeneList.as_view(), name='gene_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.GeneDetail.as_view(), name='gene_detail'),

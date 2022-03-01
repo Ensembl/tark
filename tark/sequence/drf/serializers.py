@@ -21,7 +21,6 @@ from sequence.models import Sequence
 
 
 class SequenceSerializer(SerializerMixin, serializers.ModelSerializer):
-
     class Meta:
         model = Sequence
         fields = ("sequence", "seq_checksum")

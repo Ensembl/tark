@@ -20,9 +20,9 @@ from tark_drf.utils.drf_mixin import SerializerMixin
 from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
 
-from tark_drf.utils.drf_fields import AssemblyField, CommonFields,\
+from tark_drf.utils.drf_fields import AssemblyField, CommonFields, \
     TranscriptFieldEns, TranscriptFieldRefSeq, TranscriptFieldRelationshipType
-from release.models import TranscriptReleaseTag,\
+from release.models import TranscriptReleaseTag, \
     TranscriptReleaseTagRelationship
 from transcript.models import Transcript
 from sequence.drf.serializers import SequenceSerializer
@@ -42,7 +42,6 @@ class HgncNameField(serializers.RelatedField):
 
 
 class TranscriptReleaseTagRelationshipSerializer(SerializerMixin, serializers.ModelSerializer):
-
     transcript_release_object = TranscriptFieldEns(read_only=True)
     transcript_release_subject = TranscriptFieldRefSeq(read_only=True)
     relationship_type = TranscriptFieldRelationshipType(read_only=True)
@@ -53,9 +52,8 @@ class TranscriptReleaseTagRelationshipSerializer(SerializerMixin, serializers.Mo
 
 
 class TranscriptReleaseTagSerializer(serializers.ModelSerializer):
-
     ONE2MANY_SERIALIZER = {TranscriptReleaseTag.ONE2MANY_RELATED['TRANSCRIPTRELEASETAGRELATIONSHIP']:
-                           TranscriptReleaseTagRelationshipSerializer}
+                               TranscriptReleaseTagRelationshipSerializer}
 
     class Meta:
         model = TranscriptReleaseTag
@@ -72,7 +70,6 @@ class TranscriptManeSerializer(serializers.Serializer):
 
 
 class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
-
     MANY2ONE_SERIALIZER = {Transcript.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
                            Transcript.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
     ONE2MANY_SERIALIZER = {Transcript.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
@@ -104,7 +101,8 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
                 new_exons = []
                 for exon in all_exons:
                     if "exon_id" in exon:
-                        current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related('sequence')  # @IgnorePep8
+                        current_exon_query_set = Exon.objects.filter(exon_id=exon["exon_id"]).select_related(
+                            'sequence')  # @IgnorePep8
 
                         if current_exon_query_set is not None and len(current_exon_query_set) == 1:
                             current_exon_with_sequence = current_exon_query_set[0]
@@ -131,7 +129,6 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
 
 
 class TranscriptDataTableSerializer(TranscriptSerializer):
-
     genes = serializers.SerializerMethodField(read_only=True)
 
     def get_genes(self, obj):
@@ -144,7 +141,7 @@ class TranscriptDataTableSerializer(TranscriptSerializer):
 
     class Meta:
         model = Transcript
-        fields = CommonFields.COMMON_FIELD_SET + ('genes', )
+        fields = CommonFields.COMMON_FIELD_SET + ('genes',)
 
 
 class TranscriptDiffSerializer(TranscriptSerializer):

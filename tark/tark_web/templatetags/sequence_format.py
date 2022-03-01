@@ -18,6 +18,7 @@
 from django import template
 from tark_web.utils.sequtils import TarkSeqUtils
 from tark.utils.exon_utils import ExonUtils
+
 register = template.Library()
 
 
@@ -37,6 +38,5 @@ def align_sequence(query_seq, target_seq):
 
 @register.filter
 def get_cds_sequence(transcript):
-
     cds_seq = ExonUtils.compute_cds_sequence(transcript)
     return cds_seq

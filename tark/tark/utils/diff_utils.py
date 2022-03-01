@@ -36,7 +36,8 @@ class DiffUtils(object):
         return compare_results
 
     @classmethod
-    def get_results_as_response_body(cls, compare_diff_dict, compare_exon_sets_diffme2diffwith, compare_exon_sets_diffwith2diffme, diff_set):  # @IgnorePep8
+    def get_results_as_response_body(cls, compare_diff_dict, compare_exon_sets_diffme2diffwith,
+                                     compare_exon_sets_diffwith2diffme, diff_set):  # @IgnorePep8
         response_body_dict = {"count": 1, "next": None, "previous": None, "results": []}
         results = {key: value for (key, value) in compare_diff_dict.items()}
         response_body_dict["results"] = results
@@ -63,11 +64,12 @@ class DiffUtils(object):
                         criterion2 = Q(stable_id_version=tl_stable_id_version)
                         criterion3 = Q(translation_id=tl_translation_id)
 
-                        tl_query_set = Translation.objects.filter(criterion1 & criterion2 & criterion3).select_related('sequence').distinct()  # @IgnorePep8
+                        tl_query_set = Translation.objects.filter(criterion1 & criterion2 & criterion3).select_related(
+                            'sequence').distinct()  # @IgnorePep8
 
                         for tl_obj in tl_query_set:
                             translation["sequence"] = {"sequence": tl_obj.sequence.sequence,
-                                                       "seq_checksum": tl_obj.sequence. seq_checksum}
+                                                       "seq_checksum": tl_obj.sequence.seq_checksum}
                             if "exons" in result:  # work here again
                                 exon_set_cds = cls.update_coding_exons(result['exons'], translation)
                                 translation["exons"] = exon_set_cds
@@ -89,21 +91,21 @@ class DiffUtils(object):
             exon_set_list = reversed(list(exon_set))
 
         for exon in exon_set_list:
-                exon_cds = exon.copy()
-#                 print(exon_cds["exon_order"])
-#                 print("exon start " + str(exon_cds["loc_start"]) + " exon end " + str(exon_cds["loc_end"]))
-                # check if exon_start is between tl_start and tl_end
-                # check if exon_end is between tl_start and tl_end
-                if exon_cds["loc_start"] >= tl_start and exon_cds["loc_end"] <= tl_end:
-                    exon_set_cds.append(exon_cds)
-                else:
-                    if exon_cds["loc_start"] <= tl_start:
-                        exon_cds["loc_start"] = tl_start
+            exon_cds = exon.copy()
+            #                 print(exon_cds["exon_order"])
+            #                 print("exon start " + str(exon_cds["loc_start"]) + " exon end " + str(exon_cds["loc_end"]))
+            # check if exon_start is between tl_start and tl_end
+            # check if exon_end is between tl_start and tl_end
+            if exon_cds["loc_start"] >= tl_start and exon_cds["loc_end"] <= tl_end:
+                exon_set_cds.append(exon_cds)
+            else:
+                if exon_cds["loc_start"] <= tl_start:
+                    exon_cds["loc_start"] = tl_start
 
-                    if exon_cds["loc_end"] >= tl_end:
-                        exon_cds["loc_end"] = tl_end
-                    exon_set_cds.append(exon_cds)
-                    break
+                if exon_cds["loc_end"] >= tl_end:
+                    exon_cds["loc_end"] = tl_end
+                exon_set_cds.append(exon_cds)
+                break
 
         return exon_set_cds
 
@@ -136,56 +138,56 @@ class DiffSet(object):
 
         # For transcript/cdna
         self.diff_dict['has_stable_id_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id")
+            feature_attribute="stable_id")
         self.diff_dict['has_stable_id_version_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id_version")
+            feature_attribute="stable_id_version")
         self.diff_dict['has_transcript_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="transcript_checksum")
+            feature_attribute="transcript_checksum")
         self.diff_dict['has_location_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="loc_checksum")
+            feature_attribute="loc_checksum")
         self.diff_dict['has_exon_set_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="exon_set_checksum")
+            feature_attribute="exon_set_checksum")
 
         self.diff_dict['has_seq_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="seq_checksum",
-                                                    feature_type="sequence")
+            feature_attribute="seq_checksum",
+            feature_type="sequence")
 
         # For translation
         self.diff_dict['has_translation_stable_id_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id",
-                                                    feature_type="translations")
+            feature_attribute="stable_id",
+            feature_type="translations")
         self.diff_dict['has_translation_stable_id_version_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id_version",
-                                                    feature_type="translations")
+            feature_attribute="stable_id_version",
+            feature_type="translations")
         self.diff_dict['has_translation_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="translation_checksum",
-                                                    feature_type="translations")
+            feature_attribute="translation_checksum",
+            feature_type="translations")
         self.diff_dict['has_translation_location_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="loc_checksum",
-                                                    feature_type="translations")
+            feature_attribute="loc_checksum",
+            feature_type="translations")
 
         self.diff_dict['has_translation_seq_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="sequence",
-                                                    feature_type="translations")
+            feature_attribute="sequence",
+            feature_type="translations")
         # For cds
         # todo include for cds here, currently calculated in template
 
         # For genes
         self.diff_dict['has_gene_stable_id_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id",
-                                                    feature_type="gene")
+            feature_attribute="stable_id",
+            feature_type="gene")
         self.diff_dict['has_gene_stable_id_version_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="stable_id_version",
-                                                    feature_type="gene")
+            feature_attribute="stable_id_version",
+            feature_type="gene")
         self.diff_dict['has_gene_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="gene_checksum",
-                                                    feature_type="gene")
+            feature_attribute="gene_checksum",
+            feature_type="gene")
         self.diff_dict['has_gene_location_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="loc_checksum",
-                                                    feature_type="gene")
+            feature_attribute="loc_checksum",
+            feature_type="gene")
         self.diff_dict['has_hgnc_changed'] = self.has_feature_attribute_changed(
-                                                    feature_attribute="name",
-                                                    feature_type="gene")
+            feature_attribute="name",
+            feature_type="gene")
 
         return self.diff_dict
 
@@ -210,10 +212,10 @@ class DiffSet(object):
             if self.first_object[feature_type] is not None and self.second_object[feature_type] is not None:
                 if feature_attribute in self.first_object[feature_type] and \
                         feature_attribute in self.second_object[feature_type]:
-                    return not(self.first_object[feature_type][feature_attribute] == self.second_object[
-                                                feature_type][feature_attribute])
+                    return not (self.first_object[feature_type][feature_attribute] == self.second_object[
+                        feature_type][feature_attribute])
         else:
             if feature_attribute in self.first_object and feature_attribute in self.second_object:
-                return not(self.first_object[feature_attribute] == self.second_object[feature_attribute])
+                return not (self.first_object[feature_attribute] == self.second_object[feature_attribute])
 
         return None
