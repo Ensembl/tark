@@ -33,18 +33,13 @@
                     </thead>
 
                     <tbody>
-                    {% for feature in results %}
-                        <tr>
-                        <td><a target="_blank"
-                               href=http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ feature.ens_stable_id }}.{{ feature.ens_stable_id_version }}>{{ feature.ens_stable_id }}.{{ feature.ens_stable_id_version }}
-                        </td>
-                        <td><a target="_blank"
-                               href=https://www.ncbi.nlm.nih.gov/nuccore/{{ feature.refseq_stable_id }}.{{ feature.refseq_stable_id_version }}>{{ feature.refseq_stable_id }}.{{ feature.refseq_stable_id_version }}
-                        </td>
-                        <td>{{ feature.mane_type }}</td>
-                        <td><a target="_blank"
-                               href=/web/search/?identifier={{ feature.ens_gene_name }}>{{ feature.ens_gene_name }}</td>
-                    {% endfor %}
+                    {#
+                        When dealing with large datasets with Datatables we want to avoid using the iteration at the <tr> level
+                        and instead we want to set the data attribute within the DataTable definition.
+                        We can do this by creating a JSON object within the script tag below and then iterating 'results' and building up the JSON.
+                        Datatables renders faster when the source of the data is defined in this way.
+                        https://stackoverflow.com/a/68860238/4488332
+                    #}
                     </tbody>
                 </table>
 
@@ -55,18 +50,35 @@
 
 
     <script>
+        let data = [
+            {% for feature in results %}
+                {
+                    "ens_stable_id": "<a target=\"_blank\" href=http://ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{feature.ens_stable_id}}.{{feature.ens_stable_id_version}}>{{feature.ens_stable_id}}.{{feature.ens_stable_id_version}}</a>",
+                    "refseq_stable_id": "<a target=\"_blank\" href=https://www.ncbi.nlm.nih.gov/nuccore/{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}>{{feature.refseq_stable_id}}.{{feature.refseq_stable_id_version}}</a>",
+                    "mane_type": "{{ feature.mane_type }}",
+                    "ens_gene_name": "<a target=\"_blank\" href=/web/search/?identifier={{feature.ens_gene_name}}>{{feature.ens_gene_name}}</a>",
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             var table = $('#feature_table').DataTable({
                 dom: 'lBfrtip',
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "pageLength": 10,
                 "buttons": [
                     {extend: 'copy', text: 'COPY', exportOptions: {columns: ':visible', rows: ':visible'}},
                     {extend: 'csv', text: 'CSV', exportOptions: {columns: ':visible', rows: ':visible'}},
                     {extend: 'excel', text: 'Excel', exportOptions: {columns: ':visible', rows: ':visible'}},
                     {extend: 'pdf', text: 'PDF', exportOptions: {columns: ':visible', rows: ':visible'}},
                     'colvis'
+                ],
+                data: data,
+                columns: [
+                    {data: 'ens_stable_id'},
+                    {data: 'refseq_stable_id'},
+                    {data: 'mane_type'},
+                    {data: 'ens_gene_name'},
                 ],
                 "deferRender": true,
                 "language": {
