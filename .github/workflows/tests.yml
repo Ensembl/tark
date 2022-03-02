@@ -1,0 +1,46 @@
+# Workflow name
+name: Tests
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push (all branches) or pull request (on master only) events
+  push:
+    branches:
+      - '**'  # matches every branch (https://stackoverflow.com/a/57903434/4488332)
+  pull_request:
+    branches:
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on and timeout in minutes
+    name: Run Python Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out our repository under $GITHUB_WORKSPACE, so our job can access it
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Set up Python version
+      - name: Set up Python 3.7.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.6
+
+      # Runs a set of commands installing Python dependencies using the runners shell (Run a multi-line script)
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+
+      # Run unit tests
+      - name: Test with pytest
+        run: python manage.py test assembly.tests --settings=tark.settings.test
