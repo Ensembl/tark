@@ -16,6 +16,8 @@
 """
 
 from __future__ import unicode_literals
+
+from django.db import connection, connections
 from rest_framework import generics
 from tark_drf.utils.decorators import setup_eager_loading, expand_all_related
 from transcript.models import Transcript
@@ -218,4 +220,7 @@ class TranscriptSearch(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         result = super(TranscriptSearch, self).get(request, *args, **kwargs)
+        print("Here are the queries: ")
+        tark_connection = connections['tark']
+        print(tark_connection.queries)
         return result

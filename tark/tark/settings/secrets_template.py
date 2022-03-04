@@ -27,8 +27,8 @@ if tark.settings.env.TEST_ENV:
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '3306'
 else:
-    DATABASE_NAME = 'xxx'
-    DATABASE_USER = 'xxx'
-    DATABASE_PASSWORD = 'xxx'
-    DATABASE_HOST = 'localhost'
-    DATABASE_PORT = '3306'
+    DATABASE_NAME = 'ensembl_tark_e75_to_e104_ranjit_20220101'
+    DATABASE_USER = 'ensro'
+    DATABASE_PASSWORD = ''
+    DATABASE_HOST = 'mysql-ens-tark-dev-1.ebi.ac.uk'
+    DATABASE_PORT = '4503'

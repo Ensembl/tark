@@ -32,6 +32,7 @@ from translation.drf.serializers import TranslationSerializer
 import json
 from tark.utils.exon_utils import ExonUtils
 from exon.models import Exon
+import time
 
 
 class HgncNameField(serializers.RelatedField):
@@ -81,7 +82,11 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
     assembly = AssemblyField(read_only=True)
 
     def to_representation(self, obj):
+        start = time.time()
+        print("\n\nStarting TranscriptSerializer.to_representation")
         data = super().to_representation(obj)
+        data_repr_end = time.time()
+        print(f"It took {data_repr_end - start} to process data representation")
         mane_transcript = Transcript.fetch_mane_transcript_and_type(transcript_id=obj.pk)
         if mane_transcript is not None:
             if "mane_transcript_stableid" in mane_transcript:
@@ -116,6 +121,8 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
             if transcript_with_cds is not None:
                 data['cds_info'] = transcript_with_cds
 
+        transcript_serializer_end = time.time()
+        print(f'It took {transcript_serializer_end - start} to process transcript')
         return data
 
     class Meta:

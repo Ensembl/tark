@@ -50,10 +50,10 @@ class setup_eager_loading(object):
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
-                    logger.info('many2one entry from eager loading select_related:' + str(entry))
+                    logger.info(f'many2one entry from eager loading select_related: {entry} for function {f}')
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
-                    logger.info('one2many entry from eager loading prefetch_related: ' + str(entry))
+                    logger.info(f'one2many entry from eager loading prefetch_related: {entry} for function {f}')
                     if "translations" == entry:
                         queryset = queryset.prefetch_related(entry)
 
@@ -85,6 +85,7 @@ class expand_all_related(object):
             for entry in entries:
                 entry = entry.strip()
                 if many2one is not None and entry in many2one.keys():
+                    print(f"{entry} was in many2one keyset for serializer {self.serializer}")
                     queryset = queryset.select_related(entry)
                 if one2many is not None and entry in one2many.keys():
                     queryset = queryset.prefetch_related(entry)

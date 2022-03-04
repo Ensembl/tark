@@ -62,6 +62,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE += ('tark.middleware.sql_middleware.SqlPrintingMiddleware',)
+
+
 ROOT_URLCONF = 'tark.urls'
 
 TEMPLATES = [
@@ -76,7 +79,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # custom
-                'tark_web.context_processors.init_assembly_releases',
+                # 'tark_web.context_processors.init_assembly_releases',
             ],
         },
     },

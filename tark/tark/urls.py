@@ -15,7 +15,7 @@
    limitations under the License.
 """
 
-from django.urls.conf import include
+from django.urls.conf import include, path
 from rest_framework_swagger.views import get_swagger_view
 
 from django.conf.urls import url
@@ -48,7 +48,8 @@ tark_apis = [
     url(r'^' + api_version + 'exon/', include('exon.urls')),
     url(r'^' + api_version + 'release/', include('release.urls')),
     url(r'^' + api_version + 'sequence/', include('sequence.urls')),
-]
+    url(r'^' + api_version + 'debug/', include('debug_toolbar.urls')),
+    ]
 
 schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
 
