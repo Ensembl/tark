@@ -220,7 +220,4 @@ class TranscriptSearch(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         result = super(TranscriptSearch, self).get(request, *args, **kwargs)
-        print("Here are the queries: ")
-        tark_connection = connections['tark']
-        print(tark_connection.queries)
         return result
