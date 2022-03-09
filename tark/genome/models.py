@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from session.models import Session
 
@@ -22,11 +22,11 @@ from session.models import Session
 # Create your models here.
 
 
-class Genome(models.Model):
+class Genome(auto_prefetch.Model):
     genome_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128, blank=True, null=True)
     tax_id = models.PositiveIntegerField(blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

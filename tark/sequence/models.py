@@ -14,16 +14,16 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from session.models import Session
 from tark.fields import ChecksumField
 
 
-class Sequence(models.Model):
+class Sequence(auto_prefetch.Model):
     seq_checksum = ChecksumField(max_length=20, blank=False, null=False, primary_key=True)
     sequence = models.TextField(blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

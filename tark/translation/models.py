@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-
+import auto_prefetch
 from django.db import models
 from assembly.models import Assembly
 
@@ -24,22 +24,22 @@ from sequence.models import Sequence
 from session.models import Session
 
 
-class Translation(models.Model):
+class Translation(auto_prefetch.Model):
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'translation_release_set', 'TRANSCRIPT': "transcripts"}
 
     translation_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
     stable_id_version = models.PositiveIntegerField()
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
     loc_start = models.PositiveIntegerField(blank=True, null=True)
     loc_end = models.PositiveIntegerField(blank=True, null=True)
     loc_strand = models.IntegerField(blank=True, null=True)
     loc_region = models.CharField(max_length=42, blank=True, null=True)
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     translation_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    sequence = auto_prefetch.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     translation_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranslationReleaseTag',
                                                      related_name='translation_release_set')
     transcripts = models.ManyToManyField('transcript.Transcript', through='translation.TranslationTranscript')
@@ -49,11 +49,11 @@ class Translation(models.Model):
         db_table = 'translation'
 
 
-class TranslationTranscript(models.Model):
+class TranslationTranscript(auto_prefetch.Model):
     transcript_translation_id = models.AutoField(primary_key=True)
-    transcript = models.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
-    translation = models.ForeignKey(Translation, models.DO_NOTHING, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    transcript = auto_prefetch.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
+    translation = auto_prefetch.ForeignKey(Translation, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

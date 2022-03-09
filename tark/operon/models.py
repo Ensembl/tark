@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from assembly.models import Assembly
 from sequence.models import Sequence
@@ -25,31 +25,31 @@ from transcript.models import Transcript
 # Create your models here.
 
 
-class Operon(models.Model):
+class Operon(auto_prefetch.Model):
     operon_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64, blank=True, null=True)
     stable_id_version = models.PositiveIntegerField(blank=True, null=True)
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
     loc_start = models.PositiveIntegerField(blank=True, null=True)
     loc_end = models.PositiveIntegerField(blank=True, null=True)
     loc_strand = models.IntegerField(blank=True, null=True)
     loc_region = models.CharField(max_length=42, blank=True, null=True)
     operon_checksum = models.CharField(max_length=20, blank=True, null=True)
-    seq_checksum = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    seq_checksum = auto_prefetch.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'operon'
 
 
-class OperonTranscript(models.Model):
+class OperonTranscript(auto_prefetch.Model):
     operon_transcript_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64, blank=True, null=True)
     stable_id_version = models.PositiveIntegerField(blank=True, null=True)
-    operon = models.ForeignKey(Operon, models.DO_NOTHING, blank=True, null=True)
-    transcript = models.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    operon = auto_prefetch.ForeignKey(Operon, models.DO_NOTHING, blank=True, null=True)
+    transcript = auto_prefetch.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

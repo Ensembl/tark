@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from assembly.models import Assembly
 from session.models import Session
@@ -26,7 +26,7 @@ from tark.fields import ChecksumField
 from django.contrib import admin
 
 
-class ReleaseSource(models.Model):
+class ReleaseSource(auto_prefetch.Model):
     ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
 
     source_id = models.AutoField(primary_key=True)
@@ -38,18 +38,18 @@ class ReleaseSource(models.Model):
         db_table = 'release_source'
 
 
-class ReleaseSet(models.Model):
+class ReleaseSet(auto_prefetch.Model):
     MANY2ONE_RELATED = {'RELEASE_SOURCE': 'release_source'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'release_set'}
 
     release_id = models.AutoField(primary_key=True)
     shortname = models.CharField(max_length=24, blank=True, null=True)
     description = models.CharField(max_length=256, blank=True, null=True)
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
     release_date = models.DateField(blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     release_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    source = models.ForeignKey(ReleaseSource, models.DO_NOTHING, blank=True, null=True)
+    source = auto_prefetch.ForeignKey(ReleaseSource, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -57,9 +57,9 @@ class ReleaseSet(models.Model):
         unique_together = (('shortname', 'assembly', 'source'),)
 
 
-class ReleaseStats(models.Model):
+class ReleaseStats(auto_prefetch.Model):
     release_stats_id = models.AutoField(primary_key=True)
-    release = models.ForeignKey(
+    release = auto_prefetch.ForeignKey(
         ReleaseSet,
         models.DO_NOTHING,
         blank=True,
@@ -75,9 +75,9 @@ class ReleaseStats(models.Model):
         ordering = ['-release_stats_id']
 
 
-class GeneReleaseTag(models.Model):
-    feature = models.ForeignKey(Gene, models.DO_NOTHING)
-    release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
+class GeneReleaseTag(auto_prefetch.Model):
+    feature = auto_prefetch.ForeignKey(Gene, models.DO_NOTHING)
+    release = auto_prefetch.ForeignKey(ReleaseSet, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -85,13 +85,13 @@ class GeneReleaseTag(models.Model):
         unique_together = (('feature', 'release'),)
 
 
-class TranscriptReleaseTag(models.Model):
+class TranscriptReleaseTag(auto_prefetch.Model):
     ONE2MANY_RELATED = {'TRANSCRIPTRELEASETAGRELATIONSHIP': "transcript_release_tag_relationship"
                         }
 
     transcript_release_id = models.AutoField(primary_key=True)
-    feature = models.ForeignKey(Transcript, models.DO_NOTHING)
-    release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
+    feature = auto_prefetch.ForeignKey(Transcript, models.DO_NOTHING)
+    release = auto_prefetch.ForeignKey(ReleaseSet, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -99,7 +99,7 @@ class TranscriptReleaseTag(models.Model):
         unique_together = (('feature', 'release'),)
 
 
-class RelationshipType(models.Model):
+class RelationshipType(auto_prefetch.Model):
     relationship_type_id = models.AutoField(primary_key=True)
     shortname = models.CharField(max_length=24, blank=True, null=True)
     description = models.CharField(max_length=256, blank=True, null=True)
@@ -118,22 +118,22 @@ class TranscriptReleaseTagRelationshipAdmin(admin.ModelAdmin):
     list_select_related = ('transcript_release_tag', 'transcript')
 
 
-class TranscriptReleaseTagRelationship(models.Model):
+class TranscriptReleaseTagRelationship(auto_prefetch.Model):
     transcript_transcript_id = models.AutoField(primary_key=True)
-    transcript_release_object = models.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
+    transcript_release_object = auto_prefetch.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
                                                   related_name='ens_to_refseq')
-    transcript_release_subject = models.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
+    transcript_release_subject = auto_prefetch.ForeignKey(TranscriptReleaseTag, models.DO_NOTHING,
                                                    related_name='refseq_to_ens')
-    relationship_type = models.ForeignKey(RelationshipType, models.DO_NOTHING)
+    relationship_type = auto_prefetch.ForeignKey(RelationshipType, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'transcript_release_tag_relationship'
 
 
-class ExonReleaseTag(models.Model):
-    feature = models.ForeignKey(Exon, models.DO_NOTHING)
-    release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
+class ExonReleaseTag(auto_prefetch.Model):
+    feature = auto_prefetch.ForeignKey(Exon, models.DO_NOTHING)
+    release = auto_prefetch.ForeignKey(ReleaseSet, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -141,9 +141,9 @@ class ExonReleaseTag(models.Model):
         unique_together = (('feature', 'release'),)
 
 
-class TranslationReleaseTag(models.Model):
-    feature = models.ForeignKey(Translation, models.DO_NOTHING)
-    release = models.ForeignKey(ReleaseSet, models.DO_NOTHING)
+class TranslationReleaseTag(auto_prefetch.Model):
+    feature = auto_prefetch.ForeignKey(Translation, models.DO_NOTHING)
+    release = auto_prefetch.ForeignKey(ReleaseSet, models.DO_NOTHING)
 
     class Meta:
         managed = False

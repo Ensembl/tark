@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from assembly.models import Assembly
 from session.models import Session
@@ -22,14 +22,14 @@ from tark.fields import ChecksumField, HGNCField
 from genenames.models import GeneNames
 
 
-class Gene(models.Model):
+class Gene(auto_prefetch.Model):
     MANY2ONE_RELATED = {'SESSION': 'session', 'ASSEMBLY': 'assembly', 'HGNC': 'name'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'gene_release_set'}
 
     gene_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
     stable_id_version = models.PositiveIntegerField()
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
     loc_start = models.PositiveIntegerField(blank=True, null=True)
     loc_end = models.PositiveIntegerField(blank=True, null=True)
     loc_strand = models.IntegerField(blank=True, null=True)
@@ -37,7 +37,7 @@ class Gene(models.Model):
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     name = HGNCField(GeneNames, models.DO_NOTHING, to_field='external_id', blank=True, null=True)
     gene_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     gene_release_set = models.ManyToManyField('release.ReleaseSet', through='release.GeneReleaseTag',
                                               related_name='gene_release_set')
 
