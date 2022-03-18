@@ -14,14 +14,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 
 
 # Create your models here.
 
 
-class Session(models.Model):
+class Session(auto_prefetch.Model):
     session_id = models.AutoField(primary_key=True)
     client_id = models.CharField(max_length=128, blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)

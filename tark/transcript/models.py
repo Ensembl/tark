@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from assembly.models import Assembly
 
@@ -29,7 +29,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class Transcript(models.Model):
+class Transcript(auto_prefetch.Model):
     MANY2ONE_RELATED = {'SEQUENCE': 'sequence', 'SESSION': 'session', 'ASSEMBLY': 'assembly'}
     ONE2MANY_RELATED = {'RELEASE_SET': 'transcript_release_set', 'GENE': 'genes',
                         'TRANSLATION': "translations", "EXONTRANSCRIPT": "exons"
@@ -41,7 +41,7 @@ class Transcript(models.Model):
     transcript_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
     stable_id_version = models.PositiveIntegerField()
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
     loc_start = models.PositiveIntegerField(blank=True, null=True)
     loc_end = models.PositiveIntegerField(blank=True, null=True)
     loc_strand = models.IntegerField(blank=True, null=True)
@@ -49,8 +49,8 @@ class Transcript(models.Model):
     loc_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     exon_set_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
     transcript_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
-    sequence = models.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    sequence = auto_prefetch.ForeignKey(Sequence, models.DO_NOTHING, db_column='seq_checksum', blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
     biotype = models.CharField(max_length=40, blank=True, null=True)
@@ -146,11 +146,11 @@ class Transcript(models.Model):
             return mane_transcripts
 
 
-class TranscriptGene(models.Model):
+class TranscriptGene(auto_prefetch.Model):
     gene_transcript_id = models.AutoField(primary_key=True)
-    gene = models.ForeignKey(Gene, models.DO_NOTHING, blank=True, null=True)
-    transcript = models.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    gene = auto_prefetch.ForeignKey(Gene, models.DO_NOTHING, blank=True, null=True)
+    transcript = auto_prefetch.ForeignKey(Transcript, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

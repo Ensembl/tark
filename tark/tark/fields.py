@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 """
-
+import auto_prefetch
 from django.db import models
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
@@ -121,7 +121,7 @@ class HGNCForwardManyToOneDescription(ForwardManyToOneDescriptor):
         return rel_obj
 
 
-class HGNCField(models.ForeignKey):
+class HGNCField(auto_prefetch.ForeignKey):
     """
     Derived class from ForeignKey, adding the restriction when following the
     froreign key to HGNC names, we only want the primary name from source type

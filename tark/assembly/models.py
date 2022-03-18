@@ -1,4 +1,4 @@
-'''
+"""
    See the NOTICE file distributed with this work for additional information
    regarding copyright ownership.
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,32 +12,33 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-'''
+"""
 
+import auto_prefetch
 from django.db import models
 from genome.models import Genome
 from session.models import Session
 
 
-class Assembly(models.Model):
+class Assembly(auto_prefetch.Model):
     """Model class for assembly table"""
     assembly_id = models.AutoField(primary_key=True)
-    genome = models.ForeignKey(Genome, models.DO_NOTHING, blank=True, null=True)
+    genome = auto_prefetch.ForeignKey(Genome, models.DO_NOTHING, blank=True, null=True)
     assembly_name = models.CharField(unique=True, max_length=128, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'assembly'
 
 
-class AssemblyAlias(models.Model):
+class AssemblyAlias(auto_prefetch.Model):
     """Model class for assembly_alias table"""
     assembly_alias_id = models.AutoField(primary_key=True)
     alias = models.CharField(unique=True, max_length=64, blank=True, null=True)
-    genome = models.ForeignKey(Genome, models.DO_NOTHING, blank=True, null=True)
-    assembly = models.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
-    session = models.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
+    genome = auto_prefetch.ForeignKey(Genome, models.DO_NOTHING, blank=True, null=True)
+    assembly = auto_prefetch.ForeignKey(Assembly, models.DO_NOTHING, blank=True, null=True)
+    session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
