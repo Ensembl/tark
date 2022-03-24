@@ -146,20 +146,6 @@ def fetch_sequence(request, feature_type, stable_id, stable_id_version,
                                                            })
 
 
-def search_link(request, search_identifier):
-    search_form = SearchForm(request.POST)
-    host_url = ApiUtils.get_host_url(request)
-
-    query_url = "/api/transcript/search/?identifier_field=" + search_identifier + \
-                "&expand=transcript_release_set,genes,translations"
-    response = requests.get(host_url + query_url)
-    if response.status_code == 200:
-        search_result = response.json()
-        return render(request, 'search_result.html', context={'form': search_form,
-                                                              'search_result': search_result,
-                                                              'search_identifier': search_identifier})
-
-
 def search_home(request):
     """
     View function for search query page
