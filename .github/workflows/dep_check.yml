@@ -1,0 +1,44 @@
+# Workflow name
+name: Dependency Compatibility Check
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request (on main only) events
+  pull_request:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on and timeout in minutes
+    name: Run pip install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out our repository under $GITHUB_WORKSPACE, so our job can access it
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Set up Python version
+      - name: Set up Python 3.7.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.6
+
+      # Runs a set of commands installing Python dependencies using the runners shell (Run a multi-line script)
+      - name: Install Python dependencies (Dev)
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements-dev.txt
+
+      - name: Install Python dependencies (Prod)
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
