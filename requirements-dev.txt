@@ -10,7 +10,7 @@ Django==2.2.27
 django-auto-prefetch==1.1.0
 django-crispy-forms==1.7.0
 django-debug-toolbar==3.2.4
-django-filter==2.0.0.dev1
+django-filter==2.4.0
 django-rest-swagger==2.1.2
 djangorestframework==3.9.1
 docopt==0.6.2
