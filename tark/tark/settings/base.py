@@ -185,7 +185,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    # The coreAPI schema generation is being deprecated, to continue using coreAPI we need to include
+    # DEFAULT_SCHEMA_CLASS explicitly as mentioned described here:
+    # https://www.django-rest-framework.org/community/3.10-announcement/#continuing-to-use-coreapi
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 SWAGGER_SETTINGS = {
