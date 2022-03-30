@@ -4,7 +4,7 @@ certifi==2021.10.8
 charset-normalizer==2.0.12
 coreapi==2.3.3
 coreschema==0.0.4
-coverage==6.3.2
+coverage==6.2
 coveralls==3.3.1
 Django==2.2.27
 django-auto-prefetch==1.1.0
