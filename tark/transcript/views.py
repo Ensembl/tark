@@ -66,17 +66,6 @@ class TranscriptList(generics.ListAPIView):
         return queryset
 
 
-class TranscriptDatatableView(DataTableListApi):
-    serializer_class = TranscriptDataTableSerializer
-    search_parameters = SchemaUtils.get_field_names(app_name='transcript', model_name='transcript', exclude_pk=False,
-                                                    include_parents_=True,
-                                                    exclude_fields=["loc_strand", "loc_region", "loc_checksum",
-                                                                    "exon_set_checksum",
-                                                                    "transcript_checksum"],
-                                                    include_fields=["genes"])
-    default_order_by = 1
-
-
 class TranscriptDetail(generics.ListAPIView):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer

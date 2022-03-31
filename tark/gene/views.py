@@ -24,15 +24,6 @@ from tark_drf.utils.decorators import setup_eager_loading
 
 from gene.drf.serializers import GeneSerializer
 from gene.drf.filters import GeneFilterBackend
-from tark.views import DataTableListApi
-from tark.utils.schema_utils import SchemaUtils
-
-
-class GeneDatatableView(DataTableListApi):
-    serializer_class = GeneSerializer
-    search_parameters = SchemaUtils.get_field_names(app_name='gene', model_name='gene', exclude_pk=True)
-    default_order_by = 1
-    queryset = Gene.objects.all()
 
 
 class GeneList(generics.ListAPIView):

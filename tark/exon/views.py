@@ -22,15 +22,6 @@ from rest_framework import generics
 from exon.drf.serializers import ExonSerializer
 from tark_drf.utils.decorators import setup_eager_loading
 from exon.drf.filters import ExonFilterBackend
-from tark.views import DataTableListApi
-from tark.utils.schema_utils import SchemaUtils
-
-
-class ExonDatatableView(DataTableListApi):
-    serializer_class = ExonSerializer
-    search_parameters = SchemaUtils.get_field_names(app_name='exon', model_name='exon', exclude_pk=True)
-    default_order_by = 1
-    queryset = Exon.objects.all()
 
 
 class ExonList(generics.ListAPIView):

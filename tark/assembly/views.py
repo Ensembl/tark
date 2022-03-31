@@ -45,9 +45,3 @@ class AssemblyAliasListDetail(generics.RetrieveAPIView):
     queryset = AssemblyAlias.objects.all()
     serializer_class = AssemblyAliasSerializer
 
-
-class AssemblyDatatableView(DataTableListApi):
-    serializer_class = AssemblySerializer
-    search_parameters = SchemaUtils.get_field_names(app_name='assembly', model_name='assembly', exclude_pk=False)
-    default_order_by = 3
-    queryset = Assembly.objects.all()
