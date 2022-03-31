@@ -76,10 +76,3 @@ class ReleaseUtilsTest(TestCase):
         all_release_sources = ReleaseUtils.get_all_release_sources()
         expected_result = ['Ensembl', 'RefSeq']
         self.assertListEqual(expected_result, all_release_sources, "Got the right sources")
-#
-#     def test_get_release_diff(self):
-#         diff_dict = {}
-#         diff_dict['release_set_1'] = {"source": "ensembl", "assembly": "grch38", "version": 93}
-#         diff_dict['release_set_2'] = {"source": "ensembl", "assembly": "grch38", "version": 94}
-#
-#         diff_stats = ReleaseUtils.get_release_diff(diff_dict)

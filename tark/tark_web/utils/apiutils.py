@@ -26,23 +26,6 @@ class ApiUtils(object):
         return host_url
 
     @classmethod
-    def get_feature_diff_url(cls, request, feature_type, diff_form_data):
-
-        host_url = cls.get_host_url(request)
-        query_url = "/api/" + feature_type + "/diff/?"
-        query_param = None
-
-        for (key, value) in diff_form_data.items():
-            if query_param is None:
-                query_param = key + "=" + value
-            else:
-                query_param = query_param + "&" + key + "=" + value
-
-        query_param = query_param + "&expand_all=true"
-        feature_diff_url = host_url + query_url + query_param
-        return feature_diff_url
-
-    @classmethod
     def get_feature_url(cls, request, feature_type, diff_type, diff_params):
 
         host_url = cls.get_host_url(request)

@@ -111,58 +111,6 @@ class ReleaseUtils(object):
         return all_source_names
 
     @classmethod
-    def get_release_diff(cls, diff_dict):
-        print("get release diff called")
-        set1_params = diff_dict['release_set_1']
-        set2_params = diff_dict['release_set_2']
-
-        # param_keys = ["source", "assembly", "version"]
-        if set1_params["source"] != set2_params["source"]:
-            return {}
-
-        queryset_all = TranscriptReleaseTag.objects.all()
-        queryset1 = queryset_all.filter(Q(release__source__shortname__iexact=str(set1_params["source"]))
-                                        & Q(release__shortname__iexact=set1_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set1_params["assembly"]))  # @IgnorePep8
-                                        ).values("feature_id").distinct()  # @IgnorePep8
-
-        queryset1_count = queryset1.count()
-
-        queryset_all = TranscriptReleaseTag.objects.all()
-        queryset2 = queryset_all.filter(Q(release__source__shortname__iexact=str(set2_params["source"]))
-                                        & Q(release__shortname__iexact=set2_params["version"])  # @IgnorePep8
-                                        & Q(release__assembly__assembly_name__iexact=str(set2_params["assembly"]))  # @IgnorePep8
-                                        ).values("feature_id").distinct()  # @IgnorePep8
-
-        queryset2_count = queryset2.count()
-        logger.info("queryset2_count " + queryset2_count)
-
-        # intersection
-        qs_intersection = queryset1 & queryset2
-        qs_intersection_count = qs_intersection.count()
-
-        # difference set1-set2
-        qs1_qs2_difference_count = queryset1_count - qs_intersection_count
-        logger.info("qs1_qs2_difference_count " + qs1_qs2_difference_count)
-
-        # difference is not supported by mysql
-        # bigger_qs.exclude(id__in=smaller_qs)
-        qs1_qs2_diff = queryset1.exclude(feature_id__in=queryset2)
-        # get Transcripts
-        qs1_qs2_transcripts = Transcript.objects.filter(pk__in=qs1_qs2_diff).values('stable_id', 'stable_id_version')
-
-        result_dict = {}
-        result_dict['qs1_qs2_transcripts'] = list(qs1_qs2_transcripts)
-
-        qs2_qs1_diff = queryset2.exclude(feature_id__in=queryset1)
-
-        # get Transcripts
-        qs2_qs1_transcripts = Transcript.objects.filter(pk__in=qs2_qs1_diff).values('stable_id', 'stable_id_version')
-        result_dict['qs2_qs1_transcripts'] = list(qs2_qs1_transcripts)
-
-        return result_dict
-
-    @classmethod
     def get_release_loading_stats(cls):
         """
         """
