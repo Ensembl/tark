@@ -275,12 +275,12 @@
                                     <td>
                                         {% with transcript_details.transcript_release_set|format_release_set:"ensembl" as release_date %}
                                             <a target="_blank"
-                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{ transcript_details.stable_id }}.{{ transcript_details.stable_id_version }}">
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{ transcript_details.stable_id }}.{{ transcript_details.stable_id_version }}" rel="noopener noreferrer">
                                                 <strong>Variation</strong> <i class="fa fa-external-link-alt"></i>
                                             </a>
                                             ,
                                             <a target="_blank"
-                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Location/View?db=core;g={{ gene.name }};r={{ gene.loc_region }}:{{ gene.loc_start }}-{{ gene.loc_end }};t={{ transcript_details.stable_id }}">
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Location/View?db=core;g={{ gene.name }};r={{ gene.loc_region }}:{{ gene.loc_start }}-{{ gene.loc_end }};t={{ transcript_details.stable_id }}" rel="noopener noreferrer">
                                                 <strong>Location</strong> <i class="fa fa-external-link-alt"></i>
                                             </a>
                                         {% endwith %}
@@ -406,7 +406,7 @@
                                     {% if tr_source == "Ensembl" %}
                                         {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
                                             <a target="_blank"
-                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{ transcript.stable_id }}.{{ transcript.stable_id_version }}">
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Variation_Transcript/Table?db=core;t={{ transcript.stable_id }}.{{ transcript.stable_id_version }}" rel="noopener noreferrer">
                                             {{ transcript.stable_id }}.{{ transcript.stable_id_version }}
                                         {% endwith %}
                                     {% elif "LRG" in tr_source %}
@@ -454,7 +454,7 @@
                                     {% with transcript.transcript_release_set|format_release_set:"ensembl" as release_date %}
                                         <td>
                                             <a target="_blank"
-                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Location/View?db=core;r={{ transcript_details.loc_region }}:{{ transcript_details.loc_start }}-{{ transcript_details.loc_end }};t={{ transcript_details.stable_id }}">
+                                               href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Location/View?db=core;r={{ transcript_details.loc_region }}:{{ transcript_details.loc_start }}-{{ transcript_details.loc_end }};t={{ transcript_details.stable_id }}" rel="noopener noreferrer">
                                                 {{ transcript_details.loc_region }}:{{ transcript_details.loc_start }}-{{ transcript_details.loc_end }}
                                         </td>
                                     {% endwith %}
