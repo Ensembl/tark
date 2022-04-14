@@ -27,6 +27,8 @@ import json
 from django.http.response import JsonResponse
 from transcript.models import Transcript
 from tark_web.forms import CompareSetForm
+from tark.drf.serializers import StatusSerializer
+from rest_framework.response import Response
 
 
 def index(request):
@@ -191,3 +193,13 @@ def datatable_fetch(request, table_name):
         return JsonResponse(data, safe=False)
 
     return JsonResponse(json_data, safe=False)
+
+
+
+class PingService(generics.RetrieveAPIView):
+
+    def get(self, request):
+        serializer = StatusSerializer(
+            {'ping': 0}
+        )
+        return Response(serializer.data)
