@@ -62,6 +62,7 @@ except:
 urlpatterns = [
     # url(r'^docs/', schema_view),
     url(r'^' + api_version + '$', schema_view),
+    url(r'^' + api_version + 'status', views.PingService.as_view()),
     url(r'^web/', include('tark_web.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'),
