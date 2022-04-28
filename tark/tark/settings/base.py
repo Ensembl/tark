@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+
+import tark.settings.env
 from tark.settings import secrets
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -77,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # custom
                 'tark_web.context_processors.init_assembly_releases',
+                'tark_web.context_processors.google_analytics_enabled'
             ],
         },
     },
@@ -206,3 +209,7 @@ SESSION_COOKIE_SAMESITE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
 DEFAULT_SOURCE = "ensembl"
+
+GOOGLE_ANALYTICS_ENABLED = False
+if tark.settings.env.PROD_ENV:
+    GOOGLE_ANALYTICS_ENABLED = True
