@@ -85,137 +85,38 @@ class ExonUtils(object):
     def fetch_cds_info(cls, transcript):
         cds_info = {}
 
-        start_exon = None
-        end_exon = None
-        five_prime_utr_seq = ""
-        three_prime_utr_seq = ""
-        exons = None
         if "translations" in transcript and len(transcript['translations']) > 0:
-            translations = transcript['translations']
 
+            translations = transcript["translations"]
             if type(translations) is list and len(translations) > 0:
                 translation = translations[0]
             else:
                 translation = translations
-            translation_start = translation['loc_start']
-            translation_end = translation['loc_end']
 
-            cds_info['translation_start'] = translation_start
-            cds_info['translation_end'] = translation_end
-            cds_info['loc_strand'] = transcript['loc_strand']
-
-            if transcript['loc_strand'] == -1:
-                cds_info['three_prime_utr_start'] = translation_start - 1
-                cds_info['five_prime_utr_end'] = translation_end + 1
-            else:
-                cds_info['five_prime_utr_end'] = translation_start - 1
-                cds_info['three_prime_utr_start'] = translation_end + 1
-
-            if 'exons' in transcript:
-                exons = transcript['exons']
-
-                first_exon = exons[0]
-                if transcript['loc_strand'] == -1:
-                    cds_info['five_prime_utr_start'] = first_exon['loc_end']
-                else:
-                    cds_info['five_prime_utr_start'] = first_exon['loc_start']
-
-                cds_info['loc_region'] = first_exon['loc_region']
-
-                # Find start exon
-                for exon in exons:
-                    exon_start = exon['loc_start']
-                    exon_end = exon['loc_end']
-                    overlap_score = ExonUtils.compute_overlap(exon_start, exon_end, translation_start, translation_end)
-                    if overlap_score > 0:
-                        start_exon = exon
-                        break
-                #
-                #                 #  collect all the previous exons to calculate the five prime utr length
-                #                 #  Work here tomorrow
-                five_prime_exon_iterator = iter(exons)
-                current_exon = next(five_prime_exon_iterator)
-                start_exon_order = start_exon['exon_order']
-
-                # print('Start exon order ' + str(start_exon_order))
-                while (current_exon['exon_order'] < start_exon_order):
-                    # print(' 5 prime UTR exon %d' %current_exon['exon_order'])
-                    five_prime_utr_seq = five_prime_utr_seq + current_exon['sequence']
-                    current_exon = next(five_prime_exon_iterator)
-
-                # Now add the overlapping bit
-                if transcript['loc_strand'] == -1:
-                    start_exon_utr_len = start_exon['loc_end'] - translation_end
-                    five_prime_utr_seq = five_prime_utr_seq + start_exon['sequence'][:start_exon_utr_len]
-                else:
-                    start_exon_utr_len = translation_start - start_exon['loc_start']
-                    five_prime_utr_seq = five_prime_utr_seq + start_exon['sequence'][:start_exon_utr_len]
-
-                # Find end exon
-                exons_copy = exons.copy()
-                exons_copy.reverse()
-                for exon in exons_copy:
-                    exon_start = exon['loc_start']
-                    exon_end = exon['loc_end']
-                    overlap_score = ExonUtils.compute_overlap(exon_start, exon_end, translation_start, translation_end)
-                    if overlap_score > 0:
-                        end_exon = exon
-                        break
-                #
-                #                 #  collect all the previous exons to calculate the three prime utr length
-                #                 #  Work here tomorrow
-                three_prime_exon_iterator = iter(exons_copy)
-                current_exon = next(three_prime_exon_iterator)
-                end_exon_order = end_exon['exon_order']
-
-                # print('End exon order ' + str(end_exon_order))
-                while (current_exon['exon_order'] > end_exon_order):
-                    # print(' 3 prime UTR exon %d' %current_exon['exon_order'])
-                    three_prime_utr_seq = current_exon['sequence'] + three_prime_utr_seq
-                    current_exon = next(three_prime_exon_iterator)
-
-                # Now add the overlapping bit for the 3 prime
-                if transcript['loc_strand'] == -1:
-                    end_exon_utr_len = translation_start - end_exon['loc_start']
-                    if end_exon_utr_len > 0:
-                        three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
-                else:
-                    end_exon_utr_len = end_exon['loc_end'] - translation_end
-                    if end_exon_utr_len > 0:
-                        three_prime_utr_seq = end_exon['sequence'][-end_exon_utr_len:] + three_prime_utr_seq
-
-            if start_exon is not None:
-                cds_start_len = translation_start - start_exon['loc_start']
-                cds_seq = start_exon['sequence'][cds_start_len:]
-
-            if exons is not None:
-                last_exon = exons[-1]
-
-                if transcript['loc_strand'] == -1:
-                    if len(three_prime_utr_seq) > 0:
-                        cds_info['three_prime_utr_end'] = last_exon['loc_start']
-                    else:
-                        cds_info['three_prime_utr_start'] = 0
-                        cds_info['three_prime_utr_end'] = 0
-                else:
-                    if len(three_prime_utr_seq) > 0:
-                        cds_info['three_prime_utr_end'] = last_exon['loc_end']
-                    else:
-                        cds_info['three_prime_utr_start'] = 0
-                        cds_info['three_prime_utr_end'] = 0
-
-            cds_info['five_prime_utr_seq'] = five_prime_utr_seq
-            cds_info['five_prime_utr_length'] = len(five_prime_utr_seq)
-            cds_info['three_prime_utr_seq'] = three_prime_utr_seq
-            cds_info['three_prime_utr_length'] = len(three_prime_utr_seq)
+            cds_info["translation_start"] = translation["loc_start"]
+            cds_info["translation_end"] = translation["loc_end"]
+            cds_info["three_prime_utr_start"] = ExonUtils.get_or_default(transcript, "three_prime_utr_start", 0)
+            cds_info["three_prime_utr_end"] = ExonUtils.get_or_default(transcript, "three_prime_utr_end", 0)
+            three_prime_utr_seq = ExonUtils.get_or_default(transcript, "three_prime_utr_seq", "")
+            cds_info["three_prime_utr_seq"] = three_prime_utr_seq
+            cds_info["three_prime_utr_length"] = len(three_prime_utr_seq)
+            cds_info["five_prime_utr_start"] = ExonUtils.get_or_default(transcript, "five_prime_utr_start", 0)
+            cds_info["five_prime_utr_end"] = ExonUtils.get_or_default(transcript, "five_prime_utr_end", 0)
+            five_prime_utr_seq = ExonUtils.get_or_default(transcript, "five_prime_utr_seq", "")
+            cds_info["five_prime_utr_seq"] = five_prime_utr_seq
+            cds_info["five_prime_utr_length"] = five_prime_utr_seq
+            cds_info["loc_region"] = transcript["loc_region"]
+            cds_info["loc_strand"] = transcript["loc_strand"]
 
             cds_info['cds_seq'] = None
+
             if 'sequence' in transcript and 'sequence' in transcript['sequence']:
+                last_exon = sorted(transcript["exons"], key=lambda e: e["exon_order"])[-1]
                 transcript['sequence']['sequence'] = (
                     cls.remove_polyA_tail(transcript['sequence']['sequence'], last_exon['sequence']))
                 cds_seq = cls.get_cds_sequence(transcript['sequence']['sequence'],
-                                               cds_info['five_prime_utr_length'],
-                                               cds_info['three_prime_utr_length'])
+                                               len(cds_info['five_prime_utr_seq']),
+                                               len(cds_info['three_prime_utr_seq']))
                 cds_info['cds_seq'] = cds_seq
 
         return cds_info
@@ -250,3 +151,9 @@ class ExonUtils(object):
             sequence_data = sequence_data[:-int(three_prime_utr_len)]
 
         return sequence_data
+
+    @classmethod
+    def get_or_default(cls, feature, field, default_value):
+        if field in feature and feature[field] is not None:
+            return feature[field]
+        return default_value
