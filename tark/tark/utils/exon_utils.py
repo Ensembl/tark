@@ -104,7 +104,7 @@ class ExonUtils(object):
             cds_info["five_prime_utr_end"] = ExonUtils.get_or_default(transcript, "five_prime_utr_end", 0)
             five_prime_utr_seq = ExonUtils.get_or_default(transcript, "five_prime_utr_seq", "")
             cds_info["five_prime_utr_seq"] = five_prime_utr_seq
-            cds_info["five_prime_utr_length"] = five_prime_utr_seq
+            cds_info["five_prime_utr_length"] = len(five_prime_utr_seq)
             cds_info["loc_region"] = transcript["loc_region"]
             cds_info["loc_strand"] = transcript["loc_strand"]
 
@@ -152,8 +152,8 @@ class ExonUtils(object):
 
         return sequence_data
 
-    @classmethod
-    def get_or_default(cls, feature, field, default_value):
+    @staticmethod
+    def get_or_default(feature, field, default_value):
         if field in feature and feature[field] is not None:
             return feature[field]
         return default_value

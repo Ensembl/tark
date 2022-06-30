@@ -159,12 +159,10 @@ class ExonUtilsTest(TestCase):
             'three_prime_utr_end': 55,
             'three_prime_utr_seq': 'ATA',
             'three_prime_utr_length': 3,
-            'three_prime_utr_checksum': "abc",
             'five_prime_utr_start': 10,
             'five_prime_utr_end': 11,
             'five_prime_utr_seq': 'AA',
             'five_prime_utr_length': 2,
-            'five_prime_utr_checksum': 'def',
             'cds_seq': 'ATGTTTTTGGGGGCCCCCAT'}
         self.assertDictEqual(expected_cds_info, cds_info)
 
