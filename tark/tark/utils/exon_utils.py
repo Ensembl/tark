@@ -154,6 +154,9 @@ class ExonUtils(object):
 
     @staticmethod
     def get_or_default(feature, field, default_value):
+        """This method exists because the value of some fields will be `None` if the corresponding value in the table is
+        NULL.  We can't use `feature.get(field, default_value)` because that would return `None` for such fields, rather
+        than `default_value`"""
         if field in feature and feature[field] is not None:
             return feature[field]
         return default_value
