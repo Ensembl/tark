@@ -131,6 +131,7 @@
       "exon_set_checksum": "8",
       "transcript_checksum": "6",
       "sequence": null,
+      "biotype": "protein_coding",
       "session": 1
     }
   },

@@ -112,6 +112,7 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                      'exon_set_checksum': '3800000000000000000000000000000000000000',
                                                      'transcript_checksum': '3600000000000000000000000000000000000000',
                                                      'sequence': None,
+                                                     'biotype': "protein_coding",
                                                      'transcript_release_set': {'assembly': 'GRCh38', 'shortname': '96',
                                                                                 'description': 'Ensembl release',
                                                                                 'release_date': '2019-04-09',
@@ -145,7 +146,9 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                        'exon_set_checksum': '3800000000000000000000000000000000000000',
                                                        'transcript_checksum':
                                                            '3600000000000000000000000000000000000000',
-                                                       'sequence': None, 'transcript_release_set': {
+                                                       'sequence': None,
+                                                       'biotype': "protein_coding",
+                                                       'transcript_release_set': {
                                       'assembly': 'GRCh38', 'shortname': '96',
                                       'description': 'Ensembl release',
                                       'release_date': '2019-04-09', 'source': 'Ensembl'},

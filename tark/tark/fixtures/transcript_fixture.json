@@ -41,7 +41,8 @@
       "exon_set_checksum": "3544A9D62C65B3E08F9681E9D57582249B8DB38A",
       "transcript_checksum": "DC9C23CA5EBE25EBADB7B2795D8078467BA0DB36",
       "sequence": "4D4D31564C94294958B5803295CE321E19B30EF0",
-      "session": 21224
+      "session": 21224,
+      "biotype": "protein_coding"
     }
   },
   {
