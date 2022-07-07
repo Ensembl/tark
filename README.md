@@ -85,3 +85,8 @@ Check in the browsesr
 http://localhost:9000/
 ```
 
+Run all the tests in the package:
+```
+./manage.py test --settings=tark.settings.test
+```
+
