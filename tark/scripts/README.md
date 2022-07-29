@@ -3,13 +3,9 @@ MANE Plus Clinical transcripts on GRCh38. Refer dev page: http://dev-tark.ensemb
 The script `utr_cds_to_json.py` will query the Tark DB for this information and dump it in a static file that we then 
 load into the website.
 
-Run these commands to populate the static file:
-
 ```
-cd /homes/ens_tarkdev01/workspace/
-source src/tark_env_376/bin/activate
-
-cd src/tark/tark
+# Starting from the root of this repo
+cd tark
 PYTHONPATH='.' python scripts/utr_cds_to_json.py
 ```
 
