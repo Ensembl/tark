@@ -21,6 +21,8 @@ from django.conf import settings
 import logging
 
 # Get an instance of a logger
+from tark.settings.base import GOOGLE_ANALYTICS_ENABLED
+
 logger = logging.getLogger(__name__)
 
 
@@ -53,3 +55,7 @@ def init_assembly_releases(request):
     }
 
     return init_hash
+
+
+def google_analytics_enabled(request):
+    return {'GOOGLE_ANALYTICS_ENABLED': GOOGLE_ANALYTICS_ENABLED}

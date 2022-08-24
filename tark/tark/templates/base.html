@@ -64,6 +64,17 @@
 
     </script>
 
+    {% if GOOGLE_ANALYTICS_ENABLED %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JB76MWF5QS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JB76MWF5QS');
+    </script>
+    {% endif %}
 
     {% block extra_styles %}
     {% endblock %}
