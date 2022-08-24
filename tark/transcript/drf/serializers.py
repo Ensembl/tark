@@ -121,7 +121,9 @@ class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
-                                                  'sequence', 'biotype')
+                                                  'sequence', 'biotype') + (
+            'three_prime_utr_start', 'three_prime_utr_end', 'three_prime_utr_seq', 'three_prime_utr_checksum',
+            'five_prime_utr_start', 'five_prime_utr_end', 'five_prime_utr_seq', 'five_prime_utr_checksum')
 
     def __init__(self, *args, **kwargs):
         super(TranscriptSerializer, self).__init__(*args, **kwargs)

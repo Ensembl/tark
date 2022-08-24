@@ -17,7 +17,6 @@
 
 from django.test.testcases import TestCase
 from tark.utils.exon_utils import ExonUtils
-import exon
 
 
 # ./manage.py test tark.tests.test_exon_utils --settings=tark.settings.test
@@ -52,14 +51,24 @@ class ExonUtilsTest(TestCase):
                                               'loc_checksum': '8D695BF0131F40841A0763E0C5959DC23B1B4909',
                                               'name': 'ATXN10',
                                               'gene_checksum': '521AE29733E454A44ED1C9ABEDA8A9EB34965E1D'}],
-                                   'translations': {'stable_id': 'ENSP00000252934', 'stable_id_version': 4,
-                                                    'assembly': 'GRCh38', 'loc_start': 12, 'loc_end': 52,
-                                                    'loc_strand': 1, 'loc_region': '22',
-                                                    'loc_checksum': 'FA956BFCD3E4B2FD5BEEE4B1113AFC2AC72B0FCC',
-                                                    'translation_id': 106423,
-                                                    'translation_checksum': '02B7FF66B998305BBCB0ECD6E3AB8E2FEC5C23CA',
-                                                    'sequence': 'MAAPRPPPARLSGVMVPAPIQDL',
-                                                    'seq_checksum': '910FB568CE59133225A47DA5296146552AC20F0C'},
+                                   'translations': [{'stable_id': 'ENSP00000252934', 'stable_id_version': 4,
+                                                     'assembly': 'GRCh38', 'loc_start': 12, 'loc_end': 52,
+                                                     'loc_strand': 1, 'loc_region': '22',
+                                                     'loc_checksum': 'FA956BFCD3E4B2FD5BEEE4B1113AFC2AC72B0FCC',
+                                                     'translation_id': 106423,
+                                                     'translation_checksum': '02B7FF66B998305BBCB0ECD6E3AB8E2FEC5C23CA',
+                                                     'sequence': 'MAAPRPPPARLSGVMVPAPIQDL',
+                                                     'seq_checksum': '910FB568CE59133225A47DA5296146552AC20F0C'}],
+                                   "three_prime_utr_start": 53,
+                                   "three_prime_utr_end": 55,
+                                   "three_prime_utr_seq": "ATA",
+                                   "three_prime_utr_length": 3,
+                                   "three_prime_utr_checksum": "abc",
+                                   "five_prime_utr_start": 10,
+                                   "five_prime_utr_end": 11,
+                                   "five_prime_utr_seq": 'AA',
+                                   "five_prime_utr_length": 2,
+                                   "five_prime_utr_checksum": "def"
                                    }
 
         diff_me_exon_set = [
@@ -142,12 +151,18 @@ class ExonUtilsTest(TestCase):
     def test_fetch_cds_info(self):
         cds_info = ExonUtils.fetch_cds_info(self.diff_me_transcript)
         expected_cds_info = {
-            'translation_start': 12, 'translation_end': 52,
-            'loc_strand': 1, 'five_prime_utr_end': 11, 'three_prime_utr_start': 53,
-            'five_prime_utr_start': 10, 'loc_region': 22,
-            'three_prime_utr_end': 55, 'five_prime_utr_seq': 'AA',
+            'translation_start': 12,
+            'translation_end': 52,
+            'loc_strand': 1,
+            'loc_region': '22',
+            'three_prime_utr_start': 53,
+            'three_prime_utr_end': 55,
+            'three_prime_utr_seq': 'ATA',
+            'three_prime_utr_length': 3,
+            'five_prime_utr_start': 10,
+            'five_prime_utr_end': 11,
+            'five_prime_utr_seq': 'AA',
             'five_prime_utr_length': 2,
-            'three_prime_utr_seq': 'ATA', 'three_prime_utr_length': 3,
             'cds_seq': 'ATGTTTTTGGGGGCCCCCAT'}
         self.assertDictEqual(expected_cds_info, cds_info)
 
