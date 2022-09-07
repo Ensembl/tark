@@ -295,7 +295,7 @@
                 translation_table = diff_data["translation"];
                 exonset_table = diff_data["exonset"];
 
-                $('#summary_diff_qs1_qs2').html(header_div + transcript_table + gene_table + translation_table + exonset_table);
+                $('#summary_diff_qs1_qs2').html(header_div + gene_table + transcript_table + translation_table + exonset_table);
                 $("#loadingSpinner_qs1_qs2").hide();
             });
 
@@ -358,7 +358,7 @@
                 {
                     dom: 'lBfrtip',
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                    "pageLength": 10,
+                    "pageLength": 25,
                     "buttons": [
                         {extend: 'copy', text: 'COPY', exportOptions: {columns: ':visible', rows: ':visible'}},
                         {extend: 'csv', text: 'CSV', exportOptions: {columns: ':visible', rows: ':visible'}},
@@ -640,7 +640,7 @@
                                     </td>
                                     <td>
                                         <a target="_blank"
-                                           href="http://e{{ release_date.max_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ result.stable_id }}.{{ result.stable_id_version }}">
+                                           href="http://e{{ release_date.max_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ result.stable_id }}.{{ result.stable_id_version }}" rel="noopener noreferrer">
                                             {{ release_date.max_release_datename_value }}
                                         </a>
                                     </td>

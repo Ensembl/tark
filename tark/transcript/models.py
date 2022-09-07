@@ -58,6 +58,15 @@ class Transcript(auto_prefetch.Model):
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
 
+    three_prime_utr_start = models.PositiveIntegerField(blank=True, null=True)
+    three_prime_utr_end = models.PositiveIntegerField(blank=True, null=True)
+    three_prime_utr_seq = models.TextField(blank=True, null=True)
+    three_prime_utr_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
+    five_prime_utr_start = models.PositiveIntegerField(blank=True, null=True)
+    five_prime_utr_end = models.PositiveIntegerField(blank=True, null=True)
+    five_prime_utr_seq = models.TextField(blank=True, null=True)
+    five_prime_utr_checksum = ChecksumField(unique=True, max_length=20, blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'transcript'

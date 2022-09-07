@@ -21,10 +21,8 @@ from tark_web import views
 from sequence.views import align_sequence, check_service_status, \
     align_cds_sequence, call_align_sequence_clustal
 from release.views import ReleaseSetDatatableView
-from tark_web.views import datatable_view_release_set, feature_diff
-from tark_web.views import statistics
+from tark_web.views import datatable_view_release_set, feature_diff, statistics, manelist
 from django.views.generic.base import TemplateView
-from tark_web.views import manelist, mane_GRCh37_list
 
 urlpatterns = [
     url(r'^$', views.web_home, name='web_home'),
@@ -98,8 +96,9 @@ urlpatterns = [
     # new mane GRCh37 page
     url(
         r'^mane_GRCh37_list/$',
-        mane_GRCh37_list,
-        name='mane_GRCh37_list'
+        TemplateView.as_view(
+                   template_name='mane_GRCh37_list.html'
+               )
     ),
 
     url(

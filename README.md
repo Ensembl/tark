@@ -1,6 +1,8 @@
 # Tark (Transcript Archive)
 
-[![Documentation Status](https://readthedocs.org/projects/tark/badge/?version=latest)](http://tark.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/Ensembl/tark.svg?branch=master)](https://travis-ci.org/Ensembl/tark) [![Coverage Status](https://coveralls.io/repos/github/Ensembl/tark/badge.svg?branch=master)](https://coveralls.io/github/Ensembl/tark)
+[![Dependency Compatibility Check](https://github.com/Ensembl/tark/actions/workflows/dep_check.yml/badge.svg)](https://github.com/Ensembl/tark/actions/workflows/dep_check.yml)
+[![Documentation Status](https://readthedocs.org/projects/tark/badge/?version=latest)](http://tark.readthedocs.io/en/latest/?badge=latest) 
+[![Coverage Status](https://coveralls.io/repos/github/Ensembl/tark/badge.svg?branch=master)](https://coveralls.io/github/Ensembl/tark)
 
 Tark (Transcript Archive)
 
@@ -81,5 +83,10 @@ cd tark/tark
 Check in the browsesr
 ```
 http://localhost:9000/
+```
+
+Run all the tests in the package:
+```
+./manage.py test --settings=tark.settings.test
 ```
 

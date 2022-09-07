@@ -27,6 +27,8 @@ import json
 from django.http.response import JsonResponse
 from transcript.models import Transcript
 from tark_web.forms import CompareSetForm
+from tark.drf.serializers import StatusSerializer
+from rest_framework.response import Response
 
 
 def index(request):
@@ -129,4 +131,3 @@ class DataTableListApi(generics.ListAPIView):
         result.data['data'] = result.data['results']
         del result.data['results']
         return result
-
