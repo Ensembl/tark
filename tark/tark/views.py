@@ -131,3 +131,12 @@ class DataTableListApi(generics.ListAPIView):
         result.data['data'] = result.data['results']
         del result.data['results']
         return result
+
+
+class PingService(generics.RetrieveAPIView):
+
+    def get(self, request):
+        serializer = StatusSerializer(
+            {'ping': 0}
+        )
+        return Response(serializer.data)
