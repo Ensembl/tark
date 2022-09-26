@@ -1,5 +1,7 @@
 {% extends "web_home.html" %}
 
+{% block title %}Comparison results{% endblock %}
+
 {% block extra_jq_scripts %}
     $('.collapse').on('shown.bs.collapse', function(){
     $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");

@@ -132,7 +132,15 @@
       "transcript_checksum": "6",
       "sequence": null,
       "biotype": "protein_coding",
-      "session": 1
+      "session": 1,
+      "five_prime_utr_checksum": null,
+      "five_prime_utr_seq": "GATTACA",
+      "five_prime_utr_start": 5,
+      "five_prime_utr_end": 6,
+      "three_prime_utr_checksum": null,
+      "three_prime_utr_seq": "ACATTAG",
+      "three_prime_utr_start": 1,
+      "three_prime_utr_end": 2
     }
   },
   {

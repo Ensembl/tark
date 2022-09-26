@@ -64,6 +64,8 @@ class TranscriptTest(APITestCase):
 # Using the LiveServerTestCase
 # ./manage.py test transcript.tests.test_transcript_diff.TranscriptDiffTest --settings=tark.settings.test
 class TranscriptDiffTest(LiveServerTestCase):
+
+    maxDiff = None
     fixtures = ['assembly', 'gene', 'gene_names', 'release_set', 'sequence', 'transcript']
 
     def test_transcript_diff(self):
@@ -127,6 +129,14 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                                 'gene_checksum': '3846383800000000000000000000000000000000'}],
                                                      # @IgnorePep8
                                                      'translations': [], 'exons': [], 'cds_info': {},
+                                                     'five_prime_utr_checksum': None,
+                                                     'five_prime_utr_seq': "GATTACA",
+                                                     'five_prime_utr_start': 5,
+                                                     'five_prime_utr_end': 6,
+                                                     'three_prime_utr_checksum': None,
+                                                     'three_prime_utr_seq': "ACATTAG",
+                                                     'three_prime_utr_start': 1,
+                                                     'three_prime_utr_end': 2,
                                                      'gene': {'stable_id': 'ENSG00000161533',
                                                               'stable_id_version': 12, 'assembly': 'GRCh38',
                                                               'loc_start': 75941507, 'loc_end': 75979177,
@@ -161,6 +171,14 @@ class TranscriptDiffTest(LiveServerTestCase):
                                                                   'name': 'ACOT13', 'gene_checksum':
                                                                       '3846383800000000000000000000000000000000'}],
                                                        'translations': [], 'exons': [], 'cds_info': {},
+                                                       'five_prime_utr_checksum': None,
+                                                       'five_prime_utr_seq': "GATTACA",
+                                                       'five_prime_utr_start': 5,
+                                                       'five_prime_utr_end': 6,
+                                                       'three_prime_utr_checksum': None,
+                                                       'three_prime_utr_seq': "ACATTAG",
+                                                       'three_prime_utr_start': 1,
+                                                       'three_prime_utr_end': 2,
                                                        'gene': {'stable_id': 'ENSG00000161533', 'stable_id_version': 12,
                                                                 'assembly': 'GRCh38', 'loc_start': 75941507,
                                                                 'loc_end': 75979177, 'loc_strand': -1,
