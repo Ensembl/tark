@@ -17,8 +17,6 @@
 
 from __future__ import unicode_literals
 
-import os
-
 from django.shortcuts import render
 from release.utils.release_utils import ReleaseUtils
 from .forms import DiffForm
@@ -28,12 +26,9 @@ import json
 import logging
 from tark_web.utils.apiutils import ApiUtils
 from django.urls.base import resolve
-from tark.utils.exon_utils import ExonUtils
 from tark_web.utils.sequtils import TarkSeqUtils
-from setuptools.dist import sequence
-from django.db import connections, connection
+from django.db import connections
 from transcript.utils.search_utils import SearchUtils
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Get an instance of a logger
 logger = logging.getLogger("tark")
