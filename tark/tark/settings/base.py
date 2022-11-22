@@ -22,10 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(=tzgu^(%+h6g9q!e3t7ne-m_+w3i8=w#k$r2so0)tl56b##6y'
+SECRET_KEY = secrets.SECRET_KEY
+
+SOFTWARE_RELEASE_TAG = "1.0.1"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = secrets.DEBUG
 
 DATABASE_ROUTERS = ['tark.routers.TarkRouter']
 
@@ -86,51 +88,31 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tark.wsgi.application'
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-if 'TRAVIS' in os.environ:
-    SECRET_KEY = "SecretKeyForUseOnTravis"
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_django_manager',
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
-            'PORT': '3306',
-        },
-        'tark': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': secrets.DATABASE_NAME,
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
-            'PORT': '3306',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tark_django_manager',
+        'USER': secrets.DATABASE_USER,
+        'PASSWORD': secrets.DATABASE_PASSWORD,
+        'HOST': secrets.DATABASE_HOST,
+        'PORT': secrets.DATABASE_PORT,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
+    },
+    'tark': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': secrets.DATABASE_NAME,
+        'USER': secrets.DATABASE_USER,
+        'PASSWORD': secrets.DATABASE_PASSWORD,
+        'HOST': secrets.DATABASE_HOST,
+        'PORT': secrets.DATABASE_PORT,
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tark_django_manager',
-            'USER': secrets.DATABASE_USER,
-            'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': secrets.DATABASE_HOST,
-            'PORT': secrets.DATABASE_PORT,
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }
-        },
-        'tark': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': secrets.DATABASE_NAME,
-            'USER': secrets.DATABASE_USER,
-            'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': secrets.DATABASE_HOST,
-            'PORT': secrets.DATABASE_PORT,
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -213,3 +195,27 @@ DEFAULT_SOURCE = "ensembl"
 GOOGLE_ANALYTICS_ENABLED = False
 if tark.settings.env.PROD_ENV:
     GOOGLE_ANALYTICS_ENABLED = True
+
+
+LOG_FILE = secrets.LOG_FILE
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+ALLOWED_HOSTS = secrets.ALLOWED_HOSTS

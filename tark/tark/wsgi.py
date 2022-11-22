@@ -27,6 +27,6 @@ For more information on this file, see
 https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/
 """
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tark.settings.local")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tark.settings.base")
 
 application = get_wsgi_application()
