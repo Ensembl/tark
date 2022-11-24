@@ -29,8 +29,6 @@ SOFTWARE_RELEASE_TAG = "1.0.1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = secrets.DEBUG
 
-DATABASE_ROUTERS = ['tark.routers.TarkRouter']
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -92,6 +90,8 @@ WSGI_APPLICATION = 'tark.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+DATABASE_ROUTERS = ['tark.routers.TarkRouter']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -149,6 +149,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static/apache")
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
