@@ -10,7 +10,7 @@ numpy==1.19.5
 biopython==1.70
 bcbio-gff==0.6.4
 wget
-pyfaidx
+pyfaidx==0.6.2
 mysql-connector-python
 coveralls
 django-auto-prefetch
