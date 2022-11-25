@@ -21,4 +21,3 @@ ENV = os.getenv('DJANGO_ENVIRONMENT', 'development')
 DEV_ENV = ENV == 'development'
 STAGING_ENV = ENV == 'staging'
 PROD_ENV = ENV == 'primary'
-FALLBACK_ENV = ENV == 'fallback'
