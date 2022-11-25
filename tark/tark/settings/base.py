@@ -198,26 +198,4 @@ GOOGLE_ANALYTICS_ENABLED = False
 if tark.settings.env.PROD_ENV:
     GOOGLE_ANALYTICS_ENABLED = True
 
-
-LOG_FILE = secrets.LOG_FILE
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': LOG_FILE,
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
-
 ALLOWED_HOSTS = secrets.ALLOWED_HOSTS
