@@ -39,7 +39,7 @@ pip install -r requirements.txt
 Provide the right credentials to connect to the tark database in secrets.py (created from secrets_template.py)
 
 ```
-cp tark/tark/settings/secrets_template.py tark/tark/settings/secrest.py
+cp tark/tark/settings/secrets_template.py tark/tark/settings/secrets.py
 ```
 
 
