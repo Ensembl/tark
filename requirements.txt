@@ -6,7 +6,7 @@ django-filter==2.4.0
 django-crispy-forms==1.7.0
 django-rest-swagger==2.1.2
 mysqlclient
-numpy==1.19.5
+numpy==1.22.0
 biopython==1.70
 bcbio-gff==0.6.4
 wget
