@@ -24,13 +24,13 @@ jobs:
     steps:
       # Checks-out our repository under $GITHUB_WORKSPACE, so our job can access it
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Set up Python version
-      - name: Set up Python 3.7.6
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.7.6
+          python-version: 3.7
 
       # Runs a set of commands installing Python dependencies using the runners shell (Run a multi-line script)
       - name: Install Python dependencies (Dev)
