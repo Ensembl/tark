@@ -23,12 +23,13 @@ register = template.Library()
 
 @register.filter
 def format_release_set(search_result, source):
+
     release_dict = {}
     if isinstance(search_result, list):
-        release_dict = {result["shortname"]: result["release_date"] for result in search_result}
+        release_dict = {result["release_date"]: result["shortname"] for result in search_result}
     else:
         if "shortname" in search_result and "release_date" in search_result:
-            release_dict[search_result["shortname"]] = search_result["release_date"]
+            release_dict[search_result["release_date"]] = search_result["shortname"]
 
     prefix = ""
     if "ensembl" in source or "lrg" in source:
@@ -36,26 +37,29 @@ def format_release_set(search_result, source):
     elif "refseq" in source:
         prefix = "r"
 
-    sorted_release_dict = sorted(release_dict, key=int)
+    sorted_release_dict = sorted(release_dict, key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"))
+
     if len(sorted_release_dict) == 1:
-        min_release_shortname = sorted_release_dict[0]
-        min_release_date = release_dict[min_release_shortname]
+        min_release_date = sorted_release_dict[0]
+        min_release_shortname = release_dict[min_release_date]
         min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
 
         min_release_value = prefix + min_release_shortname + "-" + datetime.date.strftime(min_dt, "%b%Y")
+
         return {'min_release': min_release_shortname,
                 'max_release': min_release_shortname,
                 "min_release_datename_value": min_release_value,
                 "max_release_datename_value": min_release_value,
                 "date_range": min_release_value}
     elif len(sorted_release_dict) > 1:
-        min_release_shortname = sorted_release_dict[0]
-        min_release_date = release_dict[min_release_shortname]
+        min_release_date = sorted_release_dict[0]
+        min_release_shortname = release_dict[min_release_date]
         min_dt = datetime.datetime.strptime(min_release_date, '%Y-%m-%d')
+
         min_release_value = prefix + min_release_shortname + "-" + datetime.date.strftime(min_dt, "%b%Y")
 
-        max_release_shortname = sorted_release_dict[-1]
-        max_release_date = release_dict[max_release_shortname]
+        max_release_date = sorted_release_dict[-1]
+        max_release_shortname = release_dict[max_release_date]
         max_dt = datetime.datetime.strptime(max_release_date, '%Y-%m-%d')
         max_release_value = prefix + max_release_shortname + "-" + datetime.date.strftime(max_dt, "%b%Y")
 
