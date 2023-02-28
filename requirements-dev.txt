@@ -1,6 +1,6 @@
 bcbio-gff==0.6.4
 biopython==1.70
-certifi==2021.10.8
+certifi==2022.12.7
 charset-normalizer==2.0.12
 coreapi==2.3.3
 coreschema==0.0.4
