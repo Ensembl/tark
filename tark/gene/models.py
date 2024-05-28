@@ -24,7 +24,7 @@ from genenames.models import GeneNames
 
 class Gene(auto_prefetch.Model):
     MANY2ONE_RELATED = {'SESSION': 'session', 'ASSEMBLY': 'assembly', 'HGNC': 'name'}
-    ONE2MANY_RELATED = {'RELEASE_SET': 'gene_release_set'}
+    ONE2MANY_RELATED = {'RELEASE_SET': 'gene_release_set', 'GENE_TRANSCRIPT': 'transcripts'}
 
     gene_id = models.AutoField(primary_key=True)
     stable_id = models.CharField(max_length=64)
@@ -40,6 +40,8 @@ class Gene(auto_prefetch.Model):
     session = auto_prefetch.ForeignKey(Session, models.DO_NOTHING, blank=True, null=True)
     gene_release_set = models.ManyToManyField('release.ReleaseSet', through='release.GeneReleaseTag',
                                               related_name='gene_release_set')
+    transcripts = models.ManyToManyField('transcript.Transcript', through='transcript.TranscriptGene')
+
 
     class Meta:
         managed = False
