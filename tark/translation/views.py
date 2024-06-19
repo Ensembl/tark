@@ -17,6 +17,7 @@ limitations under the License.
 
 from __future__ import unicode_literals
 from rest_framework import generics
+from rest_framework.exceptions import NotFound
 from tark_drf.utils.decorators import setup_eager_loading
 from translation.models import Translation
 from translation.drf.serializers import TranslationSerializer, TranslationDetailSerializer
