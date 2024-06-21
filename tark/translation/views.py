@@ -17,9 +17,10 @@ limitations under the License.
 
 from __future__ import unicode_literals
 from rest_framework import generics
+from rest_framework.exceptions import NotFound
 from tark_drf.utils.decorators import setup_eager_loading
 from translation.models import Translation
-from translation.drf.serializers import TranslationSerializer
+from translation.drf.serializers import TranslationSerializer, TranslationDetailSerializer
 from translation.drf.filters import TranslationFilterBackend
 
 
@@ -37,3 +38,18 @@ class TranslationList(generics.ListAPIView):
 class TranslationDetail(generics.RetrieveAPIView):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
+
+
+class TranslationListByStableID(generics.ListAPIView):
+    serializer_class = TranslationDetailSerializer
+
+    def get_queryset(self):
+        stable_id = self.kwargs.get('stable_id')
+        if not stable_id:
+            raise NotFound('No stable ID provided.')
+        
+        queryset = Translation.objects.filter(stable_id=stable_id).prefetch_related('translation_release_set').order_by('pk')
+        if queryset.exists():
+            return queryset
+        else:
+            raise NotFound('No translations found for the given stable ID.')

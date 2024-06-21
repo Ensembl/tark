@@ -401,10 +401,12 @@ def transcript_details(request, stable_id_with_version, search_identifier):
     # get transcript details
     query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
                         "&expand_all=true"
+    
     response = requests.get(host_url + query_url_details)
     transcript_details = {}
+    translation_stable_id = ""
     if response.status_code == 200:
-        search_result = response.json()
+        search_result = response.json()                
         if "results" in search_result and len(search_result["results"]) > 0:
             transcript_details = search_result["results"][0]
             if "genes" in transcript_details:
@@ -414,8 +416,23 @@ def transcript_details(request, stable_id_with_version, search_identifier):
                 if lrg_id is not None:
                     gene["lrg_id"] = lrg_id
                     transcript_details["gene"] = gene
+            
+            translations = transcript_details["translations"]
+            if len(translations) > 0:
+                translation_stable_id = translations[0]["stable_id"]
     else:
         logger.error("Error")
+
+    # Prepare translations table data
+    trns = requests.get(host_url + "/api/translation/stable_id/" + translation_stable_id + "/")
+
+    translation_data = trns.json()
+
+    if "results" in translation_data:
+        for translation in transcript_details['translations']:
+            temp = [ protein for protein in translation_data['results'] if translation["translation_id"] == protein["translation_id"]]
+            release_set = temp[0]['translation_release_set']
+            translation['translation_release_set'] = release_set
 
     # get transcript history
     transcript_history = {}
@@ -435,6 +452,8 @@ def transcript_details(request, stable_id_with_version, search_identifier):
                                                                'transcript_history': transcript_history,
                                                                'search_identifier': search_identifier,
                                                                'stable_id_with_version': stable_id_with_version})
+
+
 
 
 # queryfor manelist

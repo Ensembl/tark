@@ -49,6 +49,26 @@ class TranslationSerializer(SerializerMixin, serializers.ModelSerializer):
         self.set_related_fields(TranslationSerializer, **kwargs)
 
 
+class TranslationDetailSerializer(SerializerMixin, serializers.ModelSerializer):
+    MANY2ONE_SERIALIZER = {Translation.MANY2ONE_RELATED['SEQUENCE']: SequenceSerializer,
+                           Translation.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer}
+    ONE2MANY_SERIALIZER = {Translation.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
+                           Translation.ONE2MANY_RELATED['TRANSCRIPT']:
+                               "transcript.drf.serializers.TranscriptSerializer"}
+
+    assembly = AssemblyField(read_only=True)
+
+    translation_release_set = ReleaseSetSerializer(many=True)
+
+    class Meta:
+        model = Translation
+        fields = CommonFields.COMMON_FIELD_SET + ('translation_id', 'translation_checksum', 'translation_release_set')
+
+    def __init__(self, *args, **kwargs):
+        super(TranslationDetailSerializer, self).__init__(*args, **kwargs)
+        self.set_related_fields(TranslationDetailSerializer, **kwargs)
+
+
 class TranslationTranscriptSerializer(SerializerMixin, serializers.ModelSerializer):
     translation_id = serializers.ReadOnlyField(source='translation.translation_id')
     stable_id = serializers.ReadOnlyField(source='translation.stable_id')

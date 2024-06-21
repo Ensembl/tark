@@ -334,35 +334,85 @@
                             <thead>
                             <tr style="background-color: #4b6584;color:#ffffff">
                                 <th class="text-center" data-sortable="false">StableID.version</th>
+                                <th class="text-center" data-sortable="true">Assembly</th>
+                                <th class="text-center" data-sortable="true">Source</th>
+                                <th class="text-center" data-sortable="true">From Release</th>
+                                <th class="text-center" data-sortable="true">To Release</th>
                                 <th class="text-center" data-sortable="false">5'UTR</th>
                                 <th class="text-center" data-sortable="false">CDS</th>
                                 <th class="text-center" data-sortable="false">3'UTR</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% if transcript_details.translations %}
-                                {% with transcript_details.translations.0 as translation %}
+                                {% if transcript_details.translations %}
                                     {% with transcript_details.cds_info as cds_info %}
-                                        <tr>
-                                            <td>{{ translation.stable_id }}.{{ translation.stable_id_version }}</td>
-                                            <td>{{ cds_info.loc_region }}:{{ cds_info.five_prime_utr_start }}-{{ cds_info.five_prime_utr_end }}
-                                                ({{ cds_info.five_prime_utr_length }} bp)
-                                            </td>
-                                            <td>{{ translation.loc_region }}:{{ translation.loc_start }}-{{ translation.loc_end }}</td>
-                                            <td>{{ cds_info.loc_region }}:{{ cds_info.three_prime_utr_start }}-{{ cds_info.three_prime_utr_end }}
-                                                ({{ cds_info.three_prime_utr_length }} bp)
-                                            </td>
-
-                                        </tr>
+                                        {% for translation in transcript_details.translations %}
+                                            <tr>
+                                                <td>{{ translation.stable_id }}.{{ translation.stable_id_version }}</td>
+                                                <!--assembly -->
+                                                {% if translation.translation_release_set|get_values_as_list:"assembly" == "GRCh38" %}
+                                                    <td>{{ translation.translation_release_set|get_values_as_list:"assembly"}}</td>
+                                                {% else %}
+                                                    <td class="text-danger">
+                                                        {{ translation.translation_release_set|get_values_as_list:"assembly"}}</td>
+                                                {% endif %}
+                            
+                                                <!--source -->
+                                                {% if translation.translation_release_set|get_values_as_list:"source" == "Ensembl" %}
+                                                    <td>{{ translation.translation_release_set|get_values_as_list:"source"}}</td>
+                                                {% elif "LRG" in translation.translation_release_set|get_values_as_list:"source" %}
+                                                    <td class="text-success">LRG</td>
+                                                {% else %}
+                                                    <td class="text-success">
+                                                        {{ translation.translation_release_set|get_values_as_list:"source"}}</td>
+                                                {% endif %}
+                            
+                                                <!--release_set -->
+                                                {% if translation.translation_release_set|get_values_as_list:"source" == "Ensembl" or translation.translation_release_set|get_values_as_list:"source" == "LRG" %}
+                                                    {% with translation.translation_release_set|format_release_set:"ensembl" as release_date %}
+                                                        <td>
+                                                            <a target="_blank" href="http://e{{ release_date.min_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ translation.stable_id }}.{{ translation.stable_id_version }}">
+                                                                {{ release_date.min_release_datename_value }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a target="_blank" href="http://e{{ release_date.max_release }}.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t={{ translation.stable_id }}.{{ translation.stable_id_version }}" rel="noopener noreferrer">
+                                                                {{ release_date.max_release_datename_value }}
+                                                            </a>
+                                                        </td>
+                                                    {% endwith %}
+                                                {% else %}
+                                                    {% with translation.translation_release_set|format_release_set:"refseq" as release_date %}
+                                                        <td>
+                                                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{ translation.stable_id }}">
+                                                                {{ release_date.min_release_datename_value }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{{ translation.stable_id }}">
+                                                                {{ release_date.max_release_datename_value }}
+                                                            </a>
+                                                        </td>
+                                                    {% endwith %}
+                                                {% endif %}
+                            
+                                                <td>{{ cds_info.loc_region }}:{{ cds_info.five_prime_utr_start }}-{{ cds_info.five_prime_utr_end }}
+                                                    ({{ cds_info.five_prime_utr_length }} bp)
+                                                </td>
+                                                <td>{{ translation.loc_region }}:{{ translation.loc_start }}-{{ translation.loc_end }}</td>
+                                                <td>{{ cds_info.loc_region }}:{{ cds_info.three_prime_utr_start }}-{{ cds_info.three_prime_utr_end }}
+                                                    ({{ cds_info.three_prime_utr_length }} bp)
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     {% endwith %}
-                                {% endwith %}
-
-                            {% else %}
-                                <tr>
-                                    <td colspan='4'>No translation details for this transcript</td>
-                                </tr>
-                            {% endif %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan='4'>No translation details for this transcript</td>
+                                    </tr>
+                                {% endif %}
                             </tbody>
+                            
                         </table>
 
                     </div>
