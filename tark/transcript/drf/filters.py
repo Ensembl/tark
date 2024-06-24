@@ -230,6 +230,7 @@ class TranscriptDetailFilterBackend(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         identifier = request.query_params.get('stable_id_with_version', None)
+        assembly_name = request.query_params.get('assembly_name', None)
 
         # to support version search
         identifier_version = None
@@ -238,7 +239,12 @@ class TranscriptDetailFilterBackend(BaseFilterBackend):
 
         if identifier is not None and identifier_version is not None:
             queryset = queryset.filter(stable_id=identifier).filter(stable_id_version=str(identifier_version))
+            
+            if assembly_name:
+                queryset = queryset.select_related('assembly').filter(assembly__assembly_name=assembly_name)
+
             return queryset.distinct()
+
 
         return Transcript.objects.none()
 

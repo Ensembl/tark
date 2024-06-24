@@ -168,6 +168,7 @@ def search_home(request):
     if request.method == 'GET' and "identifier" in request.GET:
 
         search_identifier = request.GET['identifier']
+        
         if search_identifier is not None:
             # replace white space
             search_identifier = search_identifier.replace(" ", "")
@@ -398,11 +399,16 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
 def transcript_details(request, stable_id_with_version, search_identifier):
     host_url = ApiUtils.get_host_url(request)
 
+    # get assembly name
+    assembly_name = request.GET.get('assembly_name', None)
+
     # get transcript details
     query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
+                        "&assembly_name=" + assembly_name + \
                         "&expand_all=true"
     
     response = requests.get(host_url + query_url_details)
+
     transcript_details = {}
     translation_stable_id = ""
     if response.status_code == 200:

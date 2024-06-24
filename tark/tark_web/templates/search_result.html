@@ -607,10 +607,10 @@
                             <td><input type="radio" name="transcript1"></td>
                             <td><input type="checkbox" name="transcript2"></td>
                             <td>
-                                <a href="/web/transcript_details/{{ result.stable_id }}.{{ result.stable_id_version }}/{{ search_identifier|urlencode }}">{{ result.stable_id }}.{{ result.stable_id_version }}</a>
+                                <a href="/web/transcript_details/{{ result.stable_id }}.{{ result.stable_id_version }}/{{ search_identifier|urlencode }}?assembly_name={{ result.transcript_release_set|get_values_as_list:'assembly' }}">{{ result.stable_id }}.{{ result.stable_id_version }}</a>
                             </td>
 
-                            <td><a href="/web/search/?identifier={{ result.genes|get_values_as_list:"name"}}">
+                            <td><a href="/web/search/?identifier={{ result.genes|get_values_as_list:'name'}}">
                                 {{ result.genes|get_values_as_list:"name"}}</a></td>
 
                             <!--assembly -->
