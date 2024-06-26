@@ -430,9 +430,13 @@ def transcript_details(request, stable_id_with_version, search_identifier):
         logger.error("Error")
 
     # Prepare translations table data
-    trns = requests.get(host_url + "/api/translation/stable_id/" + translation_stable_id + "/")
+    translation_data = {}
+    try:
+        trns = requests.get(host_url + "/api/translation/stable_id/" + translation_stable_id + "/")
 
-    translation_data = trns.json()
+        translation_data = trns.json()
+    except:        
+        logger.error(f"No protein found for transcript {stable_id_with_version}")
 
     if "results" in translation_data:
         for translation in transcript_details['translations']:
