@@ -27,7 +27,7 @@ from release.models import TranscriptReleaseTag, \
 from transcript.models import Transcript
 from sequence.drf.serializers import SequenceSerializer
 from gene.drf.serializers import GeneSerializer
-from exon.drf.serializers import ExonTranscriptSerializer
+from exon.drf.serializers import ExonTranscriptSerializer, ExonSerializer
 from translation.drf.serializers import TranslationSerializer
 import json
 from tark.utils.exon_utils import ExonUtils
@@ -67,6 +67,21 @@ class TranscriptManeSerializer(serializers.Serializer):
     refseq_stable_id_version = serializers.CharField()
     mane_type = serializers.CharField()
     ens_gene_name = serializers.CharField()
+
+
+
+class TranscriptGeneSerializer(serializers.ModelSerializer):
+    assembly = AssemblyField(read_only=True)
+    exons = ExonSerializer(many=True)
+    translations = TranslationSerializer(many=True)
+
+    class Meta:
+        model = Transcript
+        fields = CommonFields.COMMON_FIELD_SET + ('exon_set_checksum', 'transcript_checksum',
+                                                  'exons', 'translations', 'biotype') + (
+            'three_prime_utr_start', 'three_prime_utr_end', 'three_prime_utr_seq', 'three_prime_utr_checksum',
+            'five_prime_utr_start', 'five_prime_utr_end', 'five_prime_utr_seq', 'five_prime_utr_checksum')
+
 
 
 class TranscriptSerializer(SerializerMixin, serializers.ModelSerializer):

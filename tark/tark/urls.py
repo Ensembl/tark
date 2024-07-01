@@ -15,7 +15,7 @@
    limitations under the License.
 """
 
-from django.urls.conf import include
+from django.urls.conf import include, path
 from rest_framework_swagger.views import get_swagger_view
 
 from django.conf.urls import url
@@ -71,6 +71,7 @@ urlpatterns = [
         name="privacy_notice_tark"),
     url(r'^robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'),
         name="robots_file"),
+        # path("__debug__/", include("debug_toolbar.urls")),
 
 ]
 

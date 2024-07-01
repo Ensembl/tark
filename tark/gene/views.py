@@ -19,6 +19,8 @@ from __future__ import unicode_literals
 
 from rest_framework import generics
 from gene.models import Gene
+from release.models import ReleaseSet
+from transcript.models import Transcript
 
 from tark_drf.utils.decorators import setup_eager_loading
 
@@ -26,6 +28,7 @@ from gene.drf.serializers import GeneSerializer
 from gene.drf.filters import GeneFilterBackend
 from tark.views import DataTableListApi
 from tark.utils.schema_utils import SchemaUtils
+from django.db.models import Prefetch
 
 
 class GeneDatatableView(DataTableListApi):
@@ -42,7 +45,31 @@ class GeneList(generics.ListAPIView):
 
     @setup_eager_loading(GeneSerializer)
     def get_queryset(self):
-        queryset = Gene.objects.order_by('pk')
+        # To reduce the number of queries sent to the database, several prefetch relationship objects are created below.
+
+        # Create a prefetch object for gene_release_sets with nested prefetches
+        gene_release_set_prefetch = Prefetch(
+            'gene_release_set',
+            queryset=ReleaseSet.objects.select_related('assembly', 'source').all()
+        )
+
+        # Prefetch for nested relationships within Transcript
+        transcript_prefetch = Prefetch(
+            'transcripts',
+            queryset=Transcript.objects.select_related(
+                'assembly', 'sequence', 'session'
+            ).prefetch_related(
+                'transcript_release_set',
+                'exons',
+                'translations'
+            )
+        )
+
+        queryset = Gene.objects.prefetch_related(
+            transcript_prefetch,
+            gene_release_set_prefetch
+        ).order_by('pk')
+
         return queryset
 
 
