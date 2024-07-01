@@ -400,7 +400,7 @@ def transcript_details(request, stable_id_with_version, search_identifier):
     host_url = ApiUtils.get_host_url(request)
 
     # get assembly name
-    assembly_name = request.GET.get('assembly_name', None)
+    assembly_name = request.GET.get('assembly_name', '')
 
     # get transcript details
     query_url_details = "/api/transcript/stable_id_with_version/?stable_id_with_version=" + stable_id_with_version + \
