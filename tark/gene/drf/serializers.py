@@ -41,7 +41,8 @@ class HgncNameField(serializers.RelatedField):
 class GeneSerializer(SerializerMixin, serializers.ModelSerializer):
     MANY2ONE_SERIALIZER = {Gene.MANY2ONE_RELATED['ASSEMBLY']: AssemblySerializer,
                            Gene.MANY2ONE_RELATED['HGNC']: GeneNamesSerializer}
-    ONE2MANY_SERIALIZER = {Gene.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer}
+    ONE2MANY_SERIALIZER = {Gene.ONE2MANY_RELATED['RELEASE_SET']: ReleaseSetSerializer,
+                           Gene.ONE2MANY_RELATED['GENE_TRANSCRIPT']: "transcript.drf.serializers.TranscriptGeneSerializer"}
 
     assembly = AssemblyField(read_only=True)
     name = HgncNameField(read_only=True)

@@ -54,7 +54,7 @@ class Transcript(auto_prefetch.Model):
     transcript_release_set = models.ManyToManyField('release.ReleaseSet', through='release.TranscriptReleaseTag',
                                                     related_name='transcript_release_set')
     biotype = models.CharField(max_length=40, blank=True, null=True)
-    genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene')
+    genes = models.ManyToManyField('gene.Gene', through='transcript.TranscriptGene', related_name='transcripts')
     exons = models.ManyToManyField('exon.Exon', through='exon.ExonTranscript')
     translations = models.ManyToManyField('translation.Translation', through='translation.TranslationTranscript')
 
