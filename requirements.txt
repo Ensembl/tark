@@ -5,9 +5,9 @@ markdown==2.6.11
 django-filter==2.4.0
 django-crispy-forms==1.7.0
 django-rest-swagger==2.1.2
-mysqlclient==2.1.1
-numpy==1.19.5
-biopython==1.70
+mysqlclient==2.2.4
+numpy==2.0.1
+biopython==1.77
 bcbio-gff==0.6.4
 wget==3.2
 pyfaidx==0.6.2
