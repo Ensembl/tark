@@ -215,7 +215,14 @@ class TranscriptSearchFilterBackend(BaseFilterBackend):
             elif identifier_type == SearchUtils.LRG_GENE:
                 queryset = queryset.filter(genes__stable_id__exact=identifier)
             elif identifier_type == SearchUtils.HGNC_SYMBOL:
-                queryset = queryset.filter(genes__name__name__exact=identifier)
+                # restrict the gene name search to primary names from source
+                # type HGNC. There's code in tark/fields.py that purports to do
+                # this but it doesn't seem to be working.
+                queryset = queryset.filter(
+                    genes__name__name__exact=identifier,
+                    genes__name__primary_id__exact=1,
+                    genes__name__source__exact='HGNC'
+                )
 
         return queryset.distinct()
 
