@@ -250,7 +250,6 @@
                 var source = payload_data_tr['transcript2_source'];
                 var release = payload_data_tr['transcript2_release'];
                 tr_result = get_tr_details(stable_id, stable_id_version, release, assembly, source);
-                console.log("tr_result --> ", tr_result)
                 transcript_container.push(tr_result);
             });
             return transcript_container;
