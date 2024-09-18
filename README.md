@@ -65,3 +65,11 @@ Run all the tests in the package:
 ./manage.py test --settings=tark.settings.test
 ```
 
+### Using Docker
+
+To run the app using docker, build and then run the image
+```
+docker build -t tark_app .
+
+docker run -p 8000:8000 tark_app
+```
