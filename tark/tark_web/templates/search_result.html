@@ -91,7 +91,7 @@
 
             document.getElementById('search_diff_transcript').scrollIntoView();
 
-            all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
+            var all_trancripts_details = get_all_transcript_details(payload_data_tr2_list);
 
 
             //get details for the first transcript
@@ -218,8 +218,8 @@
         }
 
         function get_tr_details(stable_id, stable_id_version, release, assembly, source) {
-            tr_results = {};
-            tr_url = "/api/transcript/?stable_id=" + stable_id + "&stable_id_version=" + stable_id_version + "&release_short_name=" + release + "&assembly_name=" + assembly + "&source_name=" + source + "&expand_all=true";
+            var tr_results = {};
+            var tr_url = "/api/transcript/?stable_id=" + stable_id + "&stable_id_version=" + stable_id_version + "&release_short_name=" + release + "&assembly_name=" + assembly + "&source_name=" + source + "&expand_all=true";
             $.ajax({
                 url: tr_url,
                 type: 'GET',
