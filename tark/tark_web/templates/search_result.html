@@ -41,13 +41,9 @@
             }
             transcript_release = transcript_releases_trimmed.sort().pop();
 
-            //removing e and r from release
-            if (transcript_release.startsWith("e")) {
-                transcript_release = transcript_release.substring(1, 4);
-                //console.log(' From e ' + transcript_release);
-            } else if (transcript_release.startsWith("r")) {
-                transcript_release = transcript_release.substring(1, 13);
-                //console.log('From r ' + transcript_release)
+            // Removing 'e' or 'r' from the start of transcript_release
+            if (transcript_release.startsWith("e") || transcript_release.startsWith("r")) {
+                transcript_release = transcript_release.substring(1);  // Skips the first character
             } else {
                 transcript_release = transcript_release.substring(0, 2);
             }
@@ -254,6 +250,7 @@
                 var source = payload_data_tr['transcript2_source'];
                 var release = payload_data_tr['transcript2_release'];
                 tr_result = get_tr_details(stable_id, stable_id_version, release, assembly, source);
+                console.log("tr_result --> ", tr_result)
                 transcript_container.push(tr_result);
             });
             return transcript_container;
