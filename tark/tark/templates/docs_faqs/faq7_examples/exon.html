@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/exon/exon_list">GET /api/exon/ </a>
+            <td><a href="https://tark.ensembl.org/api/#!/exon/exon_list">GET /api/exon/ </a>
             </td>
             <td> Fetch details of all exons. <br> An exon is the portion of a gene that codes
                 for amino acids.
@@ -20,7 +20,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/exon/exon_read">GET /api/exon/{exon_id}/
+            <td><a href="https://tark.ensembl.org/api/#!/exon/exon_read">GET /api/exon/{exon_id}/
             </a></td>
             <td> Fetch details of a given exon.</td>
             <td>
@@ -55,7 +55,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/exon/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -80,7 +80,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/exon/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -100,7 +100,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/exon/'
 
 url = URI.parse(server)
@@ -145,7 +145,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/exon/&quot;;
     URL url = new URL(server + ext);
 
@@ -198,7 +198,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/exon/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -217,7 +217,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_exon_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/exon/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/exon/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -227,7 +227,7 @@ curl 'http://tark.ensembl.org/api/exon/' -H 'Content-type:application/json'
                             <div class='tab-pane' id='api_exon_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/exon/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/exon/'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -271,7 +271,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/exon/1/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -297,7 +297,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/exon/1/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -318,7 +318,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/exon/1/'
 
 url = URI.parse(server)
@@ -364,7 +364,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/exon/1/&quot;;
     URL url = new URL(server + ext);
 
@@ -418,7 +418,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/exon/1/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -438,7 +438,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_exon_exon_id_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/exon/1/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/exon/1/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -449,7 +449,7 @@ curl 'http://tark.ensembl.org/api/exon/1/' -H 'Content-type:application/json'
                             <div class='tab-pane' id='api_exon_exon_id_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/exon/1/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/exon/1/'  -O -
                                     </code>
                                 </pre>
                             </div>

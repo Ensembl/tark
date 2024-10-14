@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_list">GET
+            <td><a href="https://tark.ensembl.org/api/#!/transcript/transcript_list">GET
                 /api/transcript/ </a></td>
             <td> Fetch details of all transcripts. <br> Transcription is the process of making
                 an RNA (transcript) copy of a gene sequence.
@@ -20,7 +20,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_diff_list">GET
+            <td><a href="https://tark.ensembl.org/api/#!/transcript/transcript_diff_list">GET
                 /api/transcript/diff/ </a></td>
             <td> Compare two given transcripts.</td>
             <td>
@@ -29,7 +29,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_manelist_list">GET
+            <td><a href="https://tark.ensembl.org/api/#!/transcript/transcript_manelist_list">GET
                 /api/transcript/manelist/ </a></td>
             <td><a
                     href="https://ncbiinsights.ncbi.nlm.nih.gov/2018/10/11/matched-annotation-by-ncbi-and-embl-ebi-mane-a-new-joint-venture-to-define-a-set-of-representative-transcripts-for-human-protein-coding-genes/">MANE</a>
@@ -41,7 +41,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/transcript/transcript_search_list">GET
+            <td><a href="https://tark.ensembl.org/api/#!/transcript/transcript_search_list">GET
                 /api/transcript/search/ </a></td>
             <td> Fetch details of a given transcript.</td>
             <td>
@@ -50,7 +50,7 @@
         </tr>
         <tr>
             <td><a
-                    href="http://tark.ensembl.org/api/#!/transcript/transcript_stable_id_with_version_list">GET
+                    href="https://tark.ensembl.org/api/#!/transcript/transcript_stable_id_with_version_list">GET
                 /api/transcript/stable_id_with_version/ </a></td>
             <td> Fetch details of a given transcript.</td>
             <td>
@@ -87,7 +87,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/transcript/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -113,7 +113,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/transcript/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -134,7 +134,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/transcript/'
 
 url = URI.parse(server)
@@ -180,7 +180,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/transcript/&quot;;
     URL url = new URL(server + ext);
 
@@ -234,7 +234,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/transcript/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -254,7 +254,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_transcript_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/transcript/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/transcript/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -265,7 +265,7 @@ curl 'http://tark.ensembl.org/api/transcript/' -H 'Content-type:application/json
                             <div class='tab-pane' id='api_transcript_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/transcript/'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -309,7 +309,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -335,7 +335,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -356,7 +356,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934'
 
 url = URI.parse(server)
@@ -402,7 +402,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;;
     URL url = new URL(server + ext);
 
@@ -456,7 +456,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -476,7 +476,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_transcript_diff_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -487,7 +487,7 @@ curl 'http://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST0000038
                             <div class='tab-pane' id='api_transcript_diff_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/transcript/diff/?diff_me_stable_id=ENST00000380152&diff_with_stable_id=ENST00000252934'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -532,7 +532,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/transcript/manelist/?page=1';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -558,7 +558,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/transcript/manelist/?page=1&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -579,7 +579,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/transcript/manelist/?page=1'
 
 url = URI.parse(server)
@@ -625,7 +625,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/transcript/manelist/?page=1&quot;;
     URL url = new URL(server + ext);
 
@@ -679,7 +679,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/transcript/manelist/?page=1&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -699,7 +699,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_transcript_manelist_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/transcript/manelist/?page=1' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/transcript/manelist/?page=1' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -710,7 +710,7 @@ curl 'http://tark.ensembl.org/api/transcript/manelist/?page=1' -H 'Content-type:
                             <div class='tab-pane' id='api_transcript_manelist_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/manelist/?page=1'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/transcript/manelist/?page=1'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -755,7 +755,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -781,7 +781,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -802,7 +802,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set'
 
 url = URI.parse(server)
@@ -848,7 +848,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;;
     URL url = new URL(server + ext);
 
@@ -902,7 +902,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -922,7 +922,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_transcript_search_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -933,7 +933,7 @@ curl 'http://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG000001
                             <div class='tab-pane' id='api_transcript_search_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/transcript/search/?identifier_field=ENSG00000139618&expand=transcript_release_set'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -986,7 +986,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -1013,7 +1013,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -1035,7 +1035,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set'
 
 url = URI.parse(server)
@@ -1082,7 +1082,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;;
     URL url = new URL(server + ext);
 
@@ -1136,7 +1136,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -1157,7 +1157,7 @@ head(fromJSON(toJSON(content(r))))
                                  id='api_transcript_stable_id_with_version_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -1169,7 +1169,7 @@ curl 'http://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_w
                                  id='api_transcript_stable_id_with_version_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/transcript/stable_id_with_version/?stable_id_with_version=ENST00000252934.10&expand=transcript_release_set'  -O -
                                     </code>
                                 </pre>
                             </div>

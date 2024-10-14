@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/assembly/assembly_list">GET
+            <td><a href="https://tark.ensembl.org/api/#!/assembly/assembly_list">GET
                 /api/assembly/ </a></td>
             <td> Fetch details of all reference assemblies. <br> Available: GrCh37, GRch38.</td>
             <td>
@@ -18,7 +18,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/assembly/assembly_read">GET
+            <td><a href="https://tark.ensembl.org/api/#!/assembly/assembly_read">GET
                 /api/assembly/{assembly_id}/ </a></td>
             <td> Fetch details of a given reference assembly.</td>
             <td>
@@ -54,7 +54,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/assembly/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -80,7 +80,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/assembly/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -101,7 +101,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/assembly/'
 
 url = URI.parse(server)
@@ -147,7 +147,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/assembly/&quot;;
     URL url = new URL(server + ext);
 
@@ -200,7 +200,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/assembly/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -220,7 +220,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_assembly_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/assembly/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/assembly/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -231,7 +231,7 @@ curl 'http://tark.ensembl.org/api/assembly/' -H 'Content-type:application/json'
                             <div class='tab-pane' id='api_assembly_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/assembly/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/assembly/'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -276,7 +276,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/assembly/1001/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -302,7 +302,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/assembly/1001/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -323,7 +323,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/assembly/1001/'
 
 url = URI.parse(server)
@@ -369,7 +369,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/assembly/1001/&quot;;
     URL url = new URL(server + ext);
 
@@ -423,7 +423,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/assembly/1001/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -443,7 +443,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_assembly_assembly_id_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/assembly/1001/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/assembly/1001/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -454,7 +454,7 @@ curl 'http://tark.ensembl.org/api/assembly/1001/' -H 'Content-type:application/j
                             <div class='tab-pane' id='api_assembly_assembly_id_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/assembly/1001/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/assembly/1001/'  -O -
                                     </code>
                                 </pre>
                             </div>
