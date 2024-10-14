@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/gene/gene_list">GET /api/gene/ </a>
+            <td><a href="https://tark.ensembl.org/api/#!/gene/gene_list">GET /api/gene/ </a>
             </td>
             <td> Fetch details of all genes.</td>
             <td>
@@ -18,7 +18,7 @@
             </td>
         </tr>
         <tr>
-            <td><a href="http://tark.ensembl.org/api/#!/gene/gene_read">GET /api/gene/{gene_id}/
+            <td><a href="https://tark.ensembl.org/api/#!/gene/gene_read">GET /api/gene/{gene_id}/
             </a></td>
             <td> Fetch details of a given gene.</td>
             <td>
@@ -53,7 +53,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/gene/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -79,7 +79,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/gene/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -99,7 +99,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/gene/'
 
 url = URI.parse(server)
@@ -144,7 +144,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/gene/&quot;;
     URL url = new URL(server + ext);
 
@@ -197,7 +197,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/gene/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -216,7 +216,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_gene_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/gene/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/gene/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -226,7 +226,7 @@ curl 'http://tark.ensembl.org/api/gene/' -H 'Content-type:application/json'
                             <div class='tab-pane' id='api_gene_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/gene/'  -O -
                                     </code>
                                 </pre>
                             </div>
@@ -270,7 +270,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 my $http = HTTP::Tiny-&gt;new();
-my $server = 'http://tark.ensembl.org';
+my $server = 'https://tark.ensembl.org';
 my $ext = '/api/gene/1/';
 my $response = $http-&gt;get($server.$ext, {
   headers =&gt; { 'Content-type' =&gt; 'application/json' }
@@ -296,7 +296,7 @@ if(length $response-&gt;{content}) {
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="python">
 import requests, sys
-server = &quot;http://tark.ensembl.org&quot;
+server = &quot;https://tark.ensembl.org&quot;
 ext = &quot;/api/gene/1/&quot;
 r = requests.get(server+ext, headers={ &quot;Content-Type&quot; : &quot;application/json&quot;})
 if not r.ok:
@@ -317,7 +317,7 @@ print(repr(decoded))
 require 'net/http'
 require 'uri'
 
-server='http://tark.ensembl.org'
+server='https://tark.ensembl.org'
 path = '/api/gene/1/'
 
 url = URI.parse(server)
@@ -363,7 +363,7 @@ import java.io.Reader;
 public class EnsemblRest {
 
   public static void main(String[] args) throws Exception {
-    String server = &quot;http://tark.ensembl.org&quot;;
+    String server = &quot;https://tark.ensembl.org&quot;;
     String ext = &quot;/api/gene/1/&quot;;
     URL url = new URL(server + ext);
 
@@ -417,7 +417,7 @@ library(httr)
 library(jsonlite)
 library(xml2)
 
-server &lt;- &quot;http://tark.ensembl.org&quot;
+server &lt;- &quot;https://tark.ensembl.org&quot;
 ext &lt;- &quot;/api/gene/1/&quot;
 
 r &lt;- GET(paste(server, ext, sep = &quot;&quot;), content_type(&quot;application/json&quot;))
@@ -437,7 +437,7 @@ head(fromJSON(toJSON(content(r))))
                             <div class='tab-pane' id='api_gene_gene_id_curl'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="curl">
-curl 'http://tark.ensembl.org/api/gene/1/' -H 'Content-type:application/json'
+curl 'https://tark.ensembl.org/api/gene/1/' -H 'Content-type:application/json'
                                     </code>
                                 </pre>
                             </div>
@@ -448,7 +448,7 @@ curl 'http://tark.ensembl.org/api/gene/1/' -H 'Content-type:application/json'
                             <div class='tab-pane' id='api_gene_gene_id_wget'>
                                 <pre class="pre-scrollable prettyprint linenums">
                                     <code class="wget">
-wget -q --header='Content-type:application/json' 'http://tark.ensembl.org/api/gene/1/'  -O -
+wget -q --header='Content-type:application/json' 'https://tark.ensembl.org/api/gene/1/'  -O -
                                     </code>
                                 </pre>
                             </div>
