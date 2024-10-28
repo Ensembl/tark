@@ -17,6 +17,7 @@ spec:
       containers:
       - name: django-container
         image: <DOCKER_IMAGE>
+        # image: dockerhub.ebi.ac.uk/ensembl-apps/tark
         imagePullPolicy: Always
         command: ["gunicorn"]
         args: [
