@@ -1,0 +1,22 @@
+# .gitlab-ci.yml
+
+stages:
+  - test  # Define the pipeline stage
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"  # Cache directory for pip
+
+# Define the test job
+test_job:
+  stage: test
+  image: python:3.9  # Use a Python Docker image (adjust the version as needed)
+  before_script:
+    - python -m venv venv         # Create a virtual environment
+    - source venv/bin/activate    # Activate the virtual environment
+  script:
+    - echo "Installing dependencies..."
+    - pip install -r requirements.txt  # Install dependencies
+    - echo "Running tests..."
+  cache:
+    paths:
+      - .cache/pip/  # Cache pip dependencies
