@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # env variables for the backend app
+  DJANGO_ENVIRONMENT: development
+  DEBUG: "1"
+  PYTHONPATH: /code/tark
+  # these guys allow the app to connect to the internet
+  # https://www.ebi.ac.uk/seqdb/confluence/display/EXT/Web+Production+Kubernetes+Service
+  HTTP_PROXY: http://hh-wwwcache.ebi.ac.uk:3128
+  HTTPS_PROXY: http://hh-wwwcache.ebi.ac.uk:3128
+  http_proxy: http://hh-wwwcache.ebi.ac.uk:3128
+  https_proxy: http://hh-wwwcache.ebi.ac.uk:3128
+  no_proxy: localhost,.cluster.local

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+spec:
+  selector:
+    matchLabels:
+      app: django
+  template:
+    spec:
+      containers:
+      - name: django-container
+        envFrom:
+        - configMapRef:
+            name: app-config-staging
+        - configMapRef:
+            name: db-config-staging
+        - secretRef:
+            name: db-secret-staging

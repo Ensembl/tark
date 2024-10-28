@@ -15,7 +15,6 @@
    limitations under the License.
 """
 
-from Bio.Alphabet import generic_dna
 from Bio.SeqRecord import SeqRecord
 from io import StringIO
 from Bio.Seq import Seq
@@ -281,7 +280,7 @@ class TarkSeqUtils(object):
 
     @classmethod
     def format_fasta(cls, sequence, id_="ID_", name_="", description_=""):
-        record = SeqRecord(Seq(sequence, generic_dna),
+        record = SeqRecord(Seq(sequence),
                            id=id_, name=name_, description=description_)
 
         sequences = [record]

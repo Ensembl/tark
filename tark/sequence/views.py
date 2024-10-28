@@ -26,7 +26,8 @@ import urllib
 from django.http.response import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from setuptools.dist import sequence
+# from setuptools.dist import sequence
+sequence = (tuple, list)
 import io
 
 

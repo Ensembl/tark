@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: mysql-service
+subsets:
+- addresses:
+  - ip: 10.42.34.65
+  ports:
+  - name: mysql
+    port: 4650

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  DATABASE_USER: wpk8s_ro
+  DATABASE_NAME: ensembl_tark_e75_to_e112
+
