@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y default-libmysqlclient-dev \
     liblapack-dev \
     python3-dev
 
+COPY requirements.txt /code/
 COPY requirements-dev.txt /code/
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r requirements-dev.txt
