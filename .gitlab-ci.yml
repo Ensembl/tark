@@ -65,3 +65,8 @@ deploy_to_k8s_production:
     - sed -i "s#<DOCKER_IMAGE>#${DOCKER_IMAGE}#g" ./k8s/base/app/django-deployment.yaml
     - kubectl apply -k ./k8s/overlays/production
     - kubectl rollout restart deployment django-deployment-production -n tark-production
+
+  only:
+  - main
+
+  when: manual
