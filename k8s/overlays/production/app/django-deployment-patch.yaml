@@ -9,12 +9,17 @@ spec:
       app: django
   template:
     spec:
-      containers:
-      - name: django-container
-        envFrom:
-        - configMapRef:
-            name: app-config-production
-        - configMapRef:
-            name: db-config-production
-        - secretRef:
-            name: db-secret-production
+      containers:        
+        - name: django-container
+          resources:
+           limits:
+             memory: 10000Mi
+           requests:
+             memory: 8000Mi
+          envFrom:
+          - configMapRef:
+              name: app-config-production
+          - configMapRef:
+              name: db-config-production
+          - secretRef:
+              name: db-secret-production

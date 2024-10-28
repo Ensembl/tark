@@ -68,5 +68,6 @@ deploy_to_k8s_production:
 
   only:
   - main
+  - migrate_to_k8s
 
   when: manual

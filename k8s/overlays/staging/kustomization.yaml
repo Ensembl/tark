@@ -9,6 +9,7 @@ nameSuffix: -staging
 patches:
 - path: app/django-service-patch.yaml
 - path: app/django-deployment-patch.yaml
+- path: app/nodeport-service-patch.yaml
 
 - path: config/app-cm-patch.yaml
 - path: config/db-cm-patch.yaml

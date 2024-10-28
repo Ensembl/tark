@@ -9,11 +9,16 @@ spec:
   template:
     spec:
       containers:
-      - name: django-container
-        envFrom:
-        - configMapRef:
-            name: app-config-staging
-        - configMapRef:
-            name: db-config-staging
-        - secretRef:
-            name: db-secret-staging
+        - name: django-container
+          resources:
+           limits:
+             memory: 6000Mi
+           requests:
+             memory: 4000Mi
+          envFrom:
+          - configMapRef:
+              name: app-config-staging
+          - configMapRef:
+              name: db-config-staging
+          - secretRef:
+              name: db-secret-staging
