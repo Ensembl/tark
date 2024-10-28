@@ -15,3 +15,5 @@ patches:
 
 - path: mysql/mysql-endpoint-patch.yaml
 - path: mysql/mysql-service-patch.yaml
+
+- path: ingress/ingress-patch.yaml

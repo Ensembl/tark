@@ -11,3 +11,5 @@ resources:
 
   - mysql/mysql-endpoint.yaml
   - mysql/mysql-service.yaml
+
+  - ingress/ingress-resource.yaml
