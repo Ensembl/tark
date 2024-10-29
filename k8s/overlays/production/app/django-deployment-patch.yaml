@@ -13,9 +13,9 @@ spec:
         - name: django-container
           resources:
            limits:
-             memory: 10000Mi
+             memory: 16000Mi
            requests:
-             memory: 8000Mi
+             memory: 12000Mi
           envFrom:
           - configMapRef:
               name: app-config-production
