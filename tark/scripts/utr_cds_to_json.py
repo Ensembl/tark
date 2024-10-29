@@ -42,12 +42,12 @@ def populate_manelist_file(args):
                          JOIN gene_names gn1 ON
                     gene1.name_id = gn1.external_id and gn1.primary_id = 1
                          JOIN transcript t3 ON t3.stable_id = t1.stable_id
-                    AND t3.assembly_id = 1
+                    AND t3.assembly_id = 2205
                          JOIN translation_transcript tt1 ON tt1.transcript_id = t1.transcript_id
                          JOIN translation tl1 ON tl1.translation_id = tt1.translation_id
                          JOIN translation_transcript tt3 ON tt3.transcript_id = t3.transcript_id
                          JOIN translation tl3 ON tl3.translation_id = tt3.translation_id
-                WHERE t1.assembly_id = 1001
+                WHERE t1.assembly_id = 1
                   and tl3.seq_checksum = tl1.seq_checksum
                 ORDER BY gn1.name
                 """

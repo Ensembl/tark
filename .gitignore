@@ -20,3 +20,4 @@ inspectdb
 *.py~
 local.py
 secrets.yaml
+appenv

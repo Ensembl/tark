@@ -24,7 +24,7 @@ spec:
             "--bind",
             "0.0.0.0:8000",
             "--timeout",
-            "120",
+            "300",
             "--workers",
             "$(WORKERS)",
             "tark.wsgi:application"
