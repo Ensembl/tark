@@ -34,7 +34,8 @@ RUN chown -R myuser:myuser /code
 RUN python tark/manage.py collectstatic --noinput
 
 # Copy MANE_grch37 file
-COPY mane_grch37.txt /code/tark/tark/staticfiles
+RUN mkdir -p /code/tark/tark/staticfiles/txt
+COPY mane_grch37.txt /code/tark/tark/staticfiles/txt
 
 # Use the created user to run the application
 USER myuser
