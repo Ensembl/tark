@@ -11,7 +11,7 @@ spec:
     http:
       paths:
       # URL ROUTING 
-      - path: /
+      - path: /?(.*)
         pathType: Prefix
         backend:
           service:
