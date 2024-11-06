@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  DJANGO_ALLOWED_HOSTS: "hh-rke-wp-webadmin-31-worker-1.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-2.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-3.caas.ebi.ac.uk dev-tark.ensembl.org wp-np2-16.ebi.ac.uk"
+  DJANGO_ALLOWED_HOSTS: "hh-rke-wp-webadmin-31-worker-1.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-2.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-3.caas.ebi.ac.uk dev-tark.ensembl.org"
   WORKERS: "10"

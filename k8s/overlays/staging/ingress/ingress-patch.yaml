@@ -5,10 +5,7 @@ kind: Ingress
 metadata:
   name: tark-ingress
 spec:
-  tls:
-  - hosts:
-    - dev-tark.ensembl.org
-    # secretName: thr-ssl-certificate
+  ingressClassName: nginx
   rules:
   - host: dev-tark.ensembl.org
     http:
