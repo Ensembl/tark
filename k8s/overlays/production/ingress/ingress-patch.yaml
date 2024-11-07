@@ -5,16 +5,13 @@ kind: Ingress
 metadata:
   name: tark-ingress
 spec:
-  tls:
-  - hosts:
-    - tark.ensembl.org
-    # secretName: thr-ssl-certificate
+  ingressClassName: nginx
   rules:
   - host: tark.ensembl.org
     http:
       paths:
       # URL ROUTING 
-      - path: /
+      - path: /?(.*)
         pathType: Prefix
         backend:
           service:
