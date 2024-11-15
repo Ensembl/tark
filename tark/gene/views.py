@@ -45,6 +45,13 @@ class GeneList(generics.ListAPIView):
 
     @setup_eager_loading(GeneSerializer)
     def get_queryset(self):
+        # Access and print the "HTTP_X_FORWARDED_PROTO" header from the request
+        x_forwarded_proto = self.request.META.get("HTTP_X_FORWARDED_PROTO")
+        print("HTTP_X_FORWARDED_PROTO:", x_forwarded_proto)
+
+        headers = {key: value for key, value in self.request.META.items() if key.startswith("HTTP_")}
+        print("Request Headers:", headers)
+
         # To reduce the number of queries sent to the database, several prefetch relationship objects are created below.
 
         # Create a prefetch object for gene_release_sets with nested prefetches

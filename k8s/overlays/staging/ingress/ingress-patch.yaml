@@ -6,6 +6,9 @@ metadata:
   name: tark-ingress
 spec:
   ingressClassName: nginx
+  # tls:
+  #   - hosts:
+  #     - dev-tark.ensembl.org
   rules:
   - host: dev-tark.ensembl.org
     http:
