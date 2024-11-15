@@ -45,3 +45,4 @@ EXPOSE 8000
 
 # Run gunicorn as the container's main process
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "120", "tark.wsgi:application"]
+# CMD ["python", "tark/manage.py", "runserver", "0.0.0.0:8000"]

@@ -15,10 +15,11 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from sequence import views
 
 urlpatterns = [
-    url(r'^$', views.SequenceList.as_view(), name='sequence_list'),
+    re_path(r'^$', views.SequenceList.as_view(), name='sequence_list'),
 
 ]
