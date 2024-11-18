@@ -20,3 +20,6 @@ migrations
 inspectdb
 *.py~
 local.py
+
+appenv
+secrets.yaml
