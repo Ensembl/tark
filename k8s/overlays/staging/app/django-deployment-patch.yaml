@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+spec:
+  selector:
+    matchLabels:
+      app: django
+  template:
+    spec:
+      containers:
+        - name: django-container
+          resources:
+           limits:
+             memory: 6000Mi
+           requests:
+             memory: 4000Mi
+          envFrom:
+          - configMapRef:
+              name: app-config-staging
+          - configMapRef:
+              name: db-config-staging
+          - secretRef:
+              name: db-secret-staging

@@ -17,15 +17,15 @@
 import auto_prefetch
 from django.db import models
 from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 import binascii
 
+# Removed IUPAC references as they are no longer needed in Biopython
 ALPHABETS = {
-    'gene': IUPAC.ambiguous_dna,
-    'transcript': IUPAC.ambiguous_dna,
-    'exon': IUPAC.ambiguous_dna,
-    'translation': IUPAC.extended_protein
+    'gene': 'DNA',
+    'transcript': 'DNA',
+    'exon': 'DNA',
+    'translation': 'protein'
 }
 
 
@@ -71,7 +71,8 @@ class GeneSetField(models.CharField):
 class SequenceField(models.TextField):
     @classmethod
     def alphabet_type(cls, feature_type):
-        return ALPHABETS.get(feature_type, IUPAC.Alphabet)
+        # Updated to use a simple string identifier, no need for IUPAC
+        return ALPHABETS.get(feature_type, 'DNA')
 
     def from_db_value(self, value, expression, connection, context):
         if value is None:
@@ -105,7 +106,7 @@ class SequenceField(models.TextField):
 class HGNCForwardManyToOneDescription(ForwardManyToOneDescriptor):
     """
     We need to address what occurs when a lookup in the gene_name table
-    fails because the HGNC column is NULL. There might be a more eligant
+    fails because the HGNC column is NULL. There might be a more elegant
     way to handle this in django, I just haven't found it. So we're
     overloading the relationship manager such that when a __get__ is
     done, if the related column in gene_name fails we return none
@@ -124,7 +125,7 @@ class HGNCForwardManyToOneDescription(ForwardManyToOneDescriptor):
 class HGNCField(auto_prefetch.ForeignKey):
     """
     Derived class from ForeignKey, adding the restriction when following the
-    froreign key to HGNC names, we only want the primary name from source type
+    foreign key to HGNC names, we only want the primary name from source type
     HGNC. Overloading get_extra_descriptor_filter just returns extra join
     conditions when looking up in the gene_names table.
     """
@@ -141,3 +142,4 @@ class HGNCField(auto_prefetch.ForeignKey):
         super(HGNCField, self).contribute_to_class(cls, name, private_only, **kwargs)
 
         setattr(cls, self.name, HGNCForwardManyToOneDescription(self))
+        

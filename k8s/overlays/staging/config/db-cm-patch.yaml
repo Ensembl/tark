@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  DATABASE_HOST: mysql-service-staging
+  DATABASE_PORT: "4650"

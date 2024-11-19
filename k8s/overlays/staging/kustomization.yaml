@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tark-staging
+resources:
+- ../../base/
+
+nameSuffix: -staging
+
+patches:
+- path: app/django-service-patch.yaml
+- path: app/django-deployment-patch.yaml
+- path: app/nodeport-service-patch.yaml
+
+- path: config/app-cm-patch.yaml
+- path: config/db-cm-patch.yaml
+
+- path: mysql/mysql-endpoint-patch.yaml
+- path: mysql/mysql-service-patch.yaml
+
+- path: ingress/ingress-patch.yaml

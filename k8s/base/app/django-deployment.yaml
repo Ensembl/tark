@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      imagePullSecrets:
+      - name: backend-registry-secret
+      containers:
+      - name: django-container
+        image: <DOCKER_IMAGE>
+        # image: dockerhub.ebi.ac.uk/ensembl-apps/tark:migrate-to-k8s
+        # image: dockerhub.ebi.ac.uk/ensembl-apps/tark:latest
+        imagePullPolicy: Always
+        command: ["gunicorn"]
+        args: [
+            "--bind",
+            "0.0.0.0:8000",
+            "--timeout",
+            "300",
+            "--workers",
+            "$(WORKERS)",
+            "tark.wsgi:application"
+          ]
+        ports:
+        - containerPort: 8000

@@ -10,7 +10,6 @@ __pycache__/
 coverage.xml
 *.swp
 .DS_Store
-secrets.py
 *_initial.py
 log
 logs
@@ -20,6 +19,5 @@ migrations
 inspectdb
 *.py~
 local.py
-
 appenv
 secrets.yaml

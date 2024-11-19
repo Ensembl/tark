@@ -162,7 +162,7 @@ def search_home(request):
     host_url = ApiUtils.get_host_url(request)
     search_identifier = ""
     query_url = "/api/transcript/search/?expand=transcript_release_set,genes,translations&identifier_field="
-
+        
     # Render the HTML template index.html with data in the context variable
     search_result = {}
     if request.method == 'GET' and "identifier" in request.GET:

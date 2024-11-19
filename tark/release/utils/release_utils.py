@@ -73,7 +73,7 @@ class ReleaseUtils(object):
         if source_name is None:
             source_name = cls.get_default_source()
 
-        if source_name is "all":
+        if source_name == "all":
             all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name).values('shortname')
         else:
             all_releases = ReleaseSet.objects.filter(assembly__assembly_name__iexact=assembly_name). \
