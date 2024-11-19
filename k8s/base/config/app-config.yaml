@@ -5,7 +5,7 @@ metadata:
 data:
   # env variables for the backend app
   DJANGO_ENVIRONMENT: development
-  DEBUG: "1"
+  DEBUG: "0"
   PYTHONPATH: /code/tark
   # these guys allow the app to connect to the internet
   # https://www.ebi.ac.uk/seqdb/confluence/display/EXT/Web+Production+Kubernetes+Service
