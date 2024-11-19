@@ -6,3 +6,4 @@ metadata:
 data:
   DJANGO_ALLOWED_HOSTS: "hh-rke-wp-webadmin-31-worker-1.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-2.caas.ebi.ac.uk hh-rke-wp-webadmin-31-worker-3.caas.ebi.ac.uk tark.ensembl.org"
   WORKERS: "7"
+  DJANGO_ENVIRONMENT: production
