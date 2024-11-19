@@ -19,5 +19,5 @@ migrations
 inspectdb
 *.py~
 local.py
-secrets.yaml
 appenv
+secrets.yaml
