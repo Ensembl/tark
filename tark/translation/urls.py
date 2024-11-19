@@ -15,13 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from django.urls import path
 from translation import views
 
 urlpatterns = [
-    url(r'^$', views.TranslationList.as_view(), name='translation_list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.TranslationDetail.as_view(), name='translation_detail'),
+    re_path(r'^$', views.TranslationList.as_view(), name='translation_list'),
+    re_path(r'^(?P<pk>[0-9]+)/$', views.TranslationDetail.as_view(), name='translation_detail'),
     path(r"stable_id/<str:stable_id>/", views.TranslationListByStableID.as_view(), name='translation_list_by_stable_id'),
 
 ]

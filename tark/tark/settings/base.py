@@ -204,3 +204,5 @@ if tark.settings.env.PROD_ENV:
     GOOGLE_ANALYTICS_ENABLED = True
 
 ALLOWED_HOSTS = secrets.ALLOWED_HOSTS
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,5 +1,5 @@
 {% extends "rest_framework_swagger/base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block swagger_base %}
 
 

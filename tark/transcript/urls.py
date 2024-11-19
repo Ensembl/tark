@@ -15,15 +15,16 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from transcript import views
 
 urlpatterns = [
-    url(r'^$', views.TranscriptList.as_view(), name='transcript_list'),
-    url(r'^diff/$', views.TranscriptDiff.as_view(), name='transcript_diff'),
-    url(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
-    url(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
-    url(r'^manelist/$', views.TranscriptManeList.as_view(), name='transcript_mane_list'),
+    re_path(r'^$', views.TranscriptList.as_view(), name='transcript_list'),
+    re_path(r'^diff/$', views.TranscriptDiff.as_view(), name='transcript_diff'),
+    re_path(r'^search/$', views.TranscriptSearch.as_view(), name='transcript_search'),
+    re_path(r'^stable_id_with_version/$', views.TranscriptDetail.as_view(), name='transcript_detail'),
+    re_path(r'^manelist/$', views.TranscriptManeList.as_view(), name='transcript_mane_list'),
     # url(r'^mane/$', release_views.TranscriptReleaseTagRelationshipList.as_view(), name='transcript_mane')
 
 ]

@@ -5,3 +5,4 @@ metadata:
 data:
   DATABASE_HOST: mysql-service-staging
   DATABASE_PORT: "4650"
+  DATABASE_NAME: ensembl_tark_e75_to_e113

@@ -15,11 +15,12 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from exon import views
 
 urlpatterns = [
-    url(r'^$', views.ExonList.as_view(), name='exon_list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.ExonDetail.as_view(), name='exon_detail'),
+    re_path(r'^$', views.ExonList.as_view(), name='exon_list'),
+    re_path(r'^(?P<pk>[0-9]+)/$', views.ExonDetail.as_view(), name='exon_detail'),
 
 ]
