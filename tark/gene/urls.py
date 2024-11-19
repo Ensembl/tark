@@ -15,11 +15,12 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from gene import views
 
 urlpatterns = [
-    url(r'^$', views.GeneList.as_view(), name='gene_list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.GeneDetail.as_view(), name='gene_detail'),
+    re_path(r'^$', views.GeneList.as_view(), name='gene_list'),
+    re_path(r'^(?P<pk>[0-9]+)/$', views.GeneDetail.as_view(), name='gene_detail'),
 
 ]

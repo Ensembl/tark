@@ -5,3 +5,4 @@ metadata:
 data:
   DATABASE_HOST: mysql-service-production
   DATABASE_PORT: "4650"
+  DATABASE_NAME: ensembl_tark_e75_to_e112

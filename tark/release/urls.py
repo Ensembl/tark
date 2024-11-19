@@ -15,13 +15,14 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from release.views import ReleaseSetList, ReleaseSetDetail, \
     ReleaseSetDatatableView
 
 urlpatterns = [
-    url(r'^$', ReleaseSetList.as_view(), name='release_set_list'),
-    url(r'^(?P<pk>[0-9]+)/$', ReleaseSetDetail.as_view(), name='release_set_detail'),
-    url(r'^nopagination', ReleaseSetDatatableView.as_view(), name="release_set_nopagination_table"),
+    re_path(r'^$', ReleaseSetList.as_view(), name='release_set_list'),
+    re_path(r'^(?P<pk>[0-9]+)/$', ReleaseSetDetail.as_view(), name='release_set_detail'),
+    re_path(r'^nopagination', ReleaseSetDatatableView.as_view(), name="release_set_nopagination_table"),
 
 ]

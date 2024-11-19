@@ -18,7 +18,8 @@
 from django.urls.conf import include, path
 from rest_framework_swagger.views import get_swagger_view
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from tark import views
 from django.views.generic.base import TemplateView
 import socket
@@ -41,13 +42,13 @@ Including another URLconf
 
 api_version = "api/"
 tark_apis = [
-    url(r'^' + api_version + 'assembly/', include('assembly.urls')),
-    url(r'^' + api_version + 'gene/', include('gene.urls')),
-    url(r'^' + api_version + 'transcript/', include('transcript.urls')),
-    url(r'^' + api_version + 'translation/', include('translation.urls')),
-    url(r'^' + api_version + 'exon/', include('exon.urls')),
-    url(r'^' + api_version + 'release/', include('release.urls')),
-    url(r'^' + api_version + 'sequence/', include('sequence.urls')),
+    re_path(r'^' + api_version + 'assembly/', include('assembly.urls')),
+    re_path(r'^' + api_version + 'gene/', include('gene.urls')),
+    re_path(r'^' + api_version + 'transcript/', include('transcript.urls')),
+    re_path(r'^' + api_version + 'translation/', include('translation.urls')),
+    re_path(r'^' + api_version + 'exon/', include('exon.urls')),
+    re_path(r'^' + api_version + 'release/', include('release.urls')),
+    re_path(r'^' + api_version + 'sequence/', include('sequence.urls')),
 ]
 
 schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
@@ -61,15 +62,15 @@ except:
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     # url(r'^docs/', schema_view),
-    url(r'^' + api_version + '$', schema_view),
-    url(r'^' + api_version + 'status', views.PingService.as_view()),
-    url(r'^web/', include('tark_web.urls')),
-    url(r'^$', views.index, name='index'),
-    url(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'),
+    re_path(r'^' + api_version + '$', schema_view),
+    re_path(r'^' + api_version + 'status', views.PingService.as_view()),
+    re_path(r'^web/', include('tark_web.urls')),
+    re_path(r'^$', views.index, name='index'),
+    re_path(r'^documentation/$', TemplateView.as_view(template_name='documentation.html'),
         {"hostname": "http://" + HOSTNAME}, name="tark_help"),
-    url(r'^privacy_notice_tark', TemplateView.as_view(template_name='privacy_notice_tark.html'),
+    re_path(r'^privacy_notice_tark', TemplateView.as_view(template_name='privacy_notice_tark.html'),
         name="privacy_notice_tark"),
-    url(r'^robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'),
+    re_path(r'^robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'),
         name="robots_file"),
         # path("__debug__/", include("debug_toolbar.urls")),
 

@@ -15,11 +15,12 @@
    limitations under the License.
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import re_path
 from assembly import views
 
 urlpatterns = [
-    url(r'^$', views.AssemblyList.as_view(), name='assembly_list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.AssemblyDetail.as_view(), name='assembly_detail'),
+    re_path(r'^$', views.AssemblyList.as_view(), name='assembly_list'),
+    re_path(r'^(?P<pk>[0-9]+)/$', views.AssemblyDetail.as_view(), name='assembly_detail'),
 
 ]
