@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Tark home{% endblock %}
+
+{% load static %}
+
+{% block header %}
+
+    {% include "navbar_include.html" with show_rest="true" %}
+
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+
+        <p style="padding-top:40px;"></p>
+
+        <p style="font-weight: bold; font-size: 2rem; color: red">The stable id {{stable_id_with_version}} has no version. Please include the version as it is needed to find the transcript.</p>
+
+        {% include "search_big_box.html" %}
+
+{% endblock %}
