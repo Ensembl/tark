@@ -39,9 +39,9 @@
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 
-    <link rel="icon" type="image/png" href="{% static '/images/ebang.png' %}" sizes="16x16"/>
+    <link rel="icon" type="image/png" href="{% static 'images/ebang.png' %}" sizes="16x16"/>
 
-    <link href='{% static "/css/tark_main.css" %}' rel='stylesheet' type='text/css'/>
+    <link href='{% static "css/tark_main.css" %}' rel='stylesheet' type='text/css'/>
 
     <!-- Navbar JavaScript/CSS -->
     <script src='{% static "js/navbar.js" %}' type='text/javascript'></script>
@@ -141,8 +141,8 @@
     <div class="row">
     <div class="text-center">
         <h4 class="text-center">Funding</h4>
-        <img class="fundingimg" src="{% static '/images/EMBL.png' %}" style="vertical-align:middle" width="140" height="50" alt="EMBL Logo">
-        <img class="fundingimg" src="{% static '/images/paradigm-dark.svg' %}" style="vertical-align:middle" width="240" height="50" alt="Paradigm Logo">
+        <img class="fundingimg" src="{% static 'images/EMBL.png' %}" style="vertical-align:middle" width="140" height="50" alt="EMBL Logo">
+        <img class="fundingimg" src="{% static 'images/paradigm-dark.svg' %}" style="vertical-align:middle" width="240" height="50" alt="Paradigm Logo">
     </div>
     <p class="text-muted pull-right">Tark v{{ software_release_tag }}</p>
 {% endblock %}
