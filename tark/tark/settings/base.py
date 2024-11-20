@@ -206,3 +206,21 @@ if tark.settings.env.PROD_ENV:
 ALLOWED_HOSTS = secrets.ALLOWED_HOSTS
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'ERROR',  # Log errors and above (ERROR, CRITICAL)
+            'class': 'logging.StreamHandler',  # Outputs to the console (terminal)
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],  # Use the console handler
+            'level': 'DEBUG',  # Adjust the level to capture what you need (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+            'propagate': True,
+        },
+    },
+}
