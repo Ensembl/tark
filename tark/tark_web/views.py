@@ -399,6 +399,11 @@ def feature_diff(request, feature, from_release, to_release, direction="changed"
 def transcript_details(request, stable_id_with_version, search_identifier):
     host_url = ApiUtils.get_host_url(request)
 
+    has_stable_id_version = len(stable_id_with_version.split(".")) > 1
+
+    if not has_stable_id_version:
+        return render(request, 'transcript_id_not_found.html', context={'stable_id_with_version': stable_id_with_version})
+
     # get assembly name
     assembly_name = request.GET.get('assembly_name', '')
 
