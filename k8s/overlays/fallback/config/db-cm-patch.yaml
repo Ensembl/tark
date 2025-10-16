@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  DATABASE_HOST: mysql-service-fallback
+  DATABASE_PORT: "4650"
+  DATABASE_NAME: ensembl_tark_e75_to_e115

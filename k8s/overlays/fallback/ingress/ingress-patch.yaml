@@ -1,0 +1,20 @@
+# This config file is used by the new K8s Cluster
+# Kubectl Server Version: v1.21.4
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tark-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: tark.ensembl.org
+    http:
+      paths:
+      # URL ROUTING 
+      - path: /?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: django-cluster-ip-service
+            port:
+              number: 8000      
