@@ -90,5 +90,6 @@ deploy_to_k8s_fallback:
 
   only:
     - main
+    - deploy_fallback
 
   when: manual
