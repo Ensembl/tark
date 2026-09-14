@@ -1,9 +1,9 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-bullseye
+FROM python:3.10-bookworm
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Create a user to run your application
 RUN groupadd -r myuser && useradd -r -g myuser myuser
@@ -12,17 +12,18 @@ RUN groupadd -r myuser && useradd -r -g myuser myuser
 WORKDIR /code
 
 # Install dependencies
-RUN apt-get update && apt-get install -y default-libmysqlclient-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    default-libmysqlclient-dev \
     build-essential \
     gfortran \
     libopenblas-dev \
     liblapack-dev \
-    python3-dev
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /code/
 COPY requirements-dev.txt /code/
-RUN pip install --upgrade pip setuptools wheel
-RUN pip install -r requirements-dev.txt
+RUN python -m pip install --upgrade pip "setuptools<81" wheel
+RUN python -m pip install --no-build-isolation -r requirements-dev.txt
 
 # Copy project
 COPY . /code/
