@@ -15,7 +15,7 @@
    limitations under the License.
 """
 
-from django.test.testcases import TestCase
+from django.test.testcases import SimpleTestCase
 from tark_drf.utils.drf_utils import DrfUtils
 from transcript.models import Transcript
 from gene.models import Gene
@@ -24,7 +24,7 @@ from release.models import TranscriptReleaseTag
 
 
 # ./manage.py test tark_drf.tests.test_drf_utils --settings=tark.settings.test
-class DrfUtilsTest(TestCase):
+class DrfUtilsTest(SimpleTestCase):
 
     def test_get_related_entities(self):
         expected_related_models = ['sequence', 'session', 'assembly',
@@ -32,7 +32,7 @@ class DrfUtilsTest(TestCase):
         related_models = DrfUtils.get_related_entities(Transcript)
         self.assertListEqual(related_models, expected_related_models)
 
-        expected_related_models = ['session', 'assembly', 'name', 'gene_release_set']
+        expected_related_models = ['session', 'assembly', 'name', 'gene_release_set', 'transcripts']
         related_models = DrfUtils.get_related_entities(Gene)
         self.assertListEqual(related_models, expected_related_models)
 
