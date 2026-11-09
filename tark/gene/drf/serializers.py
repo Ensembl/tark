@@ -16,6 +16,7 @@
 """
 
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_field
 from tark_drf.utils.drf_mixin import SerializerMixin
 from gene.models import Gene
 from assembly.drf.serializers import AssemblySerializer
@@ -31,6 +32,7 @@ class GeneReleaseTagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+@extend_schema_field(str)
 class HgncNameField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:

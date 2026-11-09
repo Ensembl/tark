@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_spectacular',
     'session',
     'genome',
     'assembly',
@@ -176,20 +176,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    # The coreAPI schema generation is being deprecated, to continue using coreAPI we need to include
-    # DEFAULT_SCHEMA_CLASS explicitly as mentioned described here:
-    # https://www.django-rest-framework.org/community/3.10-announcement/#continuing-to-use-coreapi
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
-SWAGGER_SETTINGS = {
-    "exclude_namespaces": [],  # List URL namespaces to ignore
-    "api_version": '0.1',  # Specify your API's version
-    "api_path": "/",  # Specify the path to your API not a root level
-    "api_key": '',  # An API key
-    "is_authenticated": False,  # Set to True to enforce user authentication,
-    "is_superuser": False,  # Set to True to enforce admin only access
-    'VALIDATOR_URL': None,
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Tark REST API Endpoints',
+    'VERSION': SOFTWARE_RELEASE_TAG,
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

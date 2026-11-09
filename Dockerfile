@@ -1,9 +1,10 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-bookworm
+FROM python:3.12-bookworm
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONWARNINGS="ignore:pkg_resources is deprecated as an API:UserWarning:coreapi.utils"
 
 # Create a user to run your application
 RUN groupadd -r myuser && useradd -r -g myuser myuser
@@ -14,6 +15,7 @@ WORKDIR /code
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     default-libmysqlclient-dev \
+    pkg-config \
     build-essential \
     gfortran \
     libopenblas-dev \
@@ -23,7 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /code/
 COPY requirements-dev.txt /code/
 RUN python -m pip install --upgrade pip "setuptools<81" wheel
-RUN python -m pip install --no-build-isolation -r requirements-dev.txt
+# Use a NumPy wheel compatible with this Python version instead of building it.
+RUN python -m pip install --no-build-isolation --only-binary=numpy -r requirements-dev.txt
 
 # Copy project
 COPY . /code/
@@ -34,12 +37,21 @@ RUN chown -R myuser:myuser /code
 # Collect static files
 RUN python tark/manage.py collectstatic --noinput
 
+# Load URL configuration during the build to catch incompatible API integrations.
+RUN python tark/manage.py check --tag urls
+
+# Gunicorn stores its control socket under the runtime user's home directory.
+RUN install -d -m 0700 -o myuser -g myuser /home/myuser
+
 # Use the created user to run the application
 USER myuser
+ENV HOME=/home/myuser
 
 # Expose port
 EXPOSE 8000
 
 # Run gunicorn as the container's main process
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "120", "tark.wsgi:application"]
+# for local testing
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "120", "tark.wsgi:application", "--workers", "6"]
 # CMD ["python", "tark/manage.py", "runserver", "0.0.0.0:8000"]

@@ -16,6 +16,7 @@
 """
 
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_field
 import binascii
 from tark_drf.utils.drf_utils import DrfUtils
 import coreapi
@@ -348,6 +349,7 @@ class ChecksumFieldSerializer(serializers.Field):
         return None
 
 
+@extend_schema_field(str)
 class AssemblyField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
@@ -399,6 +401,7 @@ class TranscriptFieldRelationshipType(serializers.RelatedField):
         return None
 
 
+@extend_schema_field(str)
 class ReleaseSourceField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:
