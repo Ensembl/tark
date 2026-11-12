@@ -48,10 +48,12 @@ class TranscriptFilterBackend(BaseFilterBackend):
         if source_name is not None:
             queryset = queryset.filter(transcript_release_set__source__shortname__icontains=source_name)
 
-        if queryset is not None:
+        # Release/source joins can repeat transcripts; ordinary filters cannot.
+        # An unnecessary DISTINCT makes pagination count all transcript columns,
+        # including UTR sequences, through an expensive subquery.
+        if queryset is not None and (release_short_name is not None or source_name is not None):
             return queryset.distinct()
-        else:
-            return None
+        return queryset
 
     def get_schema_fields(self, view):
         return CommonFields.get_common_query_set("Transcript") + CommonFields.COMMON_RELATED_QUERY_SET + \
