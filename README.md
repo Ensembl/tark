@@ -10,7 +10,7 @@ An archive of all transcripts and its sequences from Ensembl, RefSeq and other s
 
 
 # Requirements
-- Python 3.6
+- Python 3.12 (matching the Docker image and dependency checks)
 - MySQL 5.6+
 
 
@@ -36,11 +36,29 @@ pip install -r requirements.txt
 
 ```
 
-Provide the right credentials to connect to the tark database in secrets.py (created from secrets_template.py)
+The supplied `tark/tark/settings/secrets.py` reads database credentials from
+environment variables. Export these in the same terminal used to start Django,
+replacing the example values with your MySQL connection details:
 
+```sh
+export DATABASE_HOST='127.0.0.1'
+export DATABASE_PORT='3306'
+export DATABASE_NAME='your_tark_database'
+export DATABASE_USER='your_mysql_user'
+export DATABASE_PASSWORD='your_mysql_password'
+export DEBUG='1'
+export DJANGO_ALLOWED_HOSTS='localhost 127.0.0.1'
 ```
-cp tark/tark/settings/secrets_template.py tark/tark/settings/secrets.py
-```
+
+`DATABASE_NAME` selects the transcript archive database; Django also connects to
+`tark_django_manager` on the same server using the same credentials. Both databases
+must exist and be accessible to that user. Use your server's hostname and port if
+MySQL is remote. An empty `DATABASE_HOST` uses the MySQL client's default local
+connection. A `.env` file is not loaded automatically.
+
+Alternatively, create `tark/tark/settings/secrets.py` from
+`tark/tark/settings/secrets_template.py` and fill in its values directly. Keep
+credentials out of version control.
 
 
 Run the migrate step with --fake-initial (No need to run the migrations as the database is already there and it is not managed by Django)
@@ -50,7 +68,8 @@ cd tark/
 ```
 
 Start the development server
-cd tark/tark
+
+From the directory containing `manage.py`:
 ```
  ./manage.py runserver localhost:9000
 ```
@@ -65,11 +84,59 @@ Run all the tests in the package:
 ./manage.py test --settings=tark.settings.test
 ```
 
+### MySQL authentication errors on macOS
+
+If startup reports that `mysql_native_password` cannot be loaded from a MySQL 9
+directory, the Python driver is linked to a client library that does not provide
+the authentication method requested by the server. Changing `PATH` alone does not
+change an already compiled driver.
+
+For this project's pinned `mysqlclient==2.2.8`, if Homebrew `mysql@8.0` and `pkg-config` are already
+installed on Apple Silicon, rebuild the driver from the repository root:
+
+```sh
+PKG_CONFIG_PATH="/opt/homebrew/opt/mysql@8.0/lib/pkgconfig" ARCHFLAGS='-arch arm64' \
+  appenv/bin/python -m pip install --force-reinstall --no-deps \
+  --no-binary=mysqlclient --no-cache-dir mysqlclient==2.2.8
+appenv/bin/python -c 'import MySQLdb; print(MySQLdb.get_client_info())'
+```
+
+The last command should report `8.0.x`. Restart Django after rebuilding.
+
 ### Using Docker
 
-To run the app using docker, build and then run the image
-```
-docker build -t tark_app .
+From the repository root, use `compose.yaml` to build and run the application
+with the database variables exported in your current shell:
 
-docker run -p 8000:8000 tark_app
+```sh
+docker compose up --build -d
+docker compose logs -f web
+```
+
+Open <http://localhost:8000/>. Set `APP_PORT` before starting Compose to use a
+different local port. Docker must be running.
+
+API documentation is available at `/api/`, with the OpenAPI schema at
+`/api/schema/`. It uses drf-spectacular; the legacy django-rest-swagger integration
+is incompatible with the current Django REST Framework version. Existing custom
+filter descriptions are included through an OpenAPI extension.
+
+Compose requires `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER`, and
+`DATABASE_PASSWORD`; the password may be explicitly exported as an empty string.
+`DATABASE_PORT` defaults to `3306`. It also passes through `SECRET_KEY`, `DEBUG`,
+`DJANGO_ALLOWED_HOSTS`, and `DJANGO_ENVIRONMENT`, with local development defaults
+defined in `compose.yaml`. Export a `SECRET_KEY` for any shared deployment.
+Shell values take precedence over any Compose `.env` file.
+
+This connects to your existing MySQL server. For MySQL running on your Mac, use
+`export DATABASE_HOST='host.docker.internal'`; `localhost` and `127.0.0.1` inside
+the container refer to the container itself. For a remote database, keep its
+reachable hostname and port. Both the archive database and `tark_django_manager`
+must be accessible using the exported credentials.
+
+After changing exported variables, run `docker compose up -d` again to recreate
+the container with the updated environment. To stop and remove it:
+
+```sh
+docker compose down
 ```

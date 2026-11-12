@@ -140,19 +140,19 @@ class SearchUtils(object):
         identifier = identifier.replace(" ", "")
 
         # ensembl transcript
-        if re.compile("^ENST\d+").match(identifier):
+        if re.compile(r"^ENST\d+").match(identifier):
             return cls.ENSEMBL_TRANSCRIPT
 
         # ensembl gene
-        if re.compile("^ENSG\d+").match(identifier):
+        if re.compile(r"^ENSG\d+").match(identifier):
             return cls.ENSEMBL_GENE
 
         # ensembl protein
-        if re.compile("^ENSP\d+").match(identifier):
+        if re.compile(r"^ENSP\d+").match(identifier):
             return cls.ENSEMBL_PROTEIN
 
         # refseq protein
-        if re.compile("^NP_\d+").match(identifier):
+        if re.compile(r"^NP_\d+").match(identifier):
             return cls.REFSEQ_PROTEIN
 
         # hgvs genomic eg:  NC_000023.11:g.32389644G>A
@@ -168,11 +168,11 @@ class SearchUtils(object):
             return cls.REFSEQ_TRANSCRIPT
 
         # lrg transcript
-        if re.compile("^LRG_\d+t\d+").match(identifier):
+        if re.compile(r"^LRG_\d+t\d+").match(identifier):
             return cls.LRG_TRANSCRIPT
 
         # lrg gene
-        if re.compile("^LRG_\d+").match(identifier):
+        if re.compile(r"^LRG_\d+").match(identifier):
             return cls.LRG_GENE
 
         # genomic location eg:  13:32315474-32400266 )

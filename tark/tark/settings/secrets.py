@@ -21,11 +21,12 @@ import os
 SECRET_KEY = os.getenv('SECRET_KEY', "BACKUP_SECRET")
 
 
-DATABASE_NAME = os.getenv('DATABASE_NAME')
-DATABASE_PORT = os.getenv('DATABASE_PORT')
-DATABASE_USER = os.getenv('DATABASE_USER')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-DATABASE_HOST = os.getenv('DATABASE_HOST')
+# Django's MySQL backend expects strings, including for unset connection options.
+DATABASE_NAME = os.getenv('DATABASE_NAME', '')
+DATABASE_PORT = os.getenv('DATABASE_PORT', '')
+DATABASE_USER = os.getenv('DATABASE_USER', '')
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', '')
+DATABASE_HOST = os.getenv('DATABASE_HOST', '')
 debug_value = os.getenv('DEBUG', "0")
 DEBUG = True if debug_value == "1" else False
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', "").split(" ")

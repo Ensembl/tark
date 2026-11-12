@@ -20,3 +20,7 @@ from django.apps import AppConfig
 
 class TarkDrfConfig(AppConfig):
     name = 'tark_drf'
+
+    def ready(self):
+        # Register the adapter for the query fields defined by our filter backends.
+        from tark_drf import schema  # noqa: F401

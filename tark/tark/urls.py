@@ -16,7 +16,7 @@
 """
 
 from django.urls.conf import include, path
-from rest_framework_swagger.views import get_swagger_view
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 # from django.conf.urls import url
 from django.urls import re_path
@@ -51,7 +51,7 @@ tark_apis = [
     re_path(r'^' + api_version + 'sequence/', include('sequence.urls')),
 ]
 
-schema_view = get_swagger_view(title='Tark REST API Endpoints', patterns=tark_apis)
+schema_view = SpectacularAPIView.as_view(patterns=tark_apis)
 
 try:
     HOSTNAME = socket.gethostname()
@@ -62,7 +62,9 @@ except:
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     # url(r'^docs/', schema_view),
-    re_path(r'^' + api_version + '$', schema_view),
+    re_path(r'^' + api_version + '$',
+            SpectacularSwaggerView.as_view(url_name='api_schema'), name='api_docs'),
+    path('api/schema/', schema_view, name='api_schema'),
     re_path(r'^' + api_version + 'status', views.PingService.as_view()),
     re_path(r'^web/', include('tark_web.urls')),
     re_path(r'^$', views.index, name='index'),

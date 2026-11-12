@@ -36,9 +36,12 @@ jobs:
       - name: Install Python dependencies (Dev)
         run: |
           python3 -m pip install --upgrade pip "setuptools<81" wheel
-          python3 -m pip install --no-build-isolation -r requirements-dev.txt
+          python3 -m pip install --no-build-isolation --only-binary=numpy -r requirements-dev.txt
 
       - name: Install Python dependencies (Prod)
         run: |
           python3 -m pip install --upgrade pip "setuptools<81" wheel
-          python3 -m pip install --no-build-isolation -r requirements-dev.txt
+          python3 -m pip install --no-build-isolation --only-binary=numpy -r requirements.txt
+
+      - name: Check browser startup and API documentation
+        run: python3 tark/manage.py test tark.tests.test_browser_startup --settings=tark.settings.base

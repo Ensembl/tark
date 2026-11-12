@@ -16,6 +16,7 @@
 """
 
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_field
 from tark_drf.utils.drf_mixin import SerializerMixin
 from assembly.drf.serializers import AssemblySerializer
 from release.drf.serializers import ReleaseSetSerializer
@@ -34,6 +35,7 @@ from tark.utils.exon_utils import ExonUtils
 from exon.models import Exon
 
 
+@extend_schema_field(str)
 class HgncNameField(serializers.RelatedField):
     def to_representation(self, value):
         if value is not None:

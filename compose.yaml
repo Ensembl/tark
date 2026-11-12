@@ -1,0 +1,20 @@
+services:
+  web:
+    build:
+      context: .
+    image: tark_app:local
+    # Gunicorn must run from the directory containing the tark Python package.
+    working_dir: /code/tark
+    ports:
+      - "127.0.0.1:${APP_PORT:-8000}:8000"
+    environment:
+      DATABASE_HOST: "${DATABASE_HOST:?Export DATABASE_HOST before starting Compose}"
+      DATABASE_PORT: "${DATABASE_PORT:-3306}"
+      DATABASE_NAME: "${DATABASE_NAME:?Export DATABASE_NAME before starting Compose}"
+      DATABASE_USER: "${DATABASE_USER:?Export DATABASE_USER before starting Compose}"
+      # An explicitly exported empty password is supported.
+      DATABASE_PASSWORD: "${DATABASE_PASSWORD?Export DATABASE_PASSWORD before starting Compose}"
+      SECRET_KEY: "${SECRET_KEY:-local-development-only-change-me}"
+      DEBUG: "${DEBUG:-0}"
+      DJANGO_ALLOWED_HOSTS: "${DJANGO_ALLOWED_HOSTS:-localhost 127.0.0.1}"
+      DJANGO_ENVIRONMENT: "${DJANGO_ENVIRONMENT:-development}"
