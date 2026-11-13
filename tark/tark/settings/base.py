@@ -187,6 +187,9 @@ SPECTACULAR_SETTINGS = {
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Public origins allowed to submit forms through the deployment's reverse proxy.
+CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split()
+
 SESSION_COOKIE_SAMESITE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CURRENT_ASSEMBLY = "GRCh38"
