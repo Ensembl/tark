@@ -17,4 +17,5 @@ services:
       SECRET_KEY: "${SECRET_KEY:-local-development-only-change-me}"
       DEBUG: "${DEBUG:-0}"
       DJANGO_ALLOWED_HOSTS: "${DJANGO_ALLOWED_HOSTS:-localhost 127.0.0.1}"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "${DJANGO_CSRF_TRUSTED_ORIGINS:-}"
       DJANGO_ENVIRONMENT: "${DJANGO_ENVIRONMENT:-development}"

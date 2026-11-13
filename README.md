@@ -124,9 +124,20 @@ filter descriptions are included through an OpenAPI extension.
 Compose requires `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER`, and
 `DATABASE_PASSWORD`; the password may be explicitly exported as an empty string.
 `DATABASE_PORT` defaults to `3306`. It also passes through `SECRET_KEY`, `DEBUG`,
-`DJANGO_ALLOWED_HOSTS`, and `DJANGO_ENVIRONMENT`, with local development defaults
-defined in `compose.yaml`. Export a `SECRET_KEY` for any shared deployment.
+`DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`, and `DJANGO_ENVIRONMENT`, with
+local development defaults defined in `compose.yaml`. Export a `SECRET_KEY` for
+any shared deployment.
 Shell values take precedence over any Compose `.env` file.
+
+Shared deployments set `DJANGO_CSRF_TRUSTED_ORIGINS` to a space-separated list of
+public origins, including the scheme (for example, `https://dev-tark.ensembl.org`
+for staging and `https://tark.ensembl.org` for production). The Kubernetes overlays
+set these values per environment. This is separate from `DJANGO_ALLOWED_HOSTS`,
+which contains hostnames without a scheme. Local same-origin HTTP requests do
+not require trusted origins. When using a reverse proxy, it must preserve the
+public host and correctly set `X-Forwarded-Proto` for Django's existing
+`SECURE_PROXY_SSL_HEADER` setting. After changing a Kubernetes ConfigMap, restart
+the deployment so its processes load the updated environment.
 
 This connects to your existing MySQL server. For MySQL running on your Mac, use
 `export DATABASE_HOST='host.docker.internal'`; `localhost` and `127.0.0.1` inside
